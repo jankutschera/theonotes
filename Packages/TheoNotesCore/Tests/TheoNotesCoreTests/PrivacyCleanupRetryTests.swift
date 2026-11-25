@@ -7,6 +7,9 @@ import Synchronization
 import Testing
 @testable import TheoNotesCore
 
+/// Blocks the caller, never awaited work: the signal comes from a plain thread, not the cooperative pool.
+private func waitOff(_ semaphore: DispatchSemaphore) -> Bool { semaphore.wait(timeout: .now() + 60) == .success }
+
 /// A real second SQLite connection holds a read transaction across the lock commit.
 struct PrivacyTestLibrary: Sendable {
     let paths: AppPaths
@@ -174,26 +177,31 @@ struct PrivacyCleanupRetryTests {
         defer { try? reader.close() }
         #expect(throws: NotePrivacyError.cleanupPending) { try access.lock(noteId: note.id) }
         try await reader.writeWithoutTransaction { try $0.execute(sql: "ROLLBACK") }
+        // The first cleanup blocks on its own thread, not in the cooperative pool: a pool thread parked in a
+        // semaphore under a fully loaded test run starved the rest of this test past the wait.
         let entered = Mutex(false)
+        let enteredSignal = DispatchSemaphore(value: 0)
         let resume = DispatchSemaphore(value: 0)
         defer { resume.signal() }
         let guarded = library.store.guarded { _, stage in
-            if case .begin = stage {
-                entered.withLock { $0 = true }
-                #expect(resume.wait(timeout: .now() + 5) == .success)
+            if case .begin = stage, !entered.withLock({ let was = $0; $0 = true; return was }) {
+                enteredSignal.signal()
+                #expect(resume.wait(timeout: .now() + 60) == .success)
             }
         }
-        let first = Task.detached { try NotePrivacy(store: guarded).finishPendingCleanup() }
-        for _ in 0..<200 {
-            if entered.withLock({ $0 }) { break }
-            try await Task.sleep(for: .milliseconds(10))
-        }
-        try #require(entered.withLock { $0 })
+        let firstResult = Mutex<Result<Void, any Error>?>(nil)
+        let firstDone = DispatchSemaphore(value: 0)
+        Thread {
+            firstResult.withLock { $0 = Result { try NotePrivacy(store: guarded).finishPendingCleanup() } }
+            firstDone.signal()
+        }.start()
+        try #require(waitOff(enteredSignal))
         // A separate store still shares the same on-disk cleanup lock.
         let other = NoteStore(db: library.db, notifier: nil, paths: library.paths)
         #expect(throws: NotePrivacyError.cleanupPending) { try NotePrivacy(store: other).finishPendingCleanup() }
         resume.signal()
-        try await first.value
+        try #require(waitOff(firstDone))
+        try firstResult.withLock { $0 }?.get()
         let name = try access.addAttachment(data: Data("new generation".utf8), filename: "new.txt", to: note.id)
         try NotePrivacy(store: other).finishPendingCleanup()
         let output = library.paths.root.appendingPathComponent("overlap-verified.txt")
