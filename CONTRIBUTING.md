@@ -31,7 +31,7 @@ A bot records the signature and the "CLA" check turns green. Type `recheck` as a
 
 ## Build and test
 
-Requirements: macOS 26 with Xcode, XcodeGen, Node with pnpm, Python 3.
+Requirements: macOS 26 or later with Xcode 27.2, XcodeGen, Node with pnpm, Python 3.
 
 ```sh
 scripts/bootstrap.sh   # installs the editor's JS dependencies and the Playwright browser, generates the Xcode project

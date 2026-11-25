@@ -50,7 +50,7 @@ Theo Notes is a notes app that stores every note as Markdown, exactly as you typ
 
 ## Build from source
 
-You need a Mac with macOS 26 and Xcode 26 or later, [XcodeGen](https://github.com/yonaskolb/XcodeGen), Node.js with [pnpm](https://pnpm.io), and Python 3.
+You need a Mac with macOS 26 or later and Xcode 27.2 (Swift 6.4), [XcodeGen](https://github.com/yonaskolb/XcodeGen), Node.js with [pnpm](https://pnpm.io), and Python 3.
 
 ```sh
 scripts/bootstrap.sh   # installs the editor's JS packages and a Playwright browser, generates TheoNotes.xcodeproj

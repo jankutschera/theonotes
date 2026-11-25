@@ -1,0 +1,4 @@
+# Runner labels newer than actionlint knows (GitHub runner-images README: "xcode-27", public preview).
+self-hosted-runner:
+  labels:
+    - xcode-27

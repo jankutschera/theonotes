@@ -20,6 +20,7 @@ jobs:
   guards:
     name: Guards (scan, names, headers, copy)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
@@ -34,6 +35,7 @@ jobs:
   editor:
     name: Editor (typecheck, vitest)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
@@ -50,8 +52,10 @@ jobs:
 
   apple:
     name: Swift tests and unsigned Mac build
-    # The apps target macOS 26; this needs a macOS 26 runner image with Xcode 26 or later.
-    runs-on: macos-26
+    # The project is built with Xcode 27.2 (Swift 6.4). On the macos-26 image (Xcode 26.6 at most) the core module's
+    # compile never finished; the xcode-27 image has 27.2.
+    runs-on: xcode-27
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
@@ -62,9 +66,15 @@ jobs:
           node-version: 24
           cache: pnpm
           cache-dependency-path: web/editor/pnpm-lock.yaml
+      - run: sudo xcode-select -s /Applications/Xcode_27.2.app && xcodebuild -version && swift --version
       - run: brew install xcodegen
       - run: pnpm --dir web/editor install --frozen-lockfile
-      - run: swift test --package-path Packages/TheoNotesCore
+      - name: Build the core package and its tests
+        run: swift build --package-path Packages/TheoNotesCore --build-tests
+        timeout-minutes: 15
+      - name: Swift tests
+        run: swift test --package-path Packages/TheoNotesCore --skip-build
+        timeout-minutes: 15
       - run: xcodegen generate
       - run: >
           xcodebuild -project TheoNotes.xcodeproj -scheme TheoNotes -configuration Debug
