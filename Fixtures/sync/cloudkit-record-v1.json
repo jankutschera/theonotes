@@ -1,0 +1,628 @@
+{
+  "spec": "docs/superpowers/specs/2026-10-28-cloudkit-record-v1.md",
+  "version": 1,
+  "note": "Draft until Gate G0 (CK-R16). Field values are {int|string|bytes(base64)|strings|asset(url)}.",
+  "valid": [
+    {
+      "case": "entity-inline",
+      "kind": "entity",
+      "record": {
+        "name": "e.note.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          }
+        }
+      }
+    },
+    {
+      "case": "entity-with-asset-and-blobs",
+      "kind": "entity",
+      "record": {
+        "name": "e.attachment.0194f6c0-2222-7000-8000-000000000002",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "attachment"
+          },
+          "eid": {
+            "string": "0194f6c0-2222-7000-8000-000000000002"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": [
+              "inc-old1",
+              "inc-old2"
+            ]
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "blobs": {
+            "strings": [
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            ]
+          },
+          "cipherAsset": {
+            "asset": "file:///tmp/fixture-cipher.bin"
+          }
+        }
+      }
+    },
+    {
+      "case": "blob-part",
+      "kind": "blobPart",
+      "record": {
+        "name": "b.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.32.0",
+        "type": "BlobPart",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "hash": {
+            "string": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "part": {
+            "int": 0
+          },
+          "parts": {
+            "int": 3
+          },
+          "partBytes": {
+            "int": 33554432
+          },
+          "totalBytes": {
+            "int": 70000000
+          },
+          "partSha256": {
+            "string": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "asset": {
+            "asset": "file:///tmp/fixture-part.bin"
+          }
+        }
+      }
+    },
+    {
+      "case": "key-bundle",
+      "kind": "keyBundle",
+      "record": {
+        "name": "keybundle",
+        "type": "KeyBundle",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "account": {
+            "string": "ck-0194f6c0-3333-7000-8000-000000000003"
+          },
+          "rev": {
+            "int": 1
+          },
+          "envelope": {
+            "bytes": "eyJjYW5hcnkiOiJFUkVSRVJFUkVSRVJFUkVSSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWlJaUlpSWpNek16TXpNek16TXpNek16TXpNek0iLCJlbnZlbG9wZSI6eyJhY2NvdW50SWQiOiJjay0wMTk0ZjZjMC0zMzMzLTcwMDAtODAwMC0wMDAwMDAwMDAwMDMiLCJhbGdvcml0aG0iOiJIS0RGLVNIQTI1NitBRVMtMjU2LUdDTStFZDI1NTE5IiwicmVjb3ZlcnlQdWJsaWNLZXkiOiJSRVJFUkVSRVJFUkVSRVJFUkVSRVJFUkVSRVJFUkVSRVJFUkVSRVJFUkVRIiwidmVyc2lvbiI6MSwid3JhcHBlZE1hc3RlcktleSI6IlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWIiwid3JhcHBlZFZhdWx0S2V5IjoiWm1abVptWm1abVptWm1abVptWm1abVptWm1abVptWm1abVptWm1abVptWm1abVptWm1abVptWm1abVptWm1abVptWm1abVptWm1abVptWm0ifSwiZm9ybWF0IjoxfQ=="
+          }
+        }
+      }
+    }
+  ],
+  "rejected": [
+    {
+      "case": "unknown-version",
+      "reason": "version:2",
+      "record": {
+        "name": "e.note.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 2
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          }
+        }
+      }
+    },
+    {
+      "case": "version-zero",
+      "reason": "version:0",
+      "record": {
+        "name": "e.note.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 0
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          }
+        }
+      }
+    },
+    {
+      "case": "future-version-with-different-shape",
+      "reason": "version:7",
+      "record": {
+        "name": "e.note.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 7
+          },
+          "blob": {
+            "bytes": "AQ=="
+          }
+        }
+      }
+    },
+    {
+      "case": "name-mismatch-id",
+      "reason": "name-mismatch",
+      "record": {
+        "name": "e.note.0194f6c0-9999-7000-8000-000000000009",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          }
+        }
+      }
+    },
+    {
+      "case": "name-mismatch-type",
+      "reason": "name-mismatch",
+      "record": {
+        "name": "e.tagPreference.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          }
+        }
+      }
+    },
+    {
+      "case": "unknown-field",
+      "reason": "unknown-field:extra",
+      "record": {
+        "name": "e.note.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          },
+          "extra": {
+            "int": 1
+          }
+        }
+      }
+    },
+    {
+      "case": "both-cipher-and-asset",
+      "reason": "invalid-value:cipher",
+      "record": {
+        "name": "e.note.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          },
+          "cipherAsset": {
+            "asset": "file:///tmp/x"
+          }
+        }
+      }
+    },
+    {
+      "case": "neither-cipher-nor-asset",
+      "reason": "missing-field:cipher",
+      "record": {
+        "name": "e.note.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "blobs": {
+            "strings": []
+          }
+        }
+      }
+    },
+    {
+      "case": "ver-wrong-shape",
+      "reason": "field-shape:ver",
+      "record": {
+        "name": "e.note.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "string": "3"
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          }
+        }
+      }
+    },
+    {
+      "case": "unknown-entity-type",
+      "reason": "unknown-entity-type",
+      "record": {
+        "name": "e.widget.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "widget"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-1",
+              "att-0"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          }
+        }
+      }
+    },
+    {
+      "case": "sids-do-not-start-with-sid",
+      "reason": "invalid-value:sids",
+      "record": {
+        "name": "e.note.0194f6c0-1111-7000-8000-000000000001",
+        "type": "Entity",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "etype": {
+            "string": "note"
+          },
+          "eid": {
+            "string": "0194f6c0-1111-7000-8000-000000000001"
+          },
+          "inc": {
+            "string": "inc-AAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "incs": {
+            "strings": []
+          },
+          "ver": {
+            "int": 3
+          },
+          "sid": {
+            "string": "att-1"
+          },
+          "sids": {
+            "strings": [
+              "att-0",
+              "att-1"
+            ]
+          },
+          "cipher": {
+            "bytes": "AQID"
+          },
+          "blobs": {
+            "strings": []
+          }
+        }
+      }
+    },
+    {
+      "case": "key-bundle-wrong-name",
+      "reason": "name-mismatch",
+      "record": {
+        "name": "keybundle2",
+        "type": "KeyBundle",
+        "fields": {
+          "v": {
+            "int": 1
+          },
+          "account": {
+            "string": "ck-x"
+          },
+          "rev": {
+            "int": 1
+          },
+          "envelope": {
+            "bytes": "AQ=="
+          }
+        }
+      }
+    }
+  ]
+}

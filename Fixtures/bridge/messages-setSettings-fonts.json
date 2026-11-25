@@ -1,0 +1,8 @@
+{
+  "type": "setSettings",
+  "typography": {
+    "fontText": "Iowan Old Style",
+    "fontCode": "SF Mono",
+    "paragraphIndent": 2
+  }
+}

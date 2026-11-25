@@ -1,0 +1,1208 @@
+{
+ "shared": {
+  "options": {
+   "title": "Select the note by title (any case) instead of by id.",
+   "title-optional": "Select a note by title (any case). Without a note, the command covers the whole library.",
+   "format": "Output format: tsv, csv or json.",
+   "fields": "Fields to print: comma-separated names, or `all`.",
+   "nomod": "Leave the note's modification date as it was.",
+   "limit-notes": "Return at most this many notes. 0 prints nothing (use --count for the number).",
+   "section-write": "Section address: a heading line such as `## Tasks`, or an address from `outline`. Interprets \\n, \\t, \\r, \\\\.",
+   "gate": "Go ahead even if the write would drop attachments. Without it such a write is refused and the error names the files.",
+   "filename-required": "Filename of the attachment."
+  },
+  "arguments": {
+   "note-id": "Id of the note. Give this or --title, not both.",
+   "note-id-optional": "Id of a note. Without an id or title the command covers the whole library."
+  }
+ },
+ "overview": {
+  "summary": "Read and write your notes from the command line.",
+  "usage": "theonotes [--version] <subcommand>",
+  "options": [
+   [
+    "-v, --version",
+    "Print the version."
+   ],
+   [
+    "-h, --help",
+    "Show help."
+   ]
+  ],
+  "subcommands": [
+   [
+    "list",
+    "List notes, narrowed by location or one tag."
+   ],
+   [
+    "search",
+    "Find notes with the search query language."
+   ],
+   [
+    "cat",
+    "Print a note's text."
+   ],
+   [
+    "show",
+    "Print a note's metadata."
+   ],
+   [
+    "outline",
+    "Show a note's sections, each with its address."
+   ],
+   [
+    "search-in",
+    "Find a string inside one note."
+   ],
+   [
+    "create",
+    "Create a note."
+   ],
+   [
+    "append",
+    "Add text to a note or to one of its sections."
+   ],
+   [
+    "edit",
+    "Replace, insert or delete exact text in a note."
+   ],
+   [
+    "overwrite",
+    "Replace a note's text, or one section of it."
+   ],
+   [
+    "tags",
+    "Work with tags."
+   ],
+   [
+    "attachments",
+    "Work with a note's attachments."
+   ],
+   [
+    "pin",
+    "Work with pins."
+   ],
+   [
+    "trash",
+    "Send a note to the trash."
+   ],
+   [
+    "archive",
+    "Send a note to the archive."
+   ],
+   [
+    "restore",
+    "Bring a note back from the trash or archive."
+   ],
+   [
+    "app",
+    "Talk to the running app."
+   ],
+   [
+    "mcp-server",
+    "Serve the library to MCP clients over stdio."
+   ]
+  ],
+  "blocks": [
+   {
+    "title": "HELP",
+    "lines": [
+     "theonotes -h, theonotes help       This overview.",
+     "theonotes help <subcommand>        Help for one command.",
+     "theonotes help all                 Every command's help in one document.",
+     "theonotes --generate-completion-script <shell>",
+     "                                   Completion script for zsh, bash or fish."
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "lines": [
+     "--format tsv     Tab-separated rows without a header (default).",
+     "--format csv     RFC 4180 rows with a header.",
+     "--format json    One JSON document on stdout, errors included.",
+     "--fields a,b     Pick fields: comma-separated names, or `all`. The defaults depend on the command.",
+     "",
+     "JSON shapes: a list of results is `[{...},{...}]` (empty: `[]`), a single result is `{...}`,",
+     "an error is `{\"error\":{\"code\":\"...\",\"message\":\"...\"}}` on stdout.",
+     "Exceptions: cat gives `{\"content\":\"...\"}`, attachments save gives",
+     "`{\"filename\":...,\"size\":N,\"base64\":\"...\"}`.",
+     "",
+     "Commands that change something print nothing on success and take no --format;",
+     "the exit status is the result. MCP tools return structured results for writes."
+    ]
+   },
+   {
+    "title": "NOTE FIELDS",
+    "lines": [
+     "id, title, locked, tags, length (UTF-8 bytes), created, modified, pins, location",
+     "(notes, trash or archive), todos (open tasks), done (checked tasks), attachments.",
+     "`content` is only printed when named, and `all` does not include it: use `--fields all,content`."
+    ]
+   },
+   {
+    "title": "CONVENTIONS",
+    "lines": [
+     "Exit status: 0 success, 1 the operation failed, 64 the command line is wrong.",
+     "Errors: plain text on stderr; with --format json a JSON object on stdout. The status is the same.",
+     "Tags: #one, #several words#, #parent/child. The leading # is optional on input.",
+     "Timestamps: ISO 8601 in UTC (YYYY-MM-DDTHH:MM:SSZ).",
+     "Escapes: TSV cells and text options use \\n \\r \\t \\\\. Text read from stdin is taken literally.",
+     "--content: read from stdin when the option is absent.",
+     "Notes are selected by id or by --title (any case).",
+     "Locked notes never give up their text through the CLI."
+    ]
+   },
+   {
+    "title": "SECTION ADDRESSES",
+    "lines": [
+     "A section is a heading and everything below it. Its address is the heading line as written,",
+     "`#` marks included; case matters, spacing does not. Several heading lines joined by `\\n`",
+     "spell out a path from an outer heading to an inner one. A heading that occurs twice needs",
+     "its parents, or a last line holding a 1-based number that picks the Nth match. A last line",
+     "`preamble` means the text under a heading, before its first subheading. `theonotes outline`",
+     "lists every address of a note, and a wrong address is answered with candidates.",
+     "  \"## Usage\"                the one section with that heading",
+     "  \"# Guide\\n## Usage\"       `## Usage` below `# Guide`",
+     "  \"# Guide\\n## Usage\\n2\"    the second `## Usage` below `# Guide`",
+     "  \"## Usage\\npreamble\"      the text under `## Usage`, before its first subheading"
+    ]
+   },
+   {
+    "title": "MARKDOWN",
+    "lines": [
+     "Notes are Markdown with these extras: ==highlight== (==🔴text== and 🔵 🟢 🟡 🟣 for colours),",
+     "~underline~, ~~strikethrough~~, #tags, [[Note Title]] and [[Note Title|label]] links,",
+     "$inline$ and $$block$$ math, - [ ] and - [x] tasks, pipe tables (a pipe at both ends of every row),",
+     "callouts (> [!NOTE], also TIP, IMPORTANT, WARNING, CAUTION) and YAML front matter on the first line.",
+     "Switched off: setext headings, indented code blocks and lazy continuation. Long lines soft-wrap."
+    ]
+   }
+  ]
+ },
+ "globalOptions": [
+  {
+   "flag": "--data-dir <path>",
+   "text": "Use the library in <path> (also THEONOTES_DATA_DIR)."
+  }
+ ],
+ "commands": {
+  "list": {
+   "summary": "List notes, narrowed by location or one tag.",
+   "usage": "theonotes list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]",
+   "options": {
+    "--sort": "Sort keys, comma-separated, each optionally :asc or :desc. Keys: pinned, modified, created, title.",
+    "--limit": "@limit-notes",
+    "--offset": "Skip this many notes first.",
+    "--location": "Which notes: notes, trash, archive or all.",
+    "--tag": "Only notes with this tag or one of its nested children.",
+    "--count": "Print only how many notes match.",
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "No match: `[]` on stdout with --format json, otherwise `No notes found.` on stderr. The status is 0 either way.",
+      "For negation, several tags or dates use `search`."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes list",
+      "theonotes list --tag work",
+      "theonotes list --tag work --sort modified:asc --fields id,title,modified",
+      "theonotes list -n 20 --format json --fields all",
+      "theonotes list --count"
+     ]
+    }
+   ]
+  },
+  "search": {
+   "summary": "Find notes with the search query language.",
+   "usage": "theonotes search [<query-arg>] [--query <query>] [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--count] [--format <format>] [--fields <fields>]",
+   "arguments": {
+    "query-arg": "The query (see SEARCH SYNTAX). A query that starts with a dash goes through --query."
+   },
+   "options": {
+    "--query": "The query (see SEARCH SYNTAX). Use this form for queries that start with a dash.",
+    "--sort": "Sort keys, comma-separated, each optionally :asc or :desc. Keys: pinned, modified, created, title.",
+    "--limit": "@limit-notes",
+    "--offset": "Skip this many notes first.",
+    "--location": "Which notes: notes, trash, archive or all.",
+    "--count": "Print only how many notes match.",
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "SEARCH SYNTAX",
+     "lines": [
+      "words              all words must occur; `a or b` accepts either",
+      "\"a phrase\"         the exact phrase",
+      "-term              leave out notes that match the term or filter",
+      "#tag               the tag or its nested children; !#tag only that tag; #*/tag only nested children",
+      "@today @yesterday @last7days     modified then (any number of days for last)",
+      "@date(2026-10-26) @date(<2026-10-26) @date(>2026-10-26)     modified on, before, after",
+      "@ctoday @created7days @cdate(2026-10-26)     the same, by creation date",
+      "@todo @done @task  has open tasks / all tasks checked / has any task",
+      "@tagged @untagged  has at least one tag / has none",
+      "@title             words only match titles",
+      "@pinned            pinned in All Notes",
+      "@images @files @attachments @code     contains that kind of content",
+      "@locked @readonly @empty @untitled    note state",
+      "@wikilinks @backlinks     links to other notes / is linked from other notes",
+      "@ocr               also search text recognised in attachments",
+      "Filters combine: theonotes search \"@today @todo meeting\""
+     ]
+    },
+    {
+     "title": "RESULT",
+     "lines": [
+      "The `matches` field counts the text hits in each note; it is 0 for queries without words (such as @today).",
+      "No match: `[]` on stdout with --format json, otherwise `No notes found.` on stderr. The status is 0 either way."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes search \"meeting notes\"",
+      "theonotes search \"@today @todo\" --format json",
+      "theonotes search --query \"- [ ]\" --fields id,title,matches",
+      "theonotes search \"@todo\" --count"
+     ]
+    }
+   ]
+  },
+  "cat": {
+   "summary": "Print a note's text.",
+   "usage": "theonotes cat [<note-id>] [--title <title>] [--section <section>] [--offset <offset>] [--limit <limit>] [--format <format>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--section": "Print one section: a heading line such as `## Tasks`, or an address from `outline`. Excludes --offset and --limit. Interprets \\n, \\t, \\r, \\\\.",
+    "--offset": "Start at this UTF-8 byte offset.",
+    "--limit": "Upper bound on the UTF-8 bytes printed.",
+    "--format": "@format"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Plain output is the raw text with no escaping. --format csv: a `content` header and one quoted row.",
+      "--format json: `{\"content\":\"...\"}`. A whole-note read adds `\"hash\"`; a --section read adds `\"section\"`",
+      "(address, offset, length) and a `\"hash\"` of that section. `overwrite --base` takes such a hash,",
+      "and reading is the only way to get one. For metadata use `show`."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes cat <note-id>",
+      "theonotes cat --title \"Mars\"",
+      "theonotes cat <note-id> --section \"## Setup\"",
+      "theonotes cat <note-id> --offset 0 --limit 500"
+     ]
+    }
+   ]
+  },
+  "show": {
+   "summary": "Print a note's metadata as one row.",
+   "usage": "theonotes show [<note-id>] [--title <title>] [--format <format>] [--fields <fields>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "A locked note shows its metadata, but asking for its content is refused."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes show <note-id>",
+      "theonotes show --title \"Mars\" --format json --fields all",
+      "theonotes show <note-id> --fields all,content"
+     ]
+    }
+   ]
+  },
+  "outline": {
+   "summary": "Show a note's sections, each with its address.",
+   "usage": "theonotes outline [<note-id>] [--title <title>] [--section <section>] [--format <format>] [--fields <fields>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--section": "List only this section and the ones below it: a heading line, or an address from an earlier outline. Interprets \\n, \\t, \\r, \\\\.",
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "One row per heading and per section preamble, in document order. Every address can be passed to the",
+      "--section option of other commands; in TSV a multi-line address shows its line breaks as \\n."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes outline <note-id>",
+      "theonotes outline --title \"Cooking notes\"",
+      "theonotes outline <note-id> --section \"## Usage\"",
+      "theonotes outline <note-id> --format json"
+     ]
+    }
+   ]
+  },
+  "search-in": {
+   "summary": "Find a string inside one note.",
+   "usage": "theonotes search-in [<note-id>] [--title <title>] [--string <string>] [--context <context>] [--limit <limit>] [--section <section>] [--count] [--format <format>] [--fields <fields>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--string": "Text to look for, ignoring case. Interprets \\n, \\t, \\r, \\\\.",
+    "--context": "Characters of context around each match in its snippet.",
+    "--limit": "Return at most this many matches.",
+    "--section": "Search only inside this section (a heading line or an address). Each hit names its section either way. Interprets \\n, \\t, \\r, \\\\.",
+    "--count": "Print only how many matches there are.",
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Each hit has a snippet and its section (blank in a note without headings). `source` is `body` for text in the note",
+      "or `attachment` for text recognised in an image or PDF; then `offset` points at the attachment's link.",
+      "Snippets use \\n \\r \\t \\\\ escapes in TSV. No output with status 0 means no match."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes search-in <note-id> --string \"TODO\"",
+      "theonotes search-in --title \"Mars\" --string \"water\" --format json",
+      "theonotes search-in <note-id> --string \"TODO\" --count",
+      "theonotes search-in <note-id> --string \"TODO\" --section \"## Tasks\""
+     ]
+    }
+   ]
+  },
+  "create": {
+   "summary": "Create a note.",
+   "usage": "theonotes create [<title>] [--content <content>] [--tags <tags>] [--if-not-exists] [--template <template>] [--format <format>] [--fields <fields>]",
+   "arguments": {
+    "title": "Title, written as a `#` heading above the content (below any front matter). Skipped when the content already starts with it. Without a title the first content line serves as the title."
+   },
+   "options": {
+    "--content": "The note text; may open with YAML front matter. Read from stdin when absent. Interprets \\n, \\t, \\r, \\\\.",
+    "--tags": "Comma-separated tags to add. A leading # and whitespace are dropped; nested tags use slashes.",
+    "--if-not-exists": "If a note with this title exists, return it instead of creating one. Needs a title.",
+    "--template": {
+     "label": "--template <template>",
+     "text": "Create the note from a template: the title or id of a note tagged #template."
+    },
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "NOTES",
+     "lines": [
+      "--tags and #tags written in the content are independent and both apply. Prefer --tags: it puts them where",
+      "the tag-position setting says."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes create \"My Note\" --content \"Body text\"",
+      "theonotes create --content \"# Quick Capture\\nSome thoughts\"",
+      "theonotes create \"My Note\" --tags \"work,draft\" --format json",
+      "printf \"line1\\nline2\" | theonotes create \"My Note\" --fields id,length"
+     ]
+    }
+   ]
+  },
+  "append": {
+   "summary": "Add text to a note or to one of its sections.",
+   "usage": "theonotes append [<note-id>] [--title <title>] [--content <content>] [--position <position>] [--section <section>] [--no-update-modified]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--content": "Text to add. It always ends on a line of its own, so it cannot run into what follows. Read from stdin when absent. Interprets \\n, \\t, \\r, \\\\.",
+    "--position": "beginning or end. Whole note: beginning is below the title and any leading tags, end is above any trailing tags and footnote definitions. With --section: beginning is right under the heading, end after the last nested subsection.",
+    "--section": "Add to this section instead of the whole note (a heading line or an address from `outline`). Interprets \\n, \\t, \\r, \\\\.",
+    "--no-update-modified": "@nomod"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes append <note-id> --content \"New paragraph\"",
+      "printf \"New content\" | theonotes append <note-id>",
+      "theonotes append --title \"Mars\" --content \"Update\" --position beginning",
+      "theonotes append <note-id> --section \"## Tasks\" --content \"- [ ] New task\""
+     ]
+    }
+   ]
+  },
+  "edit": {
+   "summary": "Replace, insert or delete exact text in a note.",
+   "usage": "theonotes edit [<options>] [<note-id>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--section": "Confine every --find to this section (a heading line or an address from `outline`). A find may span a heading inside it but not leave it. Interprets \\n, \\t, \\r, \\\\.",
+    "--find": "Exact text to look for. Repeat it, each with its own action, for a batch. Interprets \\n, \\t, \\r, \\\\.",
+    "--replace": "Text that takes the place of the match. Interprets \\n, \\t, \\r, \\\\.",
+    "--insert-after": "Text inserted right after the match. Interprets \\n, \\t, \\r, \\\\.",
+    "--insert-before": "Text inserted right before the match. Interprets \\n, \\t, \\r, \\\\.",
+    "--delete": "Delete the match.",
+    "--all": "Act on every match, not only the first.",
+    "--ignore-case": "Match ignoring case.",
+    "--word": "Match whole words only (Unicode word boundaries).",
+    "--no-update-modified": "@nomod",
+    "--force": "@gate"
+   },
+   "blocks": [
+    {
+     "title": "BATCHES",
+     "lines": [
+      "Each --find takes the action that follows it on the command line (--replace, --insert-after,",
+      "--insert-before or --delete), so one call can mix actions. The batch is atomic: if one find fails,",
+      "nothing is written."
+     ]
+    },
+    {
+     "title": "ATTACHMENT GATE",
+     "lines": [
+      "A write that would drop attachments is refused unless you pass --force; the error lists the files.",
+      "Tag changes are not gated."
+     ]
+    },
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes edit <note-id> --find \"TODO\" --replace \"DONE\"",
+      "theonotes edit <note-id> --find \"## Notes\" --insert-after \"\\nNew line\"",
+      "theonotes edit <note-id> --find \"## Notes\" --insert-before \"Intro paragraph\\n\\n\"",
+      "theonotes edit <note-id> --find \"obsolete paragraph\\n\" --delete",
+      "theonotes edit <note-id> --find \"cat\" --replace \"dog\" --all --word",
+      "theonotes edit <note-id> --find \"alpha\" --replace \"BETA\" \\",
+      "                  --find \"draft note\\n\" --delete \\",
+      "                  --find \"## Notes\" --insert-before \"Intro\\n\\n\"",
+      "theonotes edit <note-id> --section \"## Tasks\" --find \"done\" --replace \"DONE\""
+     ]
+    }
+   ]
+  },
+  "overwrite": {
+   "summary": "Replace a note's text, or one section of it.",
+   "usage": "theonotes overwrite [<note-id>] [--title <title>] [--content <content>] [--base <base>] [--section <section>] [--no-update-modified] [--force]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--content": "The new text. Title and tags are derived from it (first heading, #hashtags), so include them. Links to existing attachments must stay or those attachments are dropped. Read from stdin when absent. Interprets \\n, \\t, \\r, \\\\.",
+    "--base": "Hash from an earlier read. The write is refused if the target changed since. Without it the write is unconditional. For a section write, the section's own hash or the hash of the whole note both work.",
+    "--section": "Replace this section (heading and all that is nested under it); a heading line or an address from `outline`. The content must start with a heading of the same level. Empty content deletes the section. Interprets \\n, \\t, \\r, \\\\.",
+    "--no-update-modified": "@nomod",
+    "--force": "@gate"
+   },
+   "blocks": [
+    {
+     "title": "NOTES",
+     "lines": [
+      "The text replaces the whole note, so title and tags must be part of it. For a section, the heading line is replaced",
+      "too; to replace only the text under it, address `## Heading\\npreamble`. A whole-note hash comes from",
+      "`theonotes cat --format json`, a section hash from `theonotes cat --section <address> --format json`.",
+      "The line break before the next heading is kept, so the content need not end in one.",
+      "A write that would drop attachments is refused unless you pass --force; tag changes are not gated."
+     ]
+    },
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes overwrite <note-id> --base abc1234 --content \"# Title\\nBody\"",
+      "printf \"# Title\\nBody\" | theonotes overwrite <note-id> --base abc1234",
+      "theonotes overwrite <note-id> --content \"# Title\\nBody\"",
+      "theonotes overwrite <note-id> --content \"# Title only\" --force",
+      "theonotes overwrite <note-id> --section \"## Tasks\" --base def5678 \\",
+      "                    --content \"## Tasks\\nRewritten body\""
+     ]
+    }
+   ]
+  },
+  "tags": {
+   "summary": "Work with tags.",
+   "usage": "theonotes tags <subcommand>",
+   "subcommands": [
+    [
+     "list",
+     "List tags, library-wide or of one note."
+    ],
+    [
+     "add",
+     "Attach tags to a note."
+    ],
+    [
+     "remove",
+     "Detach tags from a note."
+    ],
+    [
+     "rename",
+     "Rename a tag across all notes."
+    ],
+    [
+     "delete",
+     "Delete a tag from every note."
+    ]
+   ]
+  },
+  "tags list": {
+   "summary": "List tags, library-wide or of one note.",
+   "usage": "theonotes tags list [<note-id>] [--title <title>] [--count] [--format <format>] [--fields <fields>]",
+   "arguments": {
+    "note-id": "@note-id-optional"
+   },
+   "options": {
+    "--title": "@title-optional",
+    "--count": "Print only how many tags there are.",
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Sorted alphabetically, e.g. `#several words#` and `#parent/child`."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes tags list",
+      "theonotes tags list <note-id>",
+      "theonotes tags list --title \"Mars\" --format json",
+      "theonotes tags list --count"
+     ]
+    }
+   ]
+  },
+  "tags add": {
+   "summary": "Attach tags to a note.",
+   "usage": "theonotes tags add [<note-id>] [<tags> ...] [--title <title>]",
+   "arguments": {
+    "note-id": "Id of the note, then the tags to add.",
+    "tags": "Tags to add. A leading # and whitespace are dropped; nested tags use slashes; names may contain spaces. Tags already present are skipped."
+   },
+   "options": {
+    "--title": "@title"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr.",
+      "Tags go where the tag-position setting says (bottom by default). The modification date is not changed."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes tags add <note-id> work \"work/meetings\"",
+      "theonotes tags add --title \"Mars\" favorite"
+     ]
+    }
+   ]
+  },
+  "tags remove": {
+   "summary": "Detach tags from a note.",
+   "usage": "theonotes tags remove [<note-id>] [<tags> ...] [--title <title>]",
+   "arguments": {
+    "note-id": "Id of the note, then the tags to remove.",
+    "tags": "Tags to remove. A leading # and whitespace are dropped. Tags the note does not have are skipped."
+   },
+   "options": {
+    "--title": "@title"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr.",
+      "The modification date is not changed."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes tags remove <note-id> draft wip",
+      "theonotes tags remove --title \"Mars\" draft"
+     ]
+    }
+   ]
+  },
+  "tags rename": {
+   "summary": "Rename a tag across all notes.",
+   "usage": "theonotes tags rename [<old>] [--from <from>] [<new>] [--to <to>] [--force]",
+   "arguments": {
+    "old": "Tag to rename. A leading # and whitespace are dropped.",
+    "new": "The new name. A leading # and whitespace are dropped."
+   },
+   "options": {
+    "--from": "Same as the <old> argument.",
+    "--to": "Same as the <new> argument.",
+    "--force": "Merge when the new name already exists. Without it such a rename is refused, because a merge cannot be undone."
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr.",
+      "Nested children follow the rename. A tag that does not exist is a no-op. Refused when the new name exists",
+      "(unless --force) and when any affected note is locked. Modification dates are not changed."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes tags rename work job",
+      "theonotes tags rename --from draft --to published",
+      "theonotes tags rename old-tag existing-tag --force"
+     ]
+    }
+   ]
+  },
+  "tags delete": {
+   "summary": "Delete a tag from every note.",
+   "usage": "theonotes tags delete [<tag>] [--name <name>]",
+   "arguments": {
+    "tag": "Tag to delete. A leading # and whitespace are dropped."
+   },
+   "options": {
+    "--name": "Same as the <tag> argument."
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr.",
+      "Nested children are deleted with it. A tag that does not exist is a no-op. Refused when any affected note is",
+      "locked. Modification dates are not changed."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes tags delete draft",
+      "theonotes tags delete --name \"work/old\""
+     ]
+    }
+   ]
+  },
+  "attachments": {
+   "summary": "Work with a note's attachments.",
+   "usage": "theonotes attachments <subcommand>",
+   "subcommands": [
+    [
+     "list",
+     "List a note's attachments."
+    ],
+    [
+     "add",
+     "Attach bytes read from stdin; a link is appended to the note."
+    ],
+    [
+     "add-url",
+     "Attach a file downloaded from an https URL; a link is appended."
+    ],
+    [
+     "delete",
+     "Delete an attachment and its link."
+    ],
+    [
+     "save",
+     "Write an attachment's bytes to stdout."
+    ]
+   ]
+  },
+  "attachments list": {
+   "summary": "List a note's attachments.",
+   "usage": "theonotes attachments list [<note-id>] [--title <title>] [--format <format>] [--fields <fields>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "`size` is in bytes. No output means the note has no attachments."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes attachments list <note-id>",
+      "theonotes attachments list --title \"Mars\" --format json"
+     ]
+    }
+   ]
+  },
+  "attachments add": {
+   "summary": "Attach bytes read from stdin; a link is appended to the note.",
+   "usage": "theonotes attachments add [<note-id>] [--title <title>] [--filename <filename>] [--no-update-modified]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--filename": "Name for the attachment (required).",
+    "--no-update-modified": "@nomod"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "A Markdown link to the file is appended to the note. If the name is taken, a numbered variant is used",
+      "(`photo.jpg` becomes `photo 2.jpg`) and the link follows it.",
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "cat photo.jpg | theonotes attachments add <note-id> --filename photo.jpg",
+      "theonotes attachments add <note-id> --filename photo.jpg < photo.jpg"
+     ]
+    }
+   ]
+  },
+  "attachments add-url": {
+   "summary": "Attach a file downloaded from an https URL; a link is appended.",
+   "usage": "theonotes attachments add-url [<note-id>] [--title <title>] [--url <url>] [--filename <filename>] [--no-update-modified]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--url": "The https URL to download (required).",
+    "--filename": "Name for the attachment. Defaults to the last path segment of the URL.",
+    "--no-update-modified": "@nomod"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "The scheme must be https://; http://, file:// and data: are refused. A Markdown link to the file is appended;",
+      "if the name is taken, a numbered variant is used (`photo 2.jpg`) and the link follows it.",
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes attachments add-url <note-id> --url https://example.com/photo.jpg",
+      "theonotes attachments add-url <note-id> --url https://example.com/raw --filename photo.jpg"
+     ]
+    }
+   ]
+  },
+  "attachments delete": {
+   "summary": "Delete an attachment and its link.",
+   "usage": "theonotes attachments delete [<note-id>] [--title <title>] [--filename <filename>] [--no-update-modified]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--filename": "Name of the attachment file to delete (required).",
+    "--no-update-modified": "@nomod"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "The file is deleted and its link is removed from the note text; no follow-up edit is needed.",
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes attachments delete <note-id> --filename photo.jpg"
+     ]
+    }
+   ]
+  },
+  "attachments save": {
+   "summary": "Write an attachment's bytes to stdout.",
+   "usage": "theonotes attachments save [<note-id>] [--title <title>] [--filename <filename>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--filename": "Name of the attachment file to write out (required)."
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Raw bytes on stdout. Refused when stdout is a terminal, so redirect it. To get text, pipe through base64."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes attachments save <note-id> --filename photo.jpg > photo.jpg"
+     ]
+    }
+   ]
+  },
+  "pin": {
+   "summary": "Work with pins.",
+   "usage": "theonotes pin <subcommand>",
+   "subcommands": [
+    [
+     "list",
+     "Show where one note is pinned, or every pin context currently in use."
+    ],
+    [
+     "add",
+     "Pin a note in All Notes and/or within tags."
+    ],
+    [
+     "remove",
+     "Unpin a note from All Notes and/or tags."
+    ]
+   ]
+  },
+  "pin list": {
+   "summary": "Show where one note is pinned, or every pin context currently in use.",
+   "usage": "theonotes pin list [<note-id>] [--title <title>] [--format <format>] [--fields <fields>]",
+   "arguments": {
+    "note-id": "@note-id-optional"
+   },
+   "options": {
+    "--title": "@title-optional",
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "`global` is the All Notes pin; `#tag` entries are pins within that tag. With a note: where it is pinned, and",
+      "no output means it is not pinned. Without a note: every context in use, and no output means nothing is pinned."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes pin list",
+      "theonotes pin list <note-id>",
+      "theonotes pin list --title \"Mars\" --format json"
+     ]
+    }
+   ]
+  },
+  "pin add": {
+   "summary": "Pin a note in All Notes and/or within tags.",
+   "usage": "theonotes pin add [<note-id>] [<targets> ...] [--title <title>]",
+   "arguments": {
+    "note-id": "Id of the note, then the pin targets.",
+    "targets": "Use `global` for the All Notes pin, tag names for tag pins, or both (a leading # and whitespace are ignored). Every tag has to exist, or no pin is added."
+   },
+   "options": {
+    "--title": "@title"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr.",
+      "Pins that already exist are skipped."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes pin add <note-id> global",
+      "theonotes pin add <note-id> work projects",
+      "theonotes pin add --title \"Mars\" global work"
+     ]
+    }
+   ]
+  },
+  "pin remove": {
+   "summary": "Unpin a note from All Notes and/or tags.",
+   "usage": "theonotes pin remove [<note-id>] [<targets> ...] [--title <title>]",
+   "arguments": {
+    "note-id": "Id of the note, then the pin targets.",
+    "targets": "`global` and/or tag names to unpin from (a leading # and whitespace are dropped). All tags must exist, otherwise nothing is removed."
+   },
+   "options": {
+    "--title": "@title"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes pin remove <note-id> global",
+      "theonotes pin remove <note-id> work",
+      "theonotes pin remove --title \"Mars\" global work"
+     ]
+    }
+   ]
+  },
+  "trash": {
+   "summary": "Send a note to the trash.",
+   "usage": "theonotes trash [<note-id>] [--title <title>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr.",
+      "The note stays recoverable: `theonotes restore` brings it back."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes trash <note-id>",
+      "theonotes trash --title \"Old Note\""
+     ]
+    }
+   ]
+  },
+  "archive": {
+   "summary": "Send a note to the archive.",
+   "usage": "theonotes archive [<note-id>] [--title <title>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr.",
+      "The note leaves the active list but is kept; `theonotes restore` moves it back."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes archive <note-id>",
+      "theonotes archive --title \"Finished Project\""
+     ]
+    }
+   ]
+  },
+  "restore": {
+   "summary": "Bring a note back from the trash or archive.",
+   "usage": "theonotes restore [<note-id>] [--title <title>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr.",
+      "A note that is already in the active list is left alone."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes restore <note-id>",
+      "theonotes restore --title \"Recovered Draft\""
+     ]
+    }
+   ]
+  },
+  "app": {
+   "summary": "Talk to the running app.",
+   "usage": "theonotes app <subcommand>",
+   "subcommands": [
+    [
+     "open",
+     "Show a note in the app."
+    ],
+    [
+     "get-selection",
+     "Print what is selected in the note open in the app."
+    ]
+   ]
+  },
+  "app open": {
+   "summary": "Show a note in the app.",
+   "usage": "theonotes app open [<note-id>] [--title <title>] [--header <header>] [--edit] [--new-window] [--float] [--selection-text <selection-text>] [--selection-offset <selection-offset>] [--selection-length <selection-length>]",
+   "arguments": {
+    "note-id": "@note-id"
+   },
+   "options": {
+    "--title": "@title",
+    "--header": "Heading inside the note to scroll to.",
+    "--edit": "Put the caret in the editor. Ignored when a selection is set.",
+    "--new-window": "Open the note in its own window.",
+    "--float": "Show the note in a floating panel that stays above other windows.",
+    "--selection-text": "Text to select once the note is open. Case-sensitive; it must occur exactly once. Excludes --selection-offset.",
+    "--selection-offset": "UTF-8 byte offset where the selection starts. Excludes --selection-text.",
+    "--selection-length": "Selection length in UTF-8 bytes; 0 or absent gives a caret. Used only with --selection-offset."
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Prints nothing on success; the exit status tells the result. Failures go to stderr.",
+      "The app is brought to the front with the note open."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes app open <note-id>",
+      "theonotes app open --title \"Mars\" --header \"Moons\" --edit",
+      "theonotes app open --title \"Mars\" --selection-text \"Phobos\"",
+      "theonotes app open <note-id> --new-window"
+     ]
+    }
+   ]
+  },
+  "app get-selection": {
+   "summary": "Print what is selected in the note open in the app.",
+   "usage": "theonotes app get-selection [--format <format>] [--fields <fields>]",
+   "options": {
+    "--format": "@format",
+    "--fields": "@fields"
+   },
+   "blocks": [
+    {
+     "title": "RESULT",
+     "lines": [
+      "Both selection values count UTF-8 bytes; a caret is a selection of length 0. Empty output (TSV, CSV) or `{}`",
+      "(JSON) with status 0 means no note is open. A locked note reports its metadata but no selection or content."
+     ]
+    },
+    {
+     "title": "EXAMPLES",
+     "lines": [
+      "theonotes app get-selection",
+      "theonotes app get-selection --fields selectionOffset,selectionLength,selectionText",
+      "theonotes app get-selection --format json --fields all,content"
+     ]
+    }
+   ]
+  },
+  "mcp-server": {
+   "summary": "Serve the library to MCP clients over stdio.",
+   "usage": "theonotes mcp-server [--only-tags <only-tags>] [--exclude-tags <exclude-tags>]",
+   "options": {
+    "--only-tags": "Comma-separated tags. Serve only notes with one of these tags or a nested child.",
+    "--exclude-tags": "Comma-separated tags. Hide notes with one of these tags or a nested child. Wins over --only-tags."
+   },
+   "blocks": [
+    {
+     "title": "SETUP",
+     "lines": [
+      "Point an MCP client at `theonotes mcp-server`. It speaks JSON-RPC 2.0, one JSON message per line on stdin and stdout.",
+      "The tools cover the same operations as the CLI, with deliberate differences: overwrite_note requires `baseHash`,",
+      "attachment removals are declared with `expectedRemovedAttachments` (the CLI has --force), and only the CLI has",
+      "--no-update-modified. Every tool carries readOnlyHint and destructiveHint annotations, so a client can ask the user",
+      "before a destructive call."
+     ]
+    },
+    {
+     "title": "SCOPES",
+     "lines": [
+      "--only-tags and --exclude-tags (or the variables below) confine the server to the notes those tags select.",
+      "Lists and searches show in-scope notes only, and a call that names a note outside the scope fails with `out_of_scope`.",
+      "With exactly one --only-tags value, create_note adds that tag itself; with several, the call must name one of them.",
+      "rename_tag and delete_tag refuse tags that define the scope. Use one server entry per scope in the client's config."
+     ]
+    },
+    {
+     "title": "ADDITIONS",
+     "lines": [
+      "create_note_from_template   An extra tool: creates a note from a template (the title or id of a note tagged #template).",
+      "capture_thought   An extra tool: saves the given text as a new note, unchanged.",
+      "THEONOTES_MCP_ONLY_TAGS     Same as --only-tags when the flag is absent.",
+      "THEONOTES_MCP_EXCLUDE_TAGS  Same as --exclude-tags when the flag is absent."
+     ]
+    },
+    {
+     "title": "PRIVACY",
+     "lines": [
+      "The server reads and writes the local library in place. It sends nothing over the network, except that",
+      "add_attachment_from_url downloads the URL it is given. There is no telemetry."
+     ]
+    }
+   ]
+  }
+ }
+}

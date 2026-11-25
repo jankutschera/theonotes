@@ -1,0 +1,16 @@
+{
+  "accountId": "account-fixture-001",
+  "mutation": {
+    "mutationId": "mutation-fixture-001",
+    "entityType": "note",
+    "entityId": "note-fixture-001",
+    "parentRevision": 7,
+    "tombstone": false,
+    "payloadFormat": 1,
+    "ciphertext": "YWJj",
+    "payloadRef": null,
+    "blobRefs": []
+  },
+  "canonicalMutation": "[1,\"mutation-fixture-001\",\"note\",\"note-fixture-001\",7,false,1,\"YWJj\",null,[]]",
+  "cipherContext": "baerchen-sync:1:account-fixture-001:note:note-fixture-001:1"
+}

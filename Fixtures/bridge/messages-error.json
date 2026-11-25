@@ -1,0 +1,5 @@
+{
+  "type": "error",
+  "message": "Applying change set to a document with the wrong length",
+  "stack": "RangeError: Applying change set to a document with the wrong length\n    at ChangeSet.apply"
+}

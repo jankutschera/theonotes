@@ -1,0 +1,218 @@
+[
+  {
+    "name": "empty",
+    "input": "",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": true
+    }
+  },
+  {
+    "name": "text",
+    "input": "Text",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "code block",
+    "input": "```\ncode\n```",
+    "expected": {
+      "hasCode": true,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "inline code",
+    "input": "Use `x`",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": true,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "tag only is not empty",
+    "input": "#tag",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "attachment only is not empty",
+    "input": "![](a.jpg)",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "blank lines",
+    "input": "\n\n  \n",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": true
+    }
+  },
+  {
+    "name": "tilde code block",
+    "input": "~~~python\nprint()\n~~~",
+    "expected": {
+      "hasCode": true,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "front matter only",
+    "input": "---\ntags: [a]\n---\n",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": true
+    }
+  },
+  {
+    "name": "comment only is not empty",
+    "input": "<!-- only comment -->",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "unclosed empty fence",
+    "input": "```",
+    "expected": {
+      "hasCode": true,
+      "hasInlineCode": false,
+      "isEmpty": true
+    }
+  },
+  {
+    "name": "unclosed backtick",
+    "input": "`unclosed code",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "tags on two lines are not empty",
+    "input": "#a #b\n#c",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "code and inline code",
+    "input": "Title\n```swift\nlet x = 1\n```\nand `y`",
+    "expected": {
+      "hasCode": true,
+      "hasInlineCode": true,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "double backtick span",
+    "input": "``double `tick` span``",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": true,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "escaped backticks",
+    "input": "\\`not code\\`",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "math block content",
+    "input": "$$\nx^2\n$$",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "backticks inside fence",
+    "input": "```\n`inline in fence`\n```",
+    "expected": {
+      "hasCode": true,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "CRLF fence",
+    "input": "```\r\ncode\r\n```\r\n",
+    "expected": {
+      "hasCode": true,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "horizontal rule only",
+    "input": "---",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": true
+    }
+  },
+  {
+    "name": "fence in list item",
+    "input": "- ```\n  x\n  ```",
+    "expected": {
+      "hasCode": true,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "whitespace around tag is not empty",
+    "input": "   #tag   ",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": false
+    }
+  },
+  {
+    "name": "untitled with tag body is empty",
+    "input": "# \n#tag",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": true
+    }
+  },
+  {
+    "name": "empty todo is empty",
+    "input": "- [ ] ",
+    "expected": {
+      "hasCode": false,
+      "hasInlineCode": false,
+      "isEmpty": true
+    }
+  }
+]

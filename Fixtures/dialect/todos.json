@@ -1,0 +1,226 @@
+[
+  {
+    "name": "dash open",
+    "input": "- [ ] a",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "star open",
+    "input": "* [ ] a",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "plus open",
+    "input": "+ [ ] a",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "lowercase done",
+    "input": "- [x] a",
+    "expected": {
+      "open": 0,
+      "done": 1
+    }
+  },
+  {
+    "name": "uppercase done",
+    "input": "- [X] a",
+    "expected": {
+      "open": 0,
+      "done": 1
+    }
+  },
+  {
+    "name": "indented with spaces and tab",
+    "input": "  - [ ] indented\n\t- [x] tab",
+    "expected": {
+      "open": 1,
+      "done": 1
+    }
+  },
+  {
+    "name": "todo in code fence ignored",
+    "input": "```\n- [ ] in code\n```\n- [ ] out",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "no space after bullet",
+    "input": "-[ ] no space",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "empty brackets",
+    "input": "- [] empty brackets",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "box at end of line",
+    "input": "- [ ]",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "box glued to text",
+    "input": "- [ ]no space after",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "ordered list box is not a todo",
+    "input": "1. [ ] ordered",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "todo in quote",
+    "input": "> - [ ] in quote",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "box mid-line",
+    "input": "text - [ ] not at start",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "CRLF todos",
+    "input": "- [ ] a\r\n- [x] b\r\n",
+    "expected": {
+      "open": 1,
+      "done": 1
+    }
+  },
+  {
+    "name": "front matter ignored",
+    "input": "---\n- [ ] yaml\n---\n- [ ] real",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "tilde fence",
+    "input": "~~~\n- [ ] tilde fence\n~~~",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "other box letter",
+    "input": "- [y] other",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "todo in html comment",
+    "input": "<!--\n- [ ] hidden\n-->",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "todo in math block",
+    "input": "$$\n- [ ] math\n$$",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "mixed list",
+    "input": "# Shopping\n- [ ] milk\n- [x] eggs\n- [ ] bread\n    * [X] nested",
+    "expected": {
+      "open": 2,
+      "done": 2
+    }
+  },
+  {
+    "name": "shorter fence does not close longer",
+    "input": "````\n```\n- [ ] still code\n````\n- [ ] out",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "todo inside list fence",
+    "input": "- ```\n  - [ ] in code\n  ```\n- [ ] out",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "todo inside quote fence",
+    "input": "> ```\n> - [ ] in code\n> ```\n> - [ ] out",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "task item opening a fence",
+    "input": "- [ ] ```\n  code\n  ```",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "trailing spaces after box",
+    "input": "- [ ]   ",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  },
+  {
+    "name": "task box inside a cell (Bear oracle)",
+    "input": "| - [ ] t | y |\n|---|---|",
+    "expected": {
+      "open": 0,
+      "done": 0
+    }
+  },
+  {
+    "name": "task item whose text is a pipe row",
+    "input": "- [ ] | a |\n|---|",
+    "expected": {
+      "open": 1,
+      "done": 0
+    }
+  }
+]

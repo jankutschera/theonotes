@@ -1,0 +1,102 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
+#
+# First pass over pull requests from outside authors. Reads only the event and the GitHub API:
+# nothing from the pull request is checked out or run, so pull_request_target is safe here.
+# Labels: blank-template, missing-evidence, too-many-prs, spam. A pull request that passes is
+# handed to the AI review (ai-review.yml) with a repository_dispatch event.
+name: Triage
+
+on:
+  pull_request_target:
+    types: [opened, reopened, edited, synchronize]
+
+permissions:
+  contents: write # repository_dispatch for the AI review
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: triage-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    if: >
+      !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.pull_request.author_association) &&
+      github.event.pull_request.user.type != 'Bot'
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const { owner, repo } = context.repo;
+            const MAX_OPEN = 5;
+            const OURS = ['blank-template', 'missing-evidence', 'too-many-prs', 'spam'];
+
+            // Sections of .github/pull_request_template.md that must hold the author's own words.
+            const REQUIRED = ['What problem does this solve?', 'User impact', 'Why this way', 'Evidence'];
+            const body = (pr.body || '').replace(/<!--[\s\S]*?-->/g, '');
+            const sections = {};
+            let current = null;
+            for (const line of body.split('\n')) {
+              const heading = line.match(/^##\s+(.*?)\s*$/);
+              if (heading) { current = heading[1]; sections[current] = ''; continue; }
+              if (current) sections[current] += line + '\n';
+            }
+            const ownWords = (text) => (text || '')
+              .split('\n')
+              .filter((l) => !/^\s*-\s*\[[ xX]\]/.test(l) && !/^\s*Closes\s*#\s*$/i.test(l) && !/^\s*-\s*[^:]+:\s*$/.test(l))
+              .join(' ').replace(/\s+/g, ' ').trim();
+            const present = REQUIRED.filter((h) => h in sections);
+            const filled = REQUIRED.filter((h) => ownWords(sections[h]).length >= 15);
+
+            const want = new Set();
+            if (body.trim().length === 0 || present.length === 0) want.add('blank-template');
+            else if (filled.length < REQUIRED.length) want.add('missing-evidence');
+
+            const open = await github.paginate(github.rest.pulls.list, { owner, repo, state: 'open', per_page: 100 });
+            const mine = open.filter((p) => p.user && p.user.login === pr.user.login).length;
+            if (mine > MAX_OPEN) want.add('too-many-prs');
+
+            // Obvious spam: no template at all, only Markdown files touched, and new external links.
+            const files = await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: pr.number, per_page: 100 });
+            const onlyDocs = files.length > 0 && files.every((f) => /\.md$/i.test(f.filename));
+            const addedLinks = files.some((f) => (f.patch || '').split('\n')
+              .some((l) => l.startsWith('+') && /https?:\/\/(?!github\.com\/|theonotes\.app\b)/i.test(l)));
+            const spam = want.has('blank-template') && onlyDocs && addedLinks;
+            if (spam) want.add('spam');
+
+            const have = new Set(pr.labels.map((l) => l.name));
+            for (const name of OURS) {
+              if (have.has(name) && !want.has(name)) {
+                await github.rest.issues.removeLabel({ owner, repo, issue_number: pr.number, name }).catch(() => {});
+              }
+            }
+            const add = [...want].filter((n) => !have.has(n));
+            if (add.length) await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: add });
+
+            const notes = {
+              'blank-template': 'Please fill in the pull request template (problem, user impact, why this way, evidence). It is how a single maintainer can review in reasonable time.',
+              'missing-evidence': `Some template sections are still empty: ${REQUIRED.filter((h) => !filled.includes(h)).join(', ')}. Please say what you checked and what you did not.`,
+              'too-many-prs': `You have more than ${MAX_OPEN} open pull requests. Please let some of them land or close them before opening more.`,
+            };
+            const fresh = add.filter((n) => n in notes);
+            if (fresh.length && !spam) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: pr.number,
+                body: fresh.map((n) => `- ${notes[n]}`).join('\n') + '\n\nSee CONTRIBUTING.md. This comment is automatic.' });
+            }
+
+            if (spam) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: pr.number,
+                body: 'Closed automatically: no description and only new external links in Markdown files. If this is a real contribution, please reopen it with the template filled in.' });
+              await github.rest.pulls.update({ owner, repo, pull_number: pr.number, state: 'closed' });
+              return;
+            }
+
+            // Ready for a first automated review once the template is complete (once per head commit).
+            if (want.size === 0 && ['opened', 'reopened', 'synchronize', 'edited'].includes(context.payload.action)) {
+              await github.rest.repos.createDispatchEvent({ owner, repo, event_type: 'ai-review',
+                client_payload: { pr: pr.number, head_sha: pr.head.sha } });
+            }

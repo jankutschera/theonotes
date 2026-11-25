@@ -1,0 +1,61 @@
+name: Bug report
+description: Something in Theo Notes does not work as it should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Security problems go to SECURITY.md, never here. Please use a test note, not your private notes, in examples and screenshots.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Create a note with …
+        2. Press …
+        3. See …
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Mac
+        - iPhone
+        - iPad
+        - Apple Watch
+        - theonotes command line / MCP
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: macOS / iOS / iPadOS / watchOS version
+      placeholder: "macOS 26.2"
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: Theo Notes version
+      description: About Theo Notes (Mac) or Settings (iPhone, iPad).
+      placeholder: "1.1.1 (7)"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      placeholder: "MacBook Air M3, iPhone 16"
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots, logs, anything else

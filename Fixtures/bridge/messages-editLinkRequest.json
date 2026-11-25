@@ -1,0 +1,11 @@
+{
+  "type": "editLinkRequest",
+  "noteId": "0192f3a4-5b6c-7d8e-9f01-23456789abcd",
+  "requestId": "link-7k2-3",
+  "from": 4,
+  "to": 9,
+  "title": "hello",
+  "url": "https://example.com",
+  "editing": true,
+  "caretRect": { "x": 120.5, "y": 48, "width": 1, "height": 18 }
+}

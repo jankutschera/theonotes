@@ -1,0 +1,152 @@
+[
+  {
+    "name": "second line",
+    "input": "Title\nSecond line",
+    "expected": "Second line"
+  },
+  {
+    "name": "lines joined with spaces",
+    "input": "Title\n\nPara one\nPara two",
+    "expected": "Para one Para two"
+  },
+  {
+    "name": "tags removed",
+    "input": "Title\n#tag only line\nText #inline here",
+    "expected": "only line Text here"
+  },
+  {
+    "name": "no body",
+    "input": "Title",
+    "expected": ""
+  },
+  {
+    "name": "inline markup stripped",
+    "input": "Title\n**bold** _it_ ==hl== ~~st~~",
+    "expected": "bold it hl st"
+  },
+  {
+    "name": "todo markers stripped",
+    "input": "Title\n- [ ] todo item\n- [x] done item",
+    "expected": "todo item done item"
+  },
+  {
+    "name": "code block content kept",
+    "input": "Title\n```\ncode line\n```\nafter",
+    "expected": "code line after"
+  },
+  {
+    "name": "links and wiki links",
+    "input": "Title\n[link](https://x.y) and [[Note|alias]]",
+    "expected": "link and alias"
+  },
+  {
+    "name": "attachment removed",
+    "input": "Title\n![](photo%202.jpg)\nText",
+    "expected": "Text"
+  },
+  {
+    "name": "whitespace collapsed",
+    "input": "Title\n   lots    of     space   ",
+    "expected": "lots of space"
+  },
+  {
+    "name": "truncated at 300",
+    "input": "Title\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "expected": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  {
+    "name": "truncation trims trailing space",
+    "input": "Title\nword word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word ",
+    "expected": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word"
+  },
+  {
+    "name": "tag first line then text",
+    "input": "#tag\nTitle\nsub",
+    "expected": "Title sub"
+  },
+  {
+    "name": "front matter",
+    "input": "---\na: b\n---\nTitle\nSub text",
+    "expected": "Sub text"
+  },
+  {
+    "name": "CRLF",
+    "input": "Title\r\nLine A\r\nLine B",
+    "expected": "Line A Line B"
+  },
+  {
+    "name": "heading with tag",
+    "input": "Title\n## Section #work\nBody",
+    "expected": "Section Body"
+  },
+  {
+    "name": "quote and callout",
+    "input": "Title\n> quoted\n> [!NOTE] Callout title",
+    "expected": "quoted Callout title"
+  },
+  {
+    "name": "table",
+    "input": "Title\n| a | b |\n|---|---|\n| 1 | 2 |",
+    "expected": "a b 1 2"
+  },
+  {
+    "name": "metadata comment",
+    "input": "Title\n<!-- {\"embed\":\"true\"} -->\nshown",
+    "expected": "shown"
+  },
+  {
+    "name": "horizontal rule",
+    "input": "Title\n---\nafter rule",
+    "expected": "after rule"
+  },
+  {
+    "name": "emoji and CJK",
+    "input": "Title\n👩‍👩‍👧 family 漢字",
+    "expected": "👩‍👩‍👧 family 漢字"
+  },
+  {
+    "name": "ordered list",
+    "input": "Title\n1. first\n2. second",
+    "expected": "first second"
+  },
+  {
+    "name": "file attachment removed",
+    "input": "Title\n[doc.pdf](doc.pdf)<!-- {\"embed\":\"true\"} -->\nnext",
+    "expected": "next"
+  },
+  {
+    "name": "multi-word tag removed",
+    "input": "Title\nsee #my tag# here",
+    "expected": "see here"
+  },
+  {
+    "name": "blank first line",
+    "input": "\nFirst text\nSecond",
+    "expected": "First text Second"
+  },
+  {
+    "name": "untitled heading then tag line",
+    "input": "# \n#tag",
+    "expected": ""
+  },
+  {
+    "name": "preview starts after title line",
+    "input": "First\nSecond\nThird",
+    "expected": "Second Third"
+  },
+  {
+    "name": "table row with a pipe at one end only is prose",
+    "input": "Title\n| a | b\nnext",
+    "expected": "| a | b next"
+  },
+  {
+    "name": "an unclosed highlight keeps its color emoji",
+    "input": "Title\n==🔴 never closed",
+    "expected": "==🔴 never closed"
+  },
+  {
+    "name": "a closed highlight drops its color emoji",
+    "input": "Title\n==🔴red== text",
+    "expected": "red text"
+  }
+]

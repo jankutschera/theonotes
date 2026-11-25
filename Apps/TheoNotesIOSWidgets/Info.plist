@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+    <key>CFBundleDisplayName</key><string>$(THEONOTES_DISPLAY_NAME)</string>
+    <key>CFBundleVersion</key><string>$(CURRENT_PROJECT_VERSION)</string>
+    <key>CFBundleShortVersionString</key><string>$(MARKETING_VERSION)</string>
+    <key>THEONOTES_AppGroupIdentifier</key><string>$(THEONOTES_IOS_APP_GROUP)</string>
+    <key>THEONOTES_URLScheme</key><string>$(THEONOTES_URL_SCHEME)</string>
+    <key>NSExtension</key><dict><key>NSExtensionPointIdentifier</key><string>com.apple.widgetkit-extension</string></dict>
+</dict></plist>

@@ -1,0 +1,8 @@
+{
+  "type": "frozenForClose",
+  "requestId": "f7a1c2d3-0000-4000-8000-000000000002",
+  "noteId": "0192f3a4-5b6c-7d8e-9f01-23456789abcd",
+  "ok": false,
+  "editedSinceLoad": true,
+  "reason": "timeout"
+}

@@ -1,0 +1,498 @@
+name: TheoNotes
+options:
+  bundleIdPrefix: com.truebrewbirdie
+  deploymentTarget:
+    macOS: "26.0"
+    iOS: "26.0"
+    watchOS: "26.0"
+# FOC-R360: two identities. `Debug` (what tests, agents and GUI checks build) is the DEV identity:
+# bundle id com.truebrewbirdie.theonotes.dev, "Theo Notes Dev", its own App Group, URL schemes and
+# library. `Production` (what scripts/install-dev.sh installs) and `Release` are the PRODUCTION identity,
+# the identity of the installed app (new ids since the B7 cutover, REN2-R57). Production is a debug-type configuration, so the
+# installed build is the same kind of build as before. Pinned by scripts/check-identities.sh.
+configs:
+  Debug: debug
+  Production: debug
+  Release: release
+# REL-R20: the Apple team is ONE setting, THEONOTES_TEAM_ID, defined in config/release.env and applied to every
+# configuration here. DEVELOPMENT_TEAM, the App Groups, the keychain access group ($(AppIdentifierPrefix)) and
+# the Info.plist key THEONOTES_TeamID (read by AppIdentity.teamPrefix) all follow it. Do not write the team id
+# anywhere else; scripts/check-identities.sh fails if a place does not follow.
+# REN2-R46: config/build.xcconfig includes release.env (team, notary) and identity.env (THEONOTES_BUNDLE_ROOT, the
+# root of every bundle id, exported type id and URL type). The Swift copy is LegacyNames.bundleRoot; the check
+# scripts/check-identities.sh and IdentityPinsTests fail when they differ. The iOS app id is `$(THEONOTES_BUNDLE_ROOT).ios` too
+# (REN2-R64); the iOS Swift names are MobileIdentity, pinned by MobileIdentityTests.
+configFiles:
+  Debug: config/build.xcconfig
+  Production: config/build.xcconfig
+  Release: config/build.xcconfig
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    THEONOTES_ID_SUFFIX: ""
+    THEONOTES_DISPLAY_NAME: Theo Notes
+    THEONOTES_APP_GROUP: $(THEONOTES_TEAM_ID).com.truebrewbirdie.notes
+    THEONOTES_IOS_APP_GROUP: group.$(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX).ios
+    THEONOTES_URL_SCHEME: theonotes
+    THEONOTES_WATCH_URL_SCHEME: theonotes-watch
+    THEONOTES_LEGACY_URL_SCHEME: baerchen
+    # REL-R4: whether the build shows the sync setup (Info.plist key THEONOTES_SyncSetupAvailable). The default is NO, which is
+    # what the public Release build ships; Jan's own builds (Debug for tests and agents, Production for his
+    # install) set YES below. Pinned by scripts/check-identities.sh.
+    THEONOTES_SYNC_SETUP: "NO"
+    # CK-J2 (CloudKit plan Task 12): whether the build offers iCloud sync (Info.plist key THEONOTES_ICloudSyncAvailable). It
+    # only takes effect together with THEONOTES_CLOUDKIT_CONTAINER in config/release.env. NO here as the default; YES in
+    # every configuration below (Release since REL-R91).
+    THEONOTES_ICLOUD_SYNC: "NO"
+    # CK-R176 (CloudKit plan Task 16, REL-R13): the iOS background modes. `remote-notification` (the silent push of the iCloud sync,
+    # Gate G0 A4) is listed only where THEONOTES_ICLOUD_SYNC is YES, so a build without the flag declares what it always did.
+    # Info.plist key UIBackgroundModes comes from this setting (scripts/set-ios-background-modes.sh, a post-build phase of the iOS target:
+    # INFOPLIST_KEY_UIBackgroundModes is not honoured by Xcode, measured); MobileIdentityTests pins that the two agree. The target entitlements declare iCloud and Push for the identity cutover.
+    THEONOTES_IOS_BACKGROUND_MODES: fetch
+    THEONOTES_IOS_APS_ENVIRONMENT: production
+    THEONOTES_IOS_ICLOUD_ENVIRONMENT: Production
+  configs:
+    # REL-R91 (Jan, 2026-11-10): version 1 ships with iCloud sync, so Release offers it too. The private sync setup stays hidden.
+    Release:
+      THEONOTES_ICLOUD_SYNC: "YES"
+      THEONOTES_IOS_BACKGROUND_MODES: fetch remote-notification
+    Production:
+      THEONOTES_SYNC_SETUP: "YES"
+      THEONOTES_ICLOUD_SYNC: "YES"
+      THEONOTES_IOS_APS_ENVIRONMENT: development
+      THEONOTES_IOS_BACKGROUND_MODES: fetch remote-notification
+    Debug:
+      THEONOTES_SYNC_SETUP: "YES"
+      THEONOTES_ICLOUD_SYNC: "YES"
+      THEONOTES_IOS_APS_ENVIRONMENT: development
+      THEONOTES_IOS_ICLOUD_ENVIRONMENT: Development
+      THEONOTES_IOS_BACKGROUND_MODES: fetch remote-notification
+      THEONOTES_ID_SUFFIX: .dev
+      THEONOTES_DISPLAY_NAME: Theo Notes Dev
+      THEONOTES_APP_GROUP: $(THEONOTES_TEAM_ID).com.truebrewbirdie.notes.dev
+      THEONOTES_URL_SCHEME: theonotes-dev
+      THEONOTES_WATCH_URL_SCHEME: theonotes-watch-dev
+      THEONOTES_LEGACY_URL_SCHEME: baerchen-dev
+# REN2-R57 / R58 (B7 cutover): the Debug (dev identity) macOS targets are team-signed (team THEONOTES_TEAM_ID) instead of ad
+# hoc, because the dev entitlements now carry the iCloud keys (Development environment, CloudKit plan Task 15b recipe) and a
+# restricted entitlement needs a provisioning profile: an ad hoc signature cannot launch. The share extension, the CLI helper
+# and the test bundle claim no restricted entitlement and sign automatically without a profile. The APP signs MANUALLY with the
+# development profile "Theo Notes Mac Dev Development" (<root>.dev): `xcodebuild -allowProvisioningUpdates` with the App Store
+# Connect key cannot create the profile of a new App ID (measured), so scripts/release/asc_dev_profile.py makes the App ID, its
+# capabilities and that profile through the public API and installs it. Run it once per Mac (and again after the iCloud container
+# is associated with the dev App ID in the portal, which the API cannot do); scripts/rehearse-team-signed-dev.sh runs it itself.
+packages:
+  TheoNotesCore:
+    path: Packages/TheoNotesCore
+targets:
+  TheoNotes:
+    type: application
+    platform: macOS
+    sources:
+      - path: Apps/TheoNotesMac/Sources
+      - path: Apps/TheoNotesMac/Assets.xcassets
+      - path: Apps/TheoNotesMac/Resources
+    dependencies:
+      - package: TheoNotesCore
+        product: TheoNotesCore
+      - package: TheoNotesCore
+        product: TheoNotesAutomation
+      - package: TheoNotesCore
+        product: TheoNotesVoice
+      - target: TheoNotesCLI
+        copy:
+          destination: wrapper
+          subpath: Contents/Helpers
+      - target: TheoNotesMacShare
+        embed: true
+    preBuildScripts:
+      - name: Build editor bundle
+        script: '"$SRCROOT/scripts/build-editor.sh" "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/Editor"'
+        basedOnDependencyAnalysis: false
+    settings:
+      base:
+        # REN2-R72: bundle, executable and CFBundleName follow the display name: "Theo Notes" (Production, Release) and
+        # "Theo Notes Dev" (Debug). Bundle ids, App Groups and signing do not depend on it.
+        PRODUCT_NAME: $(THEONOTES_DISPLAY_NAME)
+        PRODUCT_MODULE_NAME: TheoNotes
+        PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX)
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Apps/TheoNotesMac/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: $(THEONOTES_DISPLAY_NAME)
+        INFOPLIST_KEY_NSHumanReadableCopyright: Copyright True Brew Birdie Ltd.
+        CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesMac/TheoNotes.entitlements
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+        ENABLE_HARDENED_RUNTIME: YES
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CURRENT_PROJECT_VERSION: "6"
+        MARKETING_VERSION: "1.1.0"
+      configs:
+        Debug:
+          base:
+            CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesMac/TheoNotes.dev.entitlements
+            CODE_SIGN_STYLE: Manual
+            CODE_SIGN_IDENTITY: Apple Development
+            PROVISIONING_PROFILE_SPECIFIER: Theo Notes Mac Dev Development
+        Production:
+          base:
+            # REN2-R66: Jan's installed build is signed like the shipped one: Developer ID with the Developer ID profile
+            # (THEONOTES_PROFILE_APP, config/release.env), because the Production push environment and the iCloud container
+            # of the Production environment need it. No get-task-allow (REL-R32). A local, non-quarantined install needs no
+            # notarization (docs/release/team-migration.md); `verify-bundle.sh --personal-install` checks this exact bundle.
+            CODE_SIGN_STYLE: Manual
+            CODE_SIGN_IDENTITY: Developer ID Application
+            PROVISIONING_PROFILE_SPECIFIER: $(THEONOTES_PROFILE_APP)
+            CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+            # A Developer ID signature needs a secure timestamp, and the debug-type configuration must not ship Xcode's
+            # debug and preview dylibs (they would be extra code items).
+            OTHER_CODE_SIGN_FLAGS: --timestamp
+            ENABLE_DEBUG_DYLIB: NO
+        Release:
+          base:
+            # REL-R32: no get-task-allow and no injected application-identifier in shipped signatures.
+            CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+  TheoNotesMacShare:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Apps/TheoNotesMacShare
+        excludes:
+          - Info.plist
+          - "*.entitlements"
+    dependencies:
+      - package: TheoNotesCore
+        product: TheoNotesCore
+    settings:
+      base:
+        PRODUCT_NAME: TheoNotesMacShare
+        PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX).share
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Apps/TheoNotesMacShare/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: $(THEONOTES_DISPLAY_NAME)
+        INFOPLIST_KEY_NSHumanReadableCopyright: Copyright True Brew Birdie Ltd.
+        CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesMacShare/TheoNotesMacShare.entitlements
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+        ENABLE_HARDENED_RUNTIME: YES
+        SKIP_INSTALL: YES
+        CURRENT_PROJECT_VERSION: "6"
+        MARKETING_VERSION: "1.1.0"
+      configs:
+        Debug:
+          base:
+            CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesMacShare/TheoNotesMacShare.dev.entitlements
+        Production:
+          base:
+            # REN2-R66: Developer ID like the app; the extension claims no restricted entitlement, so it needs no profile.
+            CODE_SIGN_STYLE: Manual
+            CODE_SIGN_IDENTITY: Developer ID Application
+            CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+            OTHER_CODE_SIGN_FLAGS: --timestamp
+            ENABLE_DEBUG_DYLIB: NO
+        Release:
+          base:
+            # REL-R32: no get-task-allow and no injected application-identifier in shipped signatures.
+            CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+  TheoNotesIOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: Apps/TheoNotesIOS/Sources
+      - path: Apps/TheoNotesWatchShared
+      - path: Apps/TheoNotesIOS/Assets.xcassets
+      - path: Apps/TheoNotesIOS/PrivacyInfo.xcprivacy
+        buildPhase: resources
+      - path: Apps/TheoNotesMac/Resources/Acknowledgements.json
+        buildPhase: resources
+      - path: Apps/TheoNotesMac/Sources/EditorHost/AssetSchemeHandler.swift
+      - path: Apps/TheoNotesIOSWidgets/WidgetSnapshot.swift
+      - path: Apps/TheoNotesIOSWidgets/WidgetRoutes.swift
+      - path: Apps/TheoNotesIOSWidgets/CaptureControls.swift
+      - path: Apps/TheoNotesIOSWidgets/WidgetConfiguration.swift
+    dependencies:
+      - package: TheoNotesCore
+        product: TheoNotesCore
+      - package: TheoNotesCore
+        product: TheoNotesAutomation
+      - package: TheoNotesCore
+        product: TheoNotesVoice
+      - target: TheoNotesIOSShare
+        embed: true
+      - target: TheoNotesIOSWidgets
+        embed: true
+      - target: TheoNotesWatch
+        embed: true
+    preBuildScripts:
+      - name: Build editor bundle
+        script: '"$SRCROOT/scripts/build-editor.sh" "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/Editor"'
+        basedOnDependencyAnalysis: false
+    # CK-R176: UIBackgroundModes from THEONOTES_IOS_BACKGROUND_MODES, written before signing.
+    postBuildScripts:
+      - name: Declare background modes
+        script: '"$SRCROOT/scripts/set-ios-background-modes.sh"'
+        # The built Info.plist is an input, so the script runs after Xcode has processed it (measured: without it the script ran first
+        # and the processed file replaced its result).
+        inputFiles:
+          - $(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)
+        basedOnDependencyAnalysis: false
+    settings:
+      base:
+        PRODUCT_NAME: TheoNotesIOS
+        PRODUCT_MODULE_NAME: BaerchenIOS # Preserves saved App Intents identities (REN2-R71).
+        THEONOTES_IOS_BUNDLE_ROOT: $(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX)
+        PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_IOS_BUNDLE_ROOT).ios
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Apps/TheoNotesIOS/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: $(THEONOTES_DISPLAY_NAME)
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesIOS/TheoNotesIOS.entitlements
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CURRENT_PROJECT_VERSION: "6"
+        MARKETING_VERSION: "1.1.0"
+  TheoNotesIOSShare:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Apps/TheoNotesIOSShare
+        excludes:
+          - Tests
+          - Info.plist
+          - TheoNotesIOSShare.entitlements
+    dependencies:
+      - package: TheoNotesCore
+        product: TheoNotesCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX).ios.share
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Apps/TheoNotesIOSShare/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesIOSShare/TheoNotesIOSShare.entitlements
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+        APPLICATION_EXTENSION_API_ONLY: YES
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CURRENT_PROJECT_VERSION: "6"
+        MARKETING_VERSION: "1.1.0"
+  TheoNotesIOSWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Apps/TheoNotesIOSWidgets
+        excludes:
+          - Tests
+          - Info.plist
+          - INTEGRATION.md
+          - TheoNotesIOSWidgets.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX).ios.widgets
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Apps/TheoNotesIOSWidgets/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesIOSWidgets/TheoNotesIOSWidgets.entitlements
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+        APPLICATION_EXTENSION_API_ONLY: YES
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CURRENT_PROJECT_VERSION: "6"
+        MARKETING_VERSION: "1.1.0"
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) THEONOTES_WIDGET_EXTENSION
+  TheoNotesWatch:
+    type: application
+    platform: watchOS
+    info:
+      path: Apps/TheoNotesWatch/Info.plist
+      properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleURLTypes:
+          - CFBundleURLName: $(PRODUCT_BUNDLE_IDENTIFIER).capture
+            CFBundleURLSchemes:
+              - $(THEONOTES_WATCH_URL_SCHEME)
+    sources:
+      - path: Apps/TheoNotesWatchShared
+      - path: Apps/TheoNotesWatch
+        excludes:
+          - Tests
+          - Info.plist
+    dependencies:
+      - target: TheoNotesWatchWidgets
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX).ios.watchkitapp
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: $(THEONOTES_DISPLAY_NAME)
+        INFOPLIST_KEY_WKCompanionAppBundleIdentifier: $(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX).ios
+        INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+        TARGETED_DEVICE_FAMILY: "4"
+        SKIP_INSTALL: YES
+        CURRENT_PROJECT_VERSION: "6"
+        MARKETING_VERSION: "1.1.0"
+  TheoNotesWatchWidgets:
+    type: app-extension
+    platform: watchOS
+    sources:
+      - path: Apps/TheoNotesWatchShared/WatchCaptureComplicationRoute.swift
+      - path: Apps/TheoNotesWatchWidgets
+        excludes:
+          - Tests
+          - Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX).ios.watchkitapp.widgets
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Apps/TheoNotesWatchWidgets/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: $(THEONOTES_DISPLAY_NAME)
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+        APPLICATION_EXTENSION_API_ONLY: YES
+        TARGETED_DEVICE_FAMILY: "4"
+        SKIP_INSTALL: YES
+        CURRENT_PROJECT_VERSION: "6"
+        MARKETING_VERSION: "1.1.0"
+  TheoNotesWatchTests:
+    type: bundle.unit-test
+    platform: watchOS
+    sources:
+      - path: Apps/TheoNotesWatch/Tests
+      - path: Apps/TheoNotesWatchWidgets/Tests
+    dependencies:
+      - target: TheoNotesWatch
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+  TheoNotesIOSTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Apps/TheoNotesIOS/Tests
+      - path: Fixtures/sketch
+        type: folder
+        buildPhase: resources
+      - path: Apps/TheoNotesIOSShare/ShareViewController.swift
+      - path: Apps/TheoNotesIOSShare/ShareSheetModel.swift
+      - path: Apps/TheoNotesIOSShare/ShareRequestBuilder.swift
+      - path: Apps/TheoNotesIOSShare/Tests
+      - path: Apps/TheoNotesIOSWidgets/Tests
+      # CK-R140/CK-R178: the in-memory iCloud used by the Core and Mac tests is compiled into the iOS tests from where it lives.
+      - path: Packages/TheoNotesCore/Tests/TheoNotesCoreTests/CloudSync/FakeCloudKit.swift
+    dependencies:
+      - target: TheoNotesIOS
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+  TheoNotesIOSUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Apps/TheoNotesIOS/UITests
+    dependencies:
+      - target: TheoNotesIOS
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+  TheoNotesCLI:
+    type: tool
+    platform: macOS
+    sources:
+      - path: Packages/TheoNotesCore/Sources/theonotes
+    dependencies:
+      - package: TheoNotesCore
+        product: TheoNotesAutomation
+    settings:
+      base:
+        PRODUCT_NAME: theonotes
+        PRODUCT_MODULE_NAME: TheoNotesCLI
+        PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_BUNDLE_ROOT).cli
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+        ENABLE_HARDENED_RUNTIME: YES
+        SKIP_INSTALL: YES
+      configs:
+        Production:
+          base:
+            # REN2-R66: signed exactly like the Release helper (Developer ID, no get-task-allow, an explicit empty
+            # entitlements file so Xcode adds no application-identifier), which is what the entitlement checker demands.
+            CODE_SIGN_STYLE: Manual
+            CODE_SIGN_IDENTITY: Developer ID Application
+            CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+            CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesCLI/theonotes.entitlements
+            OTHER_CODE_SIGN_FLAGS: --timestamp
+        Release:
+          base:
+            # REL-R32: no get-task-allow in shipped signatures. The bare helper must also not claim a restricted
+            # entitlement: with a team set Xcode adds com.apple.application-identifier unless an explicit (empty)
+            # entitlements file is given (measured). Only the Release helper uses it.
+            CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+            CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesCLI/theonotes.entitlements
+  TheoNotesMacTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Apps/TheoNotesMac/Tests
+      - path: Apps/TheoNotesMacShare/ShareRequestBuilder.swift
+      - path: Apps/TheoNotesMacShare/ShareSheetModel.swift
+      # CK-R140: the in-memory iCloud used by the Core tests is compiled into the Mac tests from where it lives. SwiftPM cannot
+      # share a test target, and moving the fake into a shipping module would put test code in the app.
+      - path: Packages/TheoNotesCore/Tests/TheoNotesCoreTests/CloudSync/FakeCloudKit.swift
+    dependencies:
+      - target: TheoNotes
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_BUNDLE_ROOT).tests
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: $(THEONOTES_TEAM_ID)
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/$(THEONOTES_DISPLAY_NAME).app/Contents/MacOS/$(THEONOTES_DISPLAY_NAME)"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  TheoNotes:
+    build:
+      targets:
+        TheoNotes: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - TheoNotesMacTests
+  TheoNotesWatch:
+    build:
+      targets:
+        TheoNotesWatch: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - TheoNotesWatchTests
+  TheoNotesIOS:
+    build:
+      targets:
+        TheoNotesIOS: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - TheoNotesIOSTests
+        - TheoNotesIOSUITests

@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
+#
+# CLA check on every pull request (contributor-assistant/github-action, CLA Assistant Lite).
+# Safe on pull_request_target: no step checks out or runs the pull request's code.
+# Signatures are committed to the unprotected branch `cla-signatures` (see docs/roadmap/2026-11-25-public-repo-settings.md).
+name: CLA
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_target:
+    types: [opened, closed, synchronize]
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+  statuses: write
+
+jobs:
+  cla:
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'pull_request_target' ||
+      (github.event.issue.pull_request &&
+        (github.event.comment.body == 'recheck' ||
+         github.event.comment.body == 'I have read the Theo Notes CLA and I agree to it.'))
+    steps:
+      - uses: contributor-assistant/github-action@ca4a40a7d1004f18d9960b404b97e5f30a505a08 # v2.6.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          path-to-signatures: signatures/version1/cla.json
+          path-to-document: ${{ github.server_url }}/${{ github.repository }}/blob/main/CLA.md
+          branch: cla-signatures
+          allowlist: ${{ github.repository_owner }},dependabot[bot],github-actions[bot]
+          custom-pr-sign-comment: I have read the Theo Notes CLA and I agree to it.
+          custom-notsigned-prcomment: >
+            Thank you for your pull request. Before it can be merged, please sign the
+            [Contributor Licence Agreement](${{ github.server_url }}/${{ github.repository }}/blob/main/CLA.md)
+            by adding a comment with exactly the sentence below. You keep your copyright.
+          custom-allsigned-prcomment: All contributors have signed the CLA. Thank you.

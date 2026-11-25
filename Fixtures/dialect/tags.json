@@ -1,0 +1,624 @@
+[
+  {
+    "name": "tag before period",
+    "input": "see #tag.",
+    "expected": [
+      "tag"
+    ]
+  },
+  {
+    "name": "url fragment is not a tag",
+    "input": "https://x.y/#anchor",
+    "expected": []
+  },
+  {
+    "name": "tag in code span",
+    "input": "`#no`",
+    "expected": []
+  },
+  {
+    "name": "heading marker is not a tag",
+    "input": "# Heading",
+    "expected": []
+  },
+  {
+    "name": "nested tag is one direct tag",
+    "input": "#a/b/c",
+    "expected": [
+      "a/b/c"
+    ]
+  },
+  {
+    "name": "two single tags on one line",
+    "input": "#a and #b",
+    "expected": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "name": "multi-word tag then text",
+    "input": "#my tag# rest",
+    "expected": [
+      "my tag"
+    ]
+  },
+  {
+    "name": "digits-only tag needs closing hash",
+    "input": "#2021",
+    "expected": []
+  },
+  {
+    "name": "closed digits tag",
+    "input": "#2021#",
+    "expected": [
+      "2021"
+    ]
+  },
+  {
+    "name": "emoji tag",
+    "input": "#🐻 bears",
+    "expected": [
+      "🐻"
+    ]
+  },
+  {
+    "name": "CJK tag",
+    "input": "#日本語 テスト",
+    "expected": [
+      "日本語"
+    ]
+  },
+  {
+    "name": "nested multi-word tag",
+    "input": "#school projects/biology 101#",
+    "expected": [
+      "school projects/biology 101"
+    ]
+  },
+  {
+    "name": "tag in heading",
+    "input": "## Plan #work",
+    "expected": [
+      "work"
+    ]
+  },
+  {
+    "name": "front matter tags are ignored",
+    "input": "---\ntags: [x, y]\ntitle: T\n---\nBody #real",
+    "expected": [
+      "real"
+    ]
+  },
+  {
+    "name": "escaped hash",
+    "input": "\\#notatag #yes",
+    "expected": [
+      "yes"
+    ]
+  },
+  {
+    "name": "tag in fenced code",
+    "input": "```\n#incode\n```\n#after",
+    "expected": [
+      "after"
+    ]
+  },
+  {
+    "name": "hash after letter is not a tag",
+    "input": "a#b c",
+    "expected": []
+  },
+  {
+    "name": "paren allowed before tag, bracket not",
+    "input": "(#paren) and [#bracket]",
+    "expected": [
+      "paren"
+    ]
+  },
+  {
+    "name": "dedupe case-insensitively keeps first spelling",
+    "input": "#Tag #tag #TAG",
+    "expected": [
+      "Tag"
+    ]
+  },
+  {
+    "name": "dedupe NFD against NFC",
+    "input": "#Äpfel #äpfel",
+    "expected": [
+      "Äpfel"
+    ]
+  },
+  {
+    "name": "trailing slash trimmed",
+    "input": "#trailing/ slash",
+    "expected": [
+      "trailing"
+    ]
+  },
+  {
+    "name": "CRLF lines",
+    "input": "Title\r\n#one\r\n#two #three\r\n",
+    "expected": [
+      "one",
+      "two",
+      "three"
+    ]
+  },
+  {
+    "name": "link destination fragment",
+    "input": "[link](#anchor) #real",
+    "expected": [
+      "real"
+    ]
+  },
+  {
+    "name": "inline math",
+    "input": "Inline $#math$ and #tag",
+    "expected": [
+      "tag"
+    ]
+  },
+  {
+    "name": "inline html comment",
+    "input": "<!-- #hidden --> #shown",
+    "expected": [
+      "shown"
+    ]
+  },
+  {
+    "name": "multi-line html comment",
+    "input": "<!--\n#hidden\n-->\n#shown",
+    "expected": [
+      "shown"
+    ]
+  },
+  {
+    "name": "ordinal and closed date tags",
+    "input": "#1st #10/04/2021# #10/04",
+    "expected": [
+      "1st",
+      "10/04/2021"
+    ]
+  },
+  {
+    "name": "tags before punctuation",
+    "input": "#a, #b; #c! #d? #e: #f\"",
+    "expected": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f"
+    ]
+  },
+  {
+    "name": "dash and underscore are part of tag",
+    "input": "#tag-with_dash",
+    "expected": [
+      "tag-with_dash"
+    ]
+  },
+  {
+    "name": "multi-word closes before next tag",
+    "input": "#a and text# then #b",
+    "expected": [
+      "a and text",
+      "b"
+    ]
+  },
+  {
+    "name": "math block",
+    "input": "$$\n#inmath\n$$\n#out",
+    "expected": [
+      "out"
+    ]
+  },
+  {
+    "name": "pure number in prose",
+    "input": "Price #1 only",
+    "expected": []
+  },
+  {
+    "name": "language names",
+    "input": "C# and F# are languages",
+    "expected": []
+  },
+  {
+    "name": "emphasis markers end a tag",
+    "input": "#tag**bold**",
+    "expected": [
+      "tag"
+    ]
+  },
+  {
+    "name": "tag in todo",
+    "input": "- [ ] buy milk #errands",
+    "expected": [
+      "errands"
+    ]
+  },
+  {
+    "name": "parent and child both direct",
+    "input": "#nested/child #nested",
+    "expected": [
+      "nested/child",
+      "nested"
+    ]
+  },
+  {
+    "name": "empty path components dropped",
+    "input": "#a//b/",
+    "expected": [
+      "a/b"
+    ]
+  },
+  {
+    "name": "double hash",
+    "input": "##double",
+    "expected": []
+  },
+  {
+    "name": "keycap emoji is not a tag",
+    "input": "#️⃣ keycap",
+    "expected": []
+  },
+  {
+    "name": "code spans between tags",
+    "input": "`code` #after `#in` #x",
+    "expected": [
+      "after",
+      "x"
+    ]
+  },
+  {
+    "name": "CJK punctuation ends a tag",
+    "input": "#タグ。次",
+    "expected": [
+      "タグ"
+    ]
+  },
+  {
+    "name": "two multi-word tags",
+    "input": "#multi word# and #another one#",
+    "expected": [
+      "multi word",
+      "another one"
+    ]
+  },
+  {
+    "name": "single tag then closed tag",
+    "input": "#a #b#",
+    "expected": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "name": "tag-like text inside wiki link",
+    "input": "[[Note #x]] #y",
+    "expected": [
+      "y"
+    ]
+  },
+  {
+    "name": "multi-word whitespace collapsed",
+    "input": "#my  spaced   tag#",
+    "expected": [
+      "my spaced tag"
+    ]
+  },
+  {
+    "name": "autolink fragment",
+    "input": "<https://a.b/#x> #ok",
+    "expected": [
+      "ok"
+    ]
+  },
+  {
+    "name": "tag inside external link text",
+    "input": "[see #inside](https://x.y) #after",
+    "expected": [
+      "inside",
+      "after"
+    ]
+  },
+  {
+    "name": "tab before tag",
+    "input": "a\t#tabbed",
+    "expected": [
+      "tabbed"
+    ]
+  },
+  {
+    "name": "fence in list item",
+    "input": "- ```\n  code #x\n  ```\n#y",
+    "expected": [
+      "y"
+    ]
+  },
+  {
+    "name": "fence in ordered list item",
+    "input": "1. ```\n   #x\n   ```\n#y",
+    "expected": [
+      "y"
+    ]
+  },
+  {
+    "name": "fence in quote",
+    "input": "> ```\n> #x\n> ```\n> #y\n#z",
+    "expected": [
+      "y",
+      "z"
+    ]
+  },
+  {
+    "name": "quote end closes quoted fence",
+    "input": "> ```\n> #x\n#y",
+    "expected": [
+      "y"
+    ]
+  },
+  {
+    "name": "list item end closes list fence",
+    "input": "- ```\n  #x\n#y",
+    "expected": [
+      "y"
+    ]
+  },
+  {
+    "name": "fence in task item",
+    "input": "- [ ] ```\n  x #a\n  ```\n#b",
+    "expected": [
+      "b"
+    ]
+  },
+  {
+    "name": "list fence with column-0 closer",
+    "input": "- ```\n  x #a\n```\n#b",
+    "expected": [
+      "b"
+    ]
+  },
+  {
+    "name": "list fence with column-0 content and closer",
+    "input": "1. ```\ncode\n```\n#b",
+    "expected": [
+      "b"
+    ]
+  },
+  {
+    "name": "column-0 fence after closed list fence",
+    "input": "- ```\n  x\n  ```\n```\n#in\n```\n#out",
+    "expected": [
+      "out"
+    ]
+  },
+  {
+    "name": "info-string fence after force-ended list fence",
+    "input": "- ```\nx\n```swift\n#in\n```\n#out",
+    "expected": [
+      "out"
+    ]
+  },
+  {
+    "name": "hash at end of line",
+    "input": "end #",
+    "expected": []
+  },
+  {
+    "name": "dash date is an open tag",
+    "input": "#2026-07-09 notes",
+    "expected": [
+      "2026-07-09"
+    ]
+  },
+  {
+    "name": "colon inside tag, trailing plus dropped",
+    "input": "#+a-b:+c+d+(1.2.2026)",
+    "expected": [
+      "+a-b:+c+d"
+    ]
+  },
+  {
+    "name": "trailing colon dropped",
+    "input": "#todo: buy milk",
+    "expected": [
+      "todo"
+    ]
+  },
+  {
+    "name": "time needs closing hash",
+    "input": "#9:30 meeting and #9:30#",
+    "expected": [
+      "9:30"
+    ]
+  },
+  {
+    "name": "lone dash is not a tag",
+    "input": "#- item",
+    "expected": []
+  },
+  {
+    "name": "plus inside tag",
+    "input": "#c+d and #a:b",
+    "expected": [
+      "c+d",
+      "a:b"
+    ]
+  },
+  {
+    "name": "tag in first line counts",
+    "input": "#first line tag\nbody",
+    "expected": [
+      "first"
+    ]
+  },
+  {
+    "name": "tag right after a cell pipe (Bear oracle)",
+    "input": "|#bxa|b|\n|-|-|",
+    "expected": [
+      "bxa"
+    ]
+  },
+  {
+    "name": "tag after a cell pipe and a space (Bear oracle)",
+    "input": "| #bxb | c |\n|---|---|",
+    "expected": [
+      "bxb"
+    ]
+  },
+  {
+    "name": "tag that ends at a cell pipe (Bear oracle)",
+    "input": "| x #bxc| y |\n|---|---|",
+    "expected": [
+      "bxc"
+    ]
+  },
+  {
+    "name": "a row without a trailing pipe is prose (Bear oracle)",
+    "input": "| a | b |\n|---|---|\n|#bxg|b",
+    "expected": [
+      "bxg|b"
+    ]
+  },
+  {
+    "name": "code span across a cell pipe hides a tag (Bear oracle)",
+    "input": "| `r|#bxs` | s |\n|---|---|",
+    "expected": []
+  },
+  {
+    "name": "multi-word tag stops at a cell pipe",
+    "input": "| #a | b# |\n|---|---|",
+    "expected": [
+      "a"
+    ]
+  },
+  {
+    "name": "multi-word tag inside one cell",
+    "input": "| #my tag# | x |\n|---|---|",
+    "expected": [
+      "my tag"
+    ]
+  },
+  {
+    "name": "tags in a quoted table body row",
+    "input": "> | a | b |\n> |---|---|\n> |#q1| x #q2|",
+    "expected": [
+      "q1",
+      "q2"
+    ]
+  },
+  {
+    "name": "pipe tag in a pipe row that is not a table (Bear oracle)",
+    "input": "|#bxd|b|",
+    "expected": [
+      "bxd|b"
+    ]
+  },
+  {
+    "name": "tag right after a prose pipe (Bear oracle)",
+    "input": "a|#bxe",
+    "expected": [
+      "bxe"
+    ]
+  },
+  {
+    "name": "trailing pipe trimmed from a tag (Bear oracle)",
+    "input": "x #bxh|",
+    "expected": [
+      "bxh"
+    ]
+  },
+  {
+    "name": "pipe inside a tag (Bear oracle)",
+    "input": "x #bxi|j k",
+    "expected": [
+      "bxi|j"
+    ]
+  },
+  {
+    "name": "two trailing pipes trimmed (Bear oracle)",
+    "input": "x #bxj||",
+    "expected": [
+      "bxj"
+    ]
+  },
+  {
+    "name": "pipe before a space ends a tag (Bear oracle)",
+    "input": "x #bxk| y",
+    "expected": [
+      "bxk"
+    ]
+  },
+  {
+    "name": "pipe inside a multi-word tag (Bear oracle)",
+    "input": "x #bx m|n# z",
+    "expected": [
+      "bx m|n"
+    ]
+  },
+  {
+    "name": "tag after a space and a pipe (Bear oracle)",
+    "input": "x |#bxl",
+    "expected": [
+      "bxl"
+    ]
+  },
+  {
+    "name": "pipe and colon trimmed (Bear oracle)",
+    "input": "x #bxn|:",
+    "expected": [
+      "bxn"
+    ]
+  },
+  {
+    "name": "bare URL swallows a pipe and hash in a row (Bear oracle)",
+    "input": "| a |\n|---|\n|https://x.com|#bxu|",
+    "expected": []
+  },
+  {
+    "name": "bare URL swallows a pipe and hash in prose (Bear oracle)",
+    "input": "prose https://y.com|#bxv",
+    "expected": []
+  },
+  {
+    "name": "footnote reference and definition are not tags",
+    "input": "see[^1] and [^note]\n\n[^1]: one #real",
+    "expected": [
+      "real"
+    ]
+  },
+  {
+    "name": "reserved tag in fenced code",
+    "input": "```\n#ref\n```",
+    "expected": []
+  },
+  {
+    "name": "reserved tag in inline code",
+    "input": "`#log`",
+    "expected": []
+  },
+  {
+    "name": "reserved tag after url hash",
+    "input": "https://x.com/#ref",
+    "expected": []
+  },
+  {
+    "name": "nested reserved is ordinary",
+    "input": "#ref/recipes",
+    "expected": [
+      "ref/recipes"
+    ]
+  },
+  {
+    "name": "two reserved tags keep order",
+    "input": "#log then #idea",
+    "expected": [
+      "log",
+      "idea"
+    ]
+  }
+]

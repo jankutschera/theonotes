@@ -1,0 +1,8 @@
+{
+  "type": "completionResults",
+  "requestId": "complete-k3x9-8",
+  "items": [
+    { "label": "work", "insert": "#work ", "detail": "12", "icon": "briefcase" },
+    { "label": "🐈 cat", "insert": "🐈" }
+  ]
+}

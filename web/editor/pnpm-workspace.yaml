@@ -1,0 +1,2 @@
+patchedDependencies:
+  '@codemirror/autocomplete@6.20.4': patches/@codemirror__autocomplete@6.20.4.patch

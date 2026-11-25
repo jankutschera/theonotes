@@ -1,0 +1,30 @@
+{
+  "//": "Each case patches Fixtures/bridge/render-request.json (`set` replaces or adds top-level keys, `remove` deletes them) and says whether the request is accepted. web/editor/test/protocol-fixtures.test.ts (parseRenderRequest) and RenderProtocolTests (JSONDecoder) must give the same answer for every case.",
+  "cases": [
+    { "name": "the fixture itself", "accepts": true },
+    { "name": "version 2", "set": { "v": 2 }, "accepts": false },
+    { "name": "version as a string", "set": { "v": "1" }, "accepts": false },
+    { "name": "unknown top-level field", "set": { "future": true }, "accepts": false },
+    { "name": "attachmentSizes absent", "remove": ["attachmentSizes"], "accepts": true },
+    { "name": "attachmentSizes empty", "set": { "attachmentSizes": {} }, "accepts": true },
+    { "name": "attachmentSizes integers", "set": { "attachmentSizes": { "a": 0, "b": 3 } }, "accepts": true },
+    { "name": "fractional size", "set": { "attachmentSizes": { "a": 1.5 } }, "accepts": false },
+    { "name": "negative size", "set": { "attachmentSizes": { "a": -1 } }, "accepts": false },
+    { "name": "size as a string", "set": { "attachmentSizes": { "a": "9" } }, "accepts": false },
+    { "name": "required field missing", "remove": ["noteId"], "accepts": false },
+    { "name": "wikiLinks missing", "remove": ["wikiLinks"], "accepts": false },
+    { "name": "unknown mode", "set": { "mode": "pdf" }, "accepts": false },
+    { "name": "unknown appearance", "set": { "appearance": "sepia" }, "accepts": false },
+    { "name": "rich text mode", "set": { "mode": "richText" }, "accepts": true },
+    { "name": "wiki link with an extra key", "set": { "wikiLinks": [{ "href": "a", "extra": 1 }] }, "accepts": false },
+    { "name": "wiki link without href", "set": { "wikiLinks": [{}] }, "accepts": false },
+    { "name": "wiki link null", "set": { "wikiLinks": [null, { "href": "#h-1" }] }, "accepts": true },
+    { "name": "theme variable outside the schema", "set": { "theme": { "--bc-nonsense": "#ffffff" } }, "accepts": false },
+    { "name": "theme value that is not a hex colour", "set": { "theme": { "--bc-color-bg": "red;} body{x:y" } }, "accepts": false },
+    { "name": "font with a quote", "set": { "typography": { "fontText": "A\"B" } }, "accepts": false },
+    { "name": "font with a brace", "set": { "typography": { "fontCode": "A}" } }, "accepts": false },
+    { "name": "empty font", "set": { "typography": { "fontHeading": "" } }, "accepts": false },
+    { "name": "unknown typography field", "set": { "typography": { "fontSize": 17, "color": "red" } }, "accepts": false },
+    { "name": "empty typography", "set": { "typography": {} }, "accepts": true }
+  ]
+}

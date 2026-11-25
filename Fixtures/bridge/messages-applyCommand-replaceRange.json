@@ -1,0 +1,10 @@
+{
+  "type": "applyCommand",
+  "name": "replaceRange",
+  "args": {
+    "from": 5,
+    "to": 19,
+    "expect": "![](a%20b.png)",
+    "text": "![](c.png)"
+  }
+}

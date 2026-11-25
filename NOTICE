@@ -1,0 +1,28 @@
+Theo Notes
+Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License, version 3 only, as published by
+the Free Software Foundation. The full text is in LICENSE and in
+LICENSES/GPL-3.0-only.txt.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+The name "Theo Notes", the Theo logo and the app icon are not covered by this
+licence. See TRADEMARK.md and BRANDING.md.
+
+Third-party software
+--------------------
+The licences of the third-party components that ship with the app are listed in
+the generated file Apps/TheoNotesMac/Resources/Acknowledgements.json (shown in
+the app under Acknowledgements) and, once the generator option exists, in the
+generated THIRD_PARTY_NOTICES.md. Each component stays under its own licence.
+
+Apple platforms
+---------------
+Tag icons are referenced by SF Symbols name (Packages/TheoNotesCore/Sources/TheoNotesCore/Resources/tagcons.json)
+and rendered at runtime by the Apple system library. The symbols are not part of
+this repository and are available on Apple platforms only. A port to another
+platform needs its own icon set.

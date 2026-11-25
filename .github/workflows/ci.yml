@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
+#
+# CI for the public repository. Needs no secrets: the Mac app is built unsigned.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  guards:
+    name: Guards (scan, names, headers, copy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - run: python3 -I scripts/oss/scan.py .
+      - run: python3 -I scripts/name-guard.py --check
+      - run: python3 -I scripts/licence-headers.py --check
+      - run: python3 -I scripts/copy-guard.py
+      - run: python3 -I scripts/gen-automation-sources.py --check
+
+  editor:
+    name: Editor (typecheck, vitest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 10
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/editor/pnpm-lock.yaml
+      - run: pnpm --dir web/editor install --frozen-lockfile
+      - run: pnpm --dir web/editor typecheck
+      - run: pnpm --dir web/editor test
+
+  apple:
+    name: Swift tests and unsigned Mac build
+    # The apps target macOS 26; this needs a macOS 26 runner image with Xcode 26 or later.
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 10
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/editor/pnpm-lock.yaml
+      - run: brew install xcodegen
+      - run: pnpm --dir web/editor install --frozen-lockfile
+      - run: swift test --package-path Packages/TheoNotesCore
+      - run: xcodegen generate
+      - run: >
+          xcodebuild -project TheoNotes.xcodeproj -scheme TheoNotes -configuration Debug
+          -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO build

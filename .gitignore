@@ -1,0 +1,18 @@
+.DS_Store
+*.xcodeproj/
+*.xcworkspace/
+DerivedData/
+.build/
+build/
+.swiftpm/
+node_modules
+web/editor/dist/
+web/editor/test-results/
+web/editor/playwright-report/
+Apps/TheoNotesMac/Resources/Editor/
+*.log
+.remember/
+.superpowers/
+__pycache__/
+# Private sync host (PUB-R2): tracked only in the private repository, never exported
+config/private-sync.xcconfig

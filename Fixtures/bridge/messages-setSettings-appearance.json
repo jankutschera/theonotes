@@ -1,0 +1,11 @@
+{
+  "type": "setSettings",
+  "appearance": "dark",
+  "reduceMotion": false,
+  "theme": {
+    "--bc-color-text": "#d8dee9",
+    "--bc-color-bg": "#2e3440",
+    "--bc-color-selection": "#434c5eb3",
+    "--bc-color-popup-bg": "#3b4252"
+  }
+}

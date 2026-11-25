@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "id": "dracula",
+  "name": "Dracula",
+  "order": 110,
+  "appearance": "dark",
+  "contrast": "standard",
+  "source": {
+    "project": "Dracula",
+    "url": "https://spec.draculatheme.com/",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2023 Dracula Theme"
+  },
+  "deviations": [
+    {
+      "token": "editor.color-secondary",
+      "palette": "#6272a4",
+      "value": "#aeb6d0",
+      "reason": "color-secondary on color-code-bg was 1.94:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.53:1"
+    },
+    {
+      "token": "editor.color-code-keyword",
+      "palette": "#ff79c6",
+      "value": "#ff93d1",
+      "reason": "color-code-keyword on color-code-bg was 3.84:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "editor.color-code-number",
+      "palette": "#bd93f9",
+      "value": "#caa9fa",
+      "reason": "color-code-number on color-code-bg was 3.79:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.60:1"
+    },
+    {
+      "token": "editor.color-code-comment",
+      "palette": "#6272a4",
+      "value": "#aeb6d0",
+      "reason": "color-code-comment on color-code-bg was 1.94:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.53:1"
+    },
+    {
+      "token": "editor.color-code-tag",
+      "palette": "#ff79c6",
+      "value": "#ff93d1",
+      "reason": "color-code-tag on color-code-bg was 3.84:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "editor.highlight",
+      "palette": "#f1fa8c4d",
+      "value": "#f1fa8c17",
+      "reason": "color-tag on highlight over color-bg was 2.37:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 9.3 from the page), now 4.55:1"
+    },
+    {
+      "token": "editor.highlight-green",
+      "palette": "#50fa7b4d",
+      "value": "#50fa7b1c",
+      "reason": "color-tag on highlight-green over color-bg was 2.67:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 15.7 from the page), now 4.51:1"
+    },
+    {
+      "token": "editor.highlight-red",
+      "palette": "#ff55554d",
+      "value": "#ff555536",
+      "reason": "color-tag on highlight-red over color-bg was 3.92:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 16.8 from the page), now 4.50:1"
+    },
+    {
+      "token": "editor.highlight-blue",
+      "palette": "#8be9fd4d",
+      "value": "#8be9fd1b",
+      "reason": "color-tag on highlight-blue over color-bg was 2.63:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 7.8 from the page), now 4.50:1"
+    },
+    {
+      "token": "editor.highlight-yellow",
+      "palette": "#f1fa8c4d",
+      "value": "#f1fa8c17",
+      "reason": "color-tag on highlight-yellow over color-bg was 2.37:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 9.3 from the page), now 4.55:1"
+    },
+    {
+      "token": "editor.highlight-purple",
+      "palette": "#bd93f94d",
+      "value": "#bd93f926",
+      "reason": "color-tag on highlight-purple over color-bg was 3.35:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 9.0 from the page), now 4.51:1"
+    },
+    {
+      "token": "editor.color-selection",
+      "palette": "#ff79c633",
+      "value": "#ff79c628",
+      "reason": "color-tag on color-selection over color-bg was 4.16:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 12.6 from the page), now 4.51:1"
+    },
+    {
+      "token": "editor.color-search-match",
+      "palette": "#f1fa8c59",
+      "value": "#f1fa8c17",
+      "reason": "color-tag on color-search-match over color-bg was 2.06:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 9.3 from the page), now 4.55:1"
+    },
+    {
+      "token": "editor.color-search-match-current",
+      "palette": "#ffb86ca6",
+      "value": "#ffb86c1f",
+      "reason": "color-tag on color-search-match-current over color-bg was 1.34:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 9.1 from the page), now 4.51:1"
+    },
+    {
+      "token": "editor.color-callout-caution-title",
+      "palette": "#ff5555",
+      "value": "#ff6c6c",
+      "reason": "color-callout-caution-title on color-callout-caution-bg over color-bg was 3.98:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.54:1"
+    },
+    {
+      "token": "editor.color-math-error",
+      "palette": "#ff5555",
+      "value": "#ff6c6c",
+      "reason": "color-math-error on color-math-error-bg over color-bg was 3.98:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.54:1"
+    },
+    {
+      "token": "shell.secondary-text",
+      "palette": "#6272a4",
+      "value": "#8490b8",
+      "reason": "shell.secondary-text on shell.background was 3.03:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.52:1"
+    },
+    {
+      "token": "shell.search-highlight",
+      "palette": "#f1fa8c73",
+      "value": "#f1fa8c5c",
+      "reason": "shell.text on shell.search-highlight over shell.background was 3.50:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 33.2 from the page), now 4.50:1"
+    }
+  ],
+  "editor": {
+    "color-text": "#f8f8f2",
+    "color-secondary": "#aeb6d0",
+    "color-accent": "#ff79c6",
+    "color-bg": "#282a36",
+    "color-code-bg": "#44475a",
+    "color-code-keyword": "#ff93d1",
+    "color-code-string": "#f1fa8c",
+    "color-code-number": "#caa9fa",
+    "color-code-comment": "#aeb6d0",
+    "color-code-type": "#8be9fd",
+    "color-code-function": "#50fa7b",
+    "color-code-property": "#ffb86c",
+    "color-code-tag": "#ff93d1",
+    "color-code-meta": "#ffb86c",
+    "color-rule": "#44475a",
+    "color-quote": "#f8f8f2",
+    "color-quote-bar": "#44475a",
+    "color-link": "#8be9fd",
+    "color-tag": "#bd93f9",
+    "color-tag-bg": "#bd93f91c",
+    "highlight": "#f1fa8c17",
+    "highlight-green": "#50fa7b1c",
+    "highlight-red": "#ff555536",
+    "highlight-blue": "#8be9fd1b",
+    "highlight-yellow": "#f1fa8c17",
+    "highlight-purple": "#bd93f926",
+    "highlight-dot-green": "#50fa7b",
+    "highlight-dot-red": "#ff5555",
+    "highlight-dot-blue": "#8be9fd",
+    "highlight-dot-yellow": "#f1fa8c",
+    "highlight-dot-purple": "#bd93f9",
+    "color-selection": "#ff79c628",
+    "color-search-match": "#f1fa8c17",
+    "color-search-match-current": "#ffb86c1f",
+    "color-popup-bg": "#44475a",
+    "color-popup-text": "#f8f8f2",
+    "color-popup-selected-bg": "#ff79c6",
+    "color-popup-selected-text": "#282a36",
+    "color-shadow": "#00000080",
+    "color-callout-note-bg": "#8be9fd1c",
+    "color-callout-note-border": "#8be9fd80",
+    "color-callout-note-icon": "#8be9fd",
+    "color-callout-note-title": "#8be9fd",
+    "color-callout-tip-bg": "#50fa7b1c",
+    "color-callout-tip-border": "#50fa7b80",
+    "color-callout-tip-icon": "#50fa7b",
+    "color-callout-tip-title": "#50fa7b",
+    "color-callout-important-bg": "#bd93f91c",
+    "color-callout-important-border": "#bd93f980",
+    "color-callout-important-icon": "#bd93f9",
+    "color-callout-important-title": "#bd93f9",
+    "color-callout-warning-bg": "#ffb86c1c",
+    "color-callout-warning-border": "#ffb86c80",
+    "color-callout-warning-icon": "#ffb86c",
+    "color-callout-warning-title": "#ffb86c",
+    "color-callout-caution-bg": "#ff55551c",
+    "color-callout-caution-border": "#ff555580",
+    "color-callout-caution-icon": "#ff5555",
+    "color-callout-caution-title": "#ff6c6c",
+    "color-table-header-bg": "#44475a",
+    "color-table-border": "#44475a",
+    "color-math-error": "#ff6c6c",
+    "color-math-error-bg": "#ff55551c",
+    "color-error": "#ff5555"
+  },
+  "shell": {
+    "accent": "#ff79c6",
+    "background": "#282a36",
+    "text": "#f8f8f2",
+    "secondary-text": "#8490b8",
+    "selection": "#ff79c633",
+    "selection-text": "#f8f8f2",
+    "separator": "#44475a",
+    "search-highlight": "#f1fa8c5c",
+    "on-accent": "#282a36"
+  }
+}

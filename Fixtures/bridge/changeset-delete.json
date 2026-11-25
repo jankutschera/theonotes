@@ -1,0 +1,5 @@
+{
+  "before": "a😀b",
+  "changeset": [1, [2], 1],
+  "after": "ab"
+}

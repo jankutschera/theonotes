@@ -1,0 +1,15 @@
+{
+  "type": "insertAttachments",
+  "noteId": "0192f3a4-5b6c-7d8e-9f01-23456789abcd",
+  "insertId": "ins-1",
+  "items": [
+    {
+      "filename": "image.png",
+      "dataBase64": "iVBORw0KGgo="
+    },
+    {
+      "filename": "Report 2.pdf",
+      "dataBase64": "JVBERi0="
+    }
+  ]
+}

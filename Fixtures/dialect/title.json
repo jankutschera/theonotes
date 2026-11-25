@@ -1,0 +1,232 @@
+[
+  {
+    "name": "plain first line",
+    "input": "Hello world",
+    "expected": "Hello world"
+  },
+  {
+    "name": "heading marker stripped",
+    "input": "# Heading title\nbody",
+    "expected": "Heading title"
+  },
+  {
+    "name": "level six heading",
+    "input": "###### Six",
+    "expected": "Six"
+  },
+  {
+    "name": "tag-only first line is the title",
+    "input": "#tag\nReal title",
+    "expected": "#tag"
+  },
+  {
+    "name": "tags-only first line kept verbatim",
+    "input": "#a #b\n\n## Plan #work",
+    "expected": "#a #b"
+  },
+  {
+    "name": "empty note",
+    "input": "",
+    "expected": ""
+  },
+  {
+    "name": "only tags",
+    "input": "#only #tags",
+    "expected": "#only #tags"
+  },
+  {
+    "name": "leading blank lines mean untitled",
+    "input": "\n\n  \nFirst after blanks",
+    "expected": ""
+  },
+  {
+    "name": "after front matter",
+    "input": "---\ntitle: Yaml\n---\nAfter front matter",
+    "expected": "After front matter"
+  },
+  {
+    "name": "bold and italic stripped",
+    "input": "**Bold** and _italic_ title",
+    "expected": "Bold and italic title"
+  },
+  {
+    "name": "color highlight stripped",
+    "input": "==🟢Green== highlight",
+    "expected": "Green highlight"
+  },
+  {
+    "name": "strike underline code stripped",
+    "input": "~~strike~~ ~under~ `code`",
+    "expected": "strike under code"
+  },
+  {
+    "name": "link becomes text",
+    "input": "[Link text](https://example.com) here",
+    "expected": "Link text here"
+  },
+  {
+    "name": "wiki link becomes target",
+    "input": "[[Other Note]] ref",
+    "expected": "Other Note ref"
+  },
+  {
+    "name": "wiki link alias",
+    "input": "[[Other Note|alias]] ref",
+    "expected": "alias ref"
+  },
+  {
+    "name": "inline tag kept",
+    "input": "Title with #tag inside",
+    "expected": "Title with #tag inside"
+  },
+  {
+    "name": "multi-word tag kept",
+    "input": "Title #multi word# end",
+    "expected": "Title #multi word# end"
+  },
+  {
+    "name": "CRLF",
+    "input": "CRLF title\r\nbody\r\n",
+    "expected": "CRLF title"
+  },
+  {
+    "name": "closing hashes stripped",
+    "input": "# Title ##",
+    "expected": "Title"
+  },
+  {
+    "name": "escaped hash kept as text",
+    "input": "\\#escaped not tag",
+    "expected": "#escaped not tag"
+  },
+  {
+    "name": "intraword underscores kept",
+    "input": "snake_case_name stays",
+    "expected": "snake_case_name stays"
+  },
+  {
+    "name": "todo marker stripped",
+    "input": "- [ ] Todo first",
+    "expected": "Todo first"
+  },
+  {
+    "name": "quote marker stripped",
+    "input": "> Quote title",
+    "expected": "Quote title"
+  },
+  {
+    "name": "empty heading first line is untitled",
+    "input": "#\nNext",
+    "expected": ""
+  },
+  {
+    "name": "image-only first line is untitled",
+    "input": "![](photo.jpg)\nCaption line",
+    "expected": ""
+  },
+  {
+    "name": "emoji tag first line is the title",
+    "input": "#🐻\n# Bear 🐻 notes",
+    "expected": "#🐻"
+  },
+  {
+    "name": "heading keeps its tags",
+    "input": "# Plan #work #home",
+    "expected": "Plan #work #home"
+  },
+  {
+    "name": "unclosed front matter rule is untitled",
+    "input": "---\nnot closed front matter",
+    "expected": ""
+  },
+  {
+    "name": "comment-only first line kept verbatim",
+    "input": "<!-- comment -->\nVisible",
+    "expected": "<!-- comment -->"
+  },
+  {
+    "name": "bold italic",
+    "input": "***bold italic***",
+    "expected": "bold italic"
+  },
+  {
+    "name": "lone star kept",
+    "input": "5 * 3 = 15",
+    "expected": "5 * 3 = 15"
+  },
+  {
+    "name": "double equals kept",
+    "input": "a == b",
+    "expected": "a == b"
+  },
+  {
+    "name": "same-note heading link",
+    "input": "See [[/Intro]]",
+    "expected": "See Intro"
+  },
+  {
+    "name": "CJK title",
+    "input": "# 日本語のノート #日記",
+    "expected": "日本語のノート #日記"
+  },
+  {
+    "name": "quoted fence opener is untitled",
+    "input": "> ```\n> let x\n> ```",
+    "expected": ""
+  },
+  {
+    "name": "fence opener first line is untitled",
+    "input": "```\nlet x = 1\n```",
+    "expected": ""
+  },
+  {
+    "name": "blank first line before heading",
+    "input": "\n# Heading later\nbody",
+    "expected": ""
+  },
+  {
+    "name": "inner spaces kept",
+    "input": "# Two  spaces\there",
+    "expected": "Two  spaces\there"
+  },
+  {
+    "name": "outer whitespace trimmed",
+    "input": "#   Padded title   \nbody",
+    "expected": "Padded title"
+  },
+  {
+    "name": "cut at 500 characters",
+    "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "expected": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  {
+    "name": "file attachment keeps link text",
+    "input": "[guide.pdf](guide.pdf)<!-- {\"embed\":\"true\"} -->\n#tag",
+    "expected": "guide.pdf"
+  },
+  {
+    "name": "escaped period",
+    "input": "# 1\\. Step one",
+    "expected": "1. Step one"
+  },
+  {
+    "name": "comment kept before text",
+    "input": "<!-- note --> Visible",
+    "expected": "<!-- note --> Visible"
+  },
+  {
+    "name": "image in heading is untitled",
+    "input": "# ![](photo.jpg)\nNext",
+    "expected": ""
+  },
+  {
+    "name": "tag with colon and plus kept",
+    "input": "#+Draft-Notes:+v2+(1.2.2026)\nbody",
+    "expected": "#+Draft-Notes:+v2+(1.2.2026)"
+  },
+  {
+    "name": "empty todo is untitled",
+    "input": "- [ ] \nNext",
+    "expected": ""
+  }
+]

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>UIApplicationSceneManifest</key>
+    <dict>
+        <key>UIApplicationSupportsMultipleScenes</key><true/>
+    </dict>
+    <key>NSUserActivityTypes</key>
+    <array><string>$(PRODUCT_BUNDLE_IDENTIFIER).note-window</string></array>
+    <key>UIApplicationShortcutItems</key>
+    <array>
+        <dict>
+            <key>UIApplicationShortcutItemType</key><string>theonotes.capture.new-note</string>
+            <key>UIApplicationShortcutItemTitle</key><string>New Note</string>
+            <key>UIApplicationShortcutItemIconSymbolName</key><string>square.and.pencil</string>
+        </dict>
+        <dict>
+            <key>UIApplicationShortcutItemType</key><string>theonotes.capture.scan</string>
+            <key>UIApplicationShortcutItemTitle</key><string>Scan</string>
+            <key>UIApplicationShortcutItemIconSymbolName</key><string>doc.viewfinder</string>
+        </dict>
+        <dict>
+            <key>UIApplicationShortcutItemType</key><string>theonotes.capture.search</string>
+            <key>UIApplicationShortcutItemTitle</key><string>Search</string>
+            <key>UIApplicationShortcutItemIconSymbolName</key><string>magnifyingglass</string>
+        </dict>
+    </array>
+    <key>THEONOTES_AppGroupIdentifier</key>
+    <string>$(THEONOTES_IOS_APP_GROUP)</string>
+    <!-- UIBackgroundModes is not listed here: scripts/set-ios-background-modes.sh writes it from THEONOTES_IOS_BACKGROUND_MODES (CK-R176). -->
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array><string>$(PRODUCT_BUNDLE_IDENTIFIER).sync-refresh</string></array>
+    <key>THEONOTES_CloudKitContainer</key>
+    <string>$(THEONOTES_CLOUDKIT_CONTAINER)</string>
+    <key>THEONOTES_TeamID</key>
+    <string>$(THEONOTES_TEAM_ID)</string>
+    <key>THEONOTES_ICloudSyncAvailable</key>
+    <string>$(THEONOTES_ICLOUD_SYNC)</string>
+    <key>THEONOTES_PrivateSyncHost</key>
+    <string>$(THEONOTES_PRIVATE_SYNC_HOST)</string>
+    <key>THEONOTES_SyncSetupAvailable</key>
+    <string>$(THEONOTES_SYNC_SETUP)</string>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+    <key>NSCameraUsageDescription</key>
+    <string>Use the camera to photograph or scan documents for your notes.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Record voice notes and transcribe them on your device.</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Use Face ID to unlock your protected notes in Theo Notes.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>$(THEONOTES_IOS_BUNDLE_ROOT)</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>$(THEONOTES_URL_SCHEME)</string>
+				<string>$(THEONOTES_LEGACY_URL_SCHEME)</string>
+			</array>
+		</dict>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.zip-archive</string>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Theo Notes backup</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.truebrewbirdie.theonotes.backup</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>theonotes-backup</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.zip-archive</string>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Theo Notes backup (earlier version)</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.truebrewbirdie.baerchen.backup</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>baerchen-backup</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.apple.package</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>TextBundle</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.textbundle.package</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>textbundle</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

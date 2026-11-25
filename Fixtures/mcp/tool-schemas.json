@@ -1,0 +1,2262 @@
+{
+ "tools": [
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "content": {
+      "type": "string"
+     },
+     "ifNotExists": {
+      "type": "boolean"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "create_note",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Create Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "includeContent": {
+      "type": "boolean"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "get_note",
+   "outputSchema": {
+    "properties": {
+     "content": {
+      "type": "string"
+     },
+     "metadata": {
+      "properties": {
+       "attachments": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "created": {
+        "type": "string"
+       },
+       "done": {
+        "type": "integer"
+       },
+       "id": {
+        "type": "string"
+       },
+       "length": {
+        "type": "integer"
+       },
+       "location": {
+        "type": "string"
+       },
+       "locked": {
+        "type": "boolean"
+       },
+       "modified": {
+        "type": "string"
+       },
+       "pins": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "tags": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "title": {
+        "type": "string"
+       },
+       "todos": {
+        "type": "integer"
+       }
+      },
+      "required": [
+       "id",
+       "title",
+       "locked",
+       "length",
+       "created",
+       "modified",
+       "pins",
+       "location",
+       "todos",
+       "done",
+       "tags",
+       "attachments"
+      ],
+      "type": "object"
+     }
+    },
+    "required": [
+     "metadata"
+    ],
+    "type": "object"
+   },
+   "title": "Get Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "edit": {
+      "type": "boolean"
+     },
+     "float": {
+      "type": "boolean"
+     },
+     "header": {
+      "type": "string"
+     },
+     "id": {
+      "type": "string"
+     },
+     "newWindow": {
+      "type": "boolean"
+     },
+     "selectionLength": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "selectionOffset": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "selectionText": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "app_open_note",
+   "outputSchema": {
+    "properties": {},
+    "type": "object"
+   },
+   "title": "Open Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "address": {
+      "type": "string"
+     },
+     "id": {
+      "type": "string"
+     },
+     "limit": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "offset": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "read_note_content",
+   "outputSchema": {
+    "properties": {
+     "content": {
+      "type": "string"
+     },
+     "hash": {
+      "type": "string"
+     },
+     "section": {
+      "properties": {
+       "address": {
+        "type": "string"
+       },
+       "length": {
+        "type": "integer"
+       },
+       "offset": {
+        "type": "integer"
+       }
+      },
+      "required": [
+       "address",
+       "offset",
+       "length"
+      ],
+      "type": "object"
+     }
+    },
+    "required": [
+     "content"
+    ],
+    "type": "object"
+   },
+   "title": "Read Note Content"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "address": {
+      "type": "string"
+     },
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "read_note_outline",
+   "outputSchema": {
+    "properties": {
+     "outline": {
+      "items": {
+       "properties": {
+        "address": {
+         "type": "string"
+        },
+        "length": {
+         "type": "integer"
+        },
+        "offset": {
+         "type": "integer"
+        }
+       },
+       "required": [
+        "address",
+        "offset",
+        "length"
+       ],
+       "type": "object"
+      },
+      "type": "array"
+     }
+    },
+    "required": [
+     "outline"
+    ],
+    "type": "object"
+   },
+   "title": "Read Note Outline"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "includeContent": {
+      "type": "boolean"
+     }
+    },
+    "type": "object"
+   },
+   "name": "app_get_selection",
+   "outputSchema": {
+    "properties": {
+     "content": {
+      "type": "string"
+     },
+     "metadata": {
+      "properties": {
+       "attachments": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "created": {
+        "type": "string"
+       },
+       "done": {
+        "type": "integer"
+       },
+       "id": {
+        "type": "string"
+       },
+       "length": {
+        "type": "integer"
+       },
+       "location": {
+        "type": "string"
+       },
+       "locked": {
+        "type": "boolean"
+       },
+       "modified": {
+        "type": "string"
+       },
+       "pins": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "tags": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "title": {
+        "type": "string"
+       },
+       "todos": {
+        "type": "integer"
+       }
+      },
+      "required": [
+       "id",
+       "title",
+       "locked",
+       "length",
+       "created",
+       "modified",
+       "pins",
+       "location",
+       "todos",
+       "done",
+       "tags",
+       "attachments"
+      ],
+      "type": "object"
+     },
+     "selection": {
+      "properties": {
+       "length": {
+        "type": "integer"
+       },
+       "offset": {
+        "type": "integer"
+       },
+       "text": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "offset",
+       "length",
+       "text"
+      ],
+      "type": "object"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Get Editor Selection"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "includeContent": {
+      "type": "boolean"
+     },
+     "limit": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "offset": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "sort": {
+      "type": "string"
+     },
+     "tag": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "list_notes",
+   "outputSchema": {
+    "properties": {
+     "metadata": {
+      "items": {
+       "properties": {
+        "attachments": {
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        },
+        "created": {
+         "type": "string"
+        },
+        "done": {
+         "type": "integer"
+        },
+        "id": {
+         "type": "string"
+        },
+        "length": {
+         "type": "integer"
+        },
+        "location": {
+         "type": "string"
+        },
+        "locked": {
+         "type": "boolean"
+        },
+        "modified": {
+         "type": "string"
+        },
+        "pins": {
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        },
+        "tags": {
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        },
+        "title": {
+         "type": "string"
+        },
+        "todos": {
+         "type": "integer"
+        }
+       },
+       "required": [
+        "id",
+        "title",
+        "locked",
+        "length",
+        "created",
+        "modified",
+        "pins",
+        "location",
+        "todos",
+        "done",
+        "tags",
+        "attachments"
+       ],
+       "type": "object"
+      },
+      "type": "array"
+     },
+     "notes": {
+      "items": {
+       "properties": {
+        "content": {
+         "type": "string"
+        },
+        "metadata": {
+         "properties": {
+          "attachments": {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          "created": {
+           "type": "string"
+          },
+          "done": {
+           "type": "integer"
+          },
+          "id": {
+           "type": "string"
+          },
+          "length": {
+           "type": "integer"
+          },
+          "location": {
+           "type": "string"
+          },
+          "locked": {
+           "type": "boolean"
+          },
+          "modified": {
+           "type": "string"
+          },
+          "pins": {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          "tags": {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          "title": {
+           "type": "string"
+          },
+          "todos": {
+           "type": "integer"
+          }
+         },
+         "required": [
+          "id",
+          "title",
+          "locked",
+          "length",
+          "created",
+          "modified",
+          "pins",
+          "location",
+          "todos",
+          "done",
+          "tags",
+          "attachments"
+         ],
+         "type": "object"
+        }
+       },
+       "required": [
+        "metadata",
+        "content"
+       ],
+       "type": "object"
+      },
+      "type": "array"
+     },
+     "total": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "total"
+    ],
+    "type": "object"
+   },
+   "title": "List Notes"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "includeContent": {
+      "type": "boolean"
+     },
+     "limit": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "offset": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "query": {
+      "type": "string"
+     },
+     "sort": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "query"
+    ],
+    "type": "object"
+   },
+   "name": "search_notes",
+   "outputSchema": {
+    "properties": {
+     "results": {
+      "items": {
+       "properties": {
+        "matchCount": {
+         "type": "integer"
+        },
+        "metadata": {
+         "properties": {
+          "attachments": {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          "created": {
+           "type": "string"
+          },
+          "done": {
+           "type": "integer"
+          },
+          "id": {
+           "type": "string"
+          },
+          "length": {
+           "type": "integer"
+          },
+          "location": {
+           "type": "string"
+          },
+          "locked": {
+           "type": "boolean"
+          },
+          "modified": {
+           "type": "string"
+          },
+          "pins": {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          "tags": {
+           "items": {
+            "type": "string"
+           },
+           "type": "array"
+          },
+          "title": {
+           "type": "string"
+          },
+          "todos": {
+           "type": "integer"
+          }
+         },
+         "required": [
+          "id",
+          "title",
+          "locked",
+          "length",
+          "created",
+          "modified",
+          "pins",
+          "location",
+          "todos",
+          "done",
+          "tags",
+          "attachments"
+         ],
+         "type": "object"
+        }
+       },
+       "required": [
+        "metadata",
+        "matchCount"
+       ],
+       "type": "object"
+      },
+      "type": "array"
+     },
+     "resultsWithContent": {
+      "items": {
+       "properties": {
+        "matchCount": {
+         "type": "integer"
+        },
+        "note": {
+         "properties": {
+          "content": {
+           "type": "string"
+          },
+          "metadata": {
+           "properties": {
+            "attachments": {
+             "items": {
+              "type": "string"
+             },
+             "type": "array"
+            },
+            "created": {
+             "type": "string"
+            },
+            "done": {
+             "type": "integer"
+            },
+            "id": {
+             "type": "string"
+            },
+            "length": {
+             "type": "integer"
+            },
+            "location": {
+             "type": "string"
+            },
+            "locked": {
+             "type": "boolean"
+            },
+            "modified": {
+             "type": "string"
+            },
+            "pins": {
+             "items": {
+              "type": "string"
+             },
+             "type": "array"
+            },
+            "tags": {
+             "items": {
+              "type": "string"
+             },
+             "type": "array"
+            },
+            "title": {
+             "type": "string"
+            },
+            "todos": {
+             "type": "integer"
+            }
+           },
+           "required": [
+            "id",
+            "title",
+            "locked",
+            "length",
+            "created",
+            "modified",
+            "pins",
+            "location",
+            "todos",
+            "done",
+            "tags",
+            "attachments"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "metadata",
+          "content"
+         ],
+         "type": "object"
+        }
+       },
+       "required": [
+        "note",
+        "matchCount"
+       ],
+       "type": "object"
+      },
+      "type": "array"
+     },
+     "total": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "total"
+    ],
+    "type": "object"
+   },
+   "title": "Search Notes"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "address": {
+      "type": "string"
+     },
+     "context": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "limit": {
+      "minimum": 0,
+      "type": "integer"
+     },
+     "string": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "string"
+    ],
+    "type": "object"
+   },
+   "name": "search_in_note",
+   "outputSchema": {
+    "properties": {
+     "matches": {
+      "items": {
+       "properties": {
+        "offset": {
+         "type": "integer"
+        },
+        "section": {
+         "properties": {
+          "address": {
+           "type": "string"
+          },
+          "length": {
+           "type": "integer"
+          },
+          "offset": {
+           "type": "integer"
+          }
+         },
+         "required": [
+          "address",
+          "offset",
+          "length"
+         ],
+         "type": "object"
+        },
+        "snippet": {
+         "type": "string"
+        },
+        "source": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "offset",
+        "snippet",
+        "source"
+       ],
+       "type": "object"
+      },
+      "type": "array"
+     }
+    },
+    "required": [
+     "matches"
+    ],
+    "type": "object"
+   },
+   "title": "Search Within Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "address": {
+      "type": "string"
+     },
+     "content": {
+      "type": "string"
+     },
+     "id": {
+      "type": "string"
+     },
+     "position": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "content"
+    ],
+    "type": "object"
+   },
+   "name": "append_to_note",
+   "outputSchema": {
+    "properties": {
+     "changedMetadata": {
+      "properties": {
+       "attachments": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "content": {
+        "type": "string"
+       },
+       "created": {
+        "type": "string"
+       },
+       "done": {
+        "type": "integer"
+       },
+       "id": {
+        "type": "string"
+       },
+       "length": {
+        "type": "integer"
+       },
+       "location": {
+        "type": "string"
+       },
+       "locked": {
+        "type": "boolean"
+       },
+       "modified": {
+        "type": "string"
+       },
+       "pins": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "tags": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "title": {
+        "type": "string"
+       },
+       "todos": {
+        "type": "integer"
+       }
+      },
+      "type": "object"
+     },
+     "section": {
+      "properties": {
+       "address": {
+        "type": "string"
+       },
+       "length": {
+        "type": "integer"
+       },
+       "offset": {
+        "type": "integer"
+       }
+      },
+      "required": [
+       "address",
+       "offset",
+       "length"
+      ],
+      "type": "object"
+     }
+    },
+    "required": [
+     "changedMetadata"
+    ],
+    "type": "object"
+   },
+   "title": "Append To Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "address": {
+      "type": "string"
+     },
+     "baseHash": {
+      "type": "string"
+     },
+     "content": {
+      "type": "string"
+     },
+     "expectedRemovedAttachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "content",
+     "baseHash"
+    ],
+    "type": "object"
+   },
+   "name": "overwrite_note",
+   "outputSchema": {
+    "properties": {
+     "changedMetadata": {
+      "properties": {
+       "attachments": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "content": {
+        "type": "string"
+       },
+       "created": {
+        "type": "string"
+       },
+       "done": {
+        "type": "integer"
+       },
+       "id": {
+        "type": "string"
+       },
+       "length": {
+        "type": "integer"
+       },
+       "location": {
+        "type": "string"
+       },
+       "locked": {
+        "type": "boolean"
+       },
+       "modified": {
+        "type": "string"
+       },
+       "pins": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "tags": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "title": {
+        "type": "string"
+       },
+       "todos": {
+        "type": "integer"
+       }
+      },
+      "type": "object"
+     },
+     "section": {
+      "properties": {
+       "address": {
+        "type": "string"
+       },
+       "length": {
+        "type": "integer"
+       },
+       "offset": {
+        "type": "integer"
+       }
+      },
+      "required": [
+       "address",
+       "offset",
+       "length"
+      ],
+      "type": "object"
+     }
+    },
+    "required": [
+     "changedMetadata"
+    ],
+    "type": "object"
+   },
+   "title": "Overwrite Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "address": {
+      "type": "string"
+     },
+     "edits": {
+      "items": {
+       "additionalProperties": false,
+       "properties": {
+        "all": {
+         "type": "boolean"
+        },
+        "delete": {
+         "type": "boolean"
+        },
+        "find": {
+         "type": "string"
+        },
+        "ignoreCase": {
+         "type": "boolean"
+        },
+        "insertAfter": {
+         "type": "string"
+        },
+        "insertBefore": {
+         "type": "string"
+        },
+        "replace": {
+         "type": "string"
+        },
+        "word": {
+         "type": "boolean"
+        }
+       },
+       "required": [
+        "find"
+       ],
+       "type": "object"
+      },
+      "type": "array"
+     },
+     "expectedRemovedAttachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "edits"
+    ],
+    "type": "object"
+   },
+   "name": "edit_note",
+   "outputSchema": {
+    "properties": {
+     "changedMetadata": {
+      "properties": {
+       "attachments": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "content": {
+        "type": "string"
+       },
+       "created": {
+        "type": "string"
+       },
+       "done": {
+        "type": "integer"
+       },
+       "id": {
+        "type": "string"
+       },
+       "length": {
+        "type": "integer"
+       },
+       "location": {
+        "type": "string"
+       },
+       "locked": {
+        "type": "boolean"
+       },
+       "modified": {
+        "type": "string"
+       },
+       "pins": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "tags": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "title": {
+        "type": "string"
+       },
+       "todos": {
+        "type": "integer"
+       }
+      },
+      "type": "object"
+     },
+     "ops": {
+      "items": {
+       "properties": {
+        "index": {
+         "type": "integer"
+        },
+        "section": {
+         "properties": {
+          "address": {
+           "type": "string"
+          },
+          "length": {
+           "type": "integer"
+          },
+          "offset": {
+           "type": "integer"
+          }
+         },
+         "required": [
+          "address",
+          "offset",
+          "length"
+         ],
+         "type": "object"
+        }
+       },
+       "required": [
+        "index"
+       ],
+       "type": "object"
+      },
+      "type": "array"
+     }
+    },
+    "required": [
+     "ops",
+     "changedMetadata"
+    ],
+    "type": "object"
+   },
+   "title": "Edit Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "list_pins",
+   "outputSchema": {
+    "properties": {
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     }
+    },
+    "required": [
+     "pins"
+    ],
+    "type": "object"
+   },
+   "title": "List Pins"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "targets": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "targets"
+    ],
+    "type": "object"
+   },
+   "name": "add_pins",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Add Pins"
+  },
+  {
+   "annotations": {
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "targets": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "targets"
+    ],
+    "type": "object"
+   },
+   "name": "remove_pins",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Remove Pins"
+  },
+  {
+   "annotations": {
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "archive_note",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Archive Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "trash_note",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Trash Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "restore_note",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Restore Note"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "list_tags",
+   "outputSchema": {
+    "properties": {
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     }
+    },
+    "required": [
+     "tags"
+    ],
+    "type": "object"
+   },
+   "title": "List Tags"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "tags"
+    ],
+    "type": "object"
+   },
+   "name": "add_tags",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Add Tags"
+  },
+  {
+   "annotations": {
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "tags"
+    ],
+    "type": "object"
+   },
+   "name": "remove_tags",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Remove Tags"
+  },
+  {
+   "annotations": {
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "force": {
+      "type": "boolean"
+     },
+     "new": {
+      "type": "string"
+     },
+     "old": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "old",
+     "new"
+    ],
+    "type": "object"
+   },
+   "name": "rename_tag",
+   "outputSchema": {
+    "properties": {
+     "notesUpdated": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "notesUpdated"
+    ],
+    "type": "object"
+   },
+   "title": "Rename Tag"
+  },
+  {
+   "annotations": {
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "tag": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "tag"
+    ],
+    "type": "object"
+   },
+   "name": "delete_tag",
+   "outputSchema": {
+    "properties": {
+     "notesUpdated": {
+      "type": "integer"
+     }
+    },
+    "required": [
+     "notesUpdated"
+    ],
+    "type": "object"
+   },
+   "title": "Delete Tag"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "readOnlyHint": true
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "type": "object"
+   },
+   "name": "list_attachments",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "properties": {
+        "filename": {
+         "type": "string"
+        },
+        "size": {
+         "type": "integer"
+        }
+       },
+       "required": [
+        "filename",
+        "size"
+       ],
+       "type": "object"
+      },
+      "type": "array"
+     }
+    },
+    "required": [
+     "attachments"
+    ],
+    "type": "object"
+   },
+   "title": "List Attachments"
+  },
+  {
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "filename": {
+      "type": "string"
+     },
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     },
+     "url": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "url"
+    ],
+    "type": "object"
+   },
+   "name": "add_attachment_from_url",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Add Attachment From URL"
+  },
+  {
+   "annotations": {
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "filename": {
+      "type": "string"
+     },
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "filename"
+    ],
+    "type": "object"
+   },
+   "name": "delete_attachment",
+   "outputSchema": {
+    "properties": {
+     "attachments": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "content": {
+      "type": "string"
+     },
+     "created": {
+      "type": "string"
+     },
+     "done": {
+      "type": "integer"
+     },
+     "id": {
+      "type": "string"
+     },
+     "length": {
+      "type": "integer"
+     },
+     "location": {
+      "type": "string"
+     },
+     "locked": {
+      "type": "boolean"
+     },
+     "modified": {
+      "type": "string"
+     },
+     "pins": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "tags": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "title": {
+      "type": "string"
+     },
+     "todos": {
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "title": "Delete Attachment"
+  }
+ ]
+}

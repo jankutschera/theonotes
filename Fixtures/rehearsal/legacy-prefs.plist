@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Synthetic preferences of the pre-stage-2 app for scripts/rehearse-identity-flip.sh (REN2-R52). Not a real
+     person's data. Nine keys are on the migration's allow-list (seven names and two prefixes); the last three must
+     never be copied: two Cloudflare sync flags and one key that is on no list. -->
+<plist version="1.0">
+<dict>
+	<key>MainWindow.layout</key>
+	<string>split</string>
+	<key>MainWindow.scope</key>
+	<string>inbox</string>
+	<key>MainWindow.note</key>
+	<string>synthetic-note-id</string>
+	<key>MainWindow.workspace</key>
+	<string>synthetic-workspace-id</string>
+	<key>Export.settings</key>
+	<dict>
+		<key>format</key>
+		<string>pdf</string>
+	</dict>
+	<key>Templates.lastUsed</key>
+	<dict>
+		<key>T1</key>
+		<real>5</real>
+	</dict>
+	<key>Settings.tab</key>
+	<string>general</string>
+	<key>NSWindow Frame MainWindow-AppWindow-1</key>
+	<string>120 80 1280 820 0 0 2560 1415 </string>
+	<key>NSSplitView Subview Frames MainSplit</key>
+	<array>
+		<string>0.000000, 0.000000, 220.000000, 800.000000, NO, NO</string>
+	</array>
+	<key>mac.library.connected</key>
+	<true/>
+	<key>mac.library.paused</key>
+	<false/>
+	<key>Unlisted.key</key>
+	<string>not on the list</string>
+</dict>
+</plist>

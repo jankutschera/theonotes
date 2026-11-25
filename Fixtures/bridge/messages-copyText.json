@@ -1,0 +1,4 @@
+{
+  "type": "copyText",
+  "text": "let greeting = \"Hello, Bärchen\"\n\tprint(greeting) 👋"
+}

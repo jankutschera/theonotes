@@ -1,0 +1,432 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
+/* Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors */
+
+/*
+ * The look of an exported note (M8 Task 10): the static renderer's markup (render.ts) set in the
+ * theme's tokens. `page.ts` puts the `:root` variables in front of this file (theme tokens,
+ * typography, `color-scheme`), in the export page and in a standalone document alike, so every
+ * value below is a `var(--bc-*)` with no colour of its own. No script, no web font, no URL.
+ */
+
+html {
+  background: var(--bc-color-bg);
+  color: var(--bc-color-text);
+}
+
+body {
+  margin: 0;
+  font-family: var(--bc-font-text);
+  font-size: var(--bc-size);
+  line-height: var(--bc-line-height);
+  -webkit-text-size-adjust: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Screen: a column of the typography's line width. Print: the page width. */
+.bc-export {
+  box-sizing: border-box;
+  max-width: var(--bc-line-width);
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+.bc-export > :first-child {
+  margin-top: 0;
+}
+
+/* ---------- Text ---------- */
+
+.bc-export p {
+  margin: 0 0 calc(0.6em + var(--bc-paragraph-spacing));
+  text-indent: var(--bc-paragraph-indent);
+}
+
+.bc-export li > p {
+  text-indent: 0;
+}
+
+.bc-export h1,
+.bc-export h2,
+.bc-export h3,
+.bc-export h4,
+.bc-export h5,
+.bc-export h6 {
+  margin: 1.4em 0 0.5em;
+  font-family: var(--bc-font-heading);
+  font-weight: 650;
+  line-height: 1.25;
+  scroll-margin-top: 1em;
+}
+
+.bc-export h1 { font-size: 1.9em; }
+.bc-export h2 { font-size: 1.5em; }
+.bc-export h3 { font-size: 1.25em; }
+.bc-export h4 { font-size: 1.1em; }
+.bc-export h5 { font-size: 1em; }
+.bc-export h6 { font-size: 0.9em; color: var(--bc-color-secondary); }
+
+.bc-export a {
+  color: var(--bc-color-link);
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.15em;
+}
+
+.bc-export a.bc-wikilink {
+  text-decoration-style: dotted;
+}
+
+.bc-export span.bc-wikilink {
+  color: var(--bc-color-link);
+  text-decoration: underline dotted;
+  text-underline-offset: 0.15em;
+}
+
+.bc-export hr {
+  height: 0;
+  margin: 1.6em 0;
+  border: 0;
+  border-top: 1px solid var(--bc-color-rule);
+}
+
+.bc-export u,
+.bc-export s {
+  text-decoration-thickness: from-font;
+}
+
+/* ---------- Marks and tags ---------- */
+
+.bc-export mark.bc-hl {
+  padding: 0.05em 0.15em;
+  border-radius: 3px;
+  background: var(--bc-highlight);
+  color: inherit;
+}
+
+.bc-export mark.bc-hl-green { background: var(--bc-highlight-green); }
+.bc-export mark.bc-hl-red { background: var(--bc-highlight-red); }
+.bc-export mark.bc-hl-blue { background: var(--bc-highlight-blue); }
+.bc-export mark.bc-hl-yellow { background: var(--bc-highlight-yellow); }
+.bc-export mark.bc-hl-purple { background: var(--bc-highlight-purple); }
+
+.bc-export .bc-tag {
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  background: var(--bc-color-tag-bg);
+  color: var(--bc-color-tag);
+}
+
+/* ---------- Lists and todos ---------- */
+
+.bc-export ul,
+.bc-export ol {
+  margin: 0 0 calc(0.6em + var(--bc-paragraph-spacing));
+  padding-left: 1.6em;
+}
+
+.bc-export li {
+  margin: 0.15em 0;
+}
+
+.bc-export li.bc-todo {
+  list-style: none;
+  margin-left: -1.4em;
+}
+
+.bc-export li.bc-todo > input[type="checkbox"] {
+  margin: 0 0.45em 0 0;
+  vertical-align: -0.1em;
+  accent-color: var(--bc-color-accent);
+}
+
+/* ---------- Quotes and callouts ---------- */
+
+.bc-export blockquote {
+  margin: 0 0 calc(0.6em + var(--bc-paragraph-spacing));
+  padding: 0.1em 0 0.1em 1em;
+  border-left: 3px solid var(--bc-color-quote-bar);
+  color: var(--bc-color-quote);
+}
+
+.bc-export blockquote > :last-child,
+.bc-export .bc-callout > :last-child {
+  margin-bottom: 0;
+}
+
+.bc-export .bc-callout {
+  margin: 0 0 calc(0.6em + var(--bc-paragraph-spacing));
+  padding: 0.7em 1em;
+  border: 1px solid var(--bc-callout-border);
+  border-left-width: 4px;
+  border-left-color: var(--bc-callout-icon);
+  border-radius: 6px;
+  background: var(--bc-callout-bg);
+}
+
+.bc-export .bc-callout-title {
+  margin-bottom: 0.3em;
+  color: var(--bc-callout-title);
+  font-weight: 650;
+  text-indent: 0;
+}
+
+.bc-export .bc-callout-note {
+  --bc-callout-bg: var(--bc-color-callout-note-bg);
+  --bc-callout-border: var(--bc-color-callout-note-border);
+  --bc-callout-icon: var(--bc-color-callout-note-icon);
+  --bc-callout-title: var(--bc-color-callout-note-title);
+}
+
+.bc-export .bc-callout-tip {
+  --bc-callout-bg: var(--bc-color-callout-tip-bg);
+  --bc-callout-border: var(--bc-color-callout-tip-border);
+  --bc-callout-icon: var(--bc-color-callout-tip-icon);
+  --bc-callout-title: var(--bc-color-callout-tip-title);
+}
+
+.bc-export .bc-callout-important {
+  --bc-callout-bg: var(--bc-color-callout-important-bg);
+  --bc-callout-border: var(--bc-color-callout-important-border);
+  --bc-callout-icon: var(--bc-color-callout-important-icon);
+  --bc-callout-title: var(--bc-color-callout-important-title);
+}
+
+.bc-export .bc-callout-warning {
+  --bc-callout-bg: var(--bc-color-callout-warning-bg);
+  --bc-callout-border: var(--bc-color-callout-warning-border);
+  --bc-callout-icon: var(--bc-color-callout-warning-icon);
+  --bc-callout-title: var(--bc-color-callout-warning-title);
+}
+
+.bc-export .bc-callout-caution {
+  --bc-callout-bg: var(--bc-color-callout-caution-bg);
+  --bc-callout-border: var(--bc-color-callout-caution-border);
+  --bc-callout-icon: var(--bc-color-callout-caution-icon);
+  --bc-callout-title: var(--bc-color-callout-caution-title);
+}
+
+/* ---------- Tables ---------- */
+
+.bc-export table {
+  margin: 0 0 calc(0.6em + var(--bc-paragraph-spacing));
+  border-collapse: collapse;
+  max-width: 100%;
+}
+
+.bc-export th,
+.bc-export td {
+  padding: 0.4em 0.7em;
+  border: 1px solid var(--bc-color-table-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.bc-export th {
+  background: var(--bc-color-table-header-bg);
+  font-weight: 650;
+}
+
+/* ---------- Code ---------- */
+
+.bc-export code {
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  background: var(--bc-color-code-bg);
+  font-family: var(--bc-font-code);
+  font-size: 0.9em;
+}
+
+.bc-export pre {
+  margin: 0 0 calc(0.6em + var(--bc-paragraph-spacing));
+  padding: 0.8em 1em;
+  border-radius: 6px;
+  background: var(--bc-color-code-bg);
+  overflow-x: auto;
+}
+
+.bc-export pre > code {
+  padding: 0;
+  background: none;
+  font-size: 0.9em;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+/* The highlighter's classes (Lezer's classHighlighter) in the theme's code colours. */
+.bc-export .tok-keyword { color: var(--bc-color-code-keyword); }
+.bc-export .tok-string,
+.bc-export .tok-string2 { color: var(--bc-color-code-string); }
+.bc-export .tok-number,
+.bc-export .tok-bool,
+.bc-export .tok-atom { color: var(--bc-color-code-number); }
+.bc-export .tok-comment { color: var(--bc-color-code-comment); font-style: italic; }
+.bc-export .tok-typeName,
+.bc-export .tok-className,
+.bc-export .tok-namespace { color: var(--bc-color-code-type); }
+.bc-export .tok-macroName,
+.bc-export .tok-variableName2 { color: var(--bc-color-code-function); }
+.bc-export .tok-propertyName,
+.bc-export .tok-labelName { color: var(--bc-color-code-property); }
+.bc-export .tok-meta { color: var(--bc-color-code-meta); }
+.bc-export .tok-link,
+.bc-export .tok-url { color: var(--bc-color-link); }
+.bc-export .tok-heading,
+.bc-export .tok-strong { font-weight: 650; }
+.bc-export .tok-emphasis { font-style: italic; }
+.bc-export .tok-strikethrough { text-decoration: line-through; }
+.bc-export .tok-inserted { color: var(--bc-color-code-string); }
+.bc-export .tok-deleted,
+.bc-export .tok-invalid { color: var(--bc-color-error); }
+
+/* ---------- Math, diagrams, images, files ---------- */
+
+.bc-export .bc-math svg {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.bc-export .bc-math-display {
+  display: block;
+  margin: 0.8em 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.bc-export .bc-render-error {
+  display: block;
+  margin: -0.3em 0 0.8em;
+  padding: 0.3em 0.6em;
+  border-radius: 4px;
+  background: var(--bc-color-math-error-bg);
+  color: var(--bc-color-math-error);
+  font-size: 0.9em;
+  text-indent: 0;
+}
+
+.bc-export span.bc-render-error {
+  display: inline;
+  margin: 0 0 0 0.4em;
+}
+
+.bc-export figure.bc-mermaid {
+  margin: 0 0 calc(0.6em + var(--bc-paragraph-spacing));
+  text-align: center;
+}
+
+.bc-export figure.bc-mermaid img {
+  max-width: 100%;
+  height: auto;
+}
+
+.bc-export img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.bc-export a.bc-file {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6em;
+  max-width: 100%;
+  margin: 0.2em 0;
+  padding: 0.4em 0.8em;
+  border: 1px solid var(--bc-color-rule);
+  border-radius: 6px;
+  background: var(--bc-color-code-bg);
+  color: var(--bc-color-text);
+  text-decoration: none;
+}
+
+.bc-export a.bc-file .bc-file-name {
+  font-weight: 600;
+  color: var(--bc-color-link);
+}
+
+.bc-export a.bc-file .bc-file-kind,
+.bc-export a.bc-file .bc-file-size {
+  color: var(--bc-color-secondary);
+  font-size: 0.85em;
+}
+
+.bc-export a.bc-file.bc-missing {
+  border-style: dashed;
+  opacity: 0.7;
+}
+
+/* ---------- Footnotes ---------- */
+
+.bc-export sup.bc-fn-ref {
+  font-size: 0.75em;
+  line-height: 0;
+}
+
+.bc-export sup.bc-fn-ref a {
+  text-decoration: none;
+}
+
+.bc-export section.bc-footnotes {
+  margin-top: 2em;
+  padding-top: 0.6em;
+  border-top: 1px solid var(--bc-color-rule);
+  color: var(--bc-color-secondary);
+  font-size: 0.9em;
+}
+
+.bc-export section.bc-footnotes ol {
+  margin-bottom: 0;
+}
+
+.bc-export a.bc-fn-back {
+  margin-left: 0.3em;
+  text-decoration: none;
+}
+
+/* ---------- Print and PDF ---------- */
+
+@page {
+  margin: 18mm;
+}
+
+@media print {
+  html,
+  body {
+    background: var(--bc-color-bg);
+    /* Backgrounds (code, callouts, highlights, table headers) are part of the look. */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .bc-export {
+    max-width: none;
+    padding: 0;
+  }
+
+  .bc-export h1,
+  .bc-export h2,
+  .bc-export h3,
+  .bc-export h4,
+  .bc-export h5,
+  .bc-export h6 {
+    break-after: avoid;
+  }
+
+  .bc-export pre,
+  .bc-export table,
+  .bc-export figure,
+  .bc-export img,
+  .bc-export .bc-callout,
+  .bc-export .bc-math-display,
+  .bc-export a.bc-file {
+    break-inside: avoid;
+  }
+
+  .bc-export pre {
+    overflow: visible;
+  }
+
+  .bc-export pre > code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}

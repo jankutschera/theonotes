@@ -1,0 +1,14 @@
+{
+  "type": "pasteAttachments",
+  "noteId": "0192f3a4-5b6c-7d8e-9f01-23456789abcd",
+  "insertId": "ins-2",
+  "sourceNoteId": "0192f3a4-5b6c-7d8e-9f01-000000000000",
+  "text": "see ![](photo%202.jpg)",
+  "items": [
+    {
+      "from": 4,
+      "to": 22,
+      "filename": "photo 2.jpg"
+    }
+  ]
+}

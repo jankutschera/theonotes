@@ -1,0 +1,1457 @@
+{
+ "commands": [
+  {
+   "path": [
+    "list"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [],
+   "options": [
+    {
+     "long": "--sort",
+     "short": "-s",
+     "aliases": [],
+     "value": "sort",
+     "default": "pinned,modified",
+     "escapes": false
+    },
+    {
+     "long": "--limit",
+     "short": "-n",
+     "aliases": [],
+     "value": "limit",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--offset",
+     "short": "-o",
+     "aliases": [],
+     "value": "offset",
+     "default": "0",
+     "escapes": false
+    },
+    {
+     "long": "--location",
+     "short": "-l",
+     "aliases": [],
+     "value": "location",
+     "default": "notes",
+     "escapes": false
+    },
+    {
+     "long": "--tag",
+     "short": null,
+     "aliases": [],
+     "value": "tag",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--count"
+   ],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "id",
+    "title",
+    "tags",
+    "length"
+   ],
+   "allFields": [
+    "id",
+    "title",
+    "locked",
+    "tags",
+    "length",
+    "created",
+    "modified",
+    "pins",
+    "location",
+    "todos",
+    "done",
+    "attachments"
+   ],
+   "extraFields": [
+    "content"
+   ]
+  },
+  {
+   "path": [
+    "search"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "query-arg",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--query",
+     "short": "-q",
+     "aliases": [],
+     "value": "query",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--sort",
+     "short": "-s",
+     "aliases": [],
+     "value": "sort",
+     "default": "pinned,modified",
+     "escapes": false
+    },
+    {
+     "long": "--limit",
+     "short": "-n",
+     "aliases": [],
+     "value": "limit",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--offset",
+     "short": "-o",
+     "aliases": [],
+     "value": "offset",
+     "default": "0",
+     "escapes": false
+    },
+    {
+     "long": "--location",
+     "short": "-l",
+     "aliases": [],
+     "value": "location",
+     "default": "notes",
+     "escapes": false
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--count"
+   ],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "id",
+    "title",
+    "tags",
+    "length",
+    "matches"
+   ],
+   "allFields": [
+    "id",
+    "title",
+    "locked",
+    "tags",
+    "length",
+    "created",
+    "modified",
+    "pins",
+    "location",
+    "todos",
+    "done",
+    "attachments",
+    "matches"
+   ],
+   "extraFields": [
+    "content"
+   ]
+  },
+  {
+   "path": [
+    "cat"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--section",
+     "short": null,
+     "aliases": [],
+     "value": "section",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--offset",
+     "short": "-o",
+     "aliases": [],
+     "value": "offset",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--limit",
+     "short": "-n",
+     "aliases": [],
+     "value": "limit",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": true,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "show"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "id",
+    "title",
+    "tags"
+   ],
+   "allFields": [
+    "id",
+    "title",
+    "locked",
+    "tags",
+    "length",
+    "created",
+    "modified",
+    "pins",
+    "location",
+    "todos",
+    "done",
+    "attachments"
+   ],
+   "extraFields": [
+    "content"
+   ]
+  },
+  {
+   "path": [
+    "outline"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--section",
+     "short": null,
+     "aliases": [],
+     "value": "section",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "address",
+    "offset",
+    "length"
+   ],
+   "allFields": [
+    "address",
+    "offset",
+    "length"
+   ],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "search-in"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--string",
+     "short": "-s",
+     "aliases": [
+      "--find"
+     ],
+     "value": "string",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--context",
+     "short": null,
+     "aliases": [],
+     "value": "context",
+     "default": "120",
+     "escapes": false
+    },
+    {
+     "long": "--limit",
+     "short": "-n",
+     "aliases": [],
+     "value": "limit",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--section",
+     "short": null,
+     "aliases": [],
+     "value": "section",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--count"
+   ],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "offset",
+    "snippet",
+    "section",
+    "source"
+   ],
+   "allFields": [
+    "offset",
+    "snippet",
+    "section",
+    "source"
+   ],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "create"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "title",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--content",
+     "short": "-c",
+     "aliases": [],
+     "value": "content",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--tags",
+     "short": null,
+     "aliases": [],
+     "value": "tags",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--if-not-exists"
+   ],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "id",
+    "title",
+    "tags"
+   ],
+   "allFields": [
+    "id",
+    "title",
+    "locked",
+    "tags",
+    "length",
+    "created",
+    "modified",
+    "pins",
+    "location",
+    "todos",
+    "done",
+    "attachments"
+   ],
+   "extraFields": [
+    "content"
+   ]
+  },
+  {
+   "path": [
+    "append"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--content",
+     "short": "-c",
+     "aliases": [],
+     "value": "content",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--position",
+     "short": null,
+     "aliases": [],
+     "value": "position",
+     "default": "end",
+     "escapes": false
+    },
+    {
+     "long": "--section",
+     "short": null,
+     "aliases": [],
+     "value": "section",
+     "default": null,
+     "escapes": true
+    }
+   ],
+   "flags": [
+    "--no-update-modified"
+   ],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "edit"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--section",
+     "short": null,
+     "aliases": [],
+     "value": "section",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--find",
+     "short": null,
+     "aliases": [],
+     "value": "find",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--replace",
+     "short": null,
+     "aliases": [],
+     "value": "replace",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--insert-after",
+     "short": null,
+     "aliases": [],
+     "value": "insert-after",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--insert-before",
+     "short": null,
+     "aliases": [],
+     "value": "insert-before",
+     "default": null,
+     "escapes": true
+    }
+   ],
+   "flags": [
+    "--delete",
+    "--all",
+    "--ignore-case",
+    "--word",
+    "--no-update-modified",
+    "--force"
+   ],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "overwrite"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--content",
+     "short": "-c",
+     "aliases": [],
+     "value": "content",
+     "default": null,
+     "escapes": true
+    },
+    {
+     "long": "--base",
+     "short": null,
+     "aliases": [],
+     "value": "base",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--section",
+     "short": null,
+     "aliases": [],
+     "value": "section",
+     "default": null,
+     "escapes": true
+    }
+   ],
+   "flags": [
+    "--no-update-modified",
+    "--force"
+   ],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "tags",
+    "list"
+   ],
+   "defaultSubcommand": true,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--count"
+   ],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "tag"
+   ],
+   "allFields": [
+    "tag"
+   ],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "tags",
+    "add"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    },
+    {
+     "name": "tags",
+     "variadic": true
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "tags",
+    "remove"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    },
+    {
+     "name": "tags",
+     "variadic": true
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "tags",
+    "rename"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "old",
+     "variadic": false
+    },
+    {
+     "name": "new",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--from",
+     "short": null,
+     "aliases": [],
+     "value": "from",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--to",
+     "short": null,
+     "aliases": [],
+     "value": "to",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--force"
+   ],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "tags",
+    "delete"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "tag",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--name",
+     "short": null,
+     "aliases": [],
+     "value": "name",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "attachments",
+    "list"
+   ],
+   "defaultSubcommand": true,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "filename",
+    "size"
+   ],
+   "allFields": [
+    "filename",
+    "size"
+   ],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "attachments",
+    "add"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--filename",
+     "short": "-f",
+     "aliases": [],
+     "value": "filename",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--no-update-modified"
+   ],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "attachments",
+    "add-url"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--url",
+     "short": "-u",
+     "aliases": [],
+     "value": "url",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--filename",
+     "short": "-f",
+     "aliases": [],
+     "value": "filename",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--no-update-modified"
+   ],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "attachments",
+    "delete"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--filename",
+     "short": "-f",
+     "aliases": [],
+     "value": "filename",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--no-update-modified"
+   ],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "attachments",
+    "save"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--filename",
+     "short": "-f",
+     "aliases": [],
+     "value": "filename",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "pin",
+    "list"
+   ],
+   "defaultSubcommand": true,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "pin"
+   ],
+   "allFields": [
+    "pin"
+   ],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "pin",
+    "add"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    },
+    {
+     "name": "targets",
+     "variadic": true
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "pin",
+    "remove"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    },
+    {
+     "name": "targets",
+     "variadic": true
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "trash"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "archive"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "restore"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "app",
+    "open"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [
+    {
+     "name": "note-id",
+     "variadic": false
+    }
+   ],
+   "options": [
+    {
+     "long": "--title",
+     "short": "-t",
+     "aliases": [],
+     "value": "title",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--header",
+     "short": null,
+     "aliases": [],
+     "value": "header",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--selection-text",
+     "short": null,
+     "aliases": [],
+     "value": "selection-text",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--selection-offset",
+     "short": null,
+     "aliases": [],
+     "value": "selection-offset",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--selection-length",
+     "short": null,
+     "aliases": [],
+     "value": "selection-length",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [
+    "--edit",
+    "--new-window",
+    "--float"
+   ],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  },
+  {
+   "path": [
+    "app",
+    "get-selection"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [],
+   "options": [
+    {
+     "long": "--format",
+     "short": null,
+     "aliases": [],
+     "value": "format",
+     "default": "tsv",
+     "escapes": false
+    },
+    {
+     "long": "--fields",
+     "short": null,
+     "aliases": [],
+     "value": "fields",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": true,
+   "defaultFields": [
+    "id",
+    "title",
+    "selectionOffset",
+    "selectionLength",
+    "selectionText"
+   ],
+   "allFields": [
+    "id",
+    "title",
+    "locked",
+    "tags",
+    "length",
+    "created",
+    "modified",
+    "pins",
+    "location",
+    "todos",
+    "done",
+    "attachments",
+    "selectionOffset",
+    "selectionLength",
+    "selectionText"
+   ],
+   "extraFields": [
+    "content"
+   ]
+  },
+  {
+   "path": [
+    "mcp-server"
+   ],
+   "defaultSubcommand": false,
+   "arguments": [],
+   "options": [
+    {
+     "long": "--only-tags",
+     "short": null,
+     "aliases": [],
+     "value": "only-tags",
+     "default": null,
+     "escapes": false
+    },
+    {
+     "long": "--exclude-tags",
+     "short": null,
+     "aliases": [],
+     "value": "exclude-tags",
+     "default": null,
+     "escapes": false
+    }
+   ],
+   "flags": [],
+   "acceptsFormat": false,
+   "defaultFields": [],
+   "allFields": [],
+   "extraFields": []
+  }
+ ],
+ "groups": {
+  "tags": "list",
+  "attachments": "list",
+  "pin": "list",
+  "app": null
+ }
+}

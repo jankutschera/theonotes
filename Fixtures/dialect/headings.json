@@ -1,0 +1,253 @@
+[
+  {
+    "name": "h1",
+    "input": "# One",
+    "expected": [
+      {
+        "level": 1,
+        "text": "One",
+        "line": 1
+      }
+    ]
+  },
+  {
+    "name": "all levels",
+    "input": "# A\n## B\n### C\n#### D\n##### E\n###### F",
+    "expected": [
+      {
+        "level": 1,
+        "text": "A",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "B",
+        "line": 2
+      },
+      {
+        "level": 3,
+        "text": "C",
+        "line": 3
+      },
+      {
+        "level": 4,
+        "text": "D",
+        "line": 4
+      },
+      {
+        "level": 5,
+        "text": "E",
+        "line": 5
+      },
+      {
+        "level": 6,
+        "text": "F",
+        "line": 6
+      }
+    ]
+  },
+  {
+    "name": "seven hashes",
+    "input": "####### Seven",
+    "expected": []
+  },
+  {
+    "name": "no space",
+    "input": "#NoSpace",
+    "expected": []
+  },
+  {
+    "name": "setext equals disabled",
+    "input": "Text\n===",
+    "expected": []
+  },
+  {
+    "name": "setext dashes disabled",
+    "input": "Text\n---",
+    "expected": []
+  },
+  {
+    "name": "in code",
+    "input": "```\n# in code\n```\n# After",
+    "expected": [
+      {
+        "level": 1,
+        "text": "After",
+        "line": 4
+      }
+    ]
+  },
+  {
+    "name": "line numbers count front matter",
+    "input": "---\ntitle: x\n---\n# H",
+    "expected": [
+      {
+        "level": 1,
+        "text": "H",
+        "line": 4
+      }
+    ]
+  },
+  {
+    "name": "tag stripped from text",
+    "input": "## Plan #work",
+    "expected": [
+      {
+        "level": 2,
+        "text": "Plan",
+        "line": 1
+      }
+    ]
+  },
+  {
+    "name": "closing sequence",
+    "input": "# Title ##",
+    "expected": [
+      {
+        "level": 1,
+        "text": "Title",
+        "line": 1
+      }
+    ]
+  },
+  {
+    "name": "three spaces indent",
+    "input": "   # Three spaces",
+    "expected": [
+      {
+        "level": 1,
+        "text": "Three spaces",
+        "line": 1
+      }
+    ]
+  },
+  {
+    "name": "four spaces indent",
+    "input": "    # Four spaces",
+    "expected": []
+  },
+  {
+    "name": "in quote",
+    "input": "> # Quoted",
+    "expected": []
+  },
+  {
+    "name": "CRLF",
+    "input": "# A\r\nbody\r\n## B\r\n",
+    "expected": [
+      {
+        "level": 1,
+        "text": "A",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "B",
+        "line": 3
+      }
+    ]
+  },
+  {
+    "name": "inline markup stripped",
+    "input": "# **Bold** heading",
+    "expected": [
+      {
+        "level": 1,
+        "text": "Bold heading",
+        "line": 1
+      }
+    ]
+  },
+  {
+    "name": "empty heading",
+    "input": "#",
+    "expected": []
+  },
+  {
+    "name": "wiki link and code",
+    "input": "# [[Note|alias]] and `code`",
+    "expected": [
+      {
+        "level": 1,
+        "text": "alias and code",
+        "line": 1
+      }
+    ]
+  },
+  {
+    "name": "tab after marker",
+    "input": "#\tTab heading",
+    "expected": [
+      {
+        "level": 1,
+        "text": "Tab heading",
+        "line": 1
+      }
+    ]
+  },
+  {
+    "name": "emoji and umlaut",
+    "input": "# 🐻 Bär",
+    "expected": [
+      {
+        "level": 1,
+        "text": "🐻 Bär",
+        "line": 1
+      }
+    ]
+  },
+  {
+    "name": "in html comment",
+    "input": "<!--\n# hidden\n-->\n## shown",
+    "expected": [
+      {
+        "level": 2,
+        "text": "shown",
+        "line": 4
+      }
+    ]
+  },
+  {
+    "name": "in math block",
+    "input": "$$\n# x\n$$",
+    "expected": []
+  },
+  {
+    "name": "heading after list fence",
+    "input": "- ```\n  # not\n  ```\n# Yes",
+    "expected": [
+      {
+        "level": 1,
+        "text": "Yes",
+        "line": 4
+      }
+    ]
+  },
+  {
+    "name": "hash-only closing keeps C#",
+    "input": "## Learn C#",
+    "expected": [
+      {
+        "level": 2,
+        "text": "Learn C#",
+        "line": 1
+      }
+    ]
+  },
+  {
+    "name": "hash and space inside a cell (Bear oracle)",
+    "input": "| # x |\n|---|",
+    "expected": []
+  },
+  {
+    "name": "heading right after a table",
+    "input": "| a |\n|---|\n# After",
+    "expected": [
+      {
+        "level": 1,
+        "text": "After",
+        "line": 3
+      }
+    ]
+  }
+]

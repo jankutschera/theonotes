@@ -1,0 +1,5 @@
+{
+  "type": "copyText",
+  "text": "<table><tr><th>Name</th><th>Größe</th></tr><tr><td>Bärchen</td><td>👋</td></tr></table>",
+  "html": "<table><tr><th>Name</th><th>Größe</th></tr><tr><td>Bärchen</td><td>👋</td></tr></table>"
+}

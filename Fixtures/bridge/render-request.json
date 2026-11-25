@@ -1,0 +1,25 @@
+{
+  "v": 1,
+  "noteId": "01990000-0000-7000-8000-000000000001",
+  "title": "Export fixture",
+  "text": "# Export fixture\n\nInline math $E = mc^2$, a link to [[Other note/Second]] and [[Missing]].\n\n![](photo%202.jpg)\n\n[report.pdf](report.pdf)<!-- {\"embed\":\"true\"} -->\n\n```mermaid\nflowchart LR\n  A --> B\n```\n",
+  "mode": "document",
+  "theme": { "--bc-color-text": "#202020", "--bc-color-bg": "#fafafa" },
+  "appearance": "light",
+  "typography": {
+    "fontSize": 17,
+    "lineHeight": 1.5,
+    "lineWidth": 680,
+    "paragraphSpacing": 0.5,
+    "paragraphIndent": 0,
+    "fontText": "Iowan Old Style",
+    "fontHeading": "Avenir Next",
+    "fontCode": "Menlo"
+  },
+  "attachmentSources": {
+    "photo 2.jpg": "baerchen-asset://attachment/01990000-0000-7000-8000-000000000001/photo%202.jpg",
+    "report.pdf": "baerchen-asset://attachment/01990000-0000-7000-8000-000000000001/report.pdf"
+  },
+  "attachmentSizes": { "photo 2.jpg": 20480, "report.pdf": 1048576 },
+  "wikiLinks": [{ "href": "Other%20note.html#h-2" }, null]
+}

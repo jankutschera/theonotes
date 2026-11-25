@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
+
+import Foundation
+
+/// The public source of the apps (GPL-3.0 corresponding-source offer, plan task L5, OSS-R4). The About window on
+/// the Mac and Settings on iPhone and iPad show `sourceOffer`. The repository goes public before the first build
+/// that carries this line ships (1.1.1).
+public enum ProjectLinks {
+    public static let sourceRepository = URL(string: "https://github.com/jankutschera/theonotes")!
+    public static let sourceOffer = "Free software under the GNU General Public License v3. Source code: "
+        + sourceRepository.absoluteString
+}

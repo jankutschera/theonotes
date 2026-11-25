@@ -1,0 +1,5 @@
+{
+  "before": "hello world\nbye",
+  "changeset": [6, [5, "there", "friend"], 4],
+  "after": "hello there\nfriend\nbye"
+}

@@ -1,0 +1,9 @@
+{
+  "type": "loadNote",
+  "noteId": "0192f3a4-5b6c-7d8e-9f01-23456789abcd",
+  "text": "# Title\nsome **bold** 👩‍👩‍👧 漢字",
+  "revision": 7,
+  "readOnly": false,
+  "selection": { "anchor": 7, "head": 7 },
+  "scrollTop": 120
+}

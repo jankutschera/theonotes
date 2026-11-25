@@ -1,0 +1,2674 @@
+{
+ "bearcliVersion": "3.0.2 (14921)",
+ "errors": [
+  {
+   "args": ["show","ZZZ-NOPE","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["show","ZZZ-NOPE"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: ZZZ-NOPE\n"
+  },
+  {
+   "args": ["show","ZZZ-NOPE","--format","csv"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: ZZZ-NOPE\n"
+  },
+  {
+   "args": ["show"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Note ID or title is required\n"
+  },
+  {
+   "args": ["show","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"Note ID or title is required\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["show","--title","ZZZ NOPE TITLE","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"No note with title: ZZZ NOPE TITLE (in notes; use the note ID for trash/archive)\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["show","--title","ZZZ NOPE TITLE"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: No note with title: ZZZ NOPE TITLE (in notes; use the note ID for trash/archive)\n"
+  },
+  {
+   "args": ["show","ZZZ-NOPE","--title","ZZZ NOPE TITLE","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"Provide note ID or title, not both\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["show","ZZZ-NOPE","--fields","bogus","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["show","ZZZ-NOPE","--format","xml"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: The value 'xml' is invalid for '--format <format>'. Please provide one of 'tsv', 'csv' or 'json'.\nHelp:  --format <format>  <help text>\nUsage: bearcli show [<note-id>] [--title <title>] [--format <format>] [--fields <fields>]\n  See 'bearcli show --help' for more information.\n"
+  },
+  {
+   "args": ["cat","ZZZ-NOPE"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: ZZZ-NOPE\n"
+  },
+  {
+   "args": ["cat","ZZZ-NOPE","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["cat","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"Note ID or title is required\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["cat","ZZZ-NOPE","--section","## X","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["cat","ZZZ-NOPE","--section","## X","--offset","1","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"Provide address or offset/limit, not both\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["cat","ZZZ-NOPE","--offset","x","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"The value 'x' is invalid for '--offset <offset>'\\nHelp:  --offset <offset>  <help text>\\nUsage: bearcli cat [<note-id>] [--title <title>] [--section <section>] [--offset <offset>] [--limit <limit>] [--format <format>]\\n  See 'bearcli cat --help' for more information.\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["cat","ZZZ-NOPE","--offset","-1","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"Missing value for '--offset <offset>'\\nHelp:  --offset <offset>  <help text>\\nUsage: bearcli cat [<note-id>] [--title <title>] [--section <section>] [--offset <offset>] [--limit <limit>] [--format <format>]\\n  See 'bearcli cat --help' for more information.\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["outline","ZZZ-NOPE"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: ZZZ-NOPE\n"
+  },
+  {
+   "args": ["outline","ZZZ-NOPE","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["outline","ZZZ-NOPE","--section","## X","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["search-in","ZZZ-NOPE","--string","x"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: ZZZ-NOPE\n"
+  },
+  {
+   "args": ["search-in","ZZZ-NOPE","--string","x","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["search-in","ZZZ-NOPE","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"--string is required\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["search-in","ZZZ-NOPE","--string","x","--context","x"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: The value 'x' is invalid for '--context <context>'\nHelp:  --context <context>  <help text>\nUsage: bearcli search-in [<note-id>] [--title <title>] [--string <string>] [--context <context>] [--limit <limit>] [--section <section>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli search-in --help' for more information.\n"
+  },
+  {
+   "args": ["tags","list","ZZZ-NOPE"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: ZZZ-NOPE\n"
+  },
+  {
+   "args": ["tags","list","ZZZ-NOPE","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["pin","list","ZZZ-NOPE"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: ZZZ-NOPE\n"
+  },
+  {
+   "args": ["pin","list","ZZZ-NOPE","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["attachments","list","ZZZ-NOPE"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: ZZZ-NOPE\n"
+  },
+  {
+   "args": ["attachments","list","ZZZ-NOPE","--format","json"],
+   "exit": 1,
+   "stdout": "{\"error\":{\"code\":\"note_not_found\",\"message\":\"Note not found: ZZZ-NOPE\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["list","-n"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '-n <limit>'\nHelp:  -n <limit>  <help text>\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["list","-n","x"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: The value 'x' is invalid for '-n <limit>'\nHelp:  -n <limit>  <help text>\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["list","-n","-1"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '-n <limit>'\nHelp:  -n <limit>  <help text>\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["list","-o","-1"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '-o <offset>'\nHelp:  -o <offset>  <help text>\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["list","--tag"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '--tag <tag>'\nHelp:  --tag <tag>  <help text>\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["list","--format","xml"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: The value 'xml' is invalid for '--format <format>'. Please provide one of 'tsv', 'csv' or 'json'.\nHelp:  --format <format>  <help text>\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["list","--format","json","-n"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"Missing value for '-n <limit>'\\nHelp:  -n <limit>  <help text>\\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\\n  See 'bearcli list --help' for more information.\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["list","--format"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '--format <format>'\nHelp:  --format <format>  <help text>\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["list","--location","bogus"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Invalid location: bogus\n"
+  },
+  {
+   "args": ["list","--location","bogus","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"Invalid location: bogus\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["list","--fields","bogus"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Unknown field: bogus (valid: id, title, locked, tags, length, created, modified, pins, location, todos, done, attachments)\n"
+  },
+  {
+   "args": ["list","--fields","bogus","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"Unknown field: bogus (valid: id, title, locked, tags, length, created, modified, pins, location, todos, done, attachments)\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["list","--sort","bogus"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: invalid sort field: bogus (valid: pinned, modified, created, title)\n"
+  },
+  {
+   "args": ["list","--sort","bogus","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"invalid sort field: bogus (valid: pinned, modified, created, title)\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["list","--sort","title:sideways","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"invalid sort order: sideways (valid: asc, desc)\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["list","--bogus"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Unknown option '--bogus'\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["list","extra"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Unexpected argument 'extra'\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["bogus-subcommand"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Unexpected argument 'bogus-subcommand'\nUsage: bearcli [--version] <subcommand>\n  See 'bearcli --help' for more information.\n"
+  },
+  {
+   "args": ["search"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Query is required\n"
+  },
+  {
+   "args": ["search","--format","json"],
+   "exit": 64,
+   "stdout": "{\"error\":{\"code\":\"usage\",\"message\":\"Query is required\"}}\n",
+   "stderr": ""
+  },
+  {
+   "args": ["search","a","--query","b"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Specify the query as a positional argument or --query, not both\n"
+  },
+  {
+   "args": ["search","--query"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '--query <query>'\nHelp:  --query <query>  <help text>\nUsage: bearcli search [<query-arg>] [--query <query>] [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli search --help' for more information.\n"
+  },
+  {
+   "args": ["search","-x"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Query starts with \"-\". Use --query to pass it\n"
+  },
+  {
+   "args": ["list","--limit","-1"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '--limit <limit>'\nHelp:  --limit <limit>  <help text>\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["list","--limit=-1"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Limit must be non-negative\n"
+  },
+  {
+   "args": ["list","-n=-1"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Limit must be non-negative\n"
+  },
+  {
+   "args": ["list","--tag","-foo"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '--tag <tag>'\nHelp:  --tag <tag>  <help text>\nUsage: bearcli list [--sort <sort>] [--limit <limit>] [--offset <offset>] [--location <location>] [--tag <tag>] [--count] [--format <format>] [--fields <fields>]\n  See 'bearcli list --help' for more information.\n"
+  },
+  {
+   "args": ["show","zzqqnote","--title","-x"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '--title <title>'\nHelp:  --title <title>  <help text>\nUsage: bearcli show [<note-id>] [--title <title>] [--format <format>] [--fields <fields>]\n  See 'bearcli show --help' for more information.\n"
+  },
+  {
+   "args": ["cat","zzqqnote","--section","-x"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Missing value for '--section <section>'\nHelp:  --section <section>  <help text>\nUsage: bearcli cat [<note-id>] [--title <title>] [--section <section>] [--offset <offset>] [--limit <limit>] [--format <format>]\n  See 'bearcli cat --help' for more information.\n"
+  },
+  {
+   "args": ["cat","zzqqnote","--section=-x"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: zzqqnote\n"
+  },
+  {
+   "args": ["search-in","zzqqnote","--string","-x"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: zzqqnote\n"
+  },
+  {
+   "args": ["search-in","zzqqnote","--string=-x"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: zzqqnote\n"
+  },
+  {
+   "args": ["search-in","zzqqnote","--string","- [ ]"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: zzqqnote\n"
+  },
+  {
+   "args": ["search-in","zzqqnote","--string=- [ ]"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Error: Note not found: zzqqnote\n"
+  },
+  {
+   "args": ["search","zzqqxx","-n3"],
+   "exit": 64,
+   "stdout": "",
+   "stderr": "Error: Query starts with \"-\". Use --query to pass it\n"
+  }
+ ],
+ "facts": {
+  "versionOutput": "<version>",
+  "hashAlgorithm": "sha256-hex-prefix",
+  "hashLength": 7,
+  "catAddsNoNewline": true,
+  "sectionReadHasHashAndSectionRef": true,
+  "hashMatchesSHA256Prefix": true,
+  "wholeNoteCatJSONKeys": ["content","hash"],
+  "catOffsetPastEndJSON": {
+   "expected": "{\"content\":\"\"}\n",
+   "matchesExpected": true
+  },
+  "searchInNoHitJSON": {
+   "expected": "[]\n",
+   "matchesExpected": true
+  },
+  "searchInNoHitTSV": {
+   "expected": "",
+   "matchesExpected": true
+  },
+  "searchInNoHitExit": 0,
+  "searchInEmptyStringJSON": {
+   "expected": "[]\n",
+   "matchesExpected": true
+  },
+  "countSearchInJSON": {
+   "expected": "{\"count\":N}\n",
+   "matchesExpected": true
+  },
+  "cliListAllKeys": ["id","title","locked","tags","length","created","modified","pins","location","todos","done","attachments"],
+  "cliSearchAllKeys": ["id","title","locked","tags","length","created","modified","pins","location","todos","done","attachments","matches"],
+  "cliSearchAllContentKeys": ["id","title","locked","tags","length","created","modified","pins","location","todos","done","attachments","matches","content"],
+  "cliShowAllContentKeys": ["id","title","locked","tags","length","created","modified","pins","location","todos","done","attachments","content"],
+  "showFieldsContentAloneExit": 0,
+  "cliAllExcludesContent": true,
+  "listFieldsContentAloneExit": 0,
+  "listFieldsAllContentExit": 0,
+  "sectionMissingExit": 1,
+  "sectionMissingCode": "not_found",
+  "sectionMissingMessage": "No section matched the address.",
+  "sectionMissingDetailsKeys": [],
+  "sectionAmbiguousObserved": true,
+  "sectionAmbiguousExit": 1,
+  "sectionAmbiguousCode": "ambiguous",
+  "sectionAmbiguousMessage": "Address matched N sections. Retry with one of the candidate addresses.",
+  "sectionAmbiguousDetailsKeys": ["candidates"],
+  "csvLineEnding": "\n",
+  "jsonSingleLineWithTrailingNewline": true,
+  "jsonEscapesSlash": false,
+  "jsonEscapesNonASCII": false,
+  "zeroLimitPrintsNothing": true,
+  "countTSV": {
+   "expected": "N\n",
+   "matchesExpected": true
+  },
+  "countCSV": {
+   "expected": "count\nN\n",
+   "matchesExpected": true
+  },
+  "countJSON": {
+   "expected": "{\"count\":N}\n",
+   "matchesExpected": true
+  },
+  "countSearchJSON": {
+   "expected": "{\"count\":N}\n",
+   "matchesExpected": true
+  },
+  "countTagsListJSON": {
+   "expected": "{\"count\":N}\n",
+   "matchesExpected": true
+  },
+  "countOverridesFields": true,
+  "emptyListJSON": {
+   "expected": "[]\n",
+   "matchesExpected": true
+  },
+  "emptyListStderr": {
+   "expected": "No notes found.\n",
+   "matchesExpected": true
+  },
+  "emptyListStdout": {
+   "expected": "",
+   "matchesExpected": true
+  },
+  "emptyListExit": 0,
+  "cliLockedValues": ["no"],
+  "cliLocationValues": ["notes","trash"],
+  "cliTagsAreHashTokens": true,
+  "cliMultiWordTagsAreClosed": true,
+  "cliDatesAreISO8601Z": true,
+  "cliJSONKeyOrderFollowsFieldsOption": true,
+  "cliTSVTagSeparator": ",",
+  "cliTSVAttachmentSeparator": ",",
+  "cliSortDefaultIsPinnedThenModified": true,
+  "cliSortDefaultDirections": {
+   "pinned": "desc",
+   "modified": "desc",
+   "created": "desc",
+   "title": "desc"
+  },
+  "parseAccepted": [
+   {
+    "args": ["list","--tag=-foo"],
+    "exit": 0
+   },
+   {
+    "args": ["search","--query","-draft"],
+    "exit": 0
+   },
+   {
+    "args": ["search","--query=-draft"],
+    "exit": 0
+   }
+  ],
+  "helpRouting": {
+   "unknownCommand": {
+    "args": ["help","zzqqcmd"],
+    "exit": 0,
+    "stdoutEqualsExpected": true,
+    "stderrEmpty": true
+   },
+   "bare": {
+    "args": [],
+    "exit": 0,
+    "stdoutEqualsExpected": true,
+    "stderrEmpty": true
+   },
+   "appBare": {
+    "args": ["app"],
+    "exit": 0,
+    "stdoutEqualsExpected": true,
+    "stderrEmpty": true
+   }
+  },
+  "mcpProtocolVersion": "2025-06-18",
+  "mcpServerInfoKeys": ["name","title","version"],
+  "mcpServerInfoName": "bearcli",
+  "mcpServerInfoTitle": "Bear",
+  "mcpCapabilities": ["tools"],
+  "mcpInitializeResultKeys": ["capabilities","instructions","protocolVersion","serverInfo"],
+  "mcpPingResultKeys": [],
+  "mcpToolCount": 26,
+  "mcpToolNames": ["create_note","get_note","app_open_note","read_note_content","read_note_outline","app_get_selection","list_notes","search_notes","search_in_note","append_to_note","overwrite_note","edit_note","list_pins","add_pins","remove_pins","archive_note","trash_note","restore_note","list_tags","add_tags","remove_tags","rename_tag","delete_tag","list_attachments","add_attachment_from_url","delete_attachment"],
+  "mcpReadOnlyHintTools": ["get_note","app_open_note","read_note_content","read_note_outline","app_get_selection","list_notes","search_notes","search_in_note","list_pins","list_tags","list_attachments"],
+  "mcpToolEntryKeys": ["annotations","description","inputSchema","name","outputSchema","title"],
+  "mcpNotificationGetsNoReply": true,
+  "mcpStderrEmpty": true,
+  "mcpEscapesSlash": true,
+  "mcpEnvelopeKeysSorted": true,
+  "mcpToolTextKeysSorted": true,
+  "mcpResultContentIsOneTextItem": true,
+  "mcpResultKeys": ["content","structuredContent"],
+  "mcpLockedIsBoolean": true,
+  "mcpTagsAreBareNames": true,
+  "mcpToolErrorsAreIsError": true,
+  "mcpMissingIDIsToolError": true,
+  "mcpMissingIDMessage": "Note ID or title is required",
+  "mcpUnknownToolCode": -32602,
+  "mcpUnknownToolMessage": "unknown tool: no_such_tool",
+  "mcpUnknownMethodCode": -32601,
+  "mcpUnknownMethodMessage": "method not found: bogus/method",
+  "mcpMalformedJSONCode": -32700,
+  "mcpMalformedJSONIDIsNull": true,
+  "mcpUnknownArgumentIgnored": true,
+  "lockedNotesObserved": false,
+  "unobserved": ["cliTagScopedPins","attachmentsSaveRawBytes","cliLockedYes","mcpLockedTrue","lockedNoteReadsAndWrites","cliShortAttachedValue","cliDoubleDashTerminator","cliRepeatedOptionLastWins","cliCheckOrderFormatVsInteger","cliFlagWithEqualsValue","cliWriteFreeTextDashValues","cliHelpPartialPath","cliSearchUnknownOptionBeforeOtherErrors","mcpTagScopedPins"]
+ },
+ "shapes": {
+  "list-json-default": {
+   "args": ["list","-n","1","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "id": "<uuid>",
+     "title": "<string>",
+     "tags": ["#a","#a"],
+     "length": "int"
+    }
+   ],
+   "stderr": ""
+  },
+  "list-json-all": {
+   "args": ["list","-n","1","--fields","all","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "id": "<uuid>",
+     "title": "<string>",
+     "locked": "no",
+     "tags": ["#a","#a"],
+     "length": "int",
+     "created": "yyyy-mm-ddThh:mm:ssZ",
+     "modified": "yyyy-mm-ddThh:mm:ssZ",
+     "pins": ["global"],
+     "location": "notes",
+     "todos": "int",
+     "done": "int",
+     "attachments": []
+    }
+   ],
+   "stderr": ""
+  },
+  "list-json-reordered": {
+   "args": ["list","-n","1","--fields","title,id","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "title": "<string>",
+     "id": "<uuid>"
+    }
+   ],
+   "stderr": ""
+  },
+  "list-tsv-default": {
+   "args": ["list","-n","2"],
+   "exit": 0,
+   "stdout": [
+    ["<uuid>","<string>","#a,#a","<int>"],
+    ["<uuid>","<string>","#a-a,#a-a/a,#a-a/a,#a,#a-a-a,#a,#a/a,#a,#a/a,#a,#a/a","<int>"]
+   ],
+   "stderr": ""
+  },
+  "list-csv-default": {
+   "args": ["list","-n","2","--format","csv"],
+   "exit": 0,
+   "stdout": [
+    ["id","title","tags","length"],
+    ["<uuid>","<string>","#a,#a","<int>"],
+    ["<uuid>","<string>","#a-a,#a-a/a,#a-a/a,#a,#a-a-a,#a,#a/a,#a,#a/a,#a,#a/a","<int>"]
+   ],
+   "stderr": ""
+  },
+  "list-tsv-all": {
+   "args": ["list","-n","2","--fields","all"],
+   "exit": 0,
+   "stdout": [
+    ["<uuid>","<string>","no","#a,#a","<int>","yyyy-mm-ddThh:mm:ssZ","yyyy-mm-ddThh:mm:ssZ","global","notes","<int>","<int>",""],
+    ["<uuid>","<string>","no","#a-a,#a-a/a,#a-a/a,#a,#a-a-a,#a,#a/a,#a,#a/a,#a,#a/a","<int>","yyyy-mm-ddThh:mm:ssZ","yyyy-mm-ddThh:mm:ssZ","global","notes","<int>","<int>",""]
+   ],
+   "stderr": ""
+  },
+  "list-csv-all": {
+   "args": ["list","-n","2","--fields","all","--format","csv"],
+   "exit": 0,
+   "stdout": [
+    ["id","title","locked","tags","length","created","modified","pins","location","todos","done","attachments"],
+    ["<uuid>","<string>","no","#a,#a","<int>","yyyy-mm-ddThh:mm:ssZ","yyyy-mm-ddThh:mm:ssZ","global","notes","<int>","<int>",""],
+    ["<uuid>","<string>","no","#a-a,#a-a/a,#a-a/a,#a,#a-a-a,#a,#a/a,#a,#a/a,#a,#a/a","<int>","yyyy-mm-ddThh:mm:ssZ","yyyy-mm-ddThh:mm:ssZ","global","notes","<int>","<int>",""]
+   ],
+   "stderr": ""
+  },
+  "search-json-default": {
+   "args": ["search","e","-n","1","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "id": "<uuid>",
+     "title": "<string>",
+     "tags": ["#a","#a"],
+     "length": "int",
+     "matches": "int"
+    }
+   ],
+   "stderr": ""
+  },
+  "search-tsv-default": {
+   "args": ["search","e","-n","2"],
+   "exit": 0,
+   "stdout": [
+    ["<uuid>","<string>","#a,#a","<int>","<int>"],
+    ["<uuid>","<string>","#a-a,#a-a/a,#a-a/a,#a,#a-a-a,#a,#a/a,#a,#a/a,#a,#a/a","<int>","<int>"]
+   ],
+   "stderr": ""
+  },
+  "search-json-all": {
+   "args": ["search","e","-n","1","--fields","all","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "id": "<uuid>",
+     "title": "<string>",
+     "locked": "no",
+     "tags": ["#a","#a"],
+     "length": "int",
+     "created": "yyyy-mm-ddThh:mm:ssZ",
+     "modified": "yyyy-mm-ddThh:mm:ssZ",
+     "pins": ["global"],
+     "location": "notes",
+     "todos": "int",
+     "done": "int",
+     "attachments": [],
+     "matches": "int"
+    }
+   ],
+   "stderr": ""
+  },
+  "tags-list-json": {
+   "args": ["tags","list","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "tag": "#9-9-9"
+    },
+    {
+     "tag": "#a"
+    }
+   ],
+   "stderr": ""
+  },
+  "tags-list-tsv": {
+   "args": ["tags","list"],
+   "exit": 0,
+   "stdout": [
+    ["#9-9-9"],
+    ["#a"]
+   ],
+   "stderr": ""
+  },
+  "pin-list-json": {
+   "args": ["pin","list","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "pin": "global"
+    }
+   ],
+   "stderr": ""
+  },
+  "pin-list-tsv": {
+   "args": ["pin","list"],
+   "exit": 0,
+   "stdout": [
+    ["global"]
+   ],
+   "stderr": ""
+  },
+  "show-json-default": {
+   "args": ["show","<ID>","--format","json"],
+   "exit": 0,
+   "stdout": {
+    "id": "<uuid>",
+    "title": "<string>",
+    "tags": ["#a-a","#a-a/a"]
+   },
+   "stderr": ""
+  },
+  "show-json-all": {
+   "args": ["show","<ID>","--fields","all","--format","json"],
+   "exit": 0,
+   "stdout": {
+    "id": "<uuid>",
+    "title": "<string>",
+    "locked": "no",
+    "tags": ["#a-a","#a-a/a"],
+    "length": "int",
+    "created": "yyyy-mm-ddThh:mm:ssZ",
+    "modified": "yyyy-mm-ddThh:mm:ssZ",
+    "pins": [],
+    "location": "notes",
+    "todos": "int",
+    "done": "int",
+    "attachments": []
+   },
+   "stderr": ""
+  },
+  "show-json-all-content": {
+   "args": ["show","<ID>","--fields","all,content","--format","json"],
+   "exit": 0,
+   "stdout": {
+    "id": "<uuid>",
+    "title": "<string>",
+    "locked": "no",
+    "tags": ["#a-a","#a-a/a"],
+    "length": "int",
+    "created": "yyyy-mm-ddThh:mm:ssZ",
+    "modified": "yyyy-mm-ddThh:mm:ssZ",
+    "pins": [],
+    "location": "notes",
+    "todos": "int",
+    "done": "int",
+    "attachments": [],
+    "content": "<string>"
+   },
+   "stderr": ""
+  },
+  "show-tsv-all": {
+   "args": ["show","<ID>","--fields","all"],
+   "exit": 0,
+   "stdout": [
+    ["<uuid>","<string>","no","#a-a,#a-a/a,#a-a/a,#a-a/a,#a-a/a,#a-a/a,#a-a/a,#a,#a/a,#a/a-…","<int>","yyyy-mm-ddThh:mm:ssZ","yyyy-mm-ddThh:mm:ssZ","","notes","<int>","<int>",""]
+   ],
+   "stderr": ""
+  },
+  "cat-json-whole": {
+   "args": ["cat","<ID>","--format","json"],
+   "exit": 0,
+   "stdout": {
+    "content": "<string>",
+    "hash": "<hash7>"
+   },
+   "stderr": ""
+  },
+  "cat-json-range": {
+   "args": ["cat","<ID>","--offset","0","--limit","10","--format","json"],
+   "exit": 0,
+   "stdout": {
+    "content": "<string>"
+   },
+   "stderr": ""
+  },
+  "cat-csv": {
+   "args": ["cat","<ID>","--format","csv"],
+   "exit": 0,
+   "stdout": [
+    ["content"],
+    ["<string>"]
+   ],
+   "stderr": ""
+  },
+  "search-in-json-default": {
+   "args": ["search-in","<ID>","--string","e","-n","2","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "offset": "int",
+     "snippet": "<string>",
+     "section": "# a a\n9\npreamble",
+     "source": "body"
+    },
+    {
+     "offset": "int",
+     "snippet": "<string>",
+     "section": "# a a\n9\npreamble",
+     "source": "body"
+    }
+   ],
+   "stderr": ""
+  },
+  "search-in-json-all": {
+   "args": ["search-in","<ID>","--string","e","-n","2","--fields","all","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "offset": "int",
+     "snippet": "<string>",
+     "section": "# a a\n9\npreamble",
+     "source": "body"
+    },
+    {
+     "offset": "int",
+     "snippet": "<string>",
+     "section": "# a a\n9\npreamble",
+     "source": "body"
+    }
+   ],
+   "stderr": ""
+  },
+  "search-in-tsv": {
+   "args": ["search-in","<ID>","--string","e","-n","2"],
+   "exit": 0,
+   "stdout": [
+    ["<int>","<string>","# a a\n9\npreamble","body"],
+    ["<int>","<string>","# a a\n9\npreamble","body"]
+   ],
+   "stderr": ""
+  },
+  "search-in-csv": {
+   "args": ["search-in","<ID>","--string","e","-n","2","--format","csv"],
+   "exit": 0,
+   "stdout": [
+    ["offset","snippet","section","source"],
+    ["<int>","<string>","# a a\n9\npreamble","body"],
+    ["<int>","<string>","# a a\n9\npreamble","body"]
+   ],
+   "stderr": ""
+  },
+  "search-in-json-no-hit": {
+   "args": ["search-in","<ID>","--string","zzqq-nohit-7731","--format","json"],
+   "exit": 0,
+   "stdout": [],
+   "stderr": ""
+  },
+  "search-in-tsv-no-hit": {
+   "args": ["search-in","<ID>","--string","zzqq-nohit-7731"],
+   "exit": 0,
+   "stdout": "",
+   "stderr": ""
+  },
+  "tags-list-json-note": {
+   "args": ["tags","list","<ID>","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "tag": "#a-a"
+    },
+    {
+     "tag": "#a-a/a"
+    }
+   ],
+   "stderr": ""
+  },
+  "pin-list-json-note": {
+   "args": ["pin","list","<ID>","--format","json"],
+   "exit": 0,
+   "stdout": [],
+   "stderr": ""
+  },
+  "pin-list-tsv-note": {
+   "args": ["pin","list","<ID>"],
+   "exit": 0,
+   "stdout": "",
+   "stderr": ""
+  },
+  "attachments-list-json-note": {
+   "args": ["attachments","list","<ID>","--format","json"],
+   "exit": 0,
+   "stdout": [],
+   "stderr": ""
+  },
+  "tags-list-tsv-note": {
+   "args": ["tags","list","<ID-MULTI-TAG>"],
+   "exit": 0,
+   "stdout": [
+    ["#a"],
+    ["#a"]
+   ],
+   "stderr": ""
+  },
+  "pin-list-json-pinned": {
+   "args": ["pin","list","<ID-MULTI-TAG>","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "pin": "global"
+    }
+   ],
+   "stderr": ""
+  },
+  "attachments-list-json": {
+   "args": ["attachments","list","<ID-ATTACHMENTS>","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "filename": "a-9.jpg",
+     "size": "int"
+    },
+    {
+     "filename": "a-9.jpg",
+     "size": "int"
+    }
+   ],
+   "stderr": ""
+  },
+  "attachments-list-tsv": {
+   "args": ["attachments","list","<ID-ATTACHMENTS>"],
+   "exit": 0,
+   "stdout": [
+    ["a-9.jpg","<int>"],
+    ["a-9.jpg","<int>"]
+   ],
+   "stderr": ""
+  },
+  "attachments-list-csv": {
+   "args": ["attachments","list","<ID-ATTACHMENTS>","--format","csv"],
+   "exit": 0,
+   "stdout": [
+    ["filename","size"],
+    ["a-9.jpg","<int>"],
+    ["a-9.jpg","<int>"]
+   ],
+   "stderr": ""
+  },
+  "outline-json": {
+   "args": ["outline","<ID-SECTIONED>","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "address": "# a a a a a a a (a a)\n9",
+     "offset": "int",
+     "length": "int"
+    },
+    {
+     "address": "# a a a a a a a (a a)\n9",
+     "offset": "int",
+     "length": "int"
+    }
+   ],
+   "stderr": ""
+  },
+  "outline-tsv": {
+   "args": ["outline","<ID-SECTIONED>"],
+   "exit": 0,
+   "stdout": [
+    ["# a a a a a a a (a a)\n9","<int>","<int>"],
+    ["# a a a a a a a (a a)\n9","<int>","<int>"]
+   ],
+   "stderr": ""
+  },
+  "outline-csv": {
+   "args": ["outline","<ID-SECTIONED>","--format","csv"],
+   "exit": 0,
+   "stdout": [
+    ["address","offset","length"],
+    ["# a a a a a a a (a a)\n9","<int>","<int>"],
+    ["# a a a a a a a (a a)\n9","<int>","<int>"]
+   ],
+   "stderr": ""
+  },
+  "outline-json-section": {
+   "args": ["outline","<ID-SECTIONED>","--section","# a a a a a a a (a a)\n9","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "address": "# a a a a a a a (a a)\n9",
+     "offset": "int",
+     "length": "int"
+    }
+   ],
+   "stderr": ""
+  },
+  "cat-json-section": {
+   "args": ["cat","<ID-SECTIONED>","--section","# a a a a a a a (a a)\n9","--format","json"],
+   "exit": 0,
+   "stdout": {
+    "content": "<string>",
+    "section": {
+     "address": "# a a a a a a a (a a)\n9",
+     "offset": "int",
+     "length": "int"
+    },
+    "hash": "<hash7>"
+   },
+   "stderr": ""
+  },
+  "search-in-json-section": {
+   "args": ["search-in","<ID-SECTIONED>","--string","e","--section","# a a a a a a a (a a)\n9","-n","2","--format","json"],
+   "exit": 0,
+   "stdout": [
+    {
+     "offset": "int",
+     "snippet": "<string>",
+     "section": "# a a a a a a a (a a)\n9",
+     "source": "body"
+    },
+    {
+     "offset": "int",
+     "snippet": "<string>",
+     "section": "# a a a a a a a (a a)\n9",
+     "source": "body"
+    }
+   ],
+   "stderr": ""
+  },
+  "section-missing-json": {
+   "args": ["cat","<ID-SECTIONED>","--section","<ADDRESS-MISSING>","--format","json"],
+   "exit": 1,
+   "stdout": {
+    "error": {
+     "code": "not_found",
+     "message": "No section matched the address."
+    }
+   },
+   "stderr": ""
+  },
+  "section-missing-tsv": {
+   "args": ["cat","<ID-SECTIONED>","--section","<ADDRESS-MISSING>"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "No section matched the address."
+  },
+  "section-missing-outline-json": {
+   "args": ["outline","<ID-SECTIONED>","--section","<ADDRESS-MISSING>","--format","json"],
+   "exit": 1,
+   "stdout": {
+    "error": {
+     "code": "not_found",
+     "message": "No section matched the address."
+    }
+   },
+   "stderr": ""
+  },
+  "section-missing-search-in-json": {
+   "args": ["search-in","<ID-SECTIONED>","--string","e","--section","<ADDRESS-MISSING>","--format","json"],
+   "exit": 1,
+   "stdout": {
+    "error": {
+     "code": "not_found",
+     "message": "No section matched the address."
+    }
+   },
+   "stderr": ""
+  },
+  "section-ambiguous-json": {
+   "args": ["cat","<ID-SECTIONED>","--section","<ADDRESS-AMBIGUOUS>","--format","json"],
+   "exit": 1,
+   "stdout": {
+    "error": {
+     "code": "ambiguous",
+     "details": {
+      "candidates": [
+       {
+        "address": "# a a a a a a a (a a)\n9",
+        "length": "int",
+        "offset": "int",
+        "snippet": "<string>"
+       },
+       {
+        "address": "# a a a a a a a (a a)\n9",
+        "length": "int",
+        "offset": "int",
+        "snippet": "<string>"
+       }
+      ]
+     },
+     "message": "Address matched N sections. Retry with one of the candidate addresses."
+    }
+   },
+   "stderr": ""
+  },
+  "section-ambiguous-tsv": {
+   "args": ["cat","<ID-SECTIONED>","--section","<ADDRESS-AMBIGUOUS>"],
+   "exit": 1,
+   "stdout": "",
+   "stderr": "Address matched N sections. Retry with one of the candidate addresses. [+2 lines]"
+  },
+  "section-ambiguous-outline-json": {
+   "args": ["outline","<ID-SECTIONED>","--section","<ADDRESS-AMBIGUOUS>","--format","json"],
+   "exit": 1,
+   "stdout": {
+    "error": {
+     "code": "ambiguous",
+     "details": {
+      "candidates": [
+       {
+        "address": "# a a a a a a a (a a)\n9",
+        "length": "int",
+        "offset": "int",
+        "snippet": "<string>"
+       },
+       {
+        "address": "# a a a a a a a (a a)\n9",
+        "length": "int",
+        "offset": "int",
+        "snippet": "<string>"
+       }
+      ]
+     },
+     "message": "Address matched N sections. Retry with one of the candidate addresses."
+    }
+   },
+   "stderr": ""
+  },
+  "mcp-initialize": {
+   "request": {
+    "method": "initialize",
+    "params": {
+     "protocolVersion": "2025-06-18",
+     "capabilities": {},
+     "clientInfo": {
+      "name": "bear-oracle",
+      "version": "0"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "capabilities": {
+      "tools": {}
+     },
+     "instructions": "<string>",
+     "protocolVersion": "2025-06-18",
+     "serverInfo": {
+      "name": "<string>",
+      "title": "<string>",
+      "version": "<string>"
+     }
+    }
+   }
+  },
+  "mcp-ping": {
+   "request": {
+    "method": "ping"
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {}
+   }
+  },
+  "mcp-list_notes-limit-1": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_notes",
+     "arguments": {
+      "limit": 1
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "metadata": [
+         {
+          "attachments": [],
+          "created": "yyyy-mm-ddThh:mm:ssZ",
+          "done": "int",
+          "id": "<uuid>",
+          "length": "int",
+          "location": "notes",
+          "locked": "bool",
+          "modified": "yyyy-mm-ddThh:mm:ssZ",
+          "pins": ["global"],
+          "tags": ["a","a"],
+          "title": "<string>",
+          "todos": "int"
+         }
+        ],
+        "total": "int"
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "metadata": [
+       {
+        "attachments": [],
+        "created": "yyyy-mm-ddThh:mm:ssZ",
+        "done": "int",
+        "id": "<uuid>",
+        "length": "int",
+        "location": "notes",
+        "locked": "bool",
+        "modified": "yyyy-mm-ddThh:mm:ssZ",
+        "pins": ["global"],
+        "tags": ["a","a"],
+        "title": "<string>",
+        "todos": "int"
+       }
+      ],
+      "total": "int"
+     }
+    }
+   }
+  },
+  "mcp-list_notes-limit-0": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_notes",
+     "arguments": {
+      "limit": 0
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "metadata": [],
+        "total": "int"
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "metadata": [],
+      "total": "int"
+     }
+    }
+   }
+  },
+  "mcp-list_notes-content": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_notes",
+     "arguments": {
+      "limit": 1,
+      "includeContent": true
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "notes": [
+         {
+          "content": "<string>",
+          "metadata": {
+           "attachments": [],
+           "created": "yyyy-mm-ddThh:mm:ssZ",
+           "done": "int",
+           "id": "<uuid>",
+           "length": "int",
+           "location": "notes",
+           "locked": "bool",
+           "modified": "yyyy-mm-ddThh:mm:ssZ",
+           "pins": ["global"],
+           "tags": ["a","a"],
+           "title": "<string>",
+           "todos": "int"
+          }
+         }
+        ],
+        "total": "int"
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "notes": [
+       {
+        "content": "<string>",
+        "metadata": {
+         "attachments": [],
+         "created": "yyyy-mm-ddThh:mm:ssZ",
+         "done": "int",
+         "id": "<uuid>",
+         "length": "int",
+         "location": "notes",
+         "locked": "bool",
+         "modified": "yyyy-mm-ddThh:mm:ssZ",
+         "pins": ["global"],
+         "tags": ["a","a"],
+         "title": "<string>",
+         "todos": "int"
+        }
+       }
+      ],
+      "total": "int"
+     }
+    }
+   }
+  },
+  "mcp-list_notes-bad-location": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_notes",
+     "arguments": {
+      "limit": 1,
+      "location": "bogus"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "usage",
+         "message": "Invalid location: bogus"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-list_notes-unknown-argument": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_notes",
+     "arguments": {
+      "limit": 1,
+      "bogus_property": 1
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "metadata": [
+         {
+          "attachments": [],
+          "created": "yyyy-mm-ddThh:mm:ssZ",
+          "done": "int",
+          "id": "<uuid>",
+          "length": "int",
+          "location": "notes",
+          "locked": "bool",
+          "modified": "yyyy-mm-ddThh:mm:ssZ",
+          "pins": ["global"],
+          "tags": ["a","a"],
+          "title": "<string>",
+          "todos": "int"
+         }
+        ],
+        "total": "int"
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "metadata": [
+       {
+        "attachments": [],
+        "created": "yyyy-mm-ddThh:mm:ssZ",
+        "done": "int",
+        "id": "<uuid>",
+        "length": "int",
+        "location": "notes",
+        "locked": "bool",
+        "modified": "yyyy-mm-ddThh:mm:ssZ",
+        "pins": ["global"],
+        "tags": ["a","a"],
+        "title": "<string>",
+        "todos": "int"
+       }
+      ],
+      "total": "int"
+     }
+    }
+   }
+  },
+  "mcp-list_notes-sort-title": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_notes",
+     "arguments": {
+      "limit": 1,
+      "sort": "title"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "metadata": [
+         {
+          "attachments": ["a-9.jpg","a-9.jpg"],
+          "created": "yyyy-mm-ddThh:mm:ssZ",
+          "done": "int",
+          "id": "<uuid>",
+          "length": "int",
+          "location": "notes",
+          "locked": "bool",
+          "modified": "yyyy-mm-ddThh:mm:ssZ",
+          "pins": [],
+          "tags": ["a","a"],
+          "title": "<string>",
+          "todos": "int"
+         }
+        ],
+        "total": "int"
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "metadata": [
+       {
+        "attachments": ["a-9.jpg","a-9.jpg"],
+        "created": "yyyy-mm-ddThh:mm:ssZ",
+        "done": "int",
+        "id": "<uuid>",
+        "length": "int",
+        "location": "notes",
+        "locked": "bool",
+        "modified": "yyyy-mm-ddThh:mm:ssZ",
+        "pins": [],
+        "tags": ["a","a"],
+        "title": "<string>",
+        "todos": "int"
+       }
+      ],
+      "total": "int"
+     }
+    }
+   }
+  },
+  "mcp-search_notes-e": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "search_notes",
+     "arguments": {
+      "query": "e",
+      "limit": 1
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "results": [
+         {
+          "matchCount": "int",
+          "metadata": {
+           "attachments": [],
+           "created": "yyyy-mm-ddThh:mm:ssZ",
+           "done": "int",
+           "id": "<uuid>",
+           "length": "int",
+           "location": "notes",
+           "locked": "bool",
+           "modified": "yyyy-mm-ddThh:mm:ssZ",
+           "pins": ["global"],
+           "tags": ["a","a"],
+           "title": "<string>",
+           "todos": "int"
+          }
+         }
+        ],
+        "total": "int"
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "results": [
+       {
+        "matchCount": "int",
+        "metadata": {
+         "attachments": [],
+         "created": "yyyy-mm-ddThh:mm:ssZ",
+         "done": "int",
+         "id": "<uuid>",
+         "length": "int",
+         "location": "notes",
+         "locked": "bool",
+         "modified": "yyyy-mm-ddThh:mm:ssZ",
+         "pins": ["global"],
+         "tags": ["a","a"],
+         "title": "<string>",
+         "todos": "int"
+        }
+       }
+      ],
+      "total": "int"
+     }
+    }
+   }
+  },
+  "mcp-search_notes-no-hit": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "search_notes",
+     "arguments": {
+      "query": "zzqq-nohit-7731"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "results": [],
+        "total": "int"
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "results": [],
+      "total": "int"
+     }
+    }
+   }
+  },
+  "mcp-search_notes-missing-query": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "search_notes",
+     "arguments": {}
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "usage",
+         "message": "missing required field: query"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-get_note": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "get_note",
+     "arguments": {
+      "id": "<ID>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "metadata": {
+         "attachments": [],
+         "created": "yyyy-mm-ddThh:mm:ssZ",
+         "done": "int",
+         "id": "<uuid>",
+         "length": "int",
+         "location": "notes",
+         "locked": "bool",
+         "modified": "yyyy-mm-ddThh:mm:ssZ",
+         "pins": [],
+         "tags": ["a-a","a-a/a"],
+         "title": "<string>",
+         "todos": "int"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "metadata": {
+       "attachments": [],
+       "created": "yyyy-mm-ddThh:mm:ssZ",
+       "done": "int",
+       "id": "<uuid>",
+       "length": "int",
+       "location": "notes",
+       "locked": "bool",
+       "modified": "yyyy-mm-ddThh:mm:ssZ",
+       "pins": [],
+       "tags": ["a-a","a-a/a"],
+       "title": "<string>",
+       "todos": "int"
+      }
+     }
+    }
+   }
+  },
+  "mcp-get_note-content": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "get_note",
+     "arguments": {
+      "id": "<ID>",
+      "includeContent": true
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "content": "<string>",
+        "metadata": {
+         "attachments": [],
+         "created": "yyyy-mm-ddThh:mm:ssZ",
+         "done": "int",
+         "id": "<uuid>",
+         "length": "int",
+         "location": "notes",
+         "locked": "bool",
+         "modified": "yyyy-mm-ddThh:mm:ssZ",
+         "pins": [],
+         "tags": ["a-a","a-a/a"],
+         "title": "<string>",
+         "todos": "int"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "content": "<string>",
+      "metadata": {
+       "attachments": [],
+       "created": "yyyy-mm-ddThh:mm:ssZ",
+       "done": "int",
+       "id": "<uuid>",
+       "length": "int",
+       "location": "notes",
+       "locked": "bool",
+       "modified": "yyyy-mm-ddThh:mm:ssZ",
+       "pins": [],
+       "tags": ["a-a","a-a/a"],
+       "title": "<string>",
+       "todos": "int"
+      }
+     }
+    }
+   }
+  },
+  "mcp-read_note_content-range": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "read_note_content",
+     "arguments": {
+      "id": "<ID>",
+      "offset": 0,
+      "limit": 10
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "content": "<string>"
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "content": "<string>"
+     }
+    }
+   }
+  },
+  "mcp-read_note_content-whole": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "read_note_content",
+     "arguments": {
+      "id": "<ID>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "content": "<string>",
+        "hash": "<hash7>"
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "content": "<string>",
+      "hash": "<hash7>"
+     }
+    }
+   }
+  },
+  "mcp-search_in_note": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "search_in_note",
+     "arguments": {
+      "id": "<ID>",
+      "string": "e",
+      "limit": 2
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "matches": [
+         {
+          "offset": "int",
+          "section": {
+           "address": "# a a\n9\npreamble",
+           "length": "int",
+           "offset": "int"
+          },
+          "snippet": "<string>",
+          "source": "body"
+         },
+         {
+          "offset": "int",
+          "section": {
+           "address": "# a a\n9\npreamble",
+           "length": "int",
+           "offset": "int"
+          },
+          "snippet": "<string>",
+          "source": "body"
+         }
+        ]
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "matches": [
+       {
+        "offset": "int",
+        "section": {
+         "address": "# a a\n9\npreamble",
+         "length": "int",
+         "offset": "int"
+        },
+        "snippet": "<string>",
+        "source": "body"
+       },
+       {
+        "offset": "int",
+        "section": {
+         "address": "# a a\n9\npreamble",
+         "length": "int",
+         "offset": "int"
+        },
+        "snippet": "<string>",
+        "source": "body"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "mcp-search_in_note-no-hit": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "search_in_note",
+     "arguments": {
+      "id": "<ID>",
+      "string": "zzqq-nohit-7731"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "matches": []
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "matches": []
+     }
+    }
+   }
+  },
+  "mcp-list_pins-note": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_pins",
+     "arguments": {
+      "id": "<ID>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "pins": []
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "pins": []
+     }
+    }
+   }
+  },
+  "mcp-list_attachments-note": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_attachments",
+     "arguments": {
+      "id": "<ID>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "attachments": []
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "attachments": []
+     }
+    }
+   }
+  },
+  "mcp-list_tags-note": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_tags",
+     "arguments": {
+      "id": "<ID-MULTI-TAG>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "tags": ["a","a"]
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "tags": ["a","a"]
+     }
+    }
+   }
+  },
+  "mcp-read_note_outline": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "read_note_outline",
+     "arguments": {
+      "id": "<ID-SECTIONED>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "outline": [
+         {
+          "address": "# a a a a a a a (a a)\n9",
+          "length": "int",
+          "offset": "int"
+         },
+         {
+          "address": "# a a a a a a a (a a)\n9",
+          "length": "int",
+          "offset": "int"
+         }
+        ]
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "outline": [
+       {
+        "address": "# a a a a a a a (a a)\n9",
+        "length": "int",
+        "offset": "int"
+       },
+       {
+        "address": "# a a a a a a a (a a)\n9",
+        "length": "int",
+        "offset": "int"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "mcp-read_note_content-section": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "read_note_content",
+     "arguments": {
+      "id": "<ID-SECTIONED>",
+      "address": "# a a a a a a a (a a)\n9"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "content": "<string>",
+        "hash": "<hash7>",
+        "section": {
+         "address": "# a a a a a a a (a a)\n9",
+         "length": "int",
+         "offset": "int"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "content": "<string>",
+      "hash": "<hash7>",
+      "section": {
+       "address": "# a a a a a a a (a a)\n9",
+       "length": "int",
+       "offset": "int"
+      }
+     }
+    }
+   }
+  },
+  "mcp-search_in_note-section": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "search_in_note",
+     "arguments": {
+      "id": "<ID-SECTIONED>",
+      "string": "e",
+      "address": "# a a a a a a a (a a)\n9",
+      "limit": 2
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "matches": [
+         {
+          "offset": "int",
+          "section": {
+           "address": "# a a a a a a a (a a)\n9",
+           "length": "int",
+           "offset": "int"
+          },
+          "snippet": "<string>",
+          "source": "body"
+         },
+         {
+          "offset": "int",
+          "section": {
+           "address": "# a a a a a a a (a a)\n9",
+           "length": "int",
+           "offset": "int"
+          },
+          "snippet": "<string>",
+          "source": "body"
+         }
+        ]
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "matches": [
+       {
+        "offset": "int",
+        "section": {
+         "address": "# a a a a a a a (a a)\n9",
+         "length": "int",
+         "offset": "int"
+        },
+        "snippet": "<string>",
+        "source": "body"
+       },
+       {
+        "offset": "int",
+        "section": {
+         "address": "# a a a a a a a (a a)\n9",
+         "length": "int",
+         "offset": "int"
+        },
+        "snippet": "<string>",
+        "source": "body"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "mcp-list_attachments": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_attachments",
+     "arguments": {
+      "id": "<ID-ATTACHMENTS>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "attachments": [
+         {
+          "filename": "a-9.jpg",
+          "size": "int"
+         },
+         {
+          "filename": "a-9.jpg",
+          "size": "int"
+         }
+        ]
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "attachments": [
+       {
+        "filename": "a-9.jpg",
+        "size": "int"
+       },
+       {
+        "filename": "a-9.jpg",
+        "size": "int"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "mcp-list_tags": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_tags",
+     "arguments": {}
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "tags": ["9-9-9","a"]
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "tags": ["9-9-9","a"]
+     }
+    }
+   }
+  },
+  "mcp-list_pins": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_pins",
+     "arguments": {}
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "pins": ["global"]
+       },
+       "type": "text"
+      }
+     ],
+     "structuredContent": {
+      "pins": ["global"]
+     }
+    }
+   }
+  },
+  "mcp-read_note_content-missing-section": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "read_note_content",
+     "arguments": {
+      "id": "<ID-SECTIONED>",
+      "address": "<ADDRESS-MISSING>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "not_found",
+         "message": "No section matched the address."
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-read_note_outline-missing-section": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "read_note_outline",
+     "arguments": {
+      "id": "<ID-SECTIONED>",
+      "address": "<ADDRESS-MISSING>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "not_found",
+         "message": "No section matched the address."
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-read_note_content-ambiguous-section": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "read_note_content",
+     "arguments": {
+      "id": "<ID-SECTIONED>",
+      "address": "<ADDRESS-AMBIGUOUS>"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "ambiguous",
+         "details": {
+          "candidates": [
+           {
+            "address": "# a a a a a a a (a a)\n9",
+            "length": "int",
+            "offset": "int",
+            "snippet": "<string>"
+           },
+           {
+            "address": "# a a a a a a a (a a)\n9",
+            "length": "int",
+            "offset": "int",
+            "snippet": "<string>"
+           }
+          ]
+         },
+         "message": "Address matched N sections. Retry with one of the candidate addresses."
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-get_note-bogus-id": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "get_note",
+     "arguments": {
+      "id": "ZZZ-NOPE"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "note_not_found",
+         "message": "Note not found: ZZZ-NOPE"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-get_note-no-id": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "get_note",
+     "arguments": {}
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "usage",
+         "message": "Note ID or title is required"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-get_note-bogus-title": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "get_note",
+     "arguments": {
+      "title": "ZZZ NOPE TITLE"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "note_not_found",
+         "message": "No note with title: ZZZ NOPE TITLE (in notes; use the note ID for trash/archive)"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-read_note_content-bogus-id": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "read_note_content",
+     "arguments": {
+      "id": "ZZZ-NOPE"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "note_not_found",
+         "message": "Note not found: ZZZ-NOPE"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-read_note_outline-bogus-id": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "read_note_outline",
+     "arguments": {
+      "id": "ZZZ-NOPE"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "note_not_found",
+         "message": "Note not found: ZZZ-NOPE"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-search_in_note-bogus-id": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "search_in_note",
+     "arguments": {
+      "id": "ZZZ-NOPE",
+      "string": "x"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "note_not_found",
+         "message": "Note not found: ZZZ-NOPE"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-search_in_note-missing-string": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "search_in_note",
+     "arguments": {
+      "id": "ZZZ-NOPE"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "usage",
+         "message": "missing required field: string"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-list_tags-bogus-id": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_tags",
+     "arguments": {
+      "id": "ZZZ-NOPE"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "note_not_found",
+         "message": "Note not found: ZZZ-NOPE"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-list_pins-bogus-id": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_pins",
+     "arguments": {
+      "id": "ZZZ-NOPE"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "note_not_found",
+         "message": "Note not found: ZZZ-NOPE"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-list_attachments-bogus-id": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "list_attachments",
+     "arguments": {
+      "id": "ZZZ-NOPE"
+     }
+    }
+   },
+   "response": {
+    "id": "int",
+    "jsonrpc": "2.0",
+    "result": {
+     "content": [
+      {
+       "text": {
+        "error": {
+         "code": "note_not_found",
+         "message": "Note not found: ZZZ-NOPE"
+        }
+       },
+       "type": "text"
+      }
+     ],
+     "isError": "bool"
+    }
+   }
+  },
+  "mcp-unknown-tool": {
+   "request": {
+    "method": "tools/call",
+    "params": {
+     "name": "no_such_tool",
+     "arguments": {}
+    }
+   },
+   "response": {
+    "error": {
+     "code": "int",
+     "message": "unknown tool: no_such_tool"
+    },
+    "id": "int",
+    "jsonrpc": "2.0"
+   }
+  },
+  "mcp-unknown-method": {
+   "request": {
+    "method": "bogus/method"
+   },
+   "response": {
+    "error": {
+     "code": "int",
+     "message": "method not found: bogus/method"
+    },
+    "id": "int",
+    "jsonrpc": "2.0"
+   }
+  },
+  "mcp-malformed-json": {
+   "request": "{",
+   "response": {
+    "error": {
+     "code": "int",
+     "message": "<message: 1 line, 240 chars>"
+    },
+    "id": "null",
+    "jsonrpc": "2.0"
+   }
+  }
+ }
+}

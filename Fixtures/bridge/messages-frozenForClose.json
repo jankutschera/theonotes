@@ -1,0 +1,9 @@
+{
+  "type": "frozenForClose",
+  "requestId": "f7a1c2d3-0000-4000-8000-000000000002",
+  "noteId": "0192f3a4-5b6c-7d8e-9f01-23456789abcd",
+  "ok": true,
+  "editedSinceLoad": true,
+  "sha256": "8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4",
+  "lastAckedTxId": "5f0c1d2e-3a4b-4c5d-8e6f-708192a3b4c5"
+}

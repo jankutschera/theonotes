@@ -1,0 +1,121 @@
+[
+  {
+    "name": "plain",
+    "input": "see https://example.com here",
+    "expected": [
+      "https://example.com"
+    ]
+  },
+  {
+    "name": "trailing period",
+    "input": "see https://example.com/faq.",
+    "expected": [
+      "https://example.com/faq"
+    ]
+  },
+  {
+    "name": "trailing comma",
+    "input": "https://a.b/c, and more",
+    "expected": [
+      "https://a.b/c"
+    ]
+  },
+  {
+    "name": "in parentheses",
+    "input": "(https://x.y)",
+    "expected": [
+      "https://x.y"
+    ]
+  },
+  {
+    "name": "balanced parentheses are kept",
+    "input": "https://en.wikipedia.org/wiki/Bear_(disambiguation)",
+    "expected": [
+      "https://en.wikipedia.org/wiki/Bear_(disambiguation)"
+    ]
+  },
+  {
+    "name": "balanced inside, unbalanced outside",
+    "input": "(see https://en.wikipedia.org/wiki/A_(b)).",
+    "expected": [
+      "https://en.wikipedia.org/wiki/A_(b)"
+    ]
+  },
+  {
+    "name": "question and exclamation marks",
+    "input": "is it https://x.y/q?!",
+    "expected": [
+      "https://x.y/q"
+    ]
+  },
+  {
+    "name": "interior punctuation is kept",
+    "input": "https://x.y/a.b,c:d?e=f",
+    "expected": [
+      "https://x.y/a.b,c:d?e=f"
+    ]
+  },
+  {
+    "name": "trailing colon",
+    "input": "go to https://x.y: now",
+    "expected": [
+      "https://x.y"
+    ]
+  },
+  {
+    "name": "bold around a url",
+    "input": "**https://x.y**",
+    "expected": [
+      "https://x.y"
+    ]
+  },
+  {
+    "name": "underscores around a url",
+    "input": "_https://x.y/a_",
+    "expected": [
+      "https://x.y/a"
+    ]
+  },
+  {
+    "name": "trailing tilde",
+    "input": "https://x.y~",
+    "expected": [
+      "https://x.y"
+    ]
+  },
+  {
+    "name": "two urls in a sentence",
+    "input": "https://a.b, then https://c.d.",
+    "expected": [
+      "https://a.b",
+      "https://c.d"
+    ]
+  },
+  {
+    "name": "query and fragment, then a period",
+    "input": "https://x.y/p?q=1#frag.",
+    "expected": [
+      "https://x.y/p?q=1#frag"
+    ]
+  },
+  {
+    "name": "a closing parenthesis inside",
+    "input": "https://x.y/a)b",
+    "expected": [
+      "https://x.y/a)b"
+    ]
+  },
+  {
+    "name": "autolinks and link destinations are not bare urls",
+    "input": "<https://x.y>. and [t](https://x.y/a.)",
+    "expected": []
+  },
+  {
+    "name": "urls on several lines",
+    "input": "first https://a.b.\nsecond (https://c.d/e)",
+    "expected": [
+      "https://a.b",
+      "https://c.d/e"
+    ]
+  }
+]

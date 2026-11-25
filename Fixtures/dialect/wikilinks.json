@@ -1,0 +1,239 @@
+[
+  {
+    "name": "plain",
+    "input": "[[Note]]",
+    "expected": [
+      {
+        "target": "Note",
+        "heading": null,
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "heading",
+    "input": "[[Note/Heading]]",
+    "expected": [
+      {
+        "target": "Note",
+        "heading": "Heading",
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "same-note heading",
+    "input": "[[/Heading]]",
+    "expected": [
+      {
+        "target": "",
+        "heading": "Heading",
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "alias",
+    "input": "[[Note|alias]]",
+    "expected": [
+      {
+        "target": "Note",
+        "heading": null,
+        "alias": "alias"
+      }
+    ]
+  },
+  {
+    "name": "heading and alias",
+    "input": "[[Note/Heading|alias]]",
+    "expected": [
+      {
+        "target": "Note",
+        "heading": "Heading",
+        "alias": "alias"
+      }
+    ]
+  },
+  {
+    "name": "in code span",
+    "input": "`[[code]]`",
+    "expected": []
+  },
+  {
+    "name": "blank",
+    "input": "[[ ]]",
+    "expected": []
+  },
+  {
+    "name": "empty",
+    "input": "[[]]",
+    "expected": []
+  },
+  {
+    "name": "two links",
+    "input": "Two [[A]] and [[B]]",
+    "expected": [
+      {
+        "target": "A",
+        "heading": null,
+        "alias": null
+      },
+      {
+        "target": "B",
+        "heading": null,
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "trimmed",
+    "input": "[[Spaced Note ]]",
+    "expected": [
+      {
+        "target": "Spaced Note",
+        "heading": null,
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "in fenced code",
+    "input": "```\n[[in code]]\n```",
+    "expected": []
+  },
+  {
+    "name": "escaped slash in title",
+    "input": "[[a\\/b/H]]",
+    "expected": [
+      {
+        "target": "a/b",
+        "heading": "H",
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "escaped pipe in table",
+    "input": "| [[Note\\|alias]] |",
+    "expected": [
+      {
+        "target": "Note",
+        "heading": null,
+        "alias": "alias"
+      }
+    ]
+  },
+  {
+    "name": "empty alias",
+    "input": "[[Note|]]",
+    "expected": [
+      {
+        "target": "Note",
+        "heading": null,
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "unclosed",
+    "input": "[[Unclosed",
+    "expected": []
+  },
+  {
+    "name": "unicode",
+    "input": "[[Ünïcödé 日本]]",
+    "expected": [
+      {
+        "target": "Ünïcödé 日本",
+        "heading": null,
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "CRLF",
+    "input": "[[A]]\r\n[[B]]\r\n",
+    "expected": [
+      {
+        "target": "A",
+        "heading": null,
+        "alias": null
+      },
+      {
+        "target": "B",
+        "heading": null,
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "in html comment",
+    "input": "<!-- [[hidden]] -->",
+    "expected": []
+  },
+  {
+    "name": "first slash splits heading",
+    "input": "[[Note/Heading/Sub]]",
+    "expected": [
+      {
+        "target": "Note",
+        "heading": "Heading/Sub",
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "duplicates kept in order",
+    "input": "Duplicate [[A]] [[A]]",
+    "expected": [
+      {
+        "target": "A",
+        "heading": null,
+        "alias": null
+      },
+      {
+        "target": "A",
+        "heading": null,
+        "alias": null
+      }
+    ]
+  },
+  {
+    "name": "in inline math",
+    "input": "$[[math]]$",
+    "expected": []
+  },
+  {
+    "name": "in heading",
+    "input": "## See [[Other|o]]",
+    "expected": [
+      {
+        "target": "Other",
+        "heading": null,
+        "alias": "o"
+      }
+    ]
+  },
+  {
+    "name": "whitespace runs collapse in target, heading and alias",
+    "input": "[[Big    Title/Some \t heading|the   alias]]",
+    "expected": [
+      {
+        "target": "Big Title",
+        "heading": "Some heading",
+        "alias": "the alias"
+      }
+    ]
+  },
+  {
+    "name": "footnotes are not wiki links",
+    "input": "see[^1] and [[Note]]\n\n[^1]: one",
+    "expected": [
+      {
+        "target": "Note",
+        "heading": null,
+        "alias": null
+      }
+    ]
+  }
+]

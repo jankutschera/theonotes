@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "id": "rose-pine-dawn",
+  "name": "Rosé Pine Dawn",
+  "order": 150,
+  "appearance": "light",
+  "contrast": "standard",
+  "source": {
+    "project": "Rosé Pine",
+    "url": "https://rosepinetheme.com/palette/",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2023 Rosé Pine; Copyright (c) mvllow (rose-pine-palette)"
+  },
+  "deviations": [
+    {
+      "token": "editor.color-secondary",
+      "palette": "#797593",
+      "value": "#65617c",
+      "reason": "color-secondary on color-callout-tip-bg over color-bg was 3.46:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.52:1"
+    },
+    {
+      "token": "editor.color-accent",
+      "palette": "#b4637a",
+      "value": "#9b4b61",
+      "reason": "color-accent on highlight-green over color-bg was 2.69:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.color-code-string",
+      "palette": "#ea9d34",
+      "value": "#a46611",
+      "reason": "color-code-string on color-code-bg was 2.16:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "editor.color-code-number",
+      "palette": "#d7827e",
+      "value": "#c54b46",
+      "reason": "color-code-number on color-code-bg was 2.74:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.52:1"
+    },
+    {
+      "token": "editor.color-code-comment",
+      "palette": "#9893a5",
+      "value": "#767086",
+      "reason": "color-code-comment on color-code-bg was 2.87:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.56:1"
+    },
+    {
+      "token": "editor.color-code-type",
+      "palette": "#56949f",
+      "value": "#487b85",
+      "reason": "color-code-type on color-code-bg was 3.30:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.55:1"
+    },
+    {
+      "token": "editor.color-code-function",
+      "palette": "#d7827e",
+      "value": "#c54b46",
+      "reason": "color-code-function on color-code-bg was 2.74:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.52:1"
+    },
+    {
+      "token": "editor.color-code-property",
+      "palette": "#907aa9",
+      "value": "#82699e",
+      "reason": "color-code-property on color-code-bg was 3.65:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.53:1"
+    },
+    {
+      "token": "editor.color-code-tag",
+      "palette": "#b4637a",
+      "value": "#af5971",
+      "reason": "color-code-tag on color-code-bg was 4.04:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.color-code-meta",
+      "palette": "#ea9d34",
+      "value": "#a46611",
+      "reason": "color-code-meta on color-code-bg was 2.16:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "editor.color-quote",
+      "palette": "#797593",
+      "value": "#716d8c",
+      "reason": "color-quote on color-bg was 4.02:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.color-tag",
+      "palette": "#907aa9",
+      "value": "#725a8c",
+      "reason": "color-tag on highlight-green over color-bg was 2.43:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.52:1"
+    },
+    {
+      "token": "editor.color-tag-bg",
+      "palette": "#907aa91c",
+      "value": "#907aa927",
+      "reason": "color-tag on color-tag-bg over color-bg was 3.10:1 (needs 4.5:1); the largest alpha that passes every pair would give only dE2000 4.2 from the page, so alpha set to the smallest value that is visible (dE2000 6.5 from the page; M7-R13 step 2), hue kept; the text colours that failed on it are nudged (see their records), now 4.61:1"
+    },
+    {
+      "token": "editor.highlight-green",
+      "palette": "#28698340",
+      "value": "#28698321",
+      "reason": "color-accent on highlight-green over color-bg was 2.69:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 6.0 from the page), now 4.50:1"
+    },
+    {
+      "token": "editor.highlight-red",
+      "palette": "#b4637a40",
+      "value": "#b4637a27",
+      "reason": "color-accent on highlight-red over color-bg was 2.86:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 7.2 from the page), now 4.52:1"
+    },
+    {
+      "token": "editor.highlight-blue",
+      "palette": "#56949f40",
+      "value": "#56949f2d",
+      "reason": "color-accent on highlight-blue over color-bg was 2.98:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 7.0 from the page), now 4.52:1"
+    },
+    {
+      "token": "editor.highlight-purple",
+      "palette": "#907aa940",
+      "value": "#907aa92b",
+      "reason": "color-accent on highlight-purple over color-bg was 2.94:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 7.1 from the page), now 4.51:1"
+    },
+    {
+      "token": "editor.highlight-dot-yellow",
+      "palette": "#ea9d34",
+      "value": "#c87c15",
+      "reason": "highlight-dot-yellow on color-bg was 2.05:1 (needs 3:1); lightness lowered, hue and saturation kept, now 3.03:1"
+    },
+    {
+      "token": "editor.color-selection",
+      "palette": "#b4637a33",
+      "value": "#b4637a27",
+      "reason": "color-accent on color-selection over color-bg was 3.05:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 7.2 from the page), now 4.52:1"
+    },
+    {
+      "token": "editor.color-search-match",
+      "palette": "#ea9d3459",
+      "value": "#ea9d3441",
+      "reason": "color-accent on color-search-match over color-bg was 3.00:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 10.7 from the page), now 4.50:1"
+    },
+    {
+      "token": "editor.color-search-match-current",
+      "palette": "#d7827ea6",
+      "value": "#d7827e34",
+      "reason": "color-accent on color-search-match-current over color-bg was 2.11:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 8.1 from the page), now 4.51:1"
+    },
+    {
+      "token": "editor.color-popup-selected-bg",
+      "palette": "#b4637a",
+      "value": "#ad546d",
+      "reason": "color-popup-selected-text on color-popup-selected-bg was 3.84:1 (needs 4.5:1); lightness moved away from the text on it, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "editor.color-callout-note-bg",
+      "palette": "#56949f1c",
+      "value": "#56949f28",
+      "reason": "color-callout-note-title on color-callout-note-bg over color-bg was 2.82:1 (needs 4.5:1); the largest alpha that passes every pair would give only dE2000 4.2 from the page, so alpha set to the smallest value that is visible (dE2000 6.3 from the page; M7-R13 step 2), hue kept; the text colours that failed on it are nudged (see their records), now 4.50:1"
+    },
+    {
+      "token": "editor.color-callout-note-icon",
+      "palette": "#56949f",
+      "value": "#518b96",
+      "reason": "color-callout-note-icon on color-callout-note-bg over color-bg was 2.82:1 (needs 3:1); lightness lowered, hue and saturation kept, now 3.00:1"
+    },
+    {
+      "token": "editor.color-callout-note-title",
+      "palette": "#56949f",
+      "value": "#3f6d75",
+      "reason": "color-callout-note-title on color-callout-note-bg over color-bg was 2.82:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.color-callout-tip-bg",
+      "palette": "#2869831c",
+      "value": "#28698321",
+      "reason": "color-secondary on color-callout-tip-bg over color-bg was 3.46:1 (needs 4.5:1); the largest alpha that passes every pair would give only dE2000 5.2 from the page, so alpha set to the smallest value that is visible (dE2000 6.0 from the page; M7-R13 step 2), hue kept; the text colours that failed on it are nudged (see their records), now 4.52:1"
+    },
+    {
+      "token": "editor.color-callout-important-bg",
+      "palette": "#907aa91c",
+      "value": "#907aa927",
+      "reason": "color-callout-important-title on color-callout-important-bg over color-bg was 3.10:1 (needs 4.5:1); the largest alpha that passes every pair would give only dE2000 4.2 from the page, so alpha set to the smallest value that is visible (dE2000 6.5 from the page; M7-R13 step 2), hue kept; the text colours that failed on it are nudged (see their records), now 4.54:1"
+    },
+    {
+      "token": "editor.color-callout-important-icon",
+      "palette": "#907aa9",
+      "value": "#8f78a8",
+      "reason": "color-callout-important-icon on color-callout-important-bg over color-bg was 3.10:1 (passes 3:1); lightness lowered, hue and saturation kept, now 3.03:1"
+    },
+    {
+      "token": "editor.color-callout-important-title",
+      "palette": "#907aa9",
+      "value": "#735b8d",
+      "reason": "color-callout-important-title on color-callout-important-bg over color-bg was 3.10:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.54:1"
+    },
+    {
+      "token": "editor.color-callout-warning-bg",
+      "palette": "#d7827e1c",
+      "value": "#d7827e25",
+      "reason": "color-callout-warning-title on color-callout-warning-bg over color-bg was 2.37:1 (needs 4.5:1); the largest alpha that passes every pair would give only dE2000 4.9 from the page, so alpha set to the smallest value that is visible (dE2000 6.3 from the page; M7-R13 step 2), hue kept; the text colours that failed on it are nudged (see their records), now 4.51:1"
+    },
+    {
+      "token": "editor.color-callout-warning-icon",
+      "palette": "#d7827e",
+      "value": "#cd645f",
+      "reason": "color-callout-warning-icon on color-callout-warning-bg over color-bg was 2.37:1 (needs 3:1); lightness lowered, hue and saturation kept, now 3.04:1"
+    },
+    {
+      "token": "editor.color-callout-warning-title",
+      "palette": "#d7827e",
+      "value": "#b73e39",
+      "reason": "color-callout-warning-title on color-callout-warning-bg over color-bg was 2.37:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "editor.color-callout-caution-bg",
+      "palette": "#b4637a1c",
+      "value": "#b4637a1f",
+      "reason": "color-callout-caution-title on color-callout-caution-bg over color-bg was 3.39:1 (needs 4.5:1); the largest alpha that passes every pair would give only dE2000 5.3 from the page, so alpha set to the smallest value that is visible (dE2000 6.1 from the page; M7-R13 step 2), hue kept; the text colours that failed on it are nudged (see their records), now 4.50:1"
+    },
+    {
+      "token": "editor.color-callout-caution-title",
+      "palette": "#b4637a",
+      "value": "#9f4d64",
+      "reason": "color-callout-caution-title on color-callout-caution-bg over color-bg was 3.39:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.color-math-error",
+      "palette": "#b4637a",
+      "value": "#9f4d64",
+      "reason": "color-math-error on color-math-error-bg over color-bg was 3.39:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.color-math-error-bg",
+      "palette": "#b4637a1c",
+      "value": "#b4637a1f",
+      "reason": "color-math-error on color-math-error-bg over color-bg was 3.39:1 (needs 4.5:1); the largest alpha that passes every pair would give only dE2000 5.3 from the page, so alpha set to the smallest value that is visible (dE2000 6.1 from the page; M7-R13 step 2), hue kept; the text colours that failed on it are nudged (see their records), now 4.50:1"
+    },
+    {
+      "token": "editor.color-error",
+      "palette": "#b4637a",
+      "value": "#ad546d",
+      "reason": "color-error on color-bg was 3.84:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "shell.accent",
+      "palette": "#b4637a",
+      "value": "#ad546d",
+      "reason": "shell.on-accent on shell.accent was 3.84:1 (needs 4.5:1); lightness moved away from the text on it, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "shell.secondary-text",
+      "palette": "#797593",
+      "value": "#716d8c",
+      "reason": "shell.secondary-text on shell.background was 4.02:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.50:1"
+    }
+  ],
+  "editor": {
+    "color-text": "#464261",
+    "color-secondary": "#65617c",
+    "color-accent": "#9b4b61",
+    "color-bg": "#faf4ed",
+    "color-code-bg": "#fffaf3",
+    "color-code-keyword": "#286983",
+    "color-code-string": "#a46611",
+    "color-code-number": "#c54b46",
+    "color-code-comment": "#767086",
+    "color-code-type": "#487b85",
+    "color-code-function": "#c54b46",
+    "color-code-property": "#82699e",
+    "color-code-tag": "#af5971",
+    "color-code-meta": "#a46611",
+    "color-rule": "#dfdad9",
+    "color-quote": "#716d8c",
+    "color-quote-bar": "#dfdad9",
+    "color-link": "#286983",
+    "color-tag": "#725a8c",
+    "color-tag-bg": "#907aa927",
+    "highlight": "#ea9d3440",
+    "highlight-green": "#28698321",
+    "highlight-red": "#b4637a27",
+    "highlight-blue": "#56949f2d",
+    "highlight-yellow": "#ea9d3440",
+    "highlight-purple": "#907aa92b",
+    "highlight-dot-green": "#286983",
+    "highlight-dot-red": "#b4637a",
+    "highlight-dot-blue": "#56949f",
+    "highlight-dot-yellow": "#c87c15",
+    "highlight-dot-purple": "#907aa9",
+    "color-selection": "#b4637a27",
+    "color-search-match": "#ea9d3441",
+    "color-search-match-current": "#d7827e34",
+    "color-popup-bg": "#f2e9e1",
+    "color-popup-text": "#464261",
+    "color-popup-selected-bg": "#ad546d",
+    "color-popup-selected-text": "#faf4ed",
+    "color-shadow": "#0000002e",
+    "color-callout-note-bg": "#56949f28",
+    "color-callout-note-border": "#56949f80",
+    "color-callout-note-icon": "#518b96",
+    "color-callout-note-title": "#3f6d75",
+    "color-callout-tip-bg": "#28698321",
+    "color-callout-tip-border": "#28698380",
+    "color-callout-tip-icon": "#286983",
+    "color-callout-tip-title": "#286983",
+    "color-callout-important-bg": "#907aa927",
+    "color-callout-important-border": "#907aa980",
+    "color-callout-important-icon": "#8f78a8",
+    "color-callout-important-title": "#735b8d",
+    "color-callout-warning-bg": "#d7827e25",
+    "color-callout-warning-border": "#d7827e80",
+    "color-callout-warning-icon": "#cd645f",
+    "color-callout-warning-title": "#b73e39",
+    "color-callout-caution-bg": "#b4637a1f",
+    "color-callout-caution-border": "#b4637a80",
+    "color-callout-caution-icon": "#b4637a",
+    "color-callout-caution-title": "#9f4d64",
+    "color-table-header-bg": "#fffaf3",
+    "color-table-border": "#dfdad9",
+    "color-math-error": "#9f4d64",
+    "color-math-error-bg": "#b4637a1f",
+    "color-error": "#ad546d"
+  },
+  "shell": {
+    "accent": "#ad546d",
+    "background": "#faf4ed",
+    "text": "#464261",
+    "secondary-text": "#716d8c",
+    "selection": "#b4637a33",
+    "selection-text": "#464261",
+    "separator": "#dfdad9",
+    "search-highlight": "#ea9d3473",
+    "on-accent": "#faf4ed"
+  }
+}

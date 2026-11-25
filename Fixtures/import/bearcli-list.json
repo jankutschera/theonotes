@@ -1,0 +1,46 @@
+[
+  {
+    "id": "SYN-0001",
+    "title": "Synthetic plain note",
+    "locked": "no",
+    "tags": ["#work", "#multi word#", "#work/sub"],
+    "length": 58,
+    "created": "2025-01-02T03:04:05Z",
+    "modified": "2025-02-03T04:05:06Z",
+    "pins": ["global", "#work"],
+    "location": "notes",
+    "todos": 1,
+    "done": 2,
+    "attachments": [],
+    "content": "# Synthetic plain note\n\n#work #multi word# #work/sub\n\n- [ ] a\n- [x] b\n- [x] c"
+  },
+  {
+    "id": "SYN-0002",
+    "title": "Synthetic trashed note with file",
+    "locked": "no",
+    "tags": [],
+    "length": 61,
+    "created": "2024-06-01T10:00:00Z",
+    "modified": "2024-06-02T11:30:00Z",
+    "pins": [],
+    "location": "trash",
+    "todos": 0,
+    "done": 0,
+    "attachments": ["photo 2.jpg"],
+    "content": "# Synthetic trashed note with file\n\n[photo 2.jpg](photo%202.jpg)"
+  },
+  {
+    "id": "SYN-0003",
+    "title": "Synthetic locked note",
+    "locked": "yes",
+    "tags": [],
+    "length": 0,
+    "created": "2023-03-03T00:00:00Z",
+    "modified": "2023-03-03T00:00:00Z",
+    "pins": [],
+    "location": "archive",
+    "todos": 0,
+    "done": 0,
+    "attachments": []
+  }
+]

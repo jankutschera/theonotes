@@ -1,0 +1,4 @@
+{
+  "type": "tagIcons",
+  "icons": { "work": "briefcase", "work/projects": "folder.fill", "reisen": "airplane" }
+}

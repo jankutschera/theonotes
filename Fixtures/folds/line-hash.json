@@ -1,0 +1,53 @@
+{
+  "description": "FNV-1a 32-bit over the UTF-8 bytes of a line's text, 8 lowercase hex (M6-R31). Shared by web/editor/test/folding.test.ts and the Swift fold-state code (M6 Task 8).",
+  "cases": [
+    {
+      "text": "",
+      "hash": "811c9dc5"
+    },
+    {
+      "text": "a",
+      "hash": "e40c292c"
+    },
+    {
+      "text": "foobar",
+      "hash": "bf9cf968"
+    },
+    {
+      "text": "# Plan",
+      "hash": "80c79a1d"
+    },
+    {
+      "text": "- [ ] Project",
+      "hash": "3c4a7997"
+    },
+    {
+      "text": "  - sub",
+      "hash": "0121a7a2"
+    },
+    {
+      "text": "## Über Größe",
+      "hash": "99cb86be"
+    },
+    {
+      "text": "# Café ñ",
+      "hash": "4effb924"
+    },
+    {
+      "text": "### 日本語の見出し",
+      "hash": "727568b6"
+    },
+    {
+      "text": "- 🐻 Bärchen 🎉",
+      "hash": "a38e5abb"
+    },
+    {
+      "text": "# 👨‍👩‍👧 family",
+      "hash": "953a1634"
+    },
+    {
+      "text": "\t1. tab",
+      "hash": "db9d1830"
+    }
+  ]
+}

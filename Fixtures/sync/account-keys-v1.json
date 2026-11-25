@@ -1,0 +1,13 @@
+{
+  "recoveryWords": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art",
+  "envelope": {
+    "version": 1,
+    "algorithm": "HKDF-SHA256+AES-256-GCM+Ed25519",
+    "accountId": "account-fixture-001",
+    "wrappedMasterKey": "AwMDAwMDAwMDAwMDxZSfCjhxwu3M8gart9hxNnjZo3L1ij5spCWR-QThUx-gnjxl7Gw0jtQ2OwS4piYh",
+    "wrappedVaultKey": "BAQEBAQEBAQEBAQE7aNZQpu6uUulTpy-kleugHca66UuLuc2yYH_v8E6uRfmavywc0U7ipbwIbSBLU6y",
+    "recoveryPublicKey": "pJR614_KLceuu7Ct2P1xCGOZ41O7-MAF5bmPHiYaKQ8"
+  },
+  "signingSeedHex": "c29daaebb2e3ace7acc870c039e4f1ba1e999063b67be118a040e9f607812057",
+  "vaultKeyHex": "0202020202020202020202020202020202020202020202020202020202020202"
+}

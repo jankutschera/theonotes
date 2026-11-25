@@ -1,0 +1,242 @@
+[
+  {
+    "name": "image",
+    "input": "![](photo.jpg)",
+    "expected": [
+      {
+        "filename": "photo.jpg",
+        "isImage": true,
+        "metadata": {}
+      }
+    ]
+  },
+  {
+    "name": "percent-decoded",
+    "input": "![](photo%202.jpg)",
+    "expected": [
+      {
+        "filename": "photo 2.jpg",
+        "isImage": true,
+        "metadata": {}
+      }
+    ]
+  },
+  {
+    "name": "file with embed metadata",
+    "input": "[doc.pdf](doc.pdf)<!-- {\"embed\":\"true\"} -->",
+    "expected": [
+      {
+        "filename": "doc.pdf",
+        "isImage": false,
+        "metadata": {
+          "embed": "true"
+        }
+      }
+    ]
+  },
+  {
+    "name": "external image",
+    "input": "![](https://example.com/a.png)",
+    "expected": []
+  },
+  {
+    "name": "external link",
+    "input": "[site](https://example.com)",
+    "expected": []
+  },
+  {
+    "name": "width metadata",
+    "input": "![](img.png)<!-- {\"width\":\"320\"} -->",
+    "expected": [
+      {
+        "filename": "img.png",
+        "isImage": true,
+        "metadata": {
+          "width": "320"
+        }
+      }
+    ]
+  },
+  {
+    "name": "metadata after space",
+    "input": "[file.zip](file.zip) <!-- {\"preview\":\"true\"} -->",
+    "expected": [
+      {
+        "filename": "file.zip",
+        "isImage": false,
+        "metadata": {
+          "preview": "true"
+        }
+      }
+    ]
+  },
+  {
+    "name": "in code span",
+    "input": "`![](code.jpg)`",
+    "expected": []
+  },
+  {
+    "name": "in fenced code",
+    "input": "```\n![](fenced.jpg)\n```",
+    "expected": []
+  },
+  {
+    "name": "anchor link",
+    "input": "[anchor](#section)",
+    "expected": []
+  },
+  {
+    "name": "mailto link",
+    "input": "[mail](mailto:a@b.c)",
+    "expected": []
+  },
+  {
+    "name": "two images",
+    "input": "![alt text](a.gif) and ![](b.jpg)",
+    "expected": [
+      {
+        "filename": "a.gif",
+        "isImage": true,
+        "metadata": {}
+      },
+      {
+        "filename": "b.jpg",
+        "isImage": true,
+        "metadata": {}
+      }
+    ]
+  },
+  {
+    "name": "percent-encoded CJK",
+    "input": "![](%E6%97%A5%E6%9C%AC.png)",
+    "expected": [
+      {
+        "filename": "日本.png",
+        "isImage": true,
+        "metadata": {}
+      }
+    ]
+  },
+  {
+    "name": "file with space and metadata",
+    "input": "[report](report%20final.pdf)<!-- {\"embed\":\"true\"} -->",
+    "expected": [
+      {
+        "filename": "report final.pdf",
+        "isImage": false,
+        "metadata": {
+          "embed": "true"
+        }
+      }
+    ]
+  },
+  {
+    "name": "same file twice",
+    "input": "![](photo.jpg)\n![](photo.jpg)",
+    "expected": [
+      {
+        "filename": "photo.jpg",
+        "isImage": true,
+        "metadata": {}
+      }
+    ]
+  },
+  {
+    "name": "in html comment",
+    "input": "<!-- ![](hidden.jpg) -->",
+    "expected": []
+  },
+  {
+    "name": "angle-bracket destination",
+    "input": "![](<with space.jpg>)",
+    "expected": [
+      {
+        "filename": "with space.jpg",
+        "isImage": true,
+        "metadata": {}
+      }
+    ]
+  },
+  {
+    "name": "absolute path",
+    "input": "[x](/abs/path.pdf)",
+    "expected": []
+  },
+  {
+    "name": "file url",
+    "input": "[folder](file:///Users/me)",
+    "expected": []
+  },
+  {
+    "name": "CRLF",
+    "input": "![](a.jpg)\r\n[b.pdf](b.pdf)<!-- {\"embed\":\"true\"} -->\r\n",
+    "expected": [
+      {
+        "filename": "a.jpg",
+        "isImage": true,
+        "metadata": {}
+      },
+      {
+        "filename": "b.pdf",
+        "isImage": false,
+        "metadata": {
+          "embed": "true"
+        }
+      }
+    ]
+  },
+  {
+    "name": "numeric metadata",
+    "input": "![](a.jpg)<!-- {\"width\":320} -->",
+    "expected": [
+      {
+        "filename": "a.jpg",
+        "isImage": true,
+        "metadata": {
+          "width": "320"
+        }
+      }
+    ]
+  },
+  {
+    "name": "in table cell",
+    "input": "| ![](cell.png) | text |",
+    "expected": [
+      {
+        "filename": "cell.png",
+        "isImage": true,
+        "metadata": {}
+      }
+    ]
+  },
+  {
+    "name": "file link without metadata is a link",
+    "input": "[report](report.pdf)",
+    "expected": []
+  },
+  {
+    "name": "bare domain link is not a file",
+    "input": "[x.com](x.com)",
+    "expected": []
+  },
+  {
+    "name": "www link is not a file",
+    "input": "[x](www.site.com)",
+    "expected": []
+  },
+  {
+    "name": "relative markdown link is not a file",
+    "input": "[notes.md](notes.md)",
+    "expected": []
+  },
+  {
+    "name": "domain path link is not a file",
+    "input": "[docs](site.io/docs)",
+    "expected": []
+  },
+  {
+    "name": "plain comment after link is not metadata",
+    "input": "[report](report.pdf)<!-- note -->",
+    "expected": []
+  }
+]

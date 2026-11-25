@@ -1,0 +1,40 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index c8c25ded8ca438516cb1fb83c1f6b61477e4187f..5bd063673814d1ba757dce7767043a1155489ce4 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -1286,7 +1286,14 @@ const completionPlugin = view.ViewPlugin.fromClass(class {
+             if (this.composing == 3 /* CompositionState.ChangedAndMoved */) {
+                 // Safari fires compositionend events synchronously, possibly
+                 // from inside an update, so dispatch asynchronously to avoid reentrancy
+-                setTimeout(() => this.view.dispatch({ effects: startCompletionEffect.of(false) }), 20);
++                // iOS may defer reading composition deletions until an animation frame.
++                // A timer dispatched first can redraw the old document and discard them.
++                this.view.win.requestAnimationFrame(() => {
++                    setTimeout(() => {
++                        if (!this.view.destroyed)
++                            this.view.dispatch({ effects: startCompletionEffect.of(false) });
++                    }, 20);
++                });
+             }
+             this.composing = 0 /* CompositionState.None */;
+         }
+diff --git a/dist/index.js b/dist/index.js
+index c37c3c8404541b1c31218269773e98008145cd4d..e1e2d04496937031bf97b5e186ebda5a731c8469 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1284,7 +1284,14 @@ const completionPlugin = /*@__PURE__*/ViewPlugin.fromClass(class {
+             if (this.composing == 3 /* CompositionState.ChangedAndMoved */) {
+                 // Safari fires compositionend events synchronously, possibly
+                 // from inside an update, so dispatch asynchronously to avoid reentrancy
+-                setTimeout(() => this.view.dispatch({ effects: startCompletionEffect.of(false) }), 20);
++                // iOS may defer reading composition deletions until an animation frame.
++                // A timer dispatched first can redraw the old document and discard them.
++                this.view.win.requestAnimationFrame(() => {
++                    setTimeout(() => {
++                        if (!this.view.destroyed)
++                            this.view.dispatch({ effects: startCompletionEffect.of(false) });
++                    }, 20);
++                });
+             }
+             this.composing = 0 /* CompositionState.None */;
+         }

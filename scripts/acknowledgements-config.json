@@ -1,0 +1,183 @@
+{
+  "_comment": "Curated inputs for scripts/gen-acknowledgements.py. Everything else is read from what ships (editor bundle source maps, Package.resolved, theme-*.json). Add an entry here only when a source's own files are not enough, and say why in `note`.",
+  "npmOverrides": {
+    "khroma": {
+      "licence": "MIT",
+      "note": "package.json has no licence field; the shipped licence file is the MIT text."
+    },
+    "@mathjax/mathjax-stix2-font": {
+      "textFromPackage": "@mathjax/src",
+      "copyright": "Copyright (c) 2022 MathJax, Inc. (www.mathjax.org)",
+      "note": "MathJax declares Apache-2.0 for this package (its conversion code) but ships no licence file, so the Apache-2.0 text of @mathjax/src (same project) is shown. The copyright line is the one in the package's own font definition (def/mathjax-stix2.ts). The glyph data inside the package are the STIX Two fonts, converted by MathJax, and stay under the SIL Open Font License 1.1: see the \"STIX Two fonts\" entry (docs/decisions.md, LIC-R34)."
+    }
+  },
+  "extraNpm": [
+    {
+      "name": "vite",
+      "textSlice": {
+        "from": "MIT License",
+        "to": "THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+      },
+      "note": "Vite's small module-preload helper is part of the editor bundle. Only the Vite core licence is shown; the dependencies Vite bundles into its own build tool do not ship."
+    }
+  ],
+  "themeDir": "Packages/TheoNotesCore/Sources/TheoNotesCore/Resources",
+  "themeOwnLicence": "LicenseRef-TrueBrewBirdie",
+  "themeLicenceFiles": {
+    "Catppuccin": "theme-license-catppuccin.txt",
+    "Dracula": "theme-license-dracula.txt",
+    "Everforest": "theme-license-everforest.txt",
+    "Gruvbox": "theme-license-gruvbox.txt",
+    "Nord": "theme-license-nord.txt",
+    "Rosé Pine": "theme-license-rose-pine.txt",
+    "Solarized": "theme-license-solarized.txt",
+    "Tokyo Night": "theme-license-tokyo-night.txt"
+  },
+  "assets": [
+    {
+      "name": "BIP39 English word list",
+      "version": "",
+      "licenceFile": "Packages/TheoNotesCore/Sources/TheoNotesCore/Resources/recovery-wordlist-license.txt",
+      "source": "https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt",
+      "usedIn": "Recovery phrase",
+      "licence": "MIT",
+      "copyright": "Authors: Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe"
+    },
+    {
+      "name": "Unicode emoji data and CLDR annotations",
+      "version": "Emoji 18.0, CLDR 48.2.3",
+      "licenceFile": "Packages/TheoNotesCore/Sources/TheoNotesCore/Resources/emoji-LICENSE.txt",
+      "source": "https://unicode.org/license.txt",
+      "usedIn": "Emoji picker",
+      "licence": "Unicode-3.0",
+      "copyright": "Copyright (c) 1991-2026 Unicode, Inc."
+    },
+    {
+      "name": "STIX Two fonts (glyph data in @mathjax/mathjax-stix2-font)",
+      "version": "",
+      "licenceFile": "docs/legal/fonts/STIXTwo-OFL.txt",
+      "source": "https://github.com/stipub/stixfonts",
+      "usedIn": "Maths in notes",
+      "licence": "OFL-1.1",
+      "ruling": "LIC-R34",
+      "copyright": "Copyright 2001-2021 The STIX Fonts Project Authors (https://github.com/stipub/stixfonts), with Reserved Font Name \"TM Math\".",
+      "note": "The maths symbols are STIX Two Math and STIX Two Text, designed by Tiro Typeworks Ltd (Ross Mills, John Hudson, Paul Hanslow) with prior portions by MicroPress Inc. and Coen Hoffman, and converted by MathJax into the font data of @mathjax/mathjax-stix2-font (glyph outlines as SVG paths). That conversion is a modified version in the sense of the licence below, so it carries this copyright notice and licence. The Reserved Font Name \"TM Math\" is not used for it. STIX Fonts and STIX Two are trademarks of the Institute of Electrical and Electronics Engineers, Inc.; they are named here only to credit the authors. The sans-serif maths letters and digits derive from Source Sans Pro (next entry)."
+    },
+    {
+      "name": "Source Sans Pro (sans-serif maths letters of STIX Two Math)",
+      "version": "",
+      "licenceFile": "docs/legal/fonts/SourceSansPro-OFL.txt",
+      "source": "https://github.com/adobe-fonts/source-sans",
+      "usedIn": "Maths in notes",
+      "licence": "OFL-1.1",
+      "ruling": "LIC-R34",
+      "copyright": "Copyright 2010-2018 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'. All Rights Reserved.",
+      "note": "STIX Two Math derives its sans-serif mathematical alphanumerics from Source Sans Pro (designer Paul Hunt, Adobe), with proportions and weight adjusted; STIX does not name the release it used, so the notice shown is the one of release 2.045. Source is a trademark of Adobe in the United States and/or other countries. The Reserved Font Name \"Source\" is not used for the converted data."
+    }
+  ],
+  "bundle": {
+    "_comment": "Fail-closed coverage of the built app's Contents/Resources (gen-acknowledgements.py --check). Editor scripts are covered by the module graph; theme files by their own `source` block; licence texts of listed assets automatically. Everything else needs a line here.",
+    "ownWork": [
+      {
+        "pattern": "Acknowledgements.json",
+        "why": "generated by scripts/gen-acknowledgements.py"
+      },
+      {
+        "pattern": "AppIcon.icns",
+        "why": "app icon made by Jan (docs/brand/PROVENANCE.md)"
+      },
+      {
+        "pattern": "Assets.car",
+        "why": "compiled asset catalog: app icon and accent colour (docs/brand/PROVENANCE.md)"
+      },
+      {
+        "pattern": "en.lproj/InfoPlist.strings",
+        "why": "app names"
+      },
+      {
+        "pattern": "Editor/index.html",
+        "why": "editor page (web/editor/index.html)"
+      },
+      {
+        "pattern": "Editor/export.html",
+        "why": "export page (web/editor/export.html)"
+      },
+      {
+        "pattern": "*.bundle/Contents/Info.plist",
+        "why": "SwiftPM resource bundle metadata"
+      },
+      {
+        "pattern": "TheoNotesCore_TheoNotesCore.bundle/Contents/Resources/tagcons.json",
+        "why": "tag icon keyword map (SF Symbol names), our own"
+      },
+      {
+        "pattern": "TheoNotesCore_TheoNotesCore.bundle/Contents/Resources/getting-started-*",
+        "why": "getting started notes and their source note, written for Theo Notes (REL-R70, docs/release/getting-started-copy.md)"
+      },
+      {
+        "pattern": "TheoNotesCore_TheoNotesCore.bundle/Contents/Resources/starter-v*",
+        "why": "frozen copies of the shipped getting started texts (starter-v1 and starter-v2), written for Theo Notes (STARTER-R1, STARTER-R24)"
+      }
+    ],
+    "owners": [
+      {
+        "pattern": "TheoNotesCore_TheoNotesCore.bundle/Contents/Resources/recovery-english.txt",
+        "owner": "BIP39 English word list"
+      },
+      {
+        "pattern": "TheoNotesCore_TheoNotesCore.bundle/Contents/Resources/emoji.json",
+        "owner": "Unicode emoji data and CLDR annotations"
+      },
+      {
+        "pattern": "GRDB_GRDB.bundle/Contents/Resources/PrivacyInfo.xcprivacy",
+        "owner": "GRDB.swift"
+      },
+      {
+        "pattern": "ZIPFoundation_ZIPFoundation.bundle/Contents/Resources/PrivacyInfo.xcprivacy",
+        "owner": "ZIPFoundation"
+      }
+    ],
+    "code": [
+      {
+        "pattern": "Info.plist",
+        "why": "app metadata"
+      },
+      {
+        "pattern": "PkgInfo",
+        "why": "app metadata"
+      },
+      {
+        "pattern": "embedded.provisionprofile",
+        "why": "signing profile"
+      },
+      {
+        "pattern": "_CodeSignature/*",
+        "why": "code signature"
+      },
+      {
+        "pattern": "CodeResources",
+        "why": "notarization ticket stapled by xcrun stapler (scripts/release/notarize-install-bundle.sh)"
+      },
+      {
+        "pattern": "MacOS/*.debug.dylib",
+        "why": "Debug build of our own code (Xcode)"
+      },
+      {
+        "pattern": "MacOS/__preview.dylib",
+        "why": "Debug SwiftUI preview stub of our own code (Xcode)"
+      },
+      {
+        "pattern": "Helpers/theonotes",
+        "why": "our command line tool and MCP server"
+      },
+      {
+        "pattern": "PlugIns/TheoNotesMacTests.xctest/*",
+        "why": "our unit-test bundle, present in test builds only"
+      },
+      {
+        "pattern": "PlugIns/TheoNotesMacShare.appex/**",
+        "why": "our share extension (Apps/TheoNotesMacShare); its code is ours plus the packages the app already lists"
+      }
+    ]
+  }
+}

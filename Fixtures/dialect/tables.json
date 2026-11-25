@@ -1,0 +1,351 @@
+[
+  {
+    "name": "basic",
+    "input": "| a | b |\n|---|---|\n| 1 | 2 |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "alignment",
+    "input": "| l | c | r |\n|:--|:-:|--:|\n| 1 | 2 | 3 |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "no trailing pipe",
+    "input": "| a | b\n|---|---|\n| 1 | 2",
+    "expected": []
+  },
+  {
+    "name": "no leading pipe",
+    "input": "a | b |\n|---|---|\n1 | 2 |",
+    "expected": []
+  },
+  {
+    "name": "ragged body rows",
+    "input": "| a | b |\n|---|---|\n| 1 |\n| 1 | 2 | 3 |\n| 1 | 2\nafter",
+    "expected": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "name": "escaped pipe as the last character",
+    "input": "| a | b \\|\n|---|---|",
+    "expected": []
+  },
+  {
+    "name": "escaped pipe ends a body row",
+    "input": "| a | b |\n|---|---|\n| 1 | 2 \\|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "pipe inside an inline code span",
+    "input": "| a | b |\n|---|---|\n| `x|y` | z |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "pipe inside a code span does not split a header cell",
+    "input": "| `a|b` | c |\n|---|---|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "pipe inside a wiki link does not split a header cell",
+    "input": "| [[Note|alias]] | c |\n|---|---|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "inside a quote",
+    "input": "> | a | b |\n> |---|---|\n> | 1 | 2 |\nafter",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "a row outside the quote ends the table",
+    "input": "> | a |\n> |---|\n| 1 |",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "inside a list item",
+    "input": "- | a | b |\n  |---|---|\n  | 1 | 2 |\n| x |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "a list item row ends the table",
+    "input": "| a |\n|---|\n- | 1 |",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "directly after a paragraph line",
+    "input": "Intro text\n| a | b |\n|---|---|\n| 1 | 2 |",
+    "expected": [
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "name": "the row before the header is a paragraph",
+    "input": "| a | b |\n| c | d |\n|---|---|",
+    "expected": [
+      2,
+      3
+    ]
+  },
+  {
+    "name": "header and delimiter cell counts differ",
+    "input": "| a | b |\n|---|\n| 1 | 2 |",
+    "expected": []
+  },
+  {
+    "name": "delimiter without a dash",
+    "input": "| a | b |\n|:|:|",
+    "expected": []
+  },
+  {
+    "name": "delimiter in another container",
+    "input": "| a |\n> |---|",
+    "expected": []
+  },
+  {
+    "name": "single column",
+    "input": "| a |\n|---|\n| 1 |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "CJK cells",
+    "input": "| 名前 | 値 |\n|---|---|\n| 日本語 | 漢字 |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "trailing spaces after the last pipe",
+    "input": "| a | b |  \n|---|---| \t\n| 1 | 2 |   ",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "blank line ends the table",
+    "input": "| a |\n|---|\n\n| 1 |",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "two tables",
+    "input": "| a |\n|---|\ntext\n| b |\n|---|\n| 2 |",
+    "expected": [
+      1,
+      2,
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "name": "inside a fence",
+    "input": "```\n| a | b |\n|---|---|\n```",
+    "expected": []
+  },
+  {
+    "name": "inside a math block",
+    "input": "$$\n| a |\n|---|\n$$",
+    "expected": []
+  },
+  {
+    "name": "inside front matter",
+    "input": "---\n| a | b |\n|---|---|\n---\nbody",
+    "expected": []
+  },
+  {
+    "name": "a bare URL keeps the closing pipe (Bear oracle)",
+    "input": "| a |\n|---|\n|https://x.com|#bxu|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "a bare URL in the last cell keeps the closing pipe",
+    "input": "| a | b |\n|---|---|\n| x |https://example.com|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "ordered item that cannot interrupt a paragraph starts a table",
+    "input": "para\n2. | a |\n   |---|",
+    "expected": [
+      2,
+      3
+    ]
+  },
+  {
+    "name": "pipe inside math does not split a header cell",
+    "input": "| $a|b$ | c |\n|---|---|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "pipe inside a link destination does not split a header cell",
+    "input": "| [x](a|b) | c |\n|---|---|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "pipe inside an image does not split a header cell",
+    "input": "| ![i](a|b.png) | c |\n|---|---|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "pipe inside a URL does not split a header cell",
+    "input": "| https://x.y/a|b | c |\n|---|---|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "pipe inside a comment does not split a header cell",
+    "input": "| <!-- a | b --> | c |\n|---|---|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "escaped pipe inside a cell",
+    "input": "| a \\| b |\n|---|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "escaped backslash before the last pipe",
+    "input": "| a | b \\\\|\n|---|---|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "empty cells",
+    "input": "|  |  |\n|---|---|\n|||",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "empty single-cell header",
+    "input": "||\n|-|",
+    "expected": [
+      1,
+      2
+    ]
+  },
+  {
+    "name": "nested quote depth",
+    "input": ">> | a |\n>> |---|\n>> | 1 |\n> | 2 |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "inside an ordered list item",
+    "input": "1. | a | b |\n   |---|---|\n   | 1 | 2 |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "inside a multi-line comment",
+    "input": "<!--\n| a |\n|---|\n-->",
+    "expected": []
+  },
+  {
+    "name": "emoji cells",
+    "input": "| 👩‍👩‍👧 | 🎉 |\n|---|---|\n| 😀 | x |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "CRLF line endings",
+    "input": "| a |\r\n|---|\r\n| 1 |",
+    "expected": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "name": "header indented 4 columns interrupts a paragraph",
+    "input": "text\n    | a |\n    |---|",
+    "expected": [
+      2,
+      3
+    ]
+  }
+]

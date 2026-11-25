@@ -1,0 +1,21 @@
+{
+  "type": "setSettings",
+  "hideMarkdown": false,
+  "autoSortTodos": true,
+  "showHeadingLevels": false,
+  "autocomplete": false,
+  "typewriterMode": true,
+  "typography": {
+    "fontSize": 18,
+    "lineHeight": 1.5,
+    "lineWidth": 640,
+    "paragraphSpacing": 0.5,
+    "paragraphIndent": 1.5,
+    "fontText": "Iowan Old Style",
+    "fontHeading": "Avenir Next",
+    "fontCode": "Menlo"
+  },
+  "theme": { "--bc-color-text": "#eeeeee", "--bc-color-bg": "#1e1e1e" },
+  "appearance": "dark",
+  "reduceMotion": true
+}

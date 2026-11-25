@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "id": "catppuccin-macchiato",
+  "name": "Catppuccin Macchiato",
+  "order": 101,
+  "appearance": "dark",
+  "contrast": "standard",
+  "source": {
+    "project": "Catppuccin",
+    "url": "https://catppuccin.com/palette",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2021 Catppuccin"
+  },
+  "deviations": [
+    {
+      "token": "editor.highlight",
+      "palette": "#eed49f4d",
+      "value": "#eed49f26",
+      "reason": "color-link on highlight over color-bg was 2.97:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 10.2 from the page), now 4.50:1"
+    },
+    {
+      "token": "editor.highlight-green",
+      "palette": "#a6da954d",
+      "value": "#a6da9528",
+      "reason": "color-link on highlight-green over color-bg was 3.12:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 13.6 from the page), now 4.53:1"
+    },
+    {
+      "token": "editor.highlight-red",
+      "palette": "#ed87964d",
+      "value": "#ed879636",
+      "reason": "color-link on highlight-red over color-bg was 3.80:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 12.8 from the page), now 4.52:1"
+    },
+    {
+      "token": "editor.highlight-blue",
+      "palette": "#8aadf44d",
+      "value": "#8aadf431",
+      "reason": "color-link on highlight-blue over color-bg was 3.58:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 9.1 from the page), now 4.51:1"
+    },
+    {
+      "token": "editor.highlight-yellow",
+      "palette": "#eed49f4d",
+      "value": "#eed49f26",
+      "reason": "color-link on highlight-yellow over color-bg was 2.97:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 10.2 from the page), now 4.50:1"
+    },
+    {
+      "token": "editor.highlight-purple",
+      "palette": "#c6a0f64d",
+      "value": "#c6a0f630",
+      "reason": "color-link on highlight-purple over color-bg was 3.53:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 9.8 from the page), now 4.50:1"
+    },
+    {
+      "token": "editor.color-selection",
+      "palette": "#c6a0f633",
+      "value": "#c6a0f630",
+      "reason": "color-link on color-selection over color-bg was 4.39:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 9.8 from the page), now 4.50:1"
+    },
+    {
+      "token": "editor.color-search-match",
+      "palette": "#eed49f59",
+      "value": "#eed49f26",
+      "reason": "color-link on color-search-match over color-bg was 2.62:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 10.2 from the page), now 4.50:1"
+    },
+    {
+      "token": "editor.color-search-match-current",
+      "palette": "#f5a97fa6",
+      "value": "#f5a97f2e",
+      "reason": "color-link on color-search-match-current over color-bg was 1.61:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 11.8 from the page), now 4.51:1"
+    },
+    {
+      "token": "editor.color-callout-note-bg",
+      "palette": "#8aadf41c",
+      "value": "#8aadf421",
+      "reason": "color-link on color-callout-note-bg over color-bg was 5.33:1 (passes 4.5:1); the largest alpha that passes every pair would give only dE2000 5.2 from the page, so alpha set to the smallest value that is visible (dE2000 6.0 from the page; M7-R13 step 2), hue kept; the text colours that failed on it are nudged (see their records), now 5.13:1"
+    },
+    {
+      "token": "shell.search-highlight",
+      "palette": "#eed49f73",
+      "value": "#eed49f4c",
+      "reason": "shell.text on shell.search-highlight over shell.background was 3.04:1 (needs 4.5:1); alpha lowered to the largest value that passes every pair on this tint, hue kept, still translucent (dE2000 21.1 from the page), now 4.53:1"
+    }
+  ],
+  "editor": {
+    "color-text": "#cad3f5",
+    "color-secondary": "#a5adcb",
+    "color-accent": "#c6a0f6",
+    "color-bg": "#24273a",
+    "color-code-bg": "#1e2030",
+    "color-code-keyword": "#c6a0f6",
+    "color-code-string": "#a6da95",
+    "color-code-number": "#f5a97f",
+    "color-code-comment": "#939ab7",
+    "color-code-type": "#eed49f",
+    "color-code-function": "#8aadf4",
+    "color-code-property": "#b7bdf8",
+    "color-code-tag": "#ed8796",
+    "color-code-meta": "#f0c6c6",
+    "color-rule": "#494d64",
+    "color-quote": "#b8c0e0",
+    "color-quote-bar": "#494d64",
+    "color-link": "#8aadf4",
+    "color-tag": "#f5bde6",
+    "color-tag-bg": "#f5bde61c",
+    "highlight": "#eed49f26",
+    "highlight-green": "#a6da9528",
+    "highlight-red": "#ed879636",
+    "highlight-blue": "#8aadf431",
+    "highlight-yellow": "#eed49f26",
+    "highlight-purple": "#c6a0f630",
+    "highlight-dot-green": "#a6da95",
+    "highlight-dot-red": "#ed8796",
+    "highlight-dot-blue": "#8aadf4",
+    "highlight-dot-yellow": "#eed49f",
+    "highlight-dot-purple": "#c6a0f6",
+    "color-selection": "#c6a0f630",
+    "color-search-match": "#eed49f26",
+    "color-search-match-current": "#f5a97f2e",
+    "color-popup-bg": "#363a4f",
+    "color-popup-text": "#cad3f5",
+    "color-popup-selected-bg": "#c6a0f6",
+    "color-popup-selected-text": "#24273a",
+    "color-shadow": "#00000080",
+    "color-callout-note-bg": "#8aadf421",
+    "color-callout-note-border": "#8aadf480",
+    "color-callout-note-icon": "#8aadf4",
+    "color-callout-note-title": "#8aadf4",
+    "color-callout-tip-bg": "#a6da951c",
+    "color-callout-tip-border": "#a6da9580",
+    "color-callout-tip-icon": "#a6da95",
+    "color-callout-tip-title": "#a6da95",
+    "color-callout-important-bg": "#c6a0f61c",
+    "color-callout-important-border": "#c6a0f680",
+    "color-callout-important-icon": "#c6a0f6",
+    "color-callout-important-title": "#c6a0f6",
+    "color-callout-warning-bg": "#f5a97f1c",
+    "color-callout-warning-border": "#f5a97f80",
+    "color-callout-warning-icon": "#f5a97f",
+    "color-callout-warning-title": "#f5a97f",
+    "color-callout-caution-bg": "#ed87961c",
+    "color-callout-caution-border": "#ed879680",
+    "color-callout-caution-icon": "#ed8796",
+    "color-callout-caution-title": "#ed8796",
+    "color-table-header-bg": "#1e2030",
+    "color-table-border": "#494d64",
+    "color-math-error": "#ed8796",
+    "color-math-error-bg": "#ed87961c",
+    "color-error": "#ed8796"
+  },
+  "shell": {
+    "accent": "#c6a0f6",
+    "background": "#24273a",
+    "text": "#cad3f5",
+    "secondary-text": "#a5adcb",
+    "selection": "#c6a0f633",
+    "selection-text": "#cad3f5",
+    "separator": "#494d64",
+    "search-highlight": "#eed49f4c",
+    "on-accent": "#24273a"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "loadNote",
+  "noteId": "0192f3a4-5b6c-7d8e-9f01-23456789abcd",
+  "text": "# Title\nbody\n## Section\nmore",
+  "revision": 7,
+  "readOnly": false,
+  "selection": { "anchor": 0, "head": 0 },
+  "foldState": [
+    { "line": 1, "hash": "9c1e5a07" },
+    { "line": 3, "hash": "4d2f8b10" }
+  ]
+}

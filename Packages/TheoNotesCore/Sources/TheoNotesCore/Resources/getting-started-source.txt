@@ -1,0 +1,10 @@
+Getting started notes (getting-started-*.md)
+
+Source: written for Theo Notes, from Theo Notes' own features, menus and documentation.
+Author: written by Claude (Anthropic) for the Theo Notes project, commissioned by Jan Kutschera, True Brew Birdie Ltd.
+Licence: the Theo Notes project licence (LicenseRef-TrueBrewBirdie, as for the bundled themes that are our own work).
+Third-party text: none. Nothing here is copied or paraphrased from another application's help, welcome notes or
+documentation.
+
+The texts are bundled as Markdown. They become ordinary notes in a brand-new library (see GettingStartedNotes).
+The same texts, verbatim, are in docs/release/getting-started-copy.md for approval.

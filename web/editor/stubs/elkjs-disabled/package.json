@@ -1,0 +1,8 @@
+{
+  "name": "elkjs-disabled",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Replaces elkjs (EPL-2.0) in the editor bundle. See index.js and vite.config.ts.",
+  "type": "module",
+  "main": "index.js"
+}

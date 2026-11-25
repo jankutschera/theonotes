@@ -1,0 +1,5 @@
+{
+  "type": "applyCommand",
+  "name": "tableMoveRow",
+  "args": { "direction": "down", "menuId": "menu-k3f9-2" }
+}

@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "id": "baerchen-red",
+  "name": "Theo Red",
+  "order": 10,
+  "appearance": "light",
+  "contrast": "standard",
+  "source": {
+    "project": "Theo Notes",
+    "url": "",
+    "license": "LicenseRef-TrueBrewBirdie",
+    "copyright": "Copyright (c) 2026 True Brew Birdie Ltd."
+  },
+  "deviations": [
+    {
+      "token": "editor.color-secondary",
+      "palette": "#8a8a8a",
+      "value": "#6a6a6a",
+      "reason": "color-secondary on highlight over color-bg was 2.88:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "editor.color-accent",
+      "palette": "#d9534f",
+      "value": "#c22c28",
+      "reason": "color-accent on highlight-blue over color-bg was 3.13:1 (needs 4.5:1); lightness lowered to the one Theo red (M7-R7), hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.color-code-string",
+      "palette": "#3f7f32",
+      "value": "#3d7b31",
+      "reason": "color-code-string on color-code-bg was 4.34:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.57:1"
+    },
+    {
+      "token": "editor.color-code-comment",
+      "palette": "#8a8a8a",
+      "value": "#6e6e6e",
+      "reason": "color-code-comment on color-code-bg was 3.06:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.53:1"
+    },
+    {
+      "token": "editor.color-code-meta",
+      "palette": "#8a6d3b",
+      "value": "#866a39",
+      "reason": "color-code-meta on color-code-bg was 4.30:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "editor.color-link",
+      "palette": "#d9534f",
+      "value": "#c22c28",
+      "reason": "color-link on highlight-blue over color-bg was 3.13:1 (needs 4.5:1); lightness lowered to the one Theo red (M7-R7), hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.color-tag",
+      "palette": "#c94541",
+      "value": "#c22c28",
+      "reason": "color-tag on highlight-blue over color-bg was 3.76:1 (needs 4.5:1); lightness lowered to the one Theo red (M7-R7), hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.color-tag-bg",
+      "palette": "#d9534f1c",
+      "value": "#c22c281c",
+      "reason": "color-tag on color-tag-bg over color-bg was 4.97:1 (passes 4.5:1); retinted from the accent (M7-R7), alpha kept, now 4.80:1"
+    },
+    {
+      "token": "editor.highlight-red",
+      "palette": "#ffd6d2",
+      "value": "#ffddda",
+      "reason": "color-link on highlight-red over color-bg was 4.29:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.51:1"
+    },
+    {
+      "token": "editor.highlight-blue",
+      "palette": "#d4e5ff",
+      "value": "#d5e6ff",
+      "reason": "color-link on highlight-blue over color-bg was 4.46:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.highlight-purple",
+      "palette": "#ecdaf8",
+      "value": "#efdff9",
+      "reason": "color-link on highlight-purple over color-bg was 4.33:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.50:1"
+    },
+    {
+      "token": "editor.highlight-dot-green",
+      "palette": "#58b947",
+      "value": "#4fa740",
+      "reason": "highlight-dot-green on color-bg was 2.49:1 (needs 3:1); lightness lowered, hue and saturation kept, now 3.03:1"
+    },
+    {
+      "token": "editor.highlight-dot-yellow",
+      "palette": "#e8b931",
+      "value": "#b88e15",
+      "reason": "highlight-dot-yellow on color-bg was 1.84:1 (needs 3:1); lightness lowered, hue and saturation kept, now 3.04:1"
+    },
+    {
+      "token": "editor.color-selection",
+      "palette": "#d7d4f0",
+      "value": "#e5e3f5",
+      "reason": "color-link on color-selection over color-bg was 3.95:1 (needs 4.5:1); lightness raised, hue and saturation kept, now 4.52:1"
+    },
+    {
+      "token": "editor.color-search-match-current",
+      "palette": "#ff9f0aa6",
+      "value": "#ff9f0a51",
+      "reason": "color-link on color-search-match-current over color-bg was 3.53:1 (needs 4.5:1); alpha lowered, hue kept, now 4.51:1"
+    },
+    {
+      "token": "shell.accent",
+      "palette": "#d9534f",
+      "value": "#c22c28",
+      "reason": "shell.on-accent on shell.accent was 3.96:1 (needs 4.5:1); lightness lowered to the one Theo red (M7-R7), hue and saturation kept, now 5.70:1"
+    },
+    {
+      "token": "shell.secondary-text",
+      "palette": "#8a8a8a",
+      "value": "#6a6a6a",
+      "reason": "secondary-text on background was 3.45:1 (needs 4.5:1); lightness lowered, hue and saturation kept, now 5.41:1"
+    },
+    {
+      "token": "shell.selection",
+      "palette": "#d9534f33",
+      "value": "#c22c2833",
+      "reason": "shell.selection-text on shell.selection over shell.background was 10.99:1 (passes 4.5:1); retinted from the accent (M7-R7), alpha kept, now 10.28:1"
+    }
+  ],
+  "editor": {
+    "color-text": "#2b2b2b",
+    "color-secondary": "#6a6a6a",
+    "color-accent": "#c22c28",
+    "color-bg": "#ffffff",
+    "color-code-bg": "#f4f1ec",
+    "color-code-keyword": "#b0347f",
+    "color-code-string": "#3d7b31",
+    "color-code-number": "#2a63b8",
+    "color-code-comment": "#6e6e6e",
+    "color-code-type": "#9a5a1c",
+    "color-code-function": "#6a43b0",
+    "color-code-property": "#1f6f7a",
+    "color-code-tag": "#b0347f",
+    "color-code-meta": "#866a39",
+    "color-rule": "#e2ded7",
+    "color-quote": "#555555",
+    "color-quote-bar": "#e4c9c6",
+    "color-link": "#c22c28",
+    "color-tag": "#c22c28",
+    "color-tag-bg": "#c22c281c",
+    "highlight": "#ffeaa0",
+    "highlight-green": "#d5f2c8",
+    "highlight-red": "#ffddda",
+    "highlight-blue": "#d5e6ff",
+    "highlight-yellow": "#fff0a3",
+    "highlight-purple": "#efdff9",
+    "highlight-dot-green": "#4fa740",
+    "highlight-dot-red": "#e5534b",
+    "highlight-dot-blue": "#4a8ef0",
+    "highlight-dot-yellow": "#b88e15",
+    "highlight-dot-purple": "#a666d6",
+    "color-selection": "#e5e3f5",
+    "color-search-match": "#ffd60a59",
+    "color-search-match-current": "#ff9f0a51",
+    "color-popup-bg": "#f5f5f5",
+    "color-popup-text": "#2b2b2b",
+    "color-popup-selected-bg": "#1177cc",
+    "color-popup-selected-text": "#ffffff",
+    "color-shadow": "#0000002e",
+    "color-callout-note-bg": "#eaf2ff",
+    "color-callout-note-border": "#a9c4ef",
+    "color-callout-note-icon": "#1f5fbf",
+    "color-callout-note-title": "#1f5fbf",
+    "color-callout-tip-bg": "#eef8ee",
+    "color-callout-tip-border": "#a6d3a6",
+    "color-callout-tip-icon": "#2d7a2d",
+    "color-callout-tip-title": "#2d7a2d",
+    "color-callout-important-bg": "#f5eefb",
+    "color-callout-important-border": "#cfb3e6",
+    "color-callout-important-icon": "#7b3fb8",
+    "color-callout-important-title": "#7b3fb8",
+    "color-callout-warning-bg": "#fff6e5",
+    "color-callout-warning-border": "#e8c680",
+    "color-callout-warning-icon": "#8a5200",
+    "color-callout-warning-title": "#8a5200",
+    "color-callout-caution-bg": "#fdeeee",
+    "color-callout-caution-border": "#eba8a4",
+    "color-callout-caution-icon": "#b3261e",
+    "color-callout-caution-title": "#b3261e",
+    "color-table-header-bg": "#f4f1ec",
+    "color-table-border": "#e2ded7",
+    "color-math-error": "#b3261e",
+    "color-math-error-bg": "#fdeeee",
+    "color-error": "#b3261e"
+  },
+  "shell": {
+    "accent": "#c22c28",
+    "background": "#ffffff",
+    "text": "#2b2b2b",
+    "secondary-text": "#6a6a6a",
+    "selection": "#c22c2833",
+    "selection-text": "#2b2b2b",
+    "separator": "#e2ded7",
+    "search-highlight": "#ffd60a73",
+    "on-accent": "#ffffff"
+  }
+}

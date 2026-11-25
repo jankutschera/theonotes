@@ -1,0 +1,5 @@
+{
+  "type": "applyCommand",
+  "name": "insertMath",
+  "args": { "display": true }
+}

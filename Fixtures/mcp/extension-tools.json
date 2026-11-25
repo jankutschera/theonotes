@@ -1,0 +1,57 @@
+{
+ "tools": [
+  {
+   "name": "create_note_from_template",
+   "title": "Create Note From Template",
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "template"
+    ],
+    "properties": {
+     "template": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     },
+     "tags": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   },
+   "outputSchemaFrom": "create_note"
+  },
+  {
+   "name": "capture_thought",
+   "title": "Capture Thought",
+   "annotations": {
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "readOnlyHint": false
+   },
+   "inputSchema": {
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "text"
+    ],
+    "properties": {
+     "text": {
+      "type": "string"
+     }
+    }
+   },
+   "outputSchemaFrom": "create_note"
+  }
+ ]
+}
