@@ -6,6 +6,7 @@ import Foundation
 import PDFKit
 import Synchronization
 import Testing
+import Vision
 @testable import TheoNotesCore
 
 final class RenderLog: Sendable {
@@ -21,6 +22,23 @@ final class RenderLog: Sendable {
         dir = FileManager.default.temporaryDirectory.appendingPathComponent("ocr-extractor-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
     }
+
+    /// Whether Apple's text recognition reads a rendered line on this machine at all. On GitHub's macOS virtual
+    /// machines Vision answers `.failed` after about 100 s for every image, so the tests that need it are skipped there
+    /// with this reason; on a Mac where Vision works they run unchanged. Bounded so a silent Vision cannot hang the suite.
+    static let visionReadsText: Bool = {
+        let image = renderedImage("Probe 42")
+        let found = Mutex(false)
+        let done = DispatchSemaphore(value: 0)
+        DispatchQueue(label: "test.vision-probe").async {
+            let request = VNRecognizeTextRequest()
+            try? VNImageRequestHandler(cgImage: image).perform([request])
+            let read = (request.results ?? []).contains { $0.topCandidates(1).first?.string.contains("42") == true }
+            found.withLock { $0 = read }
+            done.signal()
+        }
+        return done.wait(timeout: .now() + 60) == .success && found.withLock { $0 }
+    }()
 
     // MARK: Fixtures
 
@@ -76,7 +94,7 @@ final class RenderLog: Sendable {
 
     // MARK: Tests
 
-    @Test func testRecognizesTextInARenderedPNG() async throws {
+    @Test(.enabled(if: visionReadsText, "Vision text recognition does not work on this machine (for example GitHub's macOS virtual machines)")) func testRecognizesTextInARenderedPNG() async throws {
         let url = try writePNG(Self.renderedImage("Baerchen OCR 2026"))
         let result = await extractor.extract(from: url)
         guard case let .text(text, sha256, byteSize, modifiedAt) = result else {
@@ -100,7 +118,7 @@ final class RenderLog: Sendable {
         #expect(sha256.count == 64)
     }
 
-    @Test func testScannedPDFPageFallsBackToVision() async throws {
+    @Test(.enabled(if: visionReadsText, "Vision text recognition does not work on this machine (for example GitHub's macOS virtual machines)")) func testScannedPDFPageFallsBackToVision() async throws {
         let image = Self.renderedImage("Baerchen OCR 2026")
         let scan: (CGContext) -> Void = { context in
             context.draw(image, in: CGRect(x: 0, y: 300, width: 612, height: 153))
@@ -147,7 +165,7 @@ final class RenderLog: Sendable {
         #expect(try pixels(poster) == (2500, 1500))
     }
 
-    @Test func testAPageWithEnoughTextIsNotRenderedForVision() async throws {
+    @Test(.enabled(if: visionReadsText, "Vision text recognition does not work on this machine (for example GitHub's macOS virtual machines)")) func testAPageWithEnoughTextIsNotRenderedForVision() async throws {
         // The text page has a PDF text layer, the scanned one only pixels; both end up in the result.
         let image = Self.renderedImage("Scanned Zebra", fontSize: 110)
         let scan: (CGContext) -> Void = { $0.draw(image, in: CGRect(x: 0, y: 300, width: 612, height: 153)) }
@@ -176,7 +194,7 @@ final class RenderLog: Sendable {
         }
     }
 
-    @Test func testOversizedImageIsSkipped() async throws {
+    @Test(.enabled(if: visionReadsText, "Vision text recognition does not work on this machine (for example GitHub's macOS virtual machines)")) func testOversizedImageIsSkipped() async throws {
         let url = try writePNG(Self.renderedImage("Big"))
         // 1200 x 300 = 360,000 pixels.
         let strict = AttachmentTextExtractor(maxImagePixels: 359_999)
@@ -251,7 +269,7 @@ final class RenderLog: Sendable {
         #expect(text.contains("Top secret invoice"))
     }
 
-    @Test func testAKnownHashIsUsedInsteadOfHashingAgain() async throws {
+    @Test(.enabled(if: visionReadsText, "Vision text recognition does not work on this machine (for example GitHub's macOS virtual machines)")) func testAKnownHashIsUsedInsteadOfHashingAgain() async throws {
         let url = try writePNG(Self.renderedImage("Baerchen OCR 2026"))
         guard case let .text(_, sha256, _, _) = await extractor.extract(from: url, knownSHA256: "from-the-caller") else {
             Issue.record("expected text")
