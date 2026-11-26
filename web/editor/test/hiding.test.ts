@@ -105,7 +105,7 @@ describe("computeHiddenRanges", () => {
 describe("Bear marks", () => {
   const hidden = (text: string, caret = text.length) => computeHiddenRanges(stateWith(text, caret));
 
-  test("hides the closing # of a multi-word tag, keeps the opening #", => {
+  test("hides the closing # of a multi-word tag, keeps the opening # (IOS-DESIGN-R16)", () => {
     expect(hidden("#getting started# x")).toEqual([{ from: 16, to: 17 }]);
     expect(hidden("#getting started# x", 5)).toEqual([]);
     expect(hidden("#single x")).toEqual([]);
