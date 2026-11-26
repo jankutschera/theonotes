@@ -73,7 +73,7 @@ import Testing
         #expect(spy.urls.count == 1)
     }
 
-    /// REL-R92/R93: an answered create repeats; one whose answer never went out gets its first note.
+    /// An answered create repeats; one whose answer never went out gets its first note.
     @Test func sameCreateTwiceMakesTwoNotesOnlyWhenTheFirstWasAnswered() async throws {
         let env = try Env()
         let spy = Spy()
@@ -166,7 +166,7 @@ import Testing
 
     // MARK: - Callbacks
 
-    /// REN-R5: the app registers both schemes of its identity (the dev build its own pair, FOC-R360),
+    /// The app registers both schemes of its identity (the dev build its own pair),
     /// and a link copied under the old one still runs.
     @Test func linksCopiedBeforeTheRenameStillWork() async throws {
         let types = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]] ?? []

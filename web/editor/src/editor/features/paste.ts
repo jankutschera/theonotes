@@ -77,7 +77,7 @@ export function smartPaste(state: EditorState, data: { text?: string; html?: str
 }
 
 /**
- * A pasted table on a quote or list line (M6-R83): on a line that is empty apart from its quote
+ * A pasted table on a quote or list line: on a line that is empty apart from its quote
  * markers or list marker, the table replaces the rest of the line and its other rows get the
  * line's continuation prefix (as Create Table does), so the table stays in the quote or item.
  * On such a line with text (or a todo) it is not converted. Elsewhere it goes on its own lines.

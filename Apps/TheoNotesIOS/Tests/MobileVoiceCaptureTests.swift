@@ -148,7 +148,7 @@ struct MobileVoiceCaptureTests {
         try await wait("recording recovered") { (try? library.store.note(id: note.id)?.text.contains("Recovered.m4a")) == true }
         #expect(!FileManager.default.fileExists(atPath: file.path))
     }
-    /// 1.1 A2 (d), FOC-R399: an unplayable leftover is never removed in the launch that marked it;
+    /// 1.1 A2 (d), an unplayable leftover is never removed in the launch that marked it;
     /// one marked by an earlier launch a day ago is removed and the user is told once.
     @Test func anUnplayableLeftoverGoesOnlyInALaterLaunchAndTheUserIsToldOnce() async throws {
         let library = try library(); defer { cleanup(library) }
@@ -171,7 +171,7 @@ struct MobileVoiceCaptureTests {
         #expect(library.errorMessage == nil)
         #expect(try library.store.note(id: note.id)?.text == "Memo")
     }
-    /// FOC-R395: unfinished words are journaled but not stored; after the app is killed, the next
+    /// Unfinished words are journaled but not stored; after the app is killed, the next
     /// launch replays the journal and they are back.
     @Test func unfinishedWordsSurviveAKilledApp() async throws {
         let library = try library(); defer { cleanup(library) }
@@ -190,7 +190,7 @@ struct MobileVoiceCaptureTests {
         _ = await model.cancel(keepStartedRecording: true)
         try? relaunched.close()
     }
-    /// 1.1 A2 (c), FOC-R398: no words and nothing that plays: nothing is kept and no error shows.
+    /// 1.1 A2 (c), no words and nothing that plays: nothing is kept and no error shows.
     @Test func stopWithNoWordsAndNoUsableAudioKeepsNothing() async throws {
         let library = try library(); defer { cleanup(library) }
         let engine = MobileVoiceTestEngine(audio: Data())

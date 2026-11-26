@@ -4,7 +4,7 @@
 import Foundation
 import GRDB
 
-/// A reminder that is due (FOC-R7 step 1). On a locked note it carries the title only: no line,
+/// A reminder that is due. On a locked note it carries the title only: no line,
 /// no caret position.
 public struct ReminderCandidate: Equatable, Sendable {
     public let pingId: String
@@ -27,7 +27,7 @@ public struct ReminderCandidate: Equatable, Sendable {
     }
 }
 
-/// The first open to-do of the note that was opened longest ago (FOC-R7 step 2).
+/// The first open to-do of the note that was opened longest ago.
 public struct TodoCandidate: Equatable, Sendable {
     public let noteId: String
     public let title: String
@@ -50,7 +50,7 @@ public struct TodoCandidate: Equatable, Sendable {
     }
 }
 
-/// The oldest captured note nobody has opened since (FOC-R7 step 3).
+/// The oldest captured note nobody has opened since.
 public struct NoteCandidate: Equatable, Sendable {
     public let noteId: String
     public let title: String
@@ -66,7 +66,7 @@ public enum FocusCandidate: Equatable, Sendable {
     case todo(TodoCandidate)
     case capture(NoteCandidate)
 
-    /// The `focus_hide.candidateKey` Later writes for it (FOC-R8).
+    /// The `focus_hide.candidateKey` Later writes for it.
     public var key: String {
         switch self {
         case .reminder(let r): "ping:\(r.pingId)"
@@ -106,7 +106,7 @@ public enum FocusCardError: Error, Equatable {
     case notInNotes(noteId: String)
 }
 
-/// The Next Up card (spec A3, FOC-R7, FOC-R8): one candidate at a time, picked from the pool in a
+/// The Next Up card (spec A3): one candidate at a time, picked from the pool in a
 /// fixed order. Later and Not Today only write `focus_hide` rows, never the note (I4); a card read
 /// deletes the expired ones. Locked notes never supply body text.
 public struct FocusCard: Sendable {
@@ -128,7 +128,7 @@ public struct FocusCard: Sendable {
         return try candidate(at: now)
     }
 
-    /// Deletes the hides that ended at or before `date` (FOC-R8: every card read does). Reads
+    /// Deletes the hides that ended at or before `date` (every card read does). Reads
     /// first, so a read with nothing to delete takes no write lock.
     func purgeExpiredHides(at date: Date) throws {
         let cutoff = NoteStore.roundedToMillis(date)
@@ -251,7 +251,7 @@ public struct FocusCard: Sendable {
 
     // MARK: Actions
 
-    /// Later: hides `candidate` until the next local midnight (FOC-R8). Writes no note.
+    /// Later: hides `candidate` until the next local midnight. Writes no note.
     public func later(_ candidate: FocusCandidate, now: Date, calendar: Calendar = .current) throws {
         try hide(key: candidate.key, noteId: candidate.noteId, now: now, calendar: calendar)
     }
@@ -312,7 +312,7 @@ public struct FocusCard: Sendable {
 
     /// The user opened the candidate's note from the card. Records `lastOpenedAt` (which takes a
     /// capture out of the pool and sends a to-do's note to the back of the line) and, for a
-    /// reminder, deletes it: opening handles it (FOC-R10). A locked note stores no `lastOpenedAt`.
+    /// reminder, deletes it: opening handles it. A locked note stores no `lastOpenedAt`.
     public func opened(_ candidate: FocusCandidate, now: Date = .now) throws {
         if case .reminder(let reminder) = candidate { try store.handlePing(id: reminder.pingId) }
         try store.recordOpened(noteId: candidate.noteId, now: now)

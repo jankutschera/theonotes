@@ -7,7 +7,7 @@ import Testing
 @testable import TheoNotesVoice
 
 /// Records every question asked. `VoicePreflighting` has no speech-authorization member, so a
-/// legacy speech prompt cannot even be recorded (FOC-R9: microphone only).
+/// legacy speech prompt cannot even be recorded (microphone only).
 final class FakePreflight: VoicePreflighting {
     enum Call: Equatable, Sendable { case availability(Locale), requestMicrophone, downloadModel(Locale) }
 

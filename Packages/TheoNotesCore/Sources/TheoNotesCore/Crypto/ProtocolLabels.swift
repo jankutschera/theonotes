@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-/// The twelve frozen crypto and protocol labels (REN2-R2, REN2-R45). They are opaque byte strings, not a name:
+/// The twelve frozen crypto and protocol labels. They are opaque byte strings, not a name
 /// they are the AAD of locked-note envelopes and edit journals already on disk, the HKDF `info` and salt of the
 /// sync account keys, and part of the request-signature transcript the sync Worker verifies. Changing one byte
 /// makes existing data undecryptable or every signature fail, so they are never renamed with the product.

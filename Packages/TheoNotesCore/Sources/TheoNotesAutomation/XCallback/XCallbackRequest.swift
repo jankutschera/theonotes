@@ -27,7 +27,7 @@ public enum XCallbackAction: String, CaseIterable, Sendable {
     case closeWorkspace = "close-workspace"
 }
 
-/// What `x-error` carries (ruling M5-R19): 1 invalid parameter, 2 note not found, 3 note locked
+/// What `x-error` carries: 1 invalid parameter, 2 note not found, 3 note locked
 /// or read-only, 4 invalid or missing token, 5 action not supported, 6 failed.
 public struct XCallbackFailure: Error, Equatable, Sendable {
     public var code: Int
@@ -46,7 +46,7 @@ public struct XCallbackFailure: Error, Equatable, Sendable {
     static func failed(_ message: String) -> XCallbackFailure { .init(code: 6, message: message) }
 
     /// What `x-error` says when the caller has no valid token: the code's meaning and nothing
-    /// that came from the library (ruling M5-R168).
+    /// that came from the library.
     public static func genericMessage(forCode code: Int) -> String {
         switch code {
         case 1: "Invalid parameter"
@@ -71,7 +71,7 @@ public struct XCallbackFailure: Error, Equatable, Sendable {
 }
 
 /// A parsed `theonotes://x-callback-url/<action>?…` URL. Query values are percent-decoded with
-/// `URLComponents` semantics: `+` stays a plus (ruling M5-R21). The first occurrence of a
+/// `URLComponents` semantics: `+` stays a plus. The first occurrence of a
 /// repeated parameter wins. `x-success`, `x-error` and `x-cancel` are not in `params`.
 public struct XCallbackRequest: Sendable {
     public var action: XCallbackAction
@@ -148,7 +148,7 @@ public struct XCallbackOutcome: Sendable {
     public var success: [(String, String)]?
     public var failure: XCallbackFailure?
     /// Whether `x-error` may carry `failure.message`. Off: only the code and its generic text
-    /// (ruling M5-R168). The executor turns it on for a request with a valid token; `failure`
+    ///. The executor turns it on for a request with a valid token; `failure`
     /// itself always keeps the detailed message for the app's own alert.
     public var detailedErrors: Bool
     /// An open `XCallbackReceipts` entry for this answer: settle it once the answer was handed back.
@@ -163,11 +163,11 @@ public struct XCallbackOutcome: Sendable {
         self.detailedErrors = detailedErrors
     }
 
-    /// Schemes a callback is never opened for (ruling M5-R7): a web page or file would receive
+    /// Schemes a callback is never opened for: a web page or file would receive
     /// note text.
     static let blockedSchemes: Set<String> = [
         "http", "https", "file", "ftp", "data", "javascript", "about", LegacyNames.urlScheme, "theonotes", LegacyNames.urlScheme + "-dev", "theonotes-dev",
-        // Browser and bridge schemes (ruling M5-R160): they hand the URL on to a web page, a
+        // Browser and bridge schemes: they hand the URL on to a web page, a
         // remote host or another app that is not the caller.
         "blob", "ws", "wss", "ssh", "sftp", "smb", "afp", "vnc", "tel", "sms", "mailto", "facetime",
     ]
@@ -178,7 +178,7 @@ public struct XCallbackOutcome: Sendable {
     ]
 
     /// A callback is used only for a valid RFC 3986 scheme (`ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )`)
-    /// that is neither blocked nor in a blocked family (ruling M5-R160).
+    /// that is neither blocked nor in a blocked family.
     static func isAllowedScheme(_ scheme: String) -> Bool {
         let s = scheme.lowercased()
         guard let first = s.unicodeScalars.first, first.isASCII, CharacterSet.letters.contains(first),

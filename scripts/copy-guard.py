@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Product copy guard (FOC-R1): no user-facing text names a condition.
+"""Product copy guard: no user-facing text names a condition.
 
 Usage: python3 -I scripts/copy-guard.py              scan the repository
        python3 -I scripts/copy-guard.py --self-test  plant a word in every scope kind and check it is found

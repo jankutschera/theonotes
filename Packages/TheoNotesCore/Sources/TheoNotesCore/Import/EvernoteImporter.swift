@@ -8,7 +8,7 @@ import os
 
 private let evernoteLogger = Logger(subsystem: "com.truebrewbirdie.baerchen", category: "import")
 
-/// Size caps of an ENEX import (IMP-R1). Tests shrink them.
+/// Size caps of an ENEX import. Tests shrink them.
 struct ENEXLimits: Equatable, Sendable {
     /// One decoded resource.
     var resource = 128 << 20
@@ -261,7 +261,7 @@ final class ENEXReader: NSObject, XMLParserDelegate {
 }
 
 /// Imports Evernote `.enex` exports: one note per `<note>`, with tags, dates, to-do items,
-/// images and attachments. The file is read as a stream (IMP-R1); each note with its attachments
+/// images and attachments. The file is read as a stream; each note with its attachments
 /// is one `NoteStore.importNote` transaction; a failing note goes to the report and never stops
 /// the run. Reports carry note numbers, counts and kinds, never titles or text.
 public final class EvernoteImporter: Sendable {
@@ -667,7 +667,7 @@ public final class EvernoteImporter: Sendable {
 /// elements inside an unknown wrapper), `en-media` and `en-todo` become tokens, `en-crypt`
 /// sections become one token each. Every search moves forward only, and an opener without its end
 /// stops the scan (the rest is kept as it is, or for `en-crypt` counted as encrypted), so hostile
-/// input costs time linear in its size (IMP-R6).
+/// input costs time linear in its size.
 enum ENMLPreprocessor {
     struct Prepared {
         var html: String

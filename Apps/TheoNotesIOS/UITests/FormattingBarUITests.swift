@@ -4,7 +4,7 @@
 import XCTest
 
 /// IOS-TOOLBAR: the formatting bar's Formatting menu, Attach and Camera buttons are the one place for these actions
-/// (IOS-CLUTTER-R1..R3); Note Actions no longer repeats them. Runs only against the disposable --ui-testing library.
+///; Note Actions no longer repeats them. Runs only against the disposable --ui-testing library.
 @MainActor final class FormattingBarUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
 
@@ -65,14 +65,14 @@ import XCTest
 
     func testFormattingMenuHoldsStylesAndAppliesAHeading() {
         let app = fixture("Toolbar heading")
-        // IOS-TOOLBAR-R2: the one menu is the only place for Bold, Italic and headings.
+        // The one menu is the only place for Bold, Italic and headings.
         XCTAssertFalse(app.buttons["Headings"].exists)
         tapBar("toolbar-format", app)
         XCTAssertTrue(app.buttons["Bold"].firstMatch.waitForExistence(timeout: 30))
         XCTAssertTrue(app.buttons["Italic"].firstMatch.exists)
-        // IOS-TOOLBAR-R4: the six levels sit in one "Heading" submenu.
+        // The six levels sit in one "Heading" submenu.
         XCTAssertFalse(app.buttons["Heading 2"].exists)
-        // IOS-TOOLBAR-R9: six top-level rows, every one on screen without scrolling (375-point phones too).
+        // Six top-level rows, every one on screen without scrolling (375-point phones too).
         for entry in ["Bold", "Italic", "Heading", "More Styles", "Paragraph", "Insert"] {
             let row = app.buttons[entry].firstMatch
             XCTAssertTrue(row.waitForExistence(timeout: 30) && row.isHittable, "\(entry) must be on screen in the open menu")
@@ -90,7 +90,7 @@ import XCTest
                        "Actual editor value: \(String(reflecting: noteText(app).value))")
     }
 
-    /// IOS-TOOLBAR-R3: all eight cells are on screen and none is cut by the window edge (375-point phones too).
+    /// All eight cells are on screen and none is cut by the window edge (375-point phones too).
     func testBarFitsTheWidthWithoutScrolling() {
         let app = fixture("Toolbar width")
         let window = app.windows.firstMatch.frame
@@ -109,7 +109,7 @@ import XCTest
         tapBar("toolbar-format", app)
         let insert = app.buttons["Insert"].firstMatch
         XCTAssertTrue(insert.waitForExistence(timeout: 30)); insert.tap()
-        // IOS-TOOLBAR-R9: Date is the first entry of Insert.
+        // Date is the first entry of Insert.
         let entry = app.buttons["Date"].firstMatch
         XCTAssertTrue(entry.waitForExistence(timeout: 30))
         XCTAssertTrue(entry.isHittable, "Date must be on screen without scrolling")
@@ -146,7 +146,7 @@ import XCTest
         XCTAssertTrue(noteText(app).waitForExistence(timeout: 60))
     }
 
-    /// IOS-CLUTTER-R1..R3, R9: Note Actions holds none of the bar's actions, and the bar's own controls still work.
+    /// Note Actions holds none of the bar's actions, and the bar's own controls still work.
     func testNoteActionsLeaveBarActionsToTheBar() {
         let app = fixture()
         let dismiss = app.buttons["toolbar-dismiss-keyboard"].firstMatch
@@ -194,7 +194,7 @@ import XCTest
         XCTAssertEqual(XCTWaiter.wait(for: [typed], timeout: 30), .completed, "typing still reaches the note")
     }
 
-    /// IOS-CLUTTER-R15: Copy Table uses one label form; IOS-CLUTTER-R11: no tag switch inside Export.
+    /// Copy Table uses one label form; no tag switch inside Export.
     func testNoteActionsCopyTableAndExportEntries() {
         let app = fixture()
         app.buttons["toolbar-dismiss-keyboard"].firstMatch.tap()

@@ -82,7 +82,7 @@ import Testing
         #expect(AppPaths.DataDirectoryError.notADirectory(missing).description.contains(missing))
     }
 
-    /// Phase 2 sync hard-off (INT-R14): a library named at launch is opened exactly as given and
+    /// Phase 2 sync hard-off: a library named at launch is opened exactly as given and
     /// is local-only for the process. Recovery files copied along with it cannot redirect it.
     @Test func testExplicitOverrideOpensExactlyThatFolderAndIsLocalOnly() throws {
         let fm = FileManager.default

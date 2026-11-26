@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// The one additive member under `Sync/` (CK-R6, Task 8): `AccountKeys(masterKey:envelope:)` and `masterKeyData`.
+/// The one additive member under `Sync/`: `AccountKeys(masterKey:envelope)` and `masterKeyData`.
 /// Golden vectors prove the new path equals the existing recovery path and that nothing else changed.
 /// Secrets are compared as booleans only, so a failure message never prints key bytes.
 @Suite struct AccountKeysMasterKeyTests {

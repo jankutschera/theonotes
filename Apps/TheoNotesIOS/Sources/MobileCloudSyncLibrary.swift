@@ -41,7 +41,7 @@ final class MobileCloudSyncLibrary: CloudSyncLibrary, @unchecked Sendable {
     }
 
     /// After the iCloud sync withdrew the shared background request, the private-server sync asks again for its own (it does so only
-    /// when it is connected and not paused). Nothing is made for a build without the private-server setup (REL-R9).
+    /// when it is connected and not paused). Nothing is made for a build without the private-server setup.
     @MainActor func restorePrivateServerRefresh() {
         guard let sync = MobilePrivateServerSync.controller(for: library) else { return }
         sync.restoreBackgroundRefresh()

@@ -15,11 +15,11 @@ final class AppAutomationHandler {
 
     func handle(_ request: AppSocketRequest) -> AppSocketResponse {
         // The server cancels the task of a request it has already answered with a timeout; such a
-        // request must not act when the main actor finally gets to it (ruling M5-R207).
+        // request must not act when the main actor finally gets to it.
         if Task.isCancelled, request.method != "ping" {
             return failure(request.id, AutomationError(code: .appUnavailable, message: AppSocketClient.timeoutMessage))
         }
-        // App Lock (M9M-R63): `ping` only says the app runs. Everything else that could name or return a
+        // App Lock: `ping` only says the app runs. Everything else that could name or return a
         // note is refused, whatever the method.
         if request.method != "ping", app.isLocked {
             return failure(request.id, AutomationError(code: .appLocked, message: AppLockedRefusal.message))
@@ -143,8 +143,8 @@ final class AppAutomationHandler {
               let note = (try? app.environment.store.note(id: session.noteId)) ?? nil
         else { return SelectionResult() }
         let result = SelectionResult(noteId: note.id)
-        // Words a voice capture holds out of the store (FOC-R395) would shift the offsets: the
-        // selection is only reported on the stored text (FOC-R401).
+        // Words a voice capture holds out of the store would shift the offsets: the
+        // selection is only reported on the stored text.
         guard !note.isLocked, let range = editor.status.selection,
               TextNormalization.identical(session.text, session.committedText) else { return result }
         let text = session.text

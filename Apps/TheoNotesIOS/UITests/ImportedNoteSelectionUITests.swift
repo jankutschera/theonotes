@@ -164,7 +164,7 @@ final class NoteSelectionNavigationUITests: XCTestCase {
         app.buttons["Dismiss Keyboard"].firstMatch.tap()
         let sidebar = app.buttons["Show Sidebar"].firstMatch
         XCTAssertTrue(sidebar.waitForExistence(timeout: 10)); sidebar.tap()
-        // IOS-CLUTTER-R6: the Navigate menu is gone; its section keys (Mac numbering) remain.
+        // The Navigate menu is gone; its section keys (Mac numbering) remain.
         XCTAssertTrue(app.buttons["Library Options"].waitForExistence(timeout: 10))
         app.typeKey("1", modifierFlags: [.command, .option])
         record(app, "After section key scope selection")

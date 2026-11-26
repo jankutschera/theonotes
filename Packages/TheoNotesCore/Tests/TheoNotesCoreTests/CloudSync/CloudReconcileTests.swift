@@ -33,7 +33,7 @@ func cloudHeader(_ world: PublisherWorld, _ id: String) async throws -> CloudEnt
     try decodedEntity(try #require(await world.account.record(named: "e.note.\(id)")))
 }
 
-/// Missing-record pause, recovery and incarnations (CK-R5, CK-R21).
+/// Missing-record pause, recovery and incarnations.
 @Suite struct CloudReconcileTests {
     // MARK: absence pauses and preserves
 
@@ -274,7 +274,7 @@ func cloudHeader(_ world: PublisherWorld, _ id: String) async throws -> CloudEnt
         #expect(try d.sink.intake(recreated, delivery: .serverRecordChanged) == .stored, "the record was recreated: the new tag must reach the pair")
     }
 
-    // MARK: ordering across incarnations (CK-R21)
+    // MARK: ordering across incarnations
 
     @Test func recoveryNeverComparesVerAcrossIncarnations() throws {
         let d = try PublisherDevice("cross", account: nil); defer { d.cleanup() }

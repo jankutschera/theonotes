@@ -364,7 +364,7 @@ export class BridgeClient {
   private selectRange(anchor: number, head: number): void {
     const { state } = this.editor();
     if (anchor > state.doc.length || head > state.doc.length) return;
-    // The folds the range reaches open (M6-R28).
+    // The folds the range reaches open.
     const effects = revealEffects(state, Math.min(anchor, head), Math.max(anchor, head));
     this.editor().dispatch({ selection: EditorSelection.single(anchor, head), effects, scrollIntoView: true, userEvent: "select" });
   }

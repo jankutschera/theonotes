@@ -6,7 +6,7 @@ import Foundation
 import GRDB
 
 /// Which notes a caller may see and change. The CLI sees all of them; the MCP server narrows this
-/// with `--only-tags` / `--exclude-tags` (rulings M5-R18, M5-R140...).
+/// with `--only-tags` / `--exclude-tags`.
 ///
 /// A note is in scope when it carries one of the only-tags or a descendant of one (no only-tags:
 /// every note qualifies) and carries none of the exclude-tags or their descendants (exclude wins).
@@ -32,7 +32,7 @@ struct NoteScope: Sendable, Equatable {
 
     /// The scope of `theonotes mcp-server`: the flags `--only-tags` / `--exclude-tags` (comma-separated),
     /// each kind falling back to `THEONOTES_MCP_ONLY_TAGS` / `THEONOTES_MCP_EXCLUDE_TAGS` (else the old `BAERCHEN_MCP_*`) only when its
-    /// own flag is absent (ruling M5-R141). Fail closed: a flag or variable that is present but
+    /// own flag is absent. Fail closed: a flag or variable that is present but
     /// names no tag (`""`, `"#"`, `","`) is a `usage` error, never "no restriction" (final review M1).
     static func fromMCPServer(flags: ParsedCommand, environment: [String: String]) throws(AutomationError) -> NoteScope {
         func names(flag: String, variable: String, legacy: String) throws(AutomationError) -> [String] {
@@ -117,7 +117,7 @@ struct NoteScope: Sendable, Equatable {
 
     /// The tags to add to a new note that carries `carried` and is given `extra`: with one only-tag
     /// the note gets it unless it already has a qualifying tag; with several, one of them must
-    /// already be there (ruling M5-R144).
+    /// already be there.
     func tagsForNewNote(carrying carried: [String], extra: [String]) throws(AutomationError) -> [String] {
         guard !onlyKeys.isEmpty, !carriesOnlyTag(carried + extra) else { return extra }
         guard onlyKeys.count == 1 else {
@@ -130,7 +130,7 @@ struct NoteScope: Sendable, Equatable {
     // MARK: Tag changes
 
     /// `rename_tag` / `delete_tag` on tags `keys` may not touch a tag that defines the scope, one of
-    /// its ancestors or descendants (ruling M5-R142). Needs no library.
+    /// its ancestors or descendants. Needs no library.
     func refuseTagChange(_ keys: [(key: String, name: String)]) throws(AutomationError) {
         for (key, name) in keys {
             let defining = onlyKeys + excludeKeys
@@ -162,8 +162,8 @@ struct NoteScope: Sendable, Equatable {
 
     /// A rename or delete of `key` rewrites the tag rows below it too (spelling, icon, sidebar pin,
     /// workspace). Refused when one of those descendant rows is carried by no in-scope note, such as
-    /// a row only a sidebar pin keeps alive (ruling M5-R178). The row of `key` itself is not
-    /// included: without in-scope notes it does not exist for the caller (M5-R175).
+    /// a row only a sidebar pin keeps alive. The row of `key` itself is not
+    /// included: without in-scope notes it does not exist for the caller.
     func refuseHiddenTagRows(below key: String, name: String, db: Database) throws {
         guard isRestricted else { return }
         let inScope = predicate(note: "n")

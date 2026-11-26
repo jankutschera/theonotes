@@ -8,11 +8,11 @@ import GRDB
 public enum CloudUnknownResolution: Sendable, Equatable {
     /// The server's current version is our attempt: the pair was recorded (`CloudSyncStore.recordSaved`).
     case landed
-    /// Not (or no longer) our version on the server: nothing was written; the publisher's own table (CK-R4) decides.
+    /// Not our version on the server: nothing was written; the publisher's own table decides.
     case notLanded
 }
 
-/// What a guarded store write re-checks inside its own transaction (CK-R98): the generation the operation started in and the
+/// What a guarded store write re-checks inside its own transaction: the generation the operation started in and the
 /// iCloud user the library is bound to.
 public struct CloudWriteGuard: Sendable, Equatable {
     public var generation: Int64
@@ -20,16 +20,16 @@ public struct CloudWriteGuard: Sendable, Equatable {
     public init(generation: Int64, accountHash: String) { self.generation = generation; self.accountHash = accountHash }
 }
 
-/// The CK-R15 generation fence, at the coordinator level. It works through `CloudSyncStore` and `CloudKitGateway` only.
+/// The generation fence, at the coordinator level. It works through `CloudSyncStore` and `CloudKitGateway` only.
 ///
 /// `ck_state.generation` changes on every account change, bind, detach and zone-state change. Everything that can finish later
 /// (a send, a fetch, a late result) carries the generation it started in; `isCurrent` / `requireCurrent` / the store's own
 /// checks discard what is older. The durable fence (`ck_state.fenced`) additionally refuses every generation-checked store write
-/// from the moment it is set, also while the old generation still matches (CK-R92). The sequence on an account change
+/// from the moment it is set, also while the old generation still matches. The sequence on an account change
 /// (`accountChanged()`):
 /// 1. gate: no new operation may start (`run` throws `.fenced`), and `ck_state.fenced` is written, so a restart stays fenced;
 /// 2. cancel and await the operations started through `run` (and the gateway's own `cancelOperations`, when given), for at most
-///    `drainTimeout` (CK-R97);
+/// `drainTimeout`;
 /// 3. in-flight rows that were being sent become `unknown` (the send may have landed in the old account);
 /// 4. the saved engine state is cleared;
 /// 5. the generation is bumped; everything older is stale from here on;
@@ -55,13 +55,13 @@ public actor CloudGenerationFence {
     private var gated: Bool
     private var operations: [UUID: Operation] = [:]
     /// Counts started account changes; `activeChanges` counts the ones still running, so overlapping changes are all
-    /// accounted for (CK-R98). A lift or a resolution that notices a different count, or any active change, gives up.
+    /// accounted for. A lift or a resolution that notices a different count, or any active change, gives up.
     private var changeCount = 0
     private var activeChanges = 0
     private var changing: Bool { activeChanges > 0 }
     public private(set) var lastDrainTimedOut = false
 
-    /// `drainTimeout` bounds step 2 of the sequence (CK-R97): an operation that ignores cancellation cannot hold an account
+    /// `drainTimeout` bounds step 2 of the sequence: an operation that ignores cancellation cannot hold an account
     /// switch hostage; the switch goes on, the fence stays closed and the old generation loses its write rights.
     /// `cancelOperations` is the gateway's own cancellation (`CKSyncEngine.cancelOperations()` in the live gateway; it may
     /// return before the operations end, which is why the generation check exists at all). `trace` reports each step of
@@ -100,15 +100,15 @@ public actor CloudGenerationFence {
         return try await task.value
     }
 
-    /// Stops what is running for "Stop syncing" and the app quit (Task 15b, CK-R171, fix rounds 1 and 2). It is the account-change
+    /// Stops what is running for "Stop syncing" and the app quit. It is the account-change
     /// sequence for an account that did not change, and it ALWAYS ends with the fence closed:
     /// 1. new work is gated and the durable fence is closed BEFORE anything is cancelled, so nothing starts and no write of a
-    ///    cancelled call can land (CK-R99);
+    /// cancelled call can land;
     /// 2. the gateway's cancellation and every tracked operation are cancelled and awaited under ONE deadline (`drainTimeout`);
     /// 3. whatever the outcome (a cancelled fetch may well return normally and let its enclosing cycle go on to apply or publish), the
-    ///    in-flight rows become `unknown`, the engine state is cleared and the generation is bumped (CK-R97), so every later write
+    /// in-flight rows become `unknown`, the engine state is cleared and the generation is bumped, so every later write
     ///    of the stopped session, a send result included, is refused.
-    /// The fence is not reopened here: the next switch-on lifts it the normal way (`resumeIfAllowed`, CK-R98), at the price of one
+    /// The fence is not reopened here: the next switch-on lifts it the normal way (`resumeIfAllowed`), at the price of one
     /// refetch. Returns whether everything ended within the deadline.
     @discardableResult
     public func cancelRunning() async -> Bool {
@@ -153,7 +153,7 @@ public actor CloudGenerationFence {
         try store.setAccountFenced(true)
         trace(.sendsGated)
 
-        // one deadline for the gateway's cancel and the drain together (CK-R97)
+        // one deadline for the gateway's cancel and the drain together
         let deadline = Date().addingTimeInterval(drainTimeout)
         let cancel = cancelOperations
         let cancelled = await Self.bounded(timeout: drainTimeout) { await cancel() }
@@ -188,7 +188,7 @@ public actor CloudGenerationFence {
     }
 
     /// Lifts the fence: `prepare()` on the gateway (which creates the zone only from `unknown`), then, in ONE store transaction,
-    /// in-flight rows and results of an older generation are re-homed and the durable fence is dropped (CK-R98). Nothing is
+    /// in-flight rows and results of an older generation are re-homed and the durable fence is dropped. Nothing is
     /// opened unless, after `prepare()`, the gateway still reports the user this library is bound to, no account change started
     /// meanwhile, and the generation and the binding are what the transaction expects. Otherwise the fence stays closed and
     /// `.temporarilyUnavailable` is returned (retry later). The caller has checked the policy. A fence found in the database (a
@@ -231,8 +231,8 @@ public actor CloudGenerationFence {
 
     /// For each in-flight save of the current generation in state `unknown` that has no recorded result: fetch the record by
     /// name (as a tracked operation, so a switch cancels it); if the server's version is exactly our attempt (`sid == attemptId`)
-    /// the pair is recorded now, in one store transaction that re-checks generation, fence and binding (CK-R98). A fetch that
-    /// finishes after an account change writes nothing and throws. Anything else is left alone for the publisher's table (CK-R4);
+    /// the pair is recorded now, in one store transaction that re-checks generation, fence and binding. A fetch that
+    /// finishes after an account change writes nothing and throws. Anything else is left alone for the publisher's table;
     /// in particular a version that was overwritten later is never claimed.
     public func resolveUnknownOutcomes(using gateway: any CloudKitGateway) async throws -> [String: CloudUnknownResolution] {
         guard !gated else { throw CloudSyncError.fenced }
@@ -284,7 +284,7 @@ private final class Latch: @unchecked Sendable {
 }
 
 extension CloudSyncStore {
-    /// The durable fence refuses every write of the old session, also while its generation still matches (CK-R92).
+    /// The durable fence refuses every write of the old session, also while its generation still matches.
     static func requireNotFenced(_ db: Database) throws {
         if try Bool.fetchOne(db, sql: "SELECT fenced FROM ck_state WHERE id=1") == true { throw CloudSyncStoreError.accountFenced }
     }

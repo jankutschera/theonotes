@@ -6,7 +6,7 @@ import Testing
 @testable import TheoNotesCore
 
 /// Task 15, fix round 1 (Codex review): destructive actions and key changes under the account fence (C1, C2), the key bundle
-/// comes back with "Upload again" (I1, CK-R146c), quota is reported across rounds (I2) and the backup comes before the
+/// comes back with "Upload again" (I1, c), quota is reported across rounds (I2) and the backup comes before the
 /// recovery step (I4).
 
 /// Forwards to a coordinator gateway and lets a test act at the moment a call is made.
@@ -228,7 +228,7 @@ final class HookGateway: CloudKitGateway, @unchecked Sendable {
         }
     }
 
-    // MARK: I1, "Upload again" puts the key bundle back (CK-R146c)
+    // MARK: I1, "Upload again" puts the key bundle back (c)
 
     @Test func uploadAgainBringsTheKeyBundleBackSoANewDeviceCanJoin() async throws {
         try await withCoordWorld(2) { world in

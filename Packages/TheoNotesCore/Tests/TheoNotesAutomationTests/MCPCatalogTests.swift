@@ -73,7 +73,7 @@ enum MCPFixtures {
     }
 
     /// Every slot of the descriptions fixture lands at its path, tool-level descriptions are filled, and
-    /// nothing in the catalog mentions another product (ruling M5-R269).
+    /// nothing in the catalog mentions another product.
     @Test func descriptionsComeFromOurFixtureAndNameNoOtherProduct() throws {
         let slots = try #require(try MCPFixtures.descriptions()["descriptions"])
         let catalog = MCPToolCatalog.tools
@@ -98,7 +98,7 @@ enum MCPFixtures {
         #expect(create["description"]?.string?.hasPrefix("Create a note from an optional title") == true)
     }
 
-    /// The two extension tools are owned in Fixtures/mcp/extension-tools.json (structure only, FOC-R14): the
+    /// The two extension tools are owned in Fixtures/mcp/extension-tools.json (structure only): the
     /// catalog is that fixture, `outputSchemaFrom` resolved to the named tool's output schema, plus our
     /// descriptions. All 28 tools are checked, the first 26 against the schema fixture.
     @Test func catalogEqualsTheOwnedFixturesForAll28Tools() throws {

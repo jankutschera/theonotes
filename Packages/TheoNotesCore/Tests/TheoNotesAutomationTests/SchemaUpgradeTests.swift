@@ -9,7 +9,7 @@ import Testing
 
 /// A long-running `mcp-server` keeps its library open for hours while a newer app migrates it.
 /// Every tool call and every write transaction re-checks the schema, so the old binary never
-/// writes into a schema it does not match (ruling M5-R4, final review I2).
+/// writes into a schema it does not match.
 @Suite struct SchemaUpgradeTests {
     static let restart = "The library was upgraded by a newer Theo Notes; restart the MCP server"
 

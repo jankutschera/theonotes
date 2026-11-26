@@ -4,13 +4,13 @@
 import Foundation
 import GRDB
 
-/// What the widget and the lock-screen card read (`Card/next-up.json`, FOC-R13): a timeline of
+/// What the widget and the lock-screen card read (`Card/next-up.json`): a timeline of
 /// what the Next Up card will show and when, so the system can switch it without waking the app.
 ///
 /// Entries, oldest first and at most 10: now, the next local midnight (when Later and Not Today
 /// end), and the first 8 unfired reminders within 24 hours. It carries no score, count or history (I3).
 ///
-/// Privacy (FOC-R160): while App Lock is enabled the publication is a single `.locked` entry with
+/// Privacy: while App Lock is enabled the publication is a single `.locked` entry with
 /// no strings. A reminder on a locked note is a `.locked` entry too: the file lives outside the
 /// unlocked app, so unlike the in-app card it does not even show that note's title.
 public struct CardPublication: Codable, Equatable, Sendable {

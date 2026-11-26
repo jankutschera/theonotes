@@ -67,7 +67,7 @@ struct FormatMenuItem: Identifiable, Equatable {
     var args: [String: CommandArgument]?
     var shortcut: KeyboardShortcut?
     /// Matches the physical key instead of the typed character (a layout that types something
-    /// else there still triggers it): ⌘' is kVK_ANSI_Quote (M6-R5).
+    /// else there still triggers it): ⌘' is kVK_ANSI_Quote.
     var keyCode: UInt16?
 
     var id: String { title }
@@ -190,7 +190,7 @@ enum FormatMenu {
         case item(FormatMenuItem)
         case submenu(String, [FormatMenuItem])
         case divider
-        /// Copy Link to Here (the heading badge menu's item, M7-R22): a host action, not an editor command.
+        /// Copy Link to Here (the heading badge menu's item): a host action, not an editor command.
         case copyLinkToHere
     }
 
@@ -235,7 +235,7 @@ enum FormatMenu {
         // No shortcut; the type is chosen from the callout's icon.
         .item(FormatMenuItem("Callout", .callout)),
         .item(FormatMenuItem("Code Block", .codeBlock, key("c", [.command, .control]))),
-        // Bear: Format ▸ Code ▸ Math / Math Block, no shortcut (M6-R80); flat like Inline Code and Code Block.
+        // Bear: Format ▸ Code ▸ Math / Math Block, no shortcut; flat like Inline Code and Code Block.
         .item(FormatMenuItem("Math", .insertMath, args: ["display": .bool(false)])),
         .item(FormatMenuItem("Math Block", .insertMath, args: ["display": .bool(true)])),
         .item(FormatMenuItem("Line Separator", .horizontalRule, key("s", [.command, .option]))),
@@ -267,7 +267,7 @@ enum FormatMenu {
         // Folds the block under the caret's heading or list item; works in read-only notes.
         .item(FormatMenuItem("Toggle Fold", .toggleFold, key("'"), keyCode: 39)),
         // The heading badge's menu items for keyboard-only use: the badge is a VoiceOver button
-        // (AXPress), not a Tab stop (M7-R20).
+        // (AXPress), not a Tab stop.
         .item(FormatMenuItem("Fold All Headings", .foldAll)),
         .item(FormatMenuItem("Unfold All Headings", .unfoldAll)),
         .copyLinkToHere,

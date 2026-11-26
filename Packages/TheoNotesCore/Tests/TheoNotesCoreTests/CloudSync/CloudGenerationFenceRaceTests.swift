@@ -398,7 +398,7 @@ final class SuspendingGateway: CloudKitGateway, @unchecked Sendable {
         #expect(await fence.lastDrainTimedOut == false)
     }
 
-    // MARK: cancelRunning (Task 15b, CK-R171)
+    // MARK: cancelRunning
 
     @Test func cancelRunningStopsATrackedOperationAndTheGatewayAndAlwaysLeavesTheFenceClosed() async throws {
         let w = try await CloudPolicyWorld.make()
@@ -422,7 +422,7 @@ final class SuspendingGateway: CloudKitGateway, @unchecked Sendable {
         #expect(await fence.lastDrainTimedOut == false)
         #expect(cancelled.isRaised, "the gateway's own cancellation ran")
         await #expect(throws: CancellationError.self) { try await upload.value }
-        // CK-R171 (round 2): a stop ALWAYS leaves the fence closed and the generation bumped, whatever the drain outcome.
+        // A stop ALWAYS leaves the fence closed and the generation bumped, whatever the drain outcome.
         #expect(try w.store.generation() == before + 1)
         #expect(await fence.isGated)
         #expect(try w.store.isAccountFenced())
@@ -492,7 +492,7 @@ final class SuspendingGateway: CloudKitGateway, @unchecked Sendable {
             try store.recordSendResult(attemptId: "old", accountGeneration: current, outcome: .offline)
         }
         #expect(try store.sendResult(attemptId: "old") == nil)
-        // while the durable fence is up, even the current generation is refused (CK-R99)
+        // while the durable fence is up, even the current generation is refused
         try store.setAccountFenced(true)
         #expect(throws: CloudSyncStoreError.accountFenced) {
             try store.recordSendResult(attemptId: "fenced", accountGeneration: current + 1, outcome: .offline)
@@ -554,7 +554,7 @@ final class SuspendingGateway: CloudKitGateway, @unchecked Sendable {
         #expect(lateWrite.all == ["refused"], "its write is refused: \(lateWrite.all)")
         #expect(try w.store.pair(for: n1) == nil)
 
-        // Switching on again lifts the fence the normal way (CK-R98).
+        // Switching on again lifts the fence the normal way.
         #expect(try await w.fence.resumeIfAllowed(using: w.gateway) == .resume)
         #expect(await w.fence.isGated == false)
         #expect(try w.store.isAccountFenced() == false)

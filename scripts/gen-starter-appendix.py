@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Rebuilds the appendix of docs/release/2026-11-15-getting-started-texts-v2.md (STARTER-R3, R16).
+"""Rebuilds the appendix of docs/release/2026-11-15-getting-started-texts-v2.md.
 
 Every row names something the Getting Started texts mention and a line of source that shows it exists. A row's
 needle is a piece of that line; the script finds the first line holding it and prints `file:line`. A needle that

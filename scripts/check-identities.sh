@@ -2,23 +2,23 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# FOC-R363: pins the two app identities in the build settings, without building anything.
+# Pins the two app identities in the build settings, without building anything.
 #   Production + Release = the installed app: bundle id, keychain access group, App Group, URL schemes,
 #                          display name exactly as before the dev identity existed (Jan's locked-note keys,
 #                          notification permission and links depend on them).
 #   Debug                = the dev identity (tests, agents, GUI checks): nothing shared with production.
-#   THEONOTES_SYNC_SETUP (REL-R4): YES in Debug and Production, NO in Release (the public build).
-#   Team (REL-R20 ... R29): the Apple team is ONE setting, THEONOTES_TEAM_ID in config/release.env. The check
+# THEONOTES_SYNC_SETUP: YES in Debug and Production, NO in Release (the public build).
+# Team: the Apple team is ONE setting, THEONOTES_TEAM_ID in config/release.env. The check
 #                          reads it from there, requires every derived value to follow it (DEVELOPMENT_TEAM,
 #                          App Groups, Info.plist key, the runtime fallback), and re-reads the build settings
 #                          with the team overridden on the command line to prove nothing else carries it.
-#   iCloud (CloudKit plan, Task 12, B7 cutover REN2-R57): the container is one parameter too,
+# iCloud: the container is one parameter too,
 #                          THEONOTES_CLOUDKIT_CONTAINER in config/release.env (iCloud.com.truebrewbirdie.theonotes since the
 #                          cutover). Only the main app's two entitlement files name it, through the build setting, never as a
 #                          literal; the share extension and the CLI helper carry no iCloud key and no source file contains a
 #                          container literal. Debug = Development environment, Production/Release = Production (acceptance
 #                          section C recipe). THEONOTES_ICLOUD_SYNC is YES in every configuration (Release since
-#                          REL-R91, 2026-11-10), and the Mac Info.plist carries both.
+#, 2026-11-10), and the Mac Info.plist carries both.
 # Run after `xcodegen generate`; scripts/test-all.sh runs it first. Exit 1 on the first mismatch.
 set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -46,7 +46,7 @@ case "$container" in
   *) echo "config/release.env: THEONOTES_CLOUDKIT_CONTAINER='$container' is neither empty nor an iCloud.<reverse-dns> identifier" >&2; exit 1 ;;
 esac
 
-# REN2-R46: the root of every bundle id is ONE value, THEONOTES_BUNDLE_ROOT in config/identity.env (project.yml reads it
+# The root of every bundle id is ONE value, THEONOTES_BUNDLE_ROOT in config/identity.env (project.yml reads it
 # through config/build.xcconfig). The Swift copy is LegacyNames.bundleRoot, and AppIdentity.productionBundleIdentifier
 # reads that; all of them must say the same thing, and it is the production bundle id pinned below.
 bundle_root="$(sed -n 's/^THEONOTES_BUNDLE_ROOT=//p' config/identity.env | head -1)"
@@ -107,7 +107,7 @@ for config in Production Release; do
 done
 expect Release TheoNotes CODE_SIGN_STYLE Automatic
 expect Release TheoNotesMacShare CODE_SIGN_STYLE Automatic
-# REN2-R66: Jan's installed build (Production) is signed like the shipped one: manual Developer ID, the Developer ID profile named in
+# Jan's installed build (Production) is signed like the shipped one: manual Developer ID, the Developer ID profile named in
 # config/release.env (the profile carries the Production push environment and the iCloud container), a secure timestamp, no debug dylib.
 profile_app="$(sed -n 's/^THEONOTES_PROFILE_APP=//p' config/release.env | head -1)"
 expect Production TheoNotes CODE_SIGN_STYLE Manual
@@ -130,7 +130,7 @@ expect Debug TheoNotes THEONOTES_APP_GROUP "$team.com.truebrewbirdie.notes.dev"
 expect Debug TheoNotes THEONOTES_URL_SCHEME theonotes-dev
 expect Debug TheoNotes THEONOTES_LEGACY_URL_SCHEME baerchen-dev
 expect Debug TheoNotes PRODUCT_NAME "Theo Notes Dev"
-# REN2-R72: the Mac tests run inside the dev app, whose executable carries the product name.
+# The Mac tests run inside the dev app, whose executable carries the product name.
 test_host="$(setting Debug TheoNotesMacTests TEST_HOST)"
 case "$test_host" in
   */"Theo Notes Dev.app/Contents/MacOS/Theo Notes Dev") echo "ok    Debug TheoNotesMacTests TEST_HOST = $test_host" ;;
@@ -139,7 +139,7 @@ case "$test_host" in
 esac
 expect Debug TheoNotesMacShare PRODUCT_BUNDLE_IDENTIFIER "$bundle_root.dev.share"
 expect Debug TheoNotesMacShare THEONOTES_APP_GROUP "$team.com.truebrewbirdie.notes.dev"
-# The dev build is team-signed (automatic, REN2-R57; see project.yml) with its own entitlements (Development iCloud).
+# The dev build is team-signed (automatic,; see project.yml) with its own entitlements (Development iCloud).
 expect Debug TheoNotes CODE_SIGN_ENTITLEMENTS Apps/TheoNotesMac/TheoNotes.dev.entitlements
 expect Debug TheoNotesMacShare CODE_SIGN_ENTITLEMENTS Apps/TheoNotesMacShare/TheoNotesMacShare.dev.entitlements
 # The app signs manually with the profile scripts/release/asc_dev_profile.py makes; the extension signs automatically (no profile).
@@ -153,7 +153,7 @@ for config in Debug Production Release; do
   expect "$config" TheoNotesMacTests PRODUCT_BUNDLE_IDENTIFIER "$bundle_root.tests"
 done
 
-# REL-R4: whether the build shows the sync setup. Jan's own builds (Debug for tests and agents, Production for his
+# Whether the build shows the sync setup. Jan's own builds (Debug for tests and agents, Production for his
 # install) show it; the public build (Release) must not. The default for any other configuration is NO.
 expect Production TheoNotes THEONOTES_SYNC_SETUP YES
 expect Debug TheoNotes THEONOTES_SYNC_SETUP YES
@@ -161,7 +161,7 @@ expect Release TheoNotes THEONOTES_SYNC_SETUP NO
 expect Release TheoNotesMacShare THEONOTES_SYNC_SETUP NO
 
 # CloudKit plan Task 12 (CK-J2): iCloud sync availability. The container follows config/release.env (pinned empty
-# until the account exists); the flag is YES in Debug, Production and Release (REL-R91), NO for every other configuration.
+# until the account exists); the flag is YES in Debug, Production and Release, NO for every other configuration.
 if [ "$container" = "$expected_container" ]; then
   echo "ok    THEONOTES_CLOUDKIT_CONTAINER in config/release.env = '$container'"
 else
@@ -194,8 +194,8 @@ check_file Apps/TheoNotesMacShare/TheoNotesMacShare.dev.entitlements ':com.apple
 check_file Apps/TheoNotesMac/Info.plist ':CFBundleURLTypes:0:CFBundleURLSchemes:0' '$(THEONOTES_URL_SCHEME)'
 check_file Apps/TheoNotesMac/Info.plist ':CFBundleURLTypes:0:CFBundleURLSchemes:1' '$(THEONOTES_LEGACY_URL_SCHEME)'
 check_file Apps/TheoNotesMac/Info.plist ':THEONOTES_SyncSetupAvailable' '$(THEONOTES_SYNC_SETUP)'
-# note-ids and tag-path follow the bundle root (REN2-R46; Swift twins LegacyNames.noteIDsUTI|tagPathUTI). The backup type is
-# fixed (REN2-R50 amendment): chosen exports use the new type, internal and old backups the imported legacy one.
+# note-ids and tag-path follow the bundle root. The backup type is
+# fixed ( amendment): chosen exports use the new type, internal and old backups the imported legacy one.
 check_file Apps/TheoNotesMac/Info.plist ':UTExportedTypeDeclarations:0:UTTypeIdentifier' 'com.truebrewbirdie.theonotes.backup'
 check_file Apps/TheoNotesMac/Info.plist ':UTImportedTypeDeclarations:0:UTTypeIdentifier' 'com.truebrewbirdie.baerchen.backup'
 check_file Apps/TheoNotesMac/Info.plist ':UTExportedTypeDeclarations:1:UTTypeIdentifier' '$(THEONOTES_BUNDLE_ROOT).note-ids'
@@ -203,7 +203,7 @@ check_file Apps/TheoNotesMac/Info.plist ':UTExportedTypeDeclarations:2:UTTypeIde
 
 check_file Apps/TheoNotesMac/Info.plist ':THEONOTES_CloudKitContainer' '$(THEONOTES_CLOUDKIT_CONTAINER)'
 check_file Apps/TheoNotesMac/Info.plist ':THEONOTES_ICloudSyncAvailable' '$(THEONOTES_ICLOUD_SYNC)'
-# iCloud entitlements (acceptance section C recipe, REN2-R57): the main app carries exactly the container build setting,
+# iCloud entitlements (acceptance section C recipe): the main app carries exactly the container build setting,
 # CloudKit alone, the environment (Production for the shipped files, Development for the dev file) and the push environment;
 # the share extension and the CLI helper carry none of it (scripts/release/check_entitlements.py refuses them there too).
 check_file Apps/TheoNotesMac/TheoNotes.entitlements ':com.apple.developer.icloud-container-identifiers:0' '$(THEONOTES_CLOUDKIT_CONTAINER)'
@@ -226,7 +226,7 @@ for file in Apps/TheoNotesMacShare/TheoNotesMacShare.entitlements Apps/TheoNotes
   done
 done
 
-# REL-R20 ... R29: the team is one parameter. Every place that used to carry the literal follows it.
+# R29: the team is one parameter. Every place that used to carry the literal follows it.
 check_file Apps/TheoNotesMac/Info.plist ':THEONOTES_TeamID' '$(THEONOTES_TEAM_ID)'
 check_file Apps/TheoNotesMacShare/Info.plist ':THEONOTES_TeamID' '$(THEONOTES_TEAM_ID)'
 for config in Debug Production Release; do
@@ -237,13 +237,13 @@ for config in Production Release; do
   expect "$config" TheoNotesMacShare DEVELOPMENT_TEAM "$team"
   expect "$config" TheoNotesCLI DEVELOPMENT_TEAM "$team"
 done
-# The dev identity is team-signed too (REN2-R57): the same team on every macOS target.
+# The dev identity is team-signed too: the same team on every macOS target.
 expect Debug TheoNotes DEVELOPMENT_TEAM "$team"
 expect Debug TheoNotesMacShare DEVELOPMENT_TEAM "$team"
 expect Debug TheoNotesCLI DEVELOPMENT_TEAM "$team"
 
-# REL-R32: the shipped signatures carry no base entitlements (no get-task-allow; no application-identifier on the
-# bare helper). Debug keeps Xcode's default (YES); Production is signed like Release (REN2-R66).
+# The shipped signatures carry no base entitlements (no get-task-allow; no application-identifier on the
+# bare helper). Debug keeps Xcode's default (YES); Production is signed like Release.
 for target in TheoNotes TheoNotesMacShare TheoNotesCLI; do
   expect Release "$target" CODE_SIGN_INJECT_BASE_ENTITLEMENTS NO
   expect Production "$target" CODE_SIGN_INJECT_BASE_ENTITLEMENTS NO
@@ -366,7 +366,7 @@ expect Debug TheoNotesMacShare THEONOTES_APP_GROUP "$other.com.truebrewbirdie.no
 expect Debug TheoNotes DEVELOPMENT_TEAM "$other"
 unset SETTING_OVERRIDES
 
-# REN2-R46: changing config/identity.env alone moves every bundle id (re-read with another root on the command line).
+# Changing config/identity.env alone moves every bundle id (re-read with another root on the command line).
 export SETTING_OVERRIDES="THEONOTES_BUNDLE_ROOT=com.example.probe"
 for config in Production Release; do
   expect "$config" TheoNotes PRODUCT_BUNDLE_IDENTIFIER com.example.probe

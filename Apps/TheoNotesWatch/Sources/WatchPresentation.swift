@@ -110,7 +110,7 @@ enum WatchCaptureText {
     var notice: WatchUserNotice?
     var canReadContent: Bool { isAuthorized && isReachable && authorizationDeadline.map({ ContinuousClock.now < $0 }) == true }
     var visibleNotes: [WatchPresentedNote] { canReadContent ? notes : [] }
-    /// IOS-CLUTTER-R17: the home screen shows one notice line, the most specific one.
+    /// The home screen shows one notice line, the most specific one.
     var homeNotice: String? {
         if let notice { return notice.message }
         if !isReachable { return "iPhone unavailable. New notes can be queued." }

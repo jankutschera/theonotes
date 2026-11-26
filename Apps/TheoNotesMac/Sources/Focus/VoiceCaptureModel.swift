@@ -9,12 +9,12 @@ import os
 private let voiceUILogger = Logger(subsystem: "com.truebrewbirdie.baerchen", category: "voice")
 
 /// File ▸ Capture Voice Note and Edit ▸ Insert Voice Note: what the user sees of one spoken note
-/// (spec A2, FOC-R9, FOC-R310 … FOC-R319). It asks the questions before anything starts (microphone,
+/// (spec A2). It asks the questions before anything starts (microphone,
 /// then the speech model), drives one `VoiceCapture` (TheoNotesVoice) and tells the window code which
 /// note to show afterwards. The library work is all `VoiceCapture`'s.
 ///
 /// While App Lock is engaged nothing starts, and engaging it cancels a running capture (the core has
-/// no hook for that, FOC-R199).
+/// no hook for that).
 @MainActor
 final class VoiceCaptureModel: ObservableObject {
     enum State: Equatable {
@@ -69,9 +69,9 @@ final class VoiceCaptureModel: ObservableObject {
     /// Bumped by every begin and by App Lock; an older run ignores what it was waiting for.
     private var generation = 0
     private var isStarting = false { didSet { syncBusy() } }
-    /// The capture's note was found locked: the transcript is gone from the panel (FOC-R320).
+    /// The capture's note was found locked: the transcript is gone from the panel.
     private var lockSeen = false
-    /// The note whose session this model keeps from being evicted (FOC-R318).
+    /// The note whose session this model keeps from being evicted.
     private var pinnedNoteId: String?
 
     /// `engineFactory` makes the engine of one capture; `preflight` answers the microphone and model
@@ -88,7 +88,7 @@ final class VoiceCaptureModel: ObservableObject {
         self.preflight = preflight
         self.locale = locale
         self.pollInterval = pollInterval
-        // Before the lock screen changes hands: the live text must not stay on screen (FOC-R312).
+        // Before the lock screen changes hands: the live text must not stay on screen.
         environment.appLock.addWillLockHandler { [weak self] in self?.appLockEngaged() }
         environment.addNoteLockStateHandler { [weak self] in self?.noteLockStateMayHaveChanged() }
     }
@@ -180,7 +180,7 @@ final class VoiceCaptureModel: ObservableObject {
         let voice = VoiceCapture(
             target: target, store: environment.store,
             attachments: AttachmentStore(paths: environment.paths, database: environment.database),
-            // The note counts as shown from the moment its session exists, before the engine starts (FOC-R318).
+            // The note counts as shown from the moment its session exists, before the engine starts.
             session: { [weak self, environment] noteId in
                 self?.pin(noteId)
                 return try environment.session(for: noteId)
@@ -311,7 +311,7 @@ final class VoiceCaptureModel: ObservableObject {
     }
 
     /// Shows a new note without recording an open: it is not read yet, and the Next Up card still
-    /// offers it as captured (FOC-R3).
+    /// offers it as captured.
     private func show(_ noteId: String) {
         environment.suppressOpenRecord(noteId: noteId)
         if !openNote(noteId) { _ = environment.consumeOpenRecordSuppression(noteId) }
@@ -321,7 +321,7 @@ final class VoiceCaptureModel: ObservableObject {
 
     /// Called when a note's lock state may have changed (a lock here, through sync, from the CLI). If the
     /// capture's note is locked now, its transcript leaves the panel at once instead of at the next read
-    /// (FOC-R320). The capture stops itself through its lock guard (FOC-R199) and is released by `conclude`.
+    ///. The capture stops itself through its lock guard and is released by `conclude`.
     private func noteLockStateMayHaveChanged() {
         guard let voice = capture, case .listening = state, let noteId = voice.noteId,
               let note = (try? environment.store.note(id: noteId)) ?? nil, note.isLocked else { return }

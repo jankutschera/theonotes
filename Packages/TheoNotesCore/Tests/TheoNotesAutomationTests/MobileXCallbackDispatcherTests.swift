@@ -95,7 +95,7 @@ import Testing
         let good = MobileXCallbackDispatcher(database: f.db, paths: f.paths, store: f.store, fetcher: Fetcher())
         let created = try await good.execute(request("grab-url", ["url": "https://example.com/page"]), token: nil)
         #expect(created.values["title"] == "Fetched")
-        // The app settles an answered request; unsettled, the repeat below would get the first note back (REL-R92).
+        // The app settles an answered request; unsettled, the repeat below would get the first note back.
         XCallbackReceipts(database: f.db).settle(try #require(created.receipt))
         let count = try f.store.allNotes().count, gate = Gate()
         let fetcher = Fetcher(beforeReturn: { await MainActor.run { gate.allowed = false } })

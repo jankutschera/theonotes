@@ -36,7 +36,7 @@ public struct ExportItem: Sendable, Equatable {
     }
 }
 
-/// Decides where each exported note goes (M8-R3). Pure: no file system access.
+/// Decides where each exported note goes. Pure: no file system access.
 public enum ExportPlan {
     public struct Result: Sendable, Equatable {
         public var items: [ExportItem]
@@ -68,7 +68,7 @@ public enum ExportPlan {
     /// placed under each direct tag inside the subtree that is not an ancestor of another of its
     /// direct tags inside the subtree (`#workout` + `#workout/cardio` → only `workout/cardio`).
     /// The first folder is spelled as `root` is; deeper ones as the note spells its tag. Only
-    /// candidates in Notes are planned (M8-R3), whatever the provider returned. Locked notes are
+    /// candidates in Notes are planned, whatever the provider returned. Locked notes are
     /// counted, not planned; they reach the planner through their `note_tag` rows (M9 keeps them).
     public static func tagTree(root: String, notes: [ExportCandidate]) -> Result {
         let rootKey = CanonicalKey.make(root)

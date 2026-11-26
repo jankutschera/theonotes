@@ -4,7 +4,7 @@
 import CryptoKit
 import Foundation
 
-// One sync cycle (Task 10, CK-R4, CK-R5, CK-R15): resolve what an earlier run left unknown -> fetch -> apply -> prepare ->
+// One sync cycle: resolve what an earlier run left unknown -> fetch -> apply -> prepare ->
 // blobs -> submit -> consume results -> apply the echoes, round after round until nothing moves. Every gateway call and every
 // download runs through `CloudGenerationFence.run`, so an account change cancels and drains it and a late completion of the
 // old account writes nothing (the stores check the generation themselves).
@@ -12,7 +12,7 @@ import Foundation
 // A cycle with `uploads: false` is the download-first half of the first run: it fetches and applies, and never prepares,
 // blobs or submits. The key bundle record, when another device replaced it, is noticed by the sink and refreshed after the fetch.
 
-/// The key bundle did not verify: data work is held and the state says why (CK-R135).
+/// The key bundle did not verify: data work is held and the state says why.
 struct CloudKeyHold: Error, Equatable { let state: CloudSyncState }
 
 public struct CloudCycleReport: Sendable, Equatable {
@@ -26,7 +26,7 @@ public struct CloudCycleReport: Sendable, Equatable {
     public var waitingForDependency = 0
     /// The round limit was reached while there was still work.
     public var moreWork = false
-    /// Uploads are held because iCloud has no room (CK-R15); the coordinator reports `quotaFull` instead of "up to date".
+    /// Uploads are held because iCloud has no room; the coordinator reports `quotaFull` instead of "up to date".
     public var quotaHeld = false
     public init() {}
 }
@@ -58,7 +58,7 @@ struct CloudSyncSession: Sendable {
     let crash: CrashPoint
     /// Verifies the key bundle again (online, through the key layer's pins) and throws `CloudKeyHold` when it does not hold up.
     let verifyKeys: @Sendable () async throws -> Void
-    /// The shipped versions of each starter note (STARTER-R2); a test swaps in the single-version list of a 1.0.x build.
+    /// The shipped versions of each starter note; a test swaps in the single-version list of a 1.0.x build.
     var starterVersions: [String: [Data]] = CloudStarterBase.shippedPayloads
 
     var accountID: String { keys.accountID }
@@ -91,7 +91,7 @@ struct CloudSyncSession: Sendable {
                 // An answer that arrived since the last cycle (the live engine answers later) is consumed here and counts too.
                 if consumed.quotaHeld > 0 { report.quotaHeld = true }
                 // An earlier run's unknown outcome: the fence-level resolution claims what is provably ours; the publisher's
-                // own table (CK-R4) decides the rest inside `publishCycle`.
+                // own table decides the rest inside `publishCycle`.
                 _ = try await fence.resolveUnknownOutcomes(using: gateway)
             }
             try await fetch()

@@ -173,11 +173,11 @@ import Testing
         for id in ids.dropFirst(20) { #expect(await world.cloud.versionCount(of: "e.note.\(id)") == 1) }
     }
 
-    // MARK: the first shipped starter texts are the merge base (CK-R132)
+    // MARK: the first shipped starter texts are the merge base
 
     @Test func theFirstShippedStarterTextsAreFrozen() throws {
         // The FROZEN first shipped set (Resources/starter-v1-*.md) is the oldest merge base. Never edit those files. When a bundled text
-        // changes, the frozen set stays as it is and the new set becomes one more shipped version (STARTER-R1).
+        // changes, the frozen set stays as it is and the new set becomes one more shipped version.
         let frozen = try GettingStartedNotes.firstShippedNotes()
         #expect(frozen.count == 12)
         func digest(_ texts: [String]) -> String {
@@ -194,10 +194,10 @@ import Testing
         #expect(payloadDigest == "48ea8b9d3dfaf423d01bdd0a7b9ec06ef6db34803724a4efd664e56ae720d99d", "\(payloadDigest)")
         #expect(CloudStarterBase.firstShippedPayloads.count == 12)
         // The bundled set (v2, shipped with 1.1) is pinned too: it becomes a shipped version the moment 1.1 is out (review r1 S2).
-        // Re-pinned in place for the scenario texts (STARTER-R16, R17): no build with the earlier v2 texts ever shipped.
+        // Re-pinned in place for the scenario texts: no build with the earlier v2 texts ever shipped.
         #expect(digest(try GettingStartedNotes.notes().map(\.text)) == "c90dc5b9449a3a70d5826ad75bd933e4a29426ee0e51d72a9dfedae8599b0882",
                 "a bundled starter text changed: copy the current files to Resources/starter-v2-*.md and add them to CloudStarterBase.shippedPayloads (STARTER-R1, R2) BEFORE changing a text, then update this digest")
-        // v2 is frozen as Resources/starter-v2-*.md (STARTER-R24): byte for byte what is bundled today, until a v3 is intentionally added
+        // v2 is frozen as Resources/starter-v2-*.md: byte for byte what is bundled today, until a v3 is intentionally added
         let second = try GettingStartedNotes.secondShippedNotes()
         #expect(second.count == 12)
         #expect(digest(second.map(\.text)) == "c90dc5b9449a3a70d5826ad75bd933e4a29426ee0e51d72a9dfedae8599b0882", "the frozen v2 starter texts changed")
@@ -217,7 +217,7 @@ import Testing
         }
     }
 
-    // MARK: single owner per library (CK-R133)
+    // MARK: single owner per library
 
     @Test func aSecondOwnerOfTheSameLibraryIsRefused() async throws {
         try await withCoordWorld(1) { world in
@@ -464,7 +464,7 @@ import Testing
             #expect(await world.cloud.recordNames.isEmpty, "nothing creates it again by itself")
             // the person chooses to upload again: only now may the zone be made again
             try await coordinator.chooseUploadAgain()
-            // the zone is made again together with the key bundle (CK-R146c); no note is uploaded by this step
+            // the zone is made again together with the key bundle (c); no note is uploaded by this step
             #expect(try a.store.zoneState() == .created)
             #expect(await world.cloud.recordNames == [CloudRecordCodec.keyBundleRecordName])
         }

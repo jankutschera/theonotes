@@ -147,8 +147,8 @@ struct DownloadFailed: Error {}
 
 // MARK: - The model
 
-/// Focus layer C13: File ▸ Capture Voice Note and Edit ▸ Insert Voice Note on the Mac (spec A2, FOC-R9,
-/// FOC-R310 … FOC-R319). The library, the sessions and App Lock are the real ones; the engine and the
+/// Focus layer C13: File ▸ Capture Voice Note and Edit ▸ Insert Voice Note on the Mac (spec A2,,
+///). The library, the sessions and App Lock are the real ones; the engine and the
 /// preflight are fakes, so no test touches the microphone or the speech model.
 @MainActor
 @Suite struct VoiceCaptureModelTests {
@@ -191,7 +191,7 @@ struct DownloadFailed: Error {}
 
         var store: NoteStore { environment.store }
 
-        /// Plays the editor: a load that was marked as not an open is not recorded (FOC-R251).
+        /// Plays the editor: a load that was marked as not an open is not recorded.
         private func wireOpening() {
             model.openNote = { [unowned self] noteId in
                 opened.append(noteId)
@@ -523,7 +523,7 @@ struct DownloadFailed: Error {}
         }
 
         #expect(fixture.environment.openSessionCount == 0, "the session that held the plaintext is dropped")
-        // The panel shows the message at once (FOC-R320); the capture itself ends a moment later.
+        // The panel shows the message at once; the capture itself ends a moment later.
         #expect(model.state == .unavailable(VoiceCaptureModel.noteLockedMessage))
         for _ in 0..<2500 where model.isBusy { try await Task.sleep(for: .milliseconds(2)) }
         #expect(model.state == .unavailable(VoiceCaptureModel.noteLockedMessage))
@@ -535,7 +535,7 @@ struct DownloadFailed: Error {}
         #expect(recordings.isEmpty, "the recording is gone")
     }
 
-    // MARK: Fix round 1 (FOC-R320 … FOC-R323)
+    // MARK: Fix round 1
 
     /// A capture on the locked-notes fixture's library whose model never reads the capture by itself
     /// (a minute between reads), so only a synchronous lock notification can redact the panel.
@@ -898,7 +898,7 @@ struct DownloadFailed: Error {}
         #expect(!FileManager.default.fileExists(atPath: folder.path))
     }
 
-    /// 1.1 A2 (d), FOC-R399: a leftover that cannot be played is marked and never removed in the
+    /// 1.1 A2 (d), a leftover that cannot be played is marked and never removed in the
     /// launch that marked it; one marked by an earlier launch a day ago goes, and the first window
     /// says so once.
     @Test func anUnplayableLeftoverGoesInALaterLaunchAndTheUserIsToldOnce() async throws {
@@ -923,7 +923,7 @@ struct DownloadFailed: Error {}
         #expect(try third.store.note(id: note.id)?.text == "Memo")
     }
 
-    /// FOC-R395: unfinished words are journaled but not stored; a launch after a crash replays the
+    /// Unfinished words are journaled but not stored; a launch after a crash replays the
     /// journal and they are back.
     @Test func unfinishedWordsSurviveACrash() async throws {
         let env = try Env()
@@ -943,7 +943,7 @@ struct DownloadFailed: Error {}
     }
 
     /// 1.1 A2: Stop with words but a recording that cannot be played keeps the words, says so, and
-    /// a later launch a day on removes the file without a notice (FOC-R399).
+    /// a later launch a day on removes the file without a notice.
     @Test func stopWithAnUnplayableRecordingKeepsTheWordsAndTheFileGoesInALaterLaunch() async throws {
         let env = try Env(audio: Data())
         let id = try await env.startNewNote()
@@ -971,7 +971,7 @@ struct DownloadFailed: Error {}
         #expect(try env.text(id) == "buy milk")
     }
 
-    /// 1.1 A2 (c), FOC-R398: no words and nothing that plays: the panel closes, nothing is kept.
+    /// 1.1 A2 (c), no words and nothing that plays: the panel closes, nothing is kept.
     @Test func stopWithNoWordsAndNoUsableAudioKeepsNothing() async throws {
         let env = try Env(audio: Data())
         let id = try await env.startNewNote()

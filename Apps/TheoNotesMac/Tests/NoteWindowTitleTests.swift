@@ -7,7 +7,7 @@ import SwiftUI
 import Testing
 @testable import TheoNotes
 
-/// FOC-R367: a note window (the capture window above all) draws its title in the shell's primary
+/// A note window (the capture window above all) draws its title in the shell's primary
 /// text colour. The system title of a window that is not frontmost is drawn dim, which on the dark
 /// canvas made "Untitled" hard to read.
 @MainActor

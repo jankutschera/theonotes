@@ -513,7 +513,7 @@ final class ReminderEnv {
         #expect(try env.store.ping(id: ping.id)?.firedAt != nil)
     }
 
-    // MARK: presentation (FOC-R266)
+    // MARK: presentation
 
     @Test func aReminderIsNotShownOnceItsNoteIsLocked() async throws {
         let env = try ReminderEnv()
@@ -686,7 +686,7 @@ final class ReminderEnv {
         #expect(titleOnly.title == "Plan" && titleOnly.body.isEmpty)
     }
 
-    /// P-R1 (K5): the tap launches the app; macOS has already taken the banner out of the center, so
+    /// (K5): the tap launches the app; macOS has already taken the banner out of the center, so
     /// launch catch-up sees nothing delivered and forgets the ledger row before the tap arrives.
     @Test func aTapThatLaunchedTheAppStillHandlesTheReminder() async throws {
         let env = try ReminderEnv()

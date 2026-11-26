@@ -23,7 +23,7 @@ protocol VaultLifecycleSource {
 /// The three notification centers are injectable so a test posts the real names to its own.
 /// `com.apple.screenIsLocked` and `com.apple.screensaver.didstart` are the distributed names the
 /// system posts for the lock screen and the screensaver; they are not in Apple's reference docs
-/// (M9M-R8), so the other events cover sleep and a switched-away session independently.
+///, so the other events cover sleep and a switched-away session independently.
 @MainActor
 final class SystemVaultLifecycleSource: VaultLifecycleSource {
     static let screenLockedName = Notification.Name("com.apple.screenIsLocked")

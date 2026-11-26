@@ -4,7 +4,7 @@
 import AppKit
 import SwiftUI
 
-/// The editor's right-click menu (M8-R105): WebKit's own menu with the parts that make no sense in
+/// The editor's right-click menu: WebKit's own menu with the parts that make no sense in
 /// a Markdown editor taken out, and its "Font" submenu replaced by "Format".
 ///
 /// The editor never takes rich-text edits (the Markdown source is the truth), so WebKit's Font

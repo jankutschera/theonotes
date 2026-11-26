@@ -7,7 +7,7 @@ import UIKit
 @testable import TheoNotesCore
 @testable import BaerchenIOS
 
-// Task 16 (CK-R175 to CK-R179): the shipped services build the live gateway only behind the release flag and a valid container, the
+// Task 16: the shipped services build the live gateway only behind the release flag and a valid container, the
 // Info.plist carries the flag and the container the way the Mac's does, and every word of the page is in one strings file.
 // Nothing here reaches the real iCloud: the live gateway is only constructed (it touches CloudKit on its first call).
 
@@ -87,7 +87,7 @@ import UIKit
         #expect(MobileCloudSyncController.namespace(for: root).hasPrefix("ios-"))
     }
 
-    // MARK: the Info.plist (REL-R9 mirror, REL-R13)
+    // MARK: the Info.plist
 
     @Test func theInfoPlistEnablesTheConfiguredContainer() throws {
         let info = try #require(Bundle.main.infoDictionary)

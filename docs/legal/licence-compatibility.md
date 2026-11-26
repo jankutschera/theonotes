@@ -6,15 +6,15 @@ sources named below. It is not legal advice; a lawyer reviews it before publicat
 **Rule enforced in code.** `scripts/gen-acknowledgements.py` calls `gplCompatible(spdx)` for every
 licence that ships (npm packages in the editor bundle, SwiftPM packages, theme palettes, bundled
 assets). `python3 -I scripts/gen-acknowledgements.py --check` fails when a verdict is "fail", or
-"conditional" without what it needs (REN2-R32).
+"conditional" without what it needs.
 
 | Verdict | Licences | What the gate demands |
 |---|---|---|
-| allowed | MIT, ISC, BSD-2-Clause, BSD-3-Clause, 0BSD, Zlib, Unlicense, CC0-1.0, BlueOak-1.0.0, Unicode-3.0, Apache-2.0 | nothing; keep the licence text and any NOTICE (LIC-R12) |
-| conditional | OFL-1.1 (font data only) | a ruling id in the config entry (`"ruling": "LIC-R34"` for the two maths fonts) |
+| allowed | MIT, ISC, BSD-2-Clause, BSD-3-Clause, 0BSD, Zlib, Unlicense, CC0-1.0, BlueOak-1.0.0, Unicode-3.0, Apache-2.0 | nothing; keep the licence text and any NOTICE |
+| conditional | OFL-1.1 (font data only) | a ruling id in the config entry (`"ruling": ""` for the two maths fonts) |
 | conditional | MPL-2.0 | a ruling id in the package's `npmOverrides` entry, plus the existing source link and statement |
 | conditional | EPL-2.0 | a ruling id **and** a filled-in Secondary-License notice (EPL-2.0 Exhibit A) naming the GPL, version 3 or later, in the package's licence file, NOTICE or README; otherwise the package must be removed |
-| fail | GPL-2.0-only, GPL-3.0 as a dependency (outside LIC-R6, needs its own ruling), LGPL, AGPL (as a dependency), SSPL, CC-BY-SA, CC-BY-NC, EUPL, OSL, CPAL, RPL, anything unknown | none; the run stops |
+| fail | GPL-2.0-only, GPL-3.0 as a dependency (outside, needs its own ruling), LGPL, AGPL, SSPL, CC-BY-SA, CC-BY-NC, EUPL, OSL, CPAL, RPL, anything unknown | none; the run stops |
 
 Apache-2.0 is allowed because the project is GPL-3.0-only: Apache-2.0 is compatible with GPLv3 and
 never with GPLv2. This is the reason the project is GPL-3.0-only and not "GPL-2.0-or-later".
@@ -23,13 +23,13 @@ never with GPLv2. This is the reason the project is GPL-3.0-only and not "GPL-2.
 
 | Component | Licence | Verdict | Source / reason |
 |---|---|---|---|
-| **elkjs 0.9.3** (via Mermaid) | EPL-2.0 | **Was a blocker for a clean "GPL-3.0" claim; resolved by removal (L2, REN2-R10). Not shipped.** | EPL-2.0 allows a GPL secondary licence only if the initial contributor attached the Exhibit A notice. Checked in `third_party/sources/elkjs-0.9.3.tgz`: `LICENSE.md` holds the empty Exhibit A template only, `lib/*.js` say `SPDX-License-Identifier: EPL-2.0`, `package.json` says `EPL-2.0`: no secondary licence. FSF list (fetched 2026-10-28, gnu.org/licenses/license-list.html#EPL2): "the EPL2 without this designation remains incompatible with the GPL". Shipping it as a separate unmodified file is arguable aggregation, but Mermaid loads it into the same JS program, so it was removed. Not verified: other elkjs releases, the upstream eclipse/elk repository; no lawyer opinion. |
-| MathJax `@mathjax/src`, `mj-context-menu`, `speech-rule-engine`, `mhchemparser`, STIX2 font package | Apache-2.0 | OK for GPLv3 (not GPLv2, hence GPL-3.0-only is the right choice) | apache.org/licenses/GPL-compatibility.html (fetched 2026-10-28): Apache 2.0 "compatible with version 3 of the GPL", never with GPLv2; keep licence text and any NOTICE (LIC-R12) |
-| chevrotain (+3 `@chevrotain/*`), DOMPurify (MPL-2.0 OR Apache-2.0, elected Apache-2.0, LIC-R9), reflect-metadata (sync Worker) | Apache-2.0 | OK | same source |
-| STIX Two math glyph data, Source Sans Pro-derived letters (inside the MathJax font package; also website fonts Atkinson Hyperlegible Next, Bricolage Grotesque, JetBrains Mono) | OFL-1.1 | OK as separate font data with licence text; low risk, LAWYER may confirm | FSF list: free licence for fonts, no GPL statement either way; fonts are data files loaded at runtime, not linked code; Reserved Font Names not used (`scripts/acknowledgements-config.json`, `docs/legal/fonts/README.md`). OFL FAQ on bundling with GPL software not re-fetched in this session (not verified). Gate: ruling id `LIC-R34` on both entries. |
+| **elkjs 0.9.3** (via Mermaid) | EPL-2.0 | **Was a blocker for a clean "GPL-3.0" claim; resolved by removal (L2). Not shipped.** | EPL-2.0 allows a GPL secondary licence only if the initial contributor attached the Exhibit A notice. Checked in `third_party/sources/elkjs-0.9.3.tgz`: `LICENSE.md` holds the empty Exhibit A template only, `lib/*.js` say `SPDX-License-Identifier: EPL-2.0`, `package.json` says `EPL-2.0`: no secondary licence. FSF list (fetched 2026-10-28, gnu.org/licenses/license-list.html#EPL2): "the EPL2 without this designation remains incompatible with the GPL". Shipping it as a separate unmodified file is arguable aggregation, but Mermaid loads it into the same JS program, so it was removed. Not verified: other elkjs releases, the upstream eclipse/elk repository; no lawyer opinion. |
+| MathJax `@mathjax/src`, `mj-context-menu`, `speech-rule-engine`, `mhchemparser`, STIX2 font package | Apache-2.0 | OK for GPLv3 (not GPLv2, hence GPL-3.0-only is the right choice) | apache.org/licenses/GPL-compatibility.html (fetched 2026-10-28): Apache 2.0 "compatible with version 3 of the GPL", never with GPLv2; keep licence text and any NOTICE |
+| chevrotain (+3 `@chevrotain/*`), DOMPurify (MPL-2.0 OR Apache-2.0, elected Apache-2.0), reflect-metadata (sync Worker) | Apache-2.0 | OK | same source |
+| STIX Two math glyph data, Source Sans Pro-derived letters (inside the MathJax font package; also website fonts Atkinson Hyperlegible Next, Bricolage Grotesque, JetBrains Mono) | OFL-1.1 | OK as separate font data with licence text; low risk, LAWYER may confirm | FSF list: free licence for fonts, no GPL statement either way; fonts are data files loaded at runtime, not linked code; Reserved Font Names not used (`scripts/acknowledgements-config.json`, `docs/legal/fonts/README.md`). OFL FAQ on bundling with GPL software not re-fetched in this session (not verified). Gate: ruling id `` on both entries. |
 | Mermaid 12.2.0 and the other MIT entries (CodeMirror 6, Lezer, KaTeX, dagre-d3-es, cytoscape*, roughjs, stylis, marked, dayjs, lodash-es, es-toolkit, uuid, khroma, Vite helper, theme palettes Catppuccin/Dracula/Everforest/Gruvbox/Nord/Rose Pine/Solarized/Tokyo Night, BIP39 word list) | MIT | OK | GPL-compatible; keep notices (generated, `Acknowledgements.json`) |
 | d3 modules (19 ISC, 5 BSD-3-Clause) | ISC / BSD-3-Clause | OK | same |
-| GRDB.swift 7.11.1, ZIPFoundation 0.9.20 | MIT | OK | SwiftPM `Package.resolved`, LIC-R3 |
+| GRDB.swift 7.11.1, ZIPFoundation 0.9.20 | MIT | OK | SwiftPM `Package.resolved`, |
 | Unicode emoji data and CLDR | Unicode-3.0 | OK | FSF list: "compatible with all versions of the GNU GPL" |
 | robust-predicates (if bundled), 0BSD `tslib` (Worker) | Unlicense / 0BSD | OK | FSF list: Unlicense "compatible with the GNU GPL" |
 | Private sync server runtime deps, not in the public repository (@simplewebauthn/server, aws4fetch, @peculiar/*, asn1js, tsyringe) | MIT / BSD-3 | OK (also for AGPL-3.0 if J6) | `package-lock.json` |
@@ -47,12 +47,12 @@ never with GPLv2. This is the reason the project is GPL-3.0-only and not "GPL-2.
   example (from memory, not re-verified).
 - Much of the code was written by AI agents under Jan's direction; copyright in purely AI-generated
   code is uncertain in some jurisdictions. LAWYER question J1/J2.
-- Mac v1 is a Developer ID download (REL-R50): the GPL source offer is the repo link in About (L5).
+- Mac v1 is a Developer ID download: the GPL source offer is the repo link in About (L5).
 
 ## What was and was not checked in task L1
 
 - Checked by running it: `python3 -I scripts/gen-acknowledgements.py --check` passes on the tree
-  (121 entries, no EPL-2.0 or MPL-2.0 entry; elkjs is out, REN2-R10). The gate has tests with fixtures
+  (121 entries, no EPL-2.0 or MPL-2.0 entry; elkjs is out). The gate has tests with fixtures
   for each branch (`scripts/tests/test_gen_acknowledgements.py`): an EPL-2.0 package without a
   Secondary-License notice fails (also with the empty Exhibit A template and with a GPL-2.0-only
   notice), Apache-2.0 passes, OFL-1.1 needs a ruling id.

@@ -578,7 +578,7 @@ const TAP_SLOP = 10;
 const LONG_PRESS = 500;
 
 /**
- * Touch screens (LINK-TAP-R1): a one-finger tap on a link's, wiki link's or tag's text opens it
+ * Touch screens: a one-finger tap on a link's, wiki link's or tag's text opens it
  * like ⌘-click. A scroll, a long press, a second finger or a tap while text is selected stays
  * the system's (caret, edit menu, selection); the cancelled `touchend` keeps the caret and
  * keyboard where they were. Mouse and trackpad clicks never get here.

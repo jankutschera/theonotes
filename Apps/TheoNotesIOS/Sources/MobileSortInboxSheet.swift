@@ -25,7 +25,7 @@ struct MobileSortInboxSheet: View {
 
     var body: some View {
         let _ = library.snapshot
-        // IOS-DESIGN-R4: Undo leading, Done trailing, as in iOS.
+        // Undo leading, Done trailing, as in iOS.
         return MobileSheetChrome(title: "Sort Inbox", leading: {
             if busy || model.undoing {
                 ProgressView().accessibilityLabel("Saving sort action")

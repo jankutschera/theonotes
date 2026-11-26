@@ -3,7 +3,7 @@
 
 import AppKit
 
-/// What engaging App Lock does to AppKit windows that SwiftUI does not own (M9M-R64): sheets and
+/// What engaging App Lock does to AppKit windows that SwiftUI does not own: sheets and
 /// floating panels (Quick Open, the template picker, import and export panels) are closed, because
 /// they list note titles or sit on top of the lock screen.
 @MainActor
@@ -32,7 +32,7 @@ enum AppLockWindowSweep {
 }
 
 /// Window metadata the Window menu and the Dock read: the title, the minimised title and the
-/// minimised image (M9M-R78). `scrub` runs before the locked state is published, so no title or
+/// minimised image. `scrub` runs before the locked state is published, so no title or
 /// thumbnail of a note is ever visible while the app is locked; `restore` runs after the unlock.
 /// A title that SwiftUI has set again meanwhile (the unlocked view came back first) is kept.
 @MainActor

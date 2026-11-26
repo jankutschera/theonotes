@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Provisioning-profile checks for the release scripts (REL-R67). Static: nothing in a bundle is executed.
+"""Provisioning-profile checks for the release scripts. Static: nothing in a bundle is executed.
 
     python3 -I scripts/release/profiles.py find <profile name>          path of an installed profile with that name
     python3 -I scripts/release/profiles.py verify <app-or-appex> <team>  that item's embedded profile covers the

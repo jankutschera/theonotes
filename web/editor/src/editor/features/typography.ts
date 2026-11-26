@@ -94,7 +94,7 @@ export class OrderedMarkerWidget extends WidgetType {
 
 /**
  * The small "H1"…"H6" badge in the heading gutter: a button that opens the heading menu
- * (M6-R23: "Heading level N"; M7 Task 11 adds `aria-haspopup`). It sits outside `.cm-content`,
+ * ("Heading level N"; M7 Task 11 adds `aria-haspopup`). It sits outside `.cm-content`,
  * so the content text stays the document.
  */
 export class HeadingBadge extends GutterMarker {
@@ -113,7 +113,7 @@ export class HeadingBadge extends GutterMarker {
     el.dataset.level = String(this.level);
     el.setAttribute("role", "button");
     el.setAttribute("aria-label", `Heading level ${this.level}`);
-    // A click opens the native heading menu (M6 Task 9); M6-R23: only now that the badge is exposed.
+    // A click opens the native heading menu (M6 Task 9); only now that the badge is exposed.
     el.setAttribute("aria-haspopup", "menu");
     const label = el.appendChild(document.createElement("span"));
     label.textContent = `H${this.level}`;
@@ -449,7 +449,7 @@ type StyleSpec = Record<string, Record<string, string>>;
 
 /**
  * Inline markup (bold, italic, code, tags, links, highlights): the editor theme and the table
- * grid's shadow root (tables.ts, ruling M6-R18) share these rules, so they exist once.
+ * grid's shadow root (tables.ts) share these rules, so they exist once.
  */
 const inlineMarkupStyles: StyleSpec = {
   ".cm-bc-strong": { fontWeight: "700" },
@@ -492,7 +492,7 @@ export function cssText(spec: StyleSpec): string {
     .join("\n");
 }
 
-/** The inline markup rules as CSS text, for widget shadow roots (M6-R18). */
+/** The inline markup rules as CSS text, for widget shadow roots. */
 export const INLINE_MARKUP_CSS = cssText(inlineMarkupStyles);
 
 const typographyTheme = EditorView.theme({

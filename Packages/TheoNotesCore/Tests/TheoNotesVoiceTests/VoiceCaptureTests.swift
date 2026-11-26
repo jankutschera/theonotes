@@ -11,7 +11,7 @@ import Testing
 @Suite struct VoiceCaptureTests {
     private static let now = Date(timeIntervalSince1970: 1_800_000_000)
 
-    /// FOC-R9's name, formatted here independently of the implementation.
+    /// 's name, formatted here independently of the implementation.
     private static var expectedName: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -43,7 +43,7 @@ import Testing
         #expect(!note.text.contains("revised"))
     }
 
-    /// 1.1 A2 (b), FOC-R396: the draft follows another editor's change, so the final replaces it
+    /// 1.1 A2 (b), the draft follows another editor's change, so the final replaces it
     /// and no stale copy of the provisional words stays in the note.
     @Test func provisionalFollowsAnotherEditorsChangesAndLeavesNoStaleDraft() async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
@@ -66,7 +66,7 @@ import Testing
         #expect(!text.contains("Draft"))
     }
 
-    /// FOC-R396: words someone typed into the draft are theirs now; the final goes after them.
+    /// Words someone typed into the draft are theirs now; the final goes after them.
     @Test func anEditInsideTheDraftKeepsItAsTheEditorsText() async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
         let engine = FakeVoiceEngine()
@@ -84,7 +84,7 @@ import Testing
         #expect(try #require(try library.store.note(id: id)).text.hasPrefix("Draft! words Final words\n"))
     }
 
-    /// 1.1 A2 (a), FOC-R395: words still being recognised are journaled (they survive a crash) but
+    /// 1.1 A2 (a), words still being recognised are journaled (they survive a crash) but
     /// no store write takes them, so sync, Spotlight and widgets never see them before Stop.
     @Test func provisionalWordsStayOutOfTheStoreUntilStop() async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
@@ -109,7 +109,7 @@ import Testing
         #expect(try library.store.note(id: id)?.text.hasPrefix("Buy oat milk. and bread rolls\n") == true)
     }
 
-    /// FOC-R395 (fix round): pinning or archiving the note while words are still being recognised
+    /// Pinning or archiving the note while words are still being recognised
     /// moves its revision only; re-basing on that commits the final words but not the others.
     @Test(arguments: ["pin", "archive"]) func aRevisionOnlyChangeMidCaptureLeavesUnfinishedWordsOut(change: String) async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
@@ -131,7 +131,7 @@ import Testing
         #expect(try library.store.note(id: id)?.text.hasPrefix("Buy milk. and bread\n") == true)
     }
 
-    /// FOC-R395 (fix round): an external edit before the draft (two lines above, with an emoji
+    /// An external edit before the draft (two lines above, with an emoji
     /// of two UTF-16 units before the draft) is merged; the store gets it without the unfinished
     /// words, which move with it. An edit on the draft's own line is a conflict: the remote text
     /// becomes a copy and the store still gets no unfinished words.
@@ -163,7 +163,7 @@ import Testing
         #expect(try library.store.note(id: id)?.text.hasPrefix(expected + " unfinished words\n") == true)
     }
 
-    /// FOC-R395: the process dies after a flush that left the unfinished words out; a new session
+    /// The process dies after a flush that left the unfinished words out; a new session
     /// replays the journal and they are back.
     @Test func aRelaunchRecoversTheUnfinishedWordsFromTheJournal() async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
@@ -185,7 +185,7 @@ import Testing
         try reopened.invalidate()
     }
 
-    /// 1.1 A2, FOC-R397: an empty final retracts the provisional words it replaces.
+    /// 1.1 A2, an empty final retracts the provisional words it replaces.
     @Test func anEmptyFinalRemovesTheWordsItRetracted() async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
         let engine = FakeVoiceEngine()
@@ -202,7 +202,7 @@ import Testing
         #expect(text.hasPrefix("Keep this.\n") && !text.contains("noise"), "\(text)")
     }
 
-    /// 1.1 A2 (c), FOC-R398: no recognised words and no recording that can be played: nothing is
+    /// 1.1 A2 (c), no recognised words and no recording that can be played: nothing is
     /// kept. A new note goes to the Trash, an insert target is untouched, the file is removed.
     @Test(arguments: [false, true]) func aCaptureWithNoWordsAndNoUsableAudioKeepsNothing(insert: Bool) async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
@@ -266,7 +266,7 @@ import Testing
         #expect(try Data(contentsOf: audio) == engine.audio + FakeVoiceEngine.closeMarker)
     }
 
-    /// 1.1 A2 (d), FOC-R399: the words are in the note, so the unplayable file goes in a later
+    /// 1.1 A2 (d), the words are in the note, so the unplayable file goes in a later
     /// launch a day after Stop, without a notice.
     @Test func emptyRecordingKeepsTheTextAndGoesAtTheNextLaunch() async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
@@ -320,7 +320,7 @@ import Testing
                 let file = try AVAudioFile(forReading: url)
                 #expect(file.length > 0)
             } else {
-                // No words and nothing that plays: nothing is kept (FOC-R398).
+                // No words and nothing that plays: nothing is kept.
                 #expect(capture.phase == .cancelled && library.attachmentNames(id).isEmpty)
                 #expect(library.recordingFiles().isEmpty)
                 #expect(try library.store.note(id: id)?.location == .trash)
@@ -350,7 +350,7 @@ import Testing
         #expect(note.text == "")
         #expect(note.createdAt == Self.now)
         #expect(try library.store.captureSource(noteId: id) == .voice)
-        // The recording goes to Recordings/<noteId>/ under FOC-R9's name.
+        // The recording goes to Recordings/<noteId>/ under 's name.
         guard case .start(let url) = try #require(engine.calls.first) else { Issue.record("no start"); return }
         #expect(url.lastPathComponent == Self.expectedName)
         #expect(url.deletingLastPathComponent().standardizedFileURL.path
@@ -1018,7 +1018,7 @@ import Testing
         #expect(FileManager.default.fileExists(atPath: journal.fileURL.path))
     }
 
-    // MARK: - Follow-ups (FOC-R301, FOC-R302)
+    // MARK: - Follow-ups
 
     @Test func aCaptureThatNeverJournaledDoesNotBlockAndLeavesNothingWhenTheNoteIsLockedElsewhere() async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
@@ -1073,7 +1073,7 @@ import Testing
     }
 
     /// A dropped capture whose engine is slow to cancel still guards its note: a lock that comes
-    /// meanwhile removes the recording itself (FOC-R307), and the cancel finds nothing left to do.
+    /// meanwhile removes the recording itself, and the cancel finds nothing left to do.
     @Test func aLockWhileADroppedCaptureIsStillCancellingRemovesTheRecording() async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
         let engine = FakeVoiceEngine()

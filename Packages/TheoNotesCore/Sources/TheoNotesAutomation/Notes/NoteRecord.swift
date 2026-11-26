@@ -11,7 +11,7 @@ struct NoteRecord: Equatable {
     var title: String
     var locked: Bool
     /// The tags bearcli lists: the direct tags and every ancestor of a nested one, without `#`,
-    /// spelled as the tag table spells them, in code point order (ruling M5-R232).
+    /// spelled as the tag table spells them, in code point order.
     var tags: [String]
     /// UTF-8 bytes of the text; 0 for a locked note.
     var length: Int
@@ -114,7 +114,7 @@ struct NoteRecord: Equatable {
     }
 
     /// `direct` plus each ancestor of a nested tag (`a/b/c` brings `a` and `a/b`), one entry per
-    /// tag key, in the table's spelling when it has one, sorted by name (ruling M5-R232).
+    /// tag key, in the table's spelling when it has one, sorted by name.
     static func listedTags(direct: [String], spelling: [String: String]) -> [String] {
         var seen: Set<String> = []
         var names: [String] = []

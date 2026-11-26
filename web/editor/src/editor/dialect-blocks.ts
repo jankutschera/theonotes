@@ -352,7 +352,7 @@ const strayFence: BlockParser = {
 };
 
 // ---------------------------------------------------------------------------------------------
-// Tables (ruling M6-R1). Port of the Table block parser of @lezer/markdown 1.8.1
+// Tables. Port of the Table block parser of @lezer/markdown 1.8.1
 // (src/extension.ts; MIT License, Copyright (C) 2020 by Marijn Haverbeke
 // and others). Changed for Bear: every row starts and ends with a cell
 // separator `|`; a `|` inside an escape, code span, math, wiki link, link destination, URL or
@@ -499,7 +499,7 @@ function fencesAfter(f: Fragment, from: number, to: number, cuts: Cut[]): void {
 }
 
 /**
- * Lookahead (M6-R1): a header row interrupts the paragraph before it only when the next line is a
+ * Lookahead: a header row interrupts the paragraph before it only when the next line is a
  * matching delimiter row. Lezer never reuses the node on the line right before an edit, but that
  * paragraph ends one line earlier, so it is reparsed whenever an edit reaches the delimiter row.
  */

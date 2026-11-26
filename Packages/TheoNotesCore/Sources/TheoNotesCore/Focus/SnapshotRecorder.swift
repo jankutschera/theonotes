@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// Records the history of one open note (FOC-R11, FOC-R180 ... FOC-R183): one snapshot when the
+/// Records the history of one open note: one snapshot when the
 /// session closes and one after 15 minutes without typing. The `writer` decides what is stored and
 /// where: `NoteStore` for unlocked notes (it refuses a locked one), `LockedNoteAccess` for locked
 /// ones (it seals). The recorder never keeps, logs or writes the text itself.

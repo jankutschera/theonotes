@@ -5,7 +5,7 @@ import Foundation
 
 /// Opens a sealed payload and validates it per entity type (class (c) of the E0 record: a copy of the per-type switch of
 /// `SyncPayloadReader.read`, fed from plain values instead of a `SyncEntity`). The tombstone is not a wire flag here; it is the
-/// kind byte inside the plaintext (CK-R17), which `CloudPayloadSealer.open` splits off.
+/// kind byte inside the plaintext, which `CloudPayloadSealer.open` splits off.
 ///
 /// Drift guard: `CloudRemoteReaderDifferentialTests` opens the same payloads through this reader and through the Cloudflare
 /// original, valid and every invalid shape, and requires equal outcomes. A later fix to one reader that does not reach the other

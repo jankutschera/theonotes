@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// The share inbox (C4, FOC-R12, FOC-R140 ... FOC-R145): the app drains what share extensions
+/// The share inbox (C4,...): the app drains what share extensions
 /// leave in the App Group, and treats every item as hostile input.
 @Suite struct CaptureInboxTests {
     let library: PrivacyTestLibrary
@@ -363,7 +363,7 @@ import Testing
         #expect(rejected().count == 1)
     }
 
-    // MARK: - Held appends (FOC-R340)
+    // MARK: - Held appends
 
     @Test func anAppendForAHeldNoteStaysInTheInboxUntilItIsReleased() throws {
         defer { library.cleanup() }
@@ -386,7 +386,7 @@ import Testing
         #expect(try library.store.note(id: held.id)?.text == "Held\n\nfor held")
     }
 
-    // MARK: - Rejected items do not pile up (FOC-R335)
+    // MARK: - Rejected items do not pile up
 
     @Test func aRejectedItemIsKeptForSevenDaysThenDeleted() throws {
         defer { library.cleanup() }

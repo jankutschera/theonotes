@@ -88,7 +88,7 @@ struct TheoNotesIOSApp: App {
         MobilePrivateServerSync.controller(for: library)?.runPrivateServerUITestFixtureIfRequested()    // before the controller reads the binding
         #endif
         let controller = MobileCloudSyncController(library: MobileCloudSyncLibrary(library: library), services: .live(), available: true)
-        // "Move This Library to iCloud" needs the private-server sync of this build (MOVE-R1).
+        // "Move This Library to iCloud" needs the private-server sync of this build.
         if MobilePrivateServerSync.isAvailable() {
             controller.leavePrivateServer = { [weak library] withoutMissingFiles in
                 guard let library, let sync = MobilePrivateServerSync.controller(for: library) else { throw CancellationError() }
@@ -96,7 +96,7 @@ struct TheoNotesIOSApp: App {
             }
         }
         #if DEBUG
-        // UI-test fixture for the evidence screenshot only: the move refuses as for the owner's missing image files (MOVE-R10).
+        // UI-test fixture for the evidence screenshot only: the move refuses as for the owner's missing image files.
         let arguments = ProcessInfo.processInfo.arguments
         if arguments.contains("--ui-testing"), arguments.contains("--missing-files-fixture") {
             // --six-notes: the owner's case, six notes (five titles and "1 more"), with long titles that must stay on one line each.
@@ -160,7 +160,7 @@ struct TheoNotesIOSApp: App {
                                 MobileCloudSyncRouter.connect(nil)
                                 await closing?.shutdown()
                                 try await library.closeAfterStopping()
-                                // A library switch opens a library that already exists (a recovery copy): it is never new (STARTER-R5).
+                                // A library switch opens a library that already exists (a recovery copy): it is never new.
                                 let current = try MobileLibrary(paths: SyncRecoveryLibrary.activePaths(base: basePaths), shareContainer: shareContainer, seedsGettingStarted: false)
                                 MobileWatchConnectivity.shared.connect(current)
                                 current.watchPrivacyDidChange = { MobileWatchConnectivity.shared.privacyChanged() }

@@ -6,7 +6,7 @@ import Synchronization
 import Testing
 @testable import TheoNotesAutomation
 
-/// The address classes, host identity and lookup admission of `NetworkGuard` (rulings M5-R105 to M5-R108).
+/// The address classes, host identity and lookup admission of `NetworkGuard`.
 @Suite struct NetworkGuardTests {
     private static let refusal = "Refusing to fetch a local or private network address"
 
@@ -25,7 +25,7 @@ import Testing
         return withUnsafeBytes(of: v6) { Array($0) }
     }
 
-    // MARK: Ranges (M5-R108)
+    // MARK: Ranges
 
     @Test func everyNonGlobalRangeIsBlocked() {
         let blocked = [
@@ -146,7 +146,7 @@ import Testing
         #expect(resolver.lookups == ["svc.", "svc"])
     }
 
-    // MARK: Peer (M5-R107)
+    // MARK: Peer
 
     @Test func peerAddressesMustBeKnownAndGlobal() {
         func refused(_ address: String?) -> Bool {

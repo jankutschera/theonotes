@@ -57,7 +57,7 @@ import Testing
         #expect(object["noteId"] as? String == note.id)
     }
 
-    /// FOC-R4: the focus state is device-local. Writing it changes neither the note's wire bytes
+    /// The focus state is device-local. Writing it changes neither the note's wire bytes
     /// nor the sync outbox.
     @Test func noteWireFormatIsUnchangedByFocusState() throws {
         let library = try SyncMaterializerTests.Library(); defer { library.cleanup() }

@@ -43,7 +43,7 @@ import Testing
         let t = "# T\n\nlead\n## A\n"
         let s = NoteSections(text: t)
         let preamble = try s.resolve(.parse("# T\npreamble"))
-        // The preamble's leading blank line stays (ruling M5-R76); only its non-blank lines change.
+        // The preamble's leading blank line stays; only its non-blank lines change.
         #expect(try OverwriteEngine.apply("new lead\n", to: t, target: preamble) == "# T\n\nnew lead\n## A\n")
         #expect(try OverwriteEngine.apply("new lead", to: t, target: preamble) == "# T\n\nnew lead\n## A\n")
         let spaced = "# T\nlead\nmore\n\n## A\n"
@@ -63,7 +63,7 @@ import Testing
         #expect(try OverwriteEngine.apply("#tag", to: t, target: preamble) == "# T\n\n#tag\n## A\n")
     }
 
-    /// The blank lines between a section and the next heading stay (ruling M5-R76).
+    /// The blank lines between a section and the next heading stay.
     @Test func blankLineSeparatorBeforeTheNextHeadingIsKept() throws {
         let t = "# T\n## A\na\n\n## B\nb\n"
         let a = try NoteSections(text: t).resolve(.parse("## A"))
@@ -78,7 +78,7 @@ import Testing
                 == "# T\n## A\nall\n\n\n## B\n")
     }
 
-    /// `cat --section` → overwrite with the same bytes is a no-op (ruling M5-R76 as amended in fix
+    /// `cat --section` → overwrite with the same bytes is a no-op ( as amended in fix
     /// round 2): the write must never grow blank lines.
     @Test func writingBackACatResultLeavesTheNoteUnchanged() throws {
         let cases: [(text: String, address: String)] = [
@@ -105,7 +105,7 @@ import Testing
         }
     }
 
-    /// Content that brings its own edge blank lines replaces the old runs (ruling M5-R76).
+    /// Content that brings its own edge blank lines replaces the old runs.
     @Test func contentBlankLinesReplaceTheOldRuns() throws {
         let t = "# T\n## A\na\n\n## B\n"
         let a = try NoteSections(text: t).resolve(.parse("## A"))

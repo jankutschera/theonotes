@@ -267,7 +267,7 @@ final class NoteVault {
     }
 
     /// Flushes through the handlers, revokes the access, then requests the privacy cleanup (see
-    /// `cleanupState`; M9M-R15). Safe to call while locked: it cancels a pending unlock and a countdown.
+    /// `cleanupState`). Safe to call while locked: it cancels a pending unlock and a countdown.
     func relock() {
         generation &+= 1
         idleTask?.cancel()

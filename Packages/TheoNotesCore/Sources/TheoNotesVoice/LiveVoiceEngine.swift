@@ -24,7 +24,7 @@ public enum VoiceEngineError: Error, Equatable, Sendable {
     case recordingFailed
 }
 
-/// The device engine (FOC-R9): an `AVAudioEngine` input tap writes the microphone to an AAC
+/// The device engine: an `AVAudioEngine` input tap writes the microphone to an AAC
 /// `.m4a` file and, converted by `AVAudioConverter` to the analyzer's
 /// `bestAvailableAudioFormat`, feeds `AnalyzerInput(buffer:)` to a `SpeechAnalyzer` with a
 /// `SpeechTranscriber(locale:preset: .progressiveTranscription)`. Everything runs on the device.
@@ -104,7 +104,7 @@ private actor Pipeline {
         let sink: RecordingTap
         do {
             // A recording that cannot be written ends the stream with its own error: it is not a
-            // microphone change (FOC-R381).
+            // microphone change.
             sink = try RecordingTap.make(
                 recordingTo: url, tapFormat: tapFormat, analyzerFormat: analyzerFormat, input: inputBuilder,
                 onWriteFailure: { output.finish(throwing: VoiceEngineError.recordingFailed) })
@@ -124,7 +124,7 @@ private actor Pipeline {
                 output.finish(throwing: error)
             }
         }
-        // Only this engine's configuration change counts (FOC-R381).
+        // Only this engine's configuration change counts.
         let observer = AudioInputObserver(engine: engine)
         recorded = InputFormatSummary(
             channels: tapFormat.channelCount, sampleRate: tapFormat.sampleRate, device: AudioInputIdentity.current(of: engine))
@@ -204,7 +204,7 @@ private actor Pipeline {
             }
         case .restartWithNewFormat:
             // The same microphone in another format: the tap is installed again in it, and the tap
-            // brings the new buffers to the format the recording was opened with (FOC-R393).
+            // brings the new buffers to the format the recording was opened with.
             let input = engine.inputNode
             if tapInstalled { input.removeTap(onBus: 0) }
             input.installTap(onBus: 0, bufferSize: 4096, format: format) { buffer, _ in

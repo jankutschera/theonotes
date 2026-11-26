@@ -3,7 +3,7 @@
 
 import XCTest
 
-/// LINK-TAP-R1 (1.1): a finger's tap on a wiki link's text opens the linked note; a tap beside it
+/// (1.1): a finger's tap on a wiki link's text opens the linked note; a tap beside it
 /// places the caret and brings up the keyboard. Runs only against the disposable --ui-testing library.
 @MainActor final class LinkTapUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }

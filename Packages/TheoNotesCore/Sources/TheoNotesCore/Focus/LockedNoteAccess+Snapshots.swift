@@ -4,7 +4,7 @@
 import Foundation
 import GRDB
 
-/// The history of a locked note (FOC-R11, FOC-R16). Every member runs through `withVaultKey`, so
+/// The history of a locked note. Every member runs through `withVaultKey`, so
 /// it throws `NotePrivacyError.accessRevoked` after `revoke()` and writes nothing. A note that is
 /// not locked (any more) is handled like `NoteStore` does, with plaintext rows.
 extension LockedNoteAccess: SnapshotWriting {

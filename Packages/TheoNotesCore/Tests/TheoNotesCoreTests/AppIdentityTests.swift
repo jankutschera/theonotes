@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// FOC-R360 ... FOC-R363: two identities. The production values below are pinned on purpose: Jan's
+/// two identities. The production values below are pinned on purpose: Jan's
 /// installed app keeps its keychain items, notification permission, App Group and links only while
 /// they never change. Editing one of these literals is a data-migration decision, not a refactor.
 @Suite struct AppIdentityTests {

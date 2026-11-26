@@ -14,7 +14,7 @@ public enum VoiceRecoveryError: Error {
 }
 
 /// Recordings a capture left behind (the app quit or crashed while recording, or the file could
-/// not be attached), adopted once at launch (FOC-R9).
+/// not be attached), adopted once at launch.
 public enum VoiceRecordingRecovery {
     public static func isPlayable(_ url: URL) -> Bool {
         guard let file = try? AVAudioFile(forReading: url) else { return false }
@@ -23,12 +23,12 @@ public enum VoiceRecordingRecovery {
 
     /// An extended attribute on a leftover that cannot be played: `<state> <seconds> <launch>`,
     /// state `inserted` (Stop put its words in the note) or `kept` (recovery found it), the time of
-    /// the mark and the launch that wrote it. Neutral name, no product name (FOC-R399).
+    /// the mark and the launch that wrote it. Neutral name, no product name.
     private static let stateAttribute = "voice-leftover-state"
     /// How long an unplayable leftover is kept after its mark.
     static let unplayableGrace: TimeInterval = 86_400
 
-    /// This process's launch; a mark from it never leads to a deletion (FOC-R399).
+    /// This process's launch; a mark from it never leads to a deletion.
     public static let currentLaunch = UUID().uuidString
 
     private struct Mark {
@@ -62,7 +62,7 @@ public enum VoiceRecordingRecovery {
     /// - A file that cannot be played is marked; it is deleted only by a later launch than the
     ///   mark's and once `unplayableGrace` has passed since it. One that can be played by then is
     ///   adopted as above. `onUnreadableRemoved` gets how many deleted files had no words in the
-    ///   note (FOC-R399).
+    /// note.
     /// First it finishes the cleanups a capture could not finish after its note was locked
     /// (`CaptureLockGuard.finishPendingCleanups`). A file whose attaching fails stays for the next
     /// launch. A file that must be deleted but cannot be stays too, and once everything else was

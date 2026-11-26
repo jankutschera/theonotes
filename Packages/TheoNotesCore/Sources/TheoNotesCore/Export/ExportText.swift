@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// The two text rewrites a Markdown / TextBundle export may apply (M8-R1, M8-R4). Everything
+/// The two text rewrites a Markdown / TextBundle export may apply. Everything
 /// else in the note stays byte for byte.
 public enum ExportText {
     /// Drops every tag occurrence the indexer counts (`NoteParser.tagSpans`), the lines that held

@@ -17,7 +17,7 @@ extension CloudSyncStore {
         }
     }
 
-    /// Every entity we hold a base pair for (the device based work on it): what a full refetch must return (CK-R5).
+    /// Every entity we hold a base pair for (the device based work on it): what a full refetch must return.
     func pairedEntities() throws -> [CloudEntityRef] {
         try database.pool.read { db in
             try Row.fetchAll(db, sql: "SELECT entityType, entityId FROM ck_record ORDER BY entityType, entityId")
@@ -25,7 +25,7 @@ extension CloudSyncStore {
         }
     }
 
-    /// A recovery (CK-R21) is under way: a create-only snapshot of a new incarnation is prepared or in flight. The record being
+    /// A recovery is under way: a create-only snapshot of a new incarnation is prepared or in flight. The record being
     /// absent from the cloud is then expected, not a new loss, and the entity must not pause again before the create went out.
     func isRecovering(_ entity: CloudEntityRef) throws -> Bool {
         try database.pool.read { db in
@@ -43,7 +43,7 @@ extension CloudSyncStore {
 
     /// A stored fetched version that turned out unreadable when the receiver opened it (authentication failure, a payload
     /// shape or kind this build does not know): the row moves to quarantine in ONE transaction, with its pinned payload file
-    /// (if it came as an asset) now owned by the quarantine row. The entity is fenced from here on (CK-R5). Only the exact
+    /// (if it came as an asset) now owned by the quarantine row. The entity is fenced from here on. Only the exact
     /// version that was opened moves (record name, incarnation, `ver`, attempt id), and only for the generation it was read in.
     @discardableResult
     func quarantineRemote(_ version: CloudRemoteVersion, reason: String, payloadSize: Int64 = 0, accountGeneration: Int64) throws -> [String] {

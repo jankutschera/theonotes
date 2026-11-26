@@ -5,7 +5,7 @@
 import Foundation
 import PackageDescription
 
-// PUB-R7: the developer compatibility checker `bear-oracle` and its tests live only in the private repository;
+// The developer compatibility checker `bear-oracle` and its tests live only in the private repository;
 // the public export leaves `Sources/bear-oracle` out, so the package declares them only when they are there.
 let hasOracle = FileManager.default.fileExists(atPath: Context.packageDirectory + "/Sources/bear-oracle")
 let oracleTargets: [Target] = hasOracle ? [

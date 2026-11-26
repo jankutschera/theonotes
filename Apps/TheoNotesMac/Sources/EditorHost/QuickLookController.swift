@@ -49,7 +49,7 @@ final class TheoNotesWebView: WKWebView {
     weak var quickLook: QuickLookController?
     /// VoiceOver's "Headings" rotor for the shown note (M7 Task 12).
     var headingsRotor: EditorHeadingsRotor?
-    /// The editor this view belongs to: the right-click menu's "Format" items run through it (M8-R105).
+    /// The editor this view belongs to: the right-click menu's "Format" items run through it.
     weak var formatHost: EditorBridgeController?
     /// Called with the customised menu just before it opens (tests read it; AppKit shows it afterwards).
     var menuCustomized: ((NSMenu) -> Void)?

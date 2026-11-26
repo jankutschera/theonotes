@@ -340,7 +340,7 @@ export function applySettings(view: EditorView, settings: EditorSettings): void 
 
 /**
  * Caret at the end of the note's `index`-th heading (the indexer's order), scrolled to the top.
- * The folds that contain the heading open first; the heading's own fold stays as it is (M6-R28).
+ * The folds that contain the heading open first; the heading's own fold stays as it is.
  */
 export function scrollToHeading(view: EditorView, index: number): boolean {
   const heading = headingsInDocument(view.state.doc.toString())[index];

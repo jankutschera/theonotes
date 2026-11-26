@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// FOC-R361, FOC-R362: a dev-identity build opens its own library (`Theo Notes Dev`) and refuses the
+/// A dev-identity build opens its own library (`Theo Notes Dev`) and refuses the
 /// production library (`Theo Notes`, and the pre-rename `Baerchen` folder) however it is named. "Real"
 /// is a temporary Application Support folder here: no test touches the real one.
 #if os(macOS)
@@ -59,7 +59,7 @@ import Testing
     }
 
     @Test func aDevLibraryThatExistsIsOpenedNotCreated() throws {
-        // REN-R12 for the dev library: only a fresh start may create it; once it was seen, a vanished
+        // for the dev library: only a fresh start may create it; once it was seen, a vanished
         // folder fails the launch instead of silently starting an empty library.
         let fixture = try Fixture()
         defer { fixture.remove() }

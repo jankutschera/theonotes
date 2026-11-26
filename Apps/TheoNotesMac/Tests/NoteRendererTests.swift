@@ -153,7 +153,7 @@ import WebKit
         #expect(first.point.y > second.point.y)
     }
 
-    /// The probe of M8-R7: does WebKit keep an in-note heading link as a PDF link annotation?
+    /// The probe of does WebKit keep an in-note heading link as a PDF link annotation?
     @Test func pdfKeepsInternalHeadingLinks() async throws {
         var lines = ["Links", "", "# First", "", "Go to [[/Second]] now."]
         for n in 1...40 { lines += ["", "Spacer paragraph \(n) pushes the second heading further down the page."] }

@@ -6,7 +6,7 @@ import Testing
 @testable import TheoNotesCore
 
 /// Task 15: the Mac and iOS apps must be able to tell a person that the recovery words they just saved belong to a setup
-/// that lost the race against another device (CK-R14, CK-R89, CK-R140).
+/// that lost the race against another device.
 @Suite(.serialized) struct CloudLostSetupRaceTests {
     private func raceLoser(_ cloud: FakeCloudKitAccount) async throws -> (winner: CoordDevice, loser: CoordDevice) {
         let winner = try CoordDevice("winner", cloud: cloud, keychain: InMemoryCloudKeychain())

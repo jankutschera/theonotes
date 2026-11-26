@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// M8 Task 2: the text rewrites of an export (M8-R1, M8-R4) and plain text (M8-R14).
+/// M8 Task 2: the text rewrites of an export and plain text.
 @Suite struct ExportTextTests {
     private func slice(_ text: String, _ range: Range<Int>) -> String {
         String(decoding: Array(text.utf8)[range], as: UTF8.self)

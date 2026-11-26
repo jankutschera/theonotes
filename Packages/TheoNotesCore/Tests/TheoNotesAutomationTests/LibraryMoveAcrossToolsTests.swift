@@ -7,7 +7,7 @@ import Testing
 @testable import TheoNotesAutomation
 
 #if os(macOS)
-/// Fix round 1 (REN-R2, REN-R7): a long-running CLI / MCP process keeps one library object. When
+/// Fix round 1: a long-running CLI / MCP process keeps one library object. When
 /// the app moves the library folder from `Baerchen` to `Theo Notes` underneath it, the next call
 /// must open the moved library, never an empty one at the old path.
 @Suite struct LibraryMoveAcrossToolsTests {
@@ -62,7 +62,7 @@ import Testing
         #expect(exists(production.root.appendingPathComponent("Baerchen.sqlite")))
     }
 
-    /// REN-R13: the new folder wins even while the old one still exists; the old library object is
+    /// The new folder wins even while the old one still exists; the old library object is
     /// dropped, not closed (a request still using it finishes), and one request reopens once.
     @Test func theNewFolderIsPreferredAndTheOldLibraryIsNotClosed() throws {
         let support = try makeSupport()

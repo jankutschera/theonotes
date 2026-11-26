@@ -230,7 +230,7 @@ private func paramsOf(_ app: FakeApp, method: String) -> OpenParams? {
         #expect(negative.exit == 64 && negative.err.contains("Selection offset must be non-negative"))
     }
 
-    // MARK: launching (M5-R17)
+    // MARK: launching
 
     @Test func theDefaultLibraryLaunchesTheAppWithTheResolvedNoteId() throws {
         let lib = try ShortLibrary([("# Mars", false)])
@@ -239,7 +239,7 @@ private func paramsOf(_ app: FakeApp, method: String) -> OpenParams? {
         var context = AutomationContext.fixed(TestLibrary.epoch)
         context.production = lib.paths
         context.launcher = { url in launched.withLock { $0.append(url) } }
-        // By title: the URL carries the id the library resolved, never the title (M5-R190).
+        // By title: the URL carries the id the library resolved, never the title.
         let result = run(
             ["baerchen", "app", "open", "--title", "mars", "--header", "Phobos+Deimos&x", "--edit", "--new-window", "--float"],
             context: context)
@@ -352,7 +352,7 @@ private func paramsOf(_ app: FakeApp, method: String) -> OpenParams? {
         app.stop()
     }
 
-    /// M9M-R62: a locked app answers `app_locked`; the CLI reports that code, not `internal`.
+    /// A locked app answers `app_locked`; the CLI reports that code, not `internal`.
     @Test func aLockedAppIsReportedAsAppLockedForOpenAndGetSelection() throws {
         let lib = try ShortLibrary([("# Mars", false)])
         let app = try FakeApp(paths: lib.paths) { request in
@@ -532,7 +532,7 @@ private func paramsOf(_ app: FakeApp, method: String) -> OpenParams? {
         #expect(launched.withLock { $0 }.map(\.absoluteString) == ["theonotes://x-callback-url/open-note?id=\(id)&edit=yes"])
     }
 
-    /// M5-R190 with a real scope (Task 11 merged after Task 12 was written): a scoped server never
+    /// with a real scope: a scoped server never
     /// cold-launches a note outside its scope, by id or by title.
     @Test func aScopedServerNeverColdLaunchesAnOutOfScopeNote() async throws {
         let lib = try ShortLibrary([("# Work\n#work", false), ("# Home\n#home", false)])
@@ -734,7 +734,7 @@ final class TricklingServer: @unchecked Sendable {
 }
 
 
-/// Failures that say nothing about whether an app runs are never "not running" (ruling M5-R204).
+/// Failures that say nothing about whether an app runs are never "not running".
 @Suite struct AppSocketIndeterminateTests {
     /// A socket file nobody listens on, with the given mode.
     private func leaveSocket(_ lib: ShortLibrary, mode: mode_t = 0o600) throws -> String {

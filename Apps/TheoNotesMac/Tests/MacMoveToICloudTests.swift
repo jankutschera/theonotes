@@ -9,7 +9,7 @@ import Security
 import Testing
 @testable import TheoNotes
 
-/// The real glue of "Move This Library to iCloud" on the Mac (MOVE-R2, MOVE-R3): `MacSyncController.leaveForICloud` with a real
+/// The real glue of "Move This Library to iCloud" on the Mac: `MacSyncController.leaveForICloud` with a real
 /// Keychain item in a namespace of its own, a real `HTTPSyncTransport` whose key-bundle request a URL stub answers, and a real
 /// `SyncEngine` on an in-memory server. Nothing reaches the network or the real library.
 @MainActor @Suite(.serialized) struct MacMoveToICloudTests {

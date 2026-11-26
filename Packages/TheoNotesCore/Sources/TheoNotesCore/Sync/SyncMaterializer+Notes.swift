@@ -63,7 +63,7 @@ extension SyncMaterializer {
             return try commitNoteTransaction(entity, remote: remote, old: old, ancestor: ancestor,
                 rejectedMutationID: rejectedMutationID, downloads: downloads, noteAccess: noteAccess)
         } catch SyncApplyError.waitingForCapture {
-            // A voice capture still holds text in this note's journal (FOC-R303). The transaction
+            // A voice capture still holds text in this note's journal. The transaction
             // rolled back and its staged files were discarded: this note waits, and the pass goes
             // on with the other notes and the uploads.
             return .waitingForDependencies
@@ -240,7 +240,7 @@ extension SyncMaterializer {
 
     func writeNote(_ payload: SyncNotePayload, downloads: [DownloadedAttachment], copying: Bool, noteKey: SymmetricKey? = nil,
                    files: AttachmentFiles, staged: inout [AttachmentFiles.Staged], in db: Database) throws {
-        // A locked note stops its voice captures before anything is written (FOC-R199 addendum 3).
+        // A locked note stops its voice captures before anything is written.
         if payload.isLocked {
             do { try CaptureLockGuard.noteWillLock(payload.id) } catch NotePrivacyError.pendingEdits {
                 throw SyncApplyError.waitingForCapture

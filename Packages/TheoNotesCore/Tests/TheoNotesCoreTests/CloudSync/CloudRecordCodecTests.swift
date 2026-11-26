@@ -309,7 +309,7 @@ enum CloudRecordFixture {
     static let specURL = CloudRecordFixture.url.deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         .appendingPathComponent("docs/superpowers/specs/2026-10-28-cloudkit-record-v1.md")
 
-    /// The design record is private (PUB-R1): a public checkout has no spec to compare with.
+    /// The design record is private: a public checkout has no spec to compare with.
     @Test(.enabled(if: FileManager.default.fileExists(atPath: specURL.path), "needs the private design record"))
     func specDocumentListsEveryFieldTheCodecAllows() throws {
         let spec = try String(contentsOf: Self.specURL, encoding: .utf8)

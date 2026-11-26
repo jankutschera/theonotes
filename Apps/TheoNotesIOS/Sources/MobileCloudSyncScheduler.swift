@@ -5,7 +5,7 @@ import TheoNotesCore
 import Foundation
 import UIKit
 
-/// When the iCloud sync runs a cycle on the iPhone and iPad (Task 16, CK-R175). Push is never the only trigger (Gate G0 A4 measured a
+/// When the iCloud sync runs a cycle on the iPhone and iPad. Push is never the only trigger (Gate G0 A4 measured a
 /// silent push at 15 s, but the system may delay or drop one): the app comes to the front, a local edit has settled
 /// (`SyncQueue.observePending`, debounced), a 5-minute timer while the app runs, a retry the coordinator asks for, and, outside this
 /// class, the launch fetch (`MobileCloudSyncController.start`), the silent push and the `BGAppRefreshTask` under the existing identifier.

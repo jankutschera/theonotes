@@ -69,7 +69,7 @@ struct CloudPolicyWorld {
         #expect(await w.fence.isGated)
         #expect(try w.store.isAccountFenced())
         await #expect(throws: CloudSyncError.fenced) { try await w.fence.run { _ in 1 } }
-        // even a send that bypasses the fence ends at the fenced gateway; its result is refused by the durable fence (CK-R171)
+        // even a send that bypasses the fence ends at the fenced gateway; its result is refused by the durable fence
         try await w.device.submit([CloudSave(attemptId: "a2", accountGeneration: 1, record: entity("n2"))])
         #expect(try w.store.sendResult(attemptId: "a2") == nil)
         await #expect(throws: CloudSyncError.fenced) { try await w.device.fetchChanges(into: RecordingSink()) }
@@ -131,7 +131,7 @@ struct CloudPolicyWorld {
         await w.device.deliverLateCompletions()
         let stale = try w.store.generation() - 1
         #expect(w.fence.isCurrent(stale) == false)
-        // CK-R171: the result of the old generation is refused while the fence is up, so nothing is recorded for it
+        // The result of the old generation is refused while the fence is up, so nothing is recorded for it
         #expect(try w.store.sendResult(attemptId: "late") == nil)
 
         await w.device.switchAccount(to: w.one)

@@ -37,7 +37,7 @@ final class EvictingSink: CloudChangeSink, @unchecked Sendable {
 
 let bigText = String(repeating: "lorem ipsum dolor sit amet ", count: 12_000)   // about 320 KB: the sealed payload travels as an asset
 
-/// Unreadable records, assets pinned before the token advances, the fence (CK-R5).
+/// Unreadable records, assets pinned before the token advances, the fence.
 @Suite struct CloudQuarantineTests {
     struct Lab {
         let world: PublisherWorld

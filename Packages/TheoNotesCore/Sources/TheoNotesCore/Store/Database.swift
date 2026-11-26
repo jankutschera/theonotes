@@ -14,7 +14,7 @@ public final class AppDatabase: Sendable {
         XCallbackReceipts.removeExpired(in: pool)
     }
 
-    /// Library open (FOC-R305): removes snapshot rows that break "sealed if and only if locked",
+    /// Library open: removes snapshot rows that break "sealed if and only if locked",
     /// before the first backup can trip over them. A failure only leaves them for the next open.
     private static func repairSnapshotHistory(in pool: any DatabaseWriter) {
         do {
@@ -26,7 +26,7 @@ public final class AppDatabase: Sendable {
     }
 
     /// Opens a library that already exists and matches this build, without creating or migrating
-    /// anything (the CLI and MCP server never touch the schema; ruling M5-R4).
+    /// anything (the CLI and MCP server never touch the schema).
     public static func openExisting(path: URL) throws -> AppDatabase {
         guard FileManager.default.fileExists(atPath: path.path) else {
             throw LibraryOpenError.missing(path: path.path)

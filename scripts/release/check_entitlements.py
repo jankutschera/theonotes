@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Static check of the signed entitlements and hardened-runtime flag of a built Mac bundle (REL-R30 ... R32).
+"""Static check of the signed entitlements and hardened-runtime flag of a built Mac bundle.
 
     python3 -I scripts/release/check_entitlements.py <path>/Theo\\ Notes.app  [--allow-get-task-allow]
                                                       [--icloud [--container iCloud.com.example.app]]
@@ -11,7 +11,7 @@ Reads only (`codesign -d`); nothing inside the bundle is executed. The expected 
 not sandboxed) and docs/release/sandbox-audit.md:
 
   app    keychain access group, App Group, Apple events, audio input. Never the App Sandbox (that would move the
-         library and break the CLI, REL-R31), never a hardened-runtime exception (no JIT, no unsigned memory, no
+         library and break the CLI), never a hardened-runtime exception (no JIT, no unsigned memory, no
          disabled library validation), never get-task-allow.
   appex  App Sandbox + App Group + user-selected read-only files, nothing else.
   helper none. A bare tool must not claim a restricted entitlement: the Mac has no profile for it.
@@ -62,7 +62,7 @@ ICLOUD_CONTAINERS = "com.apple.developer.icloud-container-identifiers"
 ICLOUD_SERVICES = "com.apple.developer.icloud-services"
 ICLOUD_ENVIRONMENT = "com.apple.developer.icloud-container-environment"
 APS_ENVIRONMENT = "aps-environment"
-# macOS names the push entitlement differently (CK-R150, measured in rehearsal 2, REN2-R58): a Mac signature and a Mac profile
+# macOS names the push entitlement differently: a Mac signature and a Mac profile
 # carry com.apple.developer.aps-environment, and Xcode drops the iOS name from a Mac signature. With --icloud both count as APS_ENVIRONMENT.
 APS_ENVIRONMENT_MACOS = "com.apple.developer.aps-environment"
 ICLOUD_REQUIRED = {ICLOUD_CONTAINERS, ICLOUD_SERVICES, ICLOUD_ENVIRONMENT, APS_ENVIRONMENT}

@@ -35,7 +35,7 @@ struct CloudBlobPlan: Equatable, Sendable {
 }
 
 /// One row of `ck_blob_part`: what this device knows about a part in the cloud. `uploaded`: our save of it was acknowledged,
-/// not yet confirmed by a metadata read. `verified`: the cloud showed exactly this metadata at `verifiedAt` (trusted for 24 h, CK-R8).
+/// not yet confirmed by a metadata read. `verified`: the cloud showed exactly this metadata at `verifiedAt` (trusted for 24 h).
 struct CloudBlobPartRow: Equatable, Sendable {
     enum State: String, Sendable { case uploaded, verified }
     var hash: String
@@ -48,7 +48,7 @@ struct CloudBlobPartRow: Equatable, Sendable {
     var verifiedAt: Date?
 }
 
-/// Every write re-checks the account generation inside its own transaction (CK-R98): a transfer that outlives an account change
+/// Every write re-checks the account generation inside its own transaction: a transfer that outlives an account change
 /// writes nothing.
 struct CloudBlobPartStore: Sendable {
     let database: AppDatabase
@@ -168,7 +168,7 @@ struct CloudBlobCache: Sendable {
 
     /// Moves a fully verified assembly into the cache and returns the pinned location. An existing pin is kept only if it
     /// verifies itself (size and SHA-256); a corrupt or foreign file there is replaced by an atomic rename of ours over it,
-    /// then the directory is synced (CK-R117).
+    /// then the directory is synced.
     func pin(_ verified: URL, hash: String, size: Int64) throws -> URL {
         try SyncWire.validateHash(hash)
         try prepareDirectories()

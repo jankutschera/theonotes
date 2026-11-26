@@ -25,7 +25,7 @@ import Testing
         #expect(MobileIdentity.syncRefreshIdentifier == "com.truebrewbirdie.theonotes.dev.ios.sync-refresh")
         #expect(MobileIdentity.syncConnectivityQueueLabel == "com.truebrewbirdie.theonotes.dev.sync-connectivity")
         #expect(MobileIdentity.encryptedBlobsSessionIdentifier == "com.truebrewbirdie.theonotes.dev.ios.encrypted-blobs.v1")
-        // The private-server sync service of the iPhone is the shared one: it already follows AppIdentity (REN2-R51).
+        // The private-server sync service of the iPhone is the shared one: it already follows AppIdentity.
         #expect(AppIdentity.syncKeychainService == "com.truebrewbirdie.theonotes.sync")
     }
 
@@ -73,7 +73,7 @@ import Testing
 
     @Test func theBundleAndTheInfoPlistFollowTheNewRoot() throws {
         // The test host is the app: its bundle id, the task identifier it may submit and the link name all come from build settings
-        // (THEONOTES_IOS_BUNDLE_ROOT in project.yml, REN2-R70), and the Swift names above must equal them.
+        // (THEONOTES_IOS_BUNDLE_ROOT in project.yml), and the Swift names above must equal them.
         let info = try #require(Bundle.main.infoDictionary)
         #expect(Bundle.main.bundleIdentifier == MobileIdentity.bundleIdentifier)
         #expect(info["BGTaskSchedulerPermittedIdentifiers"] as? [String] == [MobileSyncScheduler.refreshIdentifier])
@@ -95,7 +95,7 @@ import Testing
     }
 
     @Test func theBackupTypesAndTheDatabaseNameAreUnchanged() throws {
-        // REN2-R50 / REN2-R37: the database stays Baerchen.sqlite and the theme ids stay; exports the person chooses are
+        // The database stays Baerchen.sqlite and the theme ids stay; exports the person chooses are
         // .theonotes-backup, the internal backups keep the legacy type, and both restore (the iOS picker takes any file). Nothing in
         // this task touches them; this pins that it stayed so.
         #expect(LegacyNames.databaseFile == "Baerchen.sqlite")

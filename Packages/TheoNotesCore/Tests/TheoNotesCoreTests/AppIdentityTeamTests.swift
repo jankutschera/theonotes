@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// REL-R20 ... REL-R29: the Apple team is one parameter (`THEONOTES_TEAM_ID`), read at runtime from the
+/// the Apple team is one parameter (`THEONOTES_TEAM_ID`), read at runtime from the
 /// signed binary or the Info.plist instead of a literal, so moving to the publishing team changes one line.
 /// The values pinned for today's team stay in `AppIdentityTests`.
 @Suite struct AppIdentityTeamTests {

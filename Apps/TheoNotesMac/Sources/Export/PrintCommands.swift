@@ -5,7 +5,7 @@ import AppKit
 import TheoNotesCore
 import SwiftUI
 
-/// Which note File ▸ Print… prints (M8-R7): the note in the focused editor, else the one selected
+/// Which note File ▸ Print… prints: the note in the focused editor, else the one selected
 /// note. A locked note, or a selection of none or several, prints nothing (the item is disabled).
 enum PrintTarget {
     struct Note: Equatable {

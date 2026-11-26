@@ -7,7 +7,7 @@ import Testing
 @testable import TheoNotesCore
 
 // The gateway's event handling without CloudKit: the engine is a script (`ScriptedEngine`), the events are plain values, the base record
-// comes from a captured archive (`LiveGatewayFixture`). Fix round 1 of Task 14 (CK-R169): stale callbacks, incomplete fetches, engines
+// comes from a captured archive (`LiveGatewayFixture`). Fix round 1 of Task 14: stale callbacks, incomplete fetches, engines
 // reused after a failed final commit, outcomes lost after a store failure, the subscription.
 
 final class ScriptedEngine: SyncEngineHandle, @unchecked Sendable {
@@ -42,7 +42,7 @@ final class RefusingStore: CloudGatewayStore, @unchecked Sendable {
     func zoneState() throws -> CloudZoneState { try inner.zoneState() }
     func setZoneState(_ state: CloudZoneState) throws { try inner.setZoneState(state) }
     private var _revoke = false
-    /// The store answers like the SQLite one does while the durable fence is up (CK-R99, CK-R171).
+    /// The store answers like the SQLite one does while the durable fence is up.
     var revoke: Bool { get { lock.withLock { _revoke } } set { lock.withLock { _revoke = newValue } } }
     func recordSendResult(attemptId: String, accountGeneration: Int64, outcome: CloudSaveOutcome) throws {
         if revoke { throw CloudSyncStoreError.accountFenced }
@@ -178,7 +178,7 @@ final class Observations: @unchecked Sendable {
         #expect(seen["newAttemptResultDuringStale"] == "false", "the old engine's result completed the new account's attempt")
         #expect(seen["queuedDuringStale"] == "1", "the stale event changed the queue")
         #expect(seen["cacheDuringStale"] == "none", "the old account's archive entered the base cache")
-        // CK-R45: the late result is still recorded, for the attempt it answers and with that attempt's generation
+        // The late result is still recorded, for the attempt it answers and with that attempt's generation
         if case .saved? = rig.outcome("attempt-1") {} else { Issue.record("the late result of attempt-1 must be recorded, got \(String(describing: rig.outcome("attempt-1")))") }
     }
 
@@ -464,7 +464,7 @@ final class Observations: @unchecked Sendable {
         }
         _ = try await rig.gateway.prepare()
         store.refuse = true
-        // the caller learns that the outcome is not durable, so it marks its rows unknown (CK-R71); the restart path resolves them
+        // the caller learns that the outcome is not durable, so it marks its rows unknown; the restart path resolves them
         await #expect(throws: CloudSyncError.failed(code: "outcomeNotStored")) { try await rig.gateway.submit([rig.save("a")]) }
         #expect(store.inner.outcome(for: "a") == nil)
         #expect(await rig.gateway.queuedSaveCount() == 1, "the entry was removed before its result was stored")

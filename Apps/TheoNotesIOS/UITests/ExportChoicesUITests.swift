@@ -196,7 +196,7 @@ import XCTest
 
     // MARK: Menus
 
-    /// A9 + A10 (and IOS-CLUTTER-R11): the choices at the end of Export, Copy As beside it with the one Keep Tags switch.
+    /// A9 + A10: the choices at the end of Export, Copy As beside it with the one Keep Tags switch.
     func testExportAndCopyAsMenus() {
         let app = launch()
         createNote("Menu fixture\nBody #tag", app)

@@ -322,7 +322,7 @@ const findTheme = EditorView.theme({
   ".cm-bc-find-button-prev, .cm-bc-find-button-next": { padding: "2px 8px" },
   // Matches: like the note-list search highlight (search-highlight.ts); the selected one stronger.
   ".cm-searchMatch": { backgroundColor: "var(--bc-color-search-match)", borderRadius: "2px" },
-  // M7-R10: plus a ring in the accent, so the selected match differs by more than its tint.
+  // Plus a ring in the accent, so the selected match differs by more than its tint.
   ".cm-searchMatch.cm-searchMatch-selected": {
     backgroundColor: "var(--bc-color-search-match-current)",
     boxShadow: "inset 0 0 0 1.5px var(--bc-color-accent)",

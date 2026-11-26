@@ -5,7 +5,7 @@ import TheoNotesCore
 import SwiftUI
 
 /// The shell colours of the resolved theme (`shell.*` tokens), as the note list, the editor column, banners,
-/// Quick Open and the Info panel draw them (M7-R18). Built from `ResolvedAppearance` (the one place themes are
+/// Quick Open and the Info panel draw them. Built from `ResolvedAppearance` (the one place themes are
 /// resolved), never from a theme id.
 ///
 /// With Reduce Transparency every colour is opaque: a tint is composited over `background`, and a background
@@ -25,7 +25,7 @@ struct ShellPalette: Equatable, Sendable {
     var separator: Color { color(.separator) }
     var searchHighlight: Color { color(.searchHighlight) }
     /// Text and icons on an opaque `accent` fill. No view uses it: selected rows draw the system's selection
-    /// colours (M7-R26) and Quick Open the asset `OnAccentColor`; it stays a checked schema token.
+    /// colours and Quick Open the asset `OnAccentColor`; it stays a checked schema token.
     var onAccent: Color { color(.onAccent) }
 
     /// The sidebar draws the theme background instead of the system glass: under Reduce Transparency (glass

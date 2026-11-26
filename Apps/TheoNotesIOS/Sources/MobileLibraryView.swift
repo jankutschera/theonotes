@@ -217,7 +217,7 @@ struct MobileLibraryView: View {
     @State private var lifecycleSuspended = false
     @State private var sidebarFrame: CGRect = .null
     @State private var noteListFrame: CGRect = .null
-    /// The on-screen keyboard in window coordinates and the window's height, from `keyboardWillChangeFrame` (IOS-CLUTTER-R8).
+    /// The on-screen keyboard in window coordinates and the window's height, from `keyboardWillChangeFrame`.
     @State private var keyboardInWindow: (frame: CGRect, windowHeight: CGFloat)?
     @State private var editor: MobileEditor
     @State private var pendingNewNoteFocus: String?
@@ -496,7 +496,7 @@ struct MobileLibraryView: View {
                     .accessibilityIdentifier("insert-file-keyboard-command")
                     .keyboardShortcut("v", modifiers: [.command, .shift])
                     .disabled(searchFocused || !sceneRegistered || !formatCommandEnabled(.insertFile) || attachmentBusy || library.appLocked || library.sceneOperationPending)
-                // IOS-CLUTTER-R4, R6, R8: key commands registered once here, whatever columns are on screen.
+                // Key commands registered once here, whatever columns are on screen.
                 Group {
                     Button("Find") {
                         MobileShortcutRouter.find(responder: keyboardResponder, editorView: editor.webView,
@@ -2123,7 +2123,7 @@ struct MobileLibraryView: View {
                     }
                     editor.linkRequest = nil
                 }
-                // IOS-DESIGN-R12: no empty link; the first empty field takes the keyboard.
+                // No empty link; the first empty field takes the keyboard.
                 .buttonStyle(.glassProminent)
                 .disabled(linkURL.trimmingCharacters(in: .whitespaces).isEmpty)
             }) {
@@ -2147,7 +2147,7 @@ struct MobileLibraryView: View {
             if let value { selectScope(value) }
         })) {
             if let workspace = sceneNavigation.workspace {
-                // IOS-CLUTTER-R7: leaving the workspace is "All Notes" in the Workspaces menu only.
+                // Leaving the workspace is "All Notes" in the Workspaces menu only.
                 Section {
                     Label(workspace.path, systemImage: "rectangle.3.group").font(.headline)
                 } header: { Text("Workspace") }
@@ -2200,7 +2200,7 @@ struct MobileLibraryView: View {
                 scopeRow("Trash", "trash", .trash, sceneObservation.snapshot.counts.trash)
             }
         }
-        // IOS-TOOLBAR-R6: the floating Library Options button never sits on the last row.
+        // The floating Library Options button never sits on the last row.
         .contentMargins(.bottom, Self.floatingBarClearance, for: .scrollContent)
         .navigationTitle("Theo Notes")
         .toolbar {
@@ -2241,7 +2241,7 @@ struct MobileLibraryView: View {
 
     /// Height of a floating bottom-bar pill (about 50 points) plus a margin.
     static let floatingBarClearance: CGFloat = 64
-    /// IOS-CLUTTER-R15: one label form in Note Actions and in the table cell dialog.
+    /// One label form in Note Actions and in the table cell dialog.
     static let tableCopyFormats: [(format: String, label: String)] = [
         ("markdown", "Copy Table as Markdown"), ("html", "Copy Table as HTML"), ("csv", "Copy Table as CSV"),
     ]
@@ -2373,7 +2373,7 @@ struct MobileLibraryView: View {
             }
         }
         .listStyle(.plain)
-        // IOS-TOOLBAR-R5: the floating search and bottom-bar pill never covers the last row.
+        // The floating search and bottom-bar pill never covers the last row.
         .contentMargins(.bottom, Self.floatingBarClearance, for: .scrollContent)
         .overlay {
             if sceneObservation.items.isEmpty {
@@ -2452,7 +2452,7 @@ struct MobileLibraryView: View {
             ToolbarItem(placement: .bottomBar) {
                 if selecting {
                     Menu("\(selectedNotes.count) Selected", systemImage: "ellipsis.circle") {
-                        // IOS-TOOLBAR-R7: a symbol on every entry, so the labels line up.
+                        // A symbol on every entry, so the labels line up.
                         Button("Select All", systemImage: "checkmark.square") { selectedNotes = Set(sceneObservation.items.map(\.id)) }
                         Menu("Export Selected", systemImage: "square.and.arrow.up") {
                             ForEach(MobileExportFormat.allCases, id: \.self) { format in
@@ -2461,9 +2461,9 @@ struct MobileLibraryView: View {
                             MobileExportChoices(library: library)
                         }.disabled(selectedNotes.isEmpty || exportBusy)
                         Button("Copy Links to Notes", systemImage: "link") { UIPasteboard.general.string = selectedNotes.sorted().map { MobileShortcutCapture.noteLink(id: $0).absoluteString }.joined(separator: "\n") }
-                        // IOS-CLUTTER-R5: only the entries that do something for this selection and scope.
+                        // Only the entries that do something for this selection and scope.
                         let pin = selectionNeedsPin
-                        // IOS-DESIGN-R14: no Pin in the Trash; Archive's way back reads Unarchive.
+                        // No Pin in the Trash; Archive's way back reads Unarchive.
                         if sceneNavigation.scope != .trash {
                             Button(pin ? "Pin" : "Unpin", systemImage: pin ? "pin" : "pin.slash") {
                                 bulk { try library.store.setPinned($0, pinned: pin, inTag: selectedTag) }
@@ -2531,7 +2531,7 @@ struct MobileLibraryView: View {
                 .modifier(PadKeyboardHandover { Task { await Task.yield(); refreshEditorKeyboardOwnership() } })
                 .privacySensitive()
                 .overlay { if !editor.ready { ProgressView("Opening note…") } }
-                // IOS-TOOLBAR-R8: one background colour behind the status bar, the page and the bar's edges.
+                // One background colour behind the status bar, the page and the bar's edges.
                 .background { (editor.pageBackground ?? Color(.systemBackground)).ignoresSafeArea() }
                 .navigationTitle("")
                 .navigationBarTitleDisplayMode(.inline)
@@ -2544,9 +2544,9 @@ struct MobileLibraryView: View {
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         Menu {
-                            // IOS-CLUTTER-R8: side by side (regular width) the list's bottom bar is their one place; with the list column hidden
+                            // Side by side (regular width) the list's bottom bar is their one place; with the list column hidden
                             // it is off screen, and while the editor holds the keyboard on iPad the on-screen keyboard covers it.
-                            // IOS-NOTE-ACTIONS-R1: at most about ten top-level rows in sections; everything else in More.
+                            // At most about ten top-level rows in sections; everything else in More.
                             // Not in a Section: SwiftUI drops the accessibility identifiers of menu items inside one (probe 2026-11-16);
                             // the following Section still draws the divider.
                             if horizontalSizeClass == .compact || visibility == .detailOnly || listBarCovered {
@@ -2584,7 +2584,7 @@ struct MobileLibraryView: View {
                                     if let id = sceneNavigation.selectedID { UIPasteboard.general.string = MobileShortcutCapture.noteLink(id: id).absoluteString }
                                 }.keyboardShortcut("l", modifiers: [.command, .shift, .option])
                                 if editor.canShare {
-                                    // A10: the selected text, else the whole note. Keep Tags is the Settings switch only (IOS-CLUTTER-R11).
+                                    // A10: the selected text, else the whole note. Keep Tags is the Settings switch only.
                                     Menu("Copy As", systemImage: "doc.on.clipboard") {
                                         ForEach(MobileCopyAs.allCases, id: \.self) { kind in
                                             Button(kind.title) { copyAs(kind.format) }
@@ -2604,13 +2604,13 @@ struct MobileLibraryView: View {
                             Section {
                                 Button("Find in Note", systemImage: "magnifyingglass") { editor.command(.find) }
                             }
-                            // IOS-NOTE-ACTIONS-R2: Copy Identifier and Find and Replace in More, so iPhone 17 shows More without scrolling.
+                            // Copy Identifier and Find and Replace in More, so iPhone 17 shows More without scrolling.
                             Menu("More", systemImage: "ellipsis") {
                                 Button("Copy Identifier", systemImage: "number") { UIPasteboard.general.string = sceneNavigation.selectedID }.keyboardShortcut("i", modifiers: [.command, .shift, .option])
                                 Button("Find and Replace", systemImage: "text.magnifyingglass") { editor.command(.findAndReplace) }.disabled(!editor.editable)
                                 Button("Go Back", systemImage: "arrow.uturn.backward") { library.perform { try navigate(back: true) } }.disabled(!sceneNavigation.history.canGoBack).keyboardShortcut(.leftArrow, modifiers: [.command, .option])
                                 Button("Go Forward", systemImage: "arrow.uturn.forward") { library.perform { try navigate(back: false) } }.disabled(!sceneNavigation.history.canGoForward).keyboardShortcut(.rightArrow, modifiers: [.command, .option])
-                                // IOS-CLUTTER-R1..R3, R9: attachments, the camera and Dismiss Keyboard live on the bar;
+                                // Attachments, the camera and Dismiss Keyboard live on the bar;
                                 // Recovered Sketches in Library Options.
                                 Button("Paste as Code", systemImage: "curlybraces") {
                                     if let text = UIPasteboard.general.string { editor.pasteAsCode(text) }
@@ -2693,11 +2693,11 @@ struct MobileLibraryView: View {
     }
 
     private var formattingBar: some View {
-        // IOS-TOOLBAR-R3: eight cells share the width evenly (no scrolling), so a 375-point phone shows the last one whole.
+        // Eight cells share the width evenly (no scrolling), so a 375-point phone shows the last one whole.
         HStack(spacing: 0) {
-            // IOS-TOOLBAR-R2 (Jan, 2026-11-10): one menu holds every text style; no separate Bold, Italic or Headings buttons.
-            // IOS-TOOLBAR-R4: headings in a submenu, a symbol on every top-level entry, states as menu checkmarks.
-            // IOS-TOOLBAR-R9: six top-level rows, so the whole menu fits above the keyboard of a 375-point phone.
+            // (Jan, 2026-11-10): one menu holds every text style; no separate Bold, Italic or Headings buttons.
+            // Headings in a submenu, a symbol on every top-level entry, states as menu checkmarks.
+            // Six top-level rows, so the whole menu fits above the keyboard of a 375-point phone.
             Menu {
                 formatToggle("Bold", "bold", .bold)
                 formatToggle("Italic", "italic", .italic)
@@ -2750,10 +2750,10 @@ struct MobileLibraryView: View {
                     formatMenuButton("Horizontal Rule", "minus", .horizontalRule)
                 } label: { Label("Insert", systemImage: "plus.square") }
             } label: { barIcon("textformat").accessibilityLabel("Formatting") }
-                // IOS-DESIGN-R5: one reading order whichever way the menu opens (Bold and Heading 1 first).
+                // One reading order whichever way the menu opens (Bold and Heading 1 first).
                 .menuOrder(.fixed)
                 .accessibilityIdentifier("toolbar-format").disabled(!editor.editable)
-            // IOS-TOOLBAR (2026-11-08): attachments and the camera live on the bar only (IOS-CLUTTER-R1, R2).
+            // IOS-TOOLBAR (2026-11-08): attachments and the camera live on the bar only.
             Menu {
                 Button("Photo Library", systemImage: "photo.on.rectangle") { beginAttachment(.photos) }
                     .accessibilityIdentifier("toolbar-attach-photos").disabled(attachmentDisabled(.photos))
@@ -3111,7 +3111,7 @@ struct MobileLibraryView: View {
         } else if request.edit { editor.focusForCallback() }
     }
 
-    /// IOS-CLUTTER-R8: the docked on-screen keyboard covers the list's bottom bar. A hardware keyboard's frame lies below the
+    /// The docked on-screen keyboard covers the list's bottom bar. A hardware keyboard's frame lies below the
     /// window's edge or is only the shortcut bar's height; the floating and split keyboards do not reach the bar. Measured
     /// against the window, not the list column: keyboard avoidance shrinks the column to end at the keyboard's top.
     private var listBarCovered: Bool {
@@ -3477,7 +3477,7 @@ private struct PadKeyboardHandover: ViewModifier {
     }
 }
 
-/// IOS-DESIGN-R12: the Link sheet's fields. The focus state lives inside the sheet's own view: one held by the
+/// The Link sheet's fields. The focus state lives inside the sheet's own view: one held by the
 /// presenting view does not reach a sheet, so the first version opened with no field focused (round 2 screenshot).
 private struct MobileLinkFields: View {
     @Binding var title: String

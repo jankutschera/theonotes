@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# Tests for scripts/cutover-safety.sh (REN2-R63, R64) in a temp directory: a fake library, a fake old app, a fake old App Group.
+# Tests for scripts/cutover-safety.sh in a temp directory: a fake library, a fake old app, a fake old App Group.
 # Nothing real is read or written; lsregister and lsof are stubs.
 set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -113,7 +113,7 @@ if "$script" restore-old-app > "$work/out" 2>&1; then fail "replaced a foreign b
 grep -q "unexpected bundle id" "$work/out" || fail "no message for a foreign bundle"
 ok "restore-old-app leaves a foreign bundle alone"
 
-# 8. preflight (REN2-R67): static gate on the old app's profile expiry and the zip. The `security` tool is a stub that prints a profile.
+# 8. preflight: static gate on the old app's profile expiry and the zip. The `security` tool is a stub that prints a profile.
 make_app "$THEO_APPLICATIONS/Theo Notes.app" com.truebrewbirdie.baerchen "old binary"
 echo profile > "$THEO_APPLICATIONS/Theo Notes.app/Contents/embedded.provisionprofile"
 expiry_stub() { # <ISO date>

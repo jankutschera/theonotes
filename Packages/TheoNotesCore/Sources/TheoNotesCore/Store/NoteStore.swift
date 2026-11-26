@@ -115,7 +115,7 @@ public final class NoteStore: Sendable {
 
     /// Line endings are normalised to "\n" (see `TextNormalization.normalizeLineEndings`).
     /// `captureSource` names the gesture that makes a captured note. It is written once, here, and
-    /// never changed (FOC-R2).
+    /// never changed.
     public func create(text: String, now: Date = .now, captureSource: CaptureSource? = nil) throws -> Note {
         try write { db in try Self.insert(text: text, now: now, captureSource: captureSource, in: db) }
     }
@@ -269,7 +269,7 @@ public final class NoteStore: Sendable {
     }
 
     /// Appends `\n#tag` (`.bottom`) or inserts a `#tag` line directly after the title line (`.top`;
-    /// the title line is the first body line, below YAML front matter: ruling M5-R95).
+    /// the title line is the first body line, below YAML front matter).
     /// Multi-word and number-only tags use the closed form `#a b#`.
     /// Notes that already carry the tag directly (any spelling) are left untouched.
     public func addTag(
@@ -573,7 +573,7 @@ public final class NoteStore: Sendable {
             createdAt: stamp, modifiedAt: stamp
         )
         try note.insert(db)
-        // `Note` has no such field: the source is device-local state (FOC-R2, FOC-R4).
+        // `Note` has no such field: the source is device-local state.
         if let captureSource {
             try db.execute(sql: "UPDATE note SET captureSource = ? WHERE id = ?", arguments: [captureSource, note.id])
         }
@@ -621,7 +621,7 @@ public final class NoteStore: Sendable {
         return ids.filter { seen.insert($0).inserted }
     }
 
-    /// Also used by `CloudSyncStore.enableUploads` for the starter notes a first sync must not publish (STARTER-R4).
+    /// Also used by `CloudSyncStore.enableUploads` for the starter notes a first sync must not publish.
     static func delete(_ ids: [String], in db: Database) throws {
         for id in ids {
             try NotePrivacy.requireNoPendingTransition(id, in: db)
@@ -704,7 +704,7 @@ public final class NoteStore: Sendable {
 
     /// Inserts `line` on its own line directly after the note's title line: the first body line,
     /// after YAML front matter (a leading BOM stays with that line). Bear reads the first body line
-    /// as the title, so a tag line above it would become the title (ruling M5-R95). A text without
+    /// as the title, so a tag line above it would become the title. A text without
     /// a title line (empty, or front matter only) gets the line at its end.
     static func insertingTagLineAfterTitle(_ line: String, into text: String) -> String {
         // Line indices come from NoteParser's scalar `\n` split; a Character split treats "\r\n"

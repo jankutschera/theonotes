@@ -6,7 +6,7 @@ import Foundation
 /// `--fields`: a comma-separated list, or `all`.
 enum NoteFields {
     /// The columns to print, in the order asked for. Without `--fields` the command's defaults.
-    /// `all` stands for the command's `allFields` (never `content`, ruling M5-R32) at its place in
+    /// `all` stands for the command's `allFields` (never `content`) at its place in
     /// the list, `content` only when it is named; a field named twice appears once.
     static func parse(_ raw: String?, spec: CommandSpec) throws(AutomationError) -> [String] {
         guard let raw else { return spec.defaultFields }

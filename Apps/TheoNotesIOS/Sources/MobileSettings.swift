@@ -33,7 +33,7 @@ struct MobileSettings: View {
                 Section {
                     NavigationLink { privacyPage } label: { Label("Privacy", systemImage: "lock") }
                     NavigationLink { MobileThemeSettings(library: library) } label: { Label("Themes", systemImage: "paintpalette") }
-                    // REL-R5/R6: the private-server page is only linked, and its controller only made, in a build that offers it.
+                    // The private-server page is only linked, and its controller only made, in a build that offers it.
                     if let sync = MobilePrivateServerSync.controller(for: library) {
                         NavigationLink { MobileSyncSettings(sync: sync, library: library).onAppear { save() } } label: { Label("Sync", systemImage: "icloud") }
                     }
@@ -181,7 +181,7 @@ private struct MobileGeneralSettings: View {
     let templates: [TemplateInfo]
     var body: some View {
         Form {
-                // IOS-DESIGN-R8: one-line switch labels; the detail goes to the footer.
+                // One-line switch labels; the detail goes to the footer.
                 Section {
                     Toggle("Hide Markdown", isOn: $hideMarkdown)
                     Toggle("Autocomplete", isOn: $autocomplete)
@@ -209,7 +209,7 @@ private struct MobileGeneralSettings: View {
                         ForEach(NoteSort.allCases, id: \.self) { Text($0.mobileTitle).tag($0) }
                     }
                 }
-                // IOS-CLUTTER-R11: the tag switch lives here only; relative wiki links stay in the export menu.
+                // The tag switch lives here only; relative wiki links stay in the export menu.
                 Section {
                     Toggle("Keep Tags in Exports", isOn: $library.preferences.keepTagsOnExport)
                 } header: { Text("Export") } footer: { Text("Applies to HTML, PDF, Rich Text and Plain Text, and to Copy As. Markdown and TextBundle exports keep tags as written.") }

@@ -66,7 +66,7 @@ struct MobileCloudSyncSettings: View {
                         Button(MobileCloudSyncStrings.moveWithoutFilesButton) { confirmingMoveWithoutFiles = true }
                             .disabled(controller.isWorking)
                             .accessibilityIdentifier("cloud-sync-move-without-files")
-                            // The same confirmation as the move, plus one sentence; on iPad its arrow points at this button (MOVE-R13).
+                            // The same confirmation as the move, plus one sentence; on iPad its arrow points at this button.
                             .confirmationDialog(MobileCloudSyncStrings.moveTitle, isPresented: $confirmingMoveWithoutFiles, titleVisibility: .visible) {
                                 Button(MobileCloudSyncStrings.moveConfirm) { Task { await controller.moveWithoutMissingFiles() } }
                             } message: {
@@ -156,7 +156,7 @@ struct MobileCloudSyncSettings: View {
                 get: { controller.isOn },
                 set: { value in Task { await controller.setSwitch(value) } }
             ))
-            .disabled(controller.isWorking && !controller.isOn)    // switching OFF always works, even during a hung sync (CK-R171)
+            .disabled(controller.isWorking && !controller.isOn)    // switching OFF always works, even during a hung sync
             .accessibilityIdentifier("cloud-sync-switch")
             statusRow
             if let lastSync = controller.lastSync, controller.isOn {
@@ -301,7 +301,7 @@ struct MobileCloudSyncSettings: View {
 }
 
 /// The recovery words: the 24 words, a copy button, the three-word check, and (during first setup only) the way to skip with the risk
-/// sentence ticked (CK-R7, CK-J1). The words are hidden while the app is not active, and the copy leaves the clipboard after a minute.
+/// sentence ticked. The words are hidden while the app is not active, and the copy leaves the clipboard after a minute.
 struct MobileCloudRecoverySheet: View {
     @Bindable var controller: MobileCloudSyncController
 
@@ -411,7 +411,7 @@ struct MobileCloudRecoverySheet: View {
     }
 }
 
-/// CK-R10: this device is signed in to a different iCloud account than the one the library syncs with. Nothing is sent to the new
+/// This device is signed in to a different iCloud account than the one the library syncs with. Nothing is sent to the new
 /// account unless the person says so; the first button keeps the library offline.
 struct MobileCloudAccountChangedSheet: View {
     @Bindable var controller: MobileCloudSyncController

@@ -38,7 +38,7 @@ struct LiveExportService: ExportService {
     }
 }
 
-/// What ⇧⌘S exports (M8-R3): the tag tree when neither the note list nor the editor is focused
+/// What ⇧⌘S exports: the tag tree when neither the note list nor the editor is focused
 /// and the scope is a tag; otherwise the selected notes (in list order).
 enum ExportTarget: Equatable {
     case tagTree(String)
@@ -91,7 +91,7 @@ struct ExportReportSummary: Equatable {
 
 /// File ▸ Export Notes…, the note list's Export… and a tag's Export Notes…. One run at a time per
 /// window. Each start shows the folder panel first; the run then goes through `ExportJob`, which
-/// copies attachments on the main actor (M8-R68), so a progress sheet with Cancel stays up.
+/// copies attachments on the main actor, so a progress sheet with Cancel stays up.
 @MainActor
 @Observable
 final class ExportModel {

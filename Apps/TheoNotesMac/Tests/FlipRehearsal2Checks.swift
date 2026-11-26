@@ -9,7 +9,7 @@ import Testing
 
 @testable import TheoNotes
 
-/// Rehearsal 2 of the identity and team cutover (stage-2 plan B6, REN2-R57 ... R62). It runs inside the dev build that is
+/// Rehearsal 2 of the identity and team cutover (stage-2 plan B6, R62). It runs inside the dev build that is
 /// signed by the new team and answers, with counts and booleans only, what rehearsal 1 could not: the signed access
 /// groups, the App Group container under the new team prefix with the share drain on it, and the empty vault key cache
 /// in the new keychain group. `scripts/rehearse-team-signed-dev.sh` passes the output path as a `TEST_RUNNER_` variable;

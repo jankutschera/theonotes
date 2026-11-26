@@ -59,12 +59,12 @@ import Testing
             ], to: "a b c", within: nil)
         #expect(result.text == "éa b D")
         // "CC" landed at 4, moved by the two-byte "é" to 6, then was replaced by "D" at 6. The
-        // insert-before edit reports its match "a", now after "é" (ruling M5-R74).
+        // insert-before edit reports its match "a", now after "é".
         #expect(result.ops.map(\.firstMatch) == [6, 2, 6])
     }
 
     /// `firstMatch` is the match start, so the section an edit landed in is the match's, even when
-    /// the inserted text crosses a heading boundary (ruling M5-R74).
+    /// the inserted text crosses a heading boundary.
     @Test func firstMatchIsTheMatchStartAtHeadingBoundaries() throws {
         let t = "# T\n## A\nx\n## Notes\ny\n"
         let before = try EditEngine.apply([.init(find: "## Notes", action: .insertBefore("Intro\n\n"))], to: t, within: nil)
@@ -130,7 +130,7 @@ import Testing
         #expect(result.text == "ä 👩‍👩‍👧 x" && result.ops[0].firstMatch == 22)
     }
 
-    /// UAX #29 word boundaries (ruling M5-R63 as proposed by Task 6).
+    /// UAX #29 word boundaries.
     @Test func wordUsesUnicodeWordBoundaries() throws {
         func words(_ needle: String, _ text: String) -> [Range<Int>] {
             NoteFind.occurrences(of: needle, in: text, within: nil, ignoreCase: false, word: true)

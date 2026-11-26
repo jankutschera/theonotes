@@ -26,7 +26,7 @@ protocol AppAuthenticator: Sendable {
     func canAuthenticate() -> Bool
     func authenticate(reason: String) async -> AppAuthResult
     /// Cancels the prompt that is up, if any: the sheet goes away and its `authenticate` returns
-    /// `.cancelled`. Called when the lock engages again while a prompt is waiting (M9M-R76).
+    /// `.cancelled`. Called when the lock engages again while a prompt is waiting.
     func invalidatePending()
 }
 
@@ -66,7 +66,7 @@ final class LocalAuthenticator: AppAuthenticator, @unchecked Sendable {
     }
 }
 
-/// What the automation surfaces say while App Lock is engaged (M9M-R63). No library content, no note
+/// What the automation surfaces say while App Lock is engaged. No library content, no note
 /// id and no count is in it.
 enum AppLockedRefusal {
     static let message = "Theo Notes is locked. Unlock it, then try again."
@@ -74,7 +74,7 @@ enum AppLockedRefusal {
     static let xCallbackCode = 6
 }
 
-/// The app-wide lock (M9M-R61..R65): while it is engaged no window shows library content and no
+/// The app-wide lock: while it is engaged no window shows library content and no
 /// automation surface answers with any. It guards the screen, not the data: notes stay in the
 /// library as they are, and the Note Password and `NoteVault` are separate. The Mac password
 /// that opens it is never stored or seen here; `AppAuthenticator` only reports the outcome.
@@ -105,7 +105,7 @@ final class AppLock {
     private(set) var notice: String?
     private(set) var delay: Int
     /// Bumped every time the lock engages, or the Mac locks while it is on. Work that started before
-    /// is stale: a prompt that answers late, a copy, an export (M9M-R76).
+    /// is stale: a prompt that answers late, a copy, an export.
     private(set) var generation = 0
 
     @ObservationIgnored private let settings: TheoNotesCore.Settings
@@ -207,7 +207,7 @@ final class AppLock {
 
     func removeDidLockHandler(_ token: HandlerToken) { didLock.removeAll { $0.token == token } }
 
-    /// Runs when Settings turned App Lock on or off (FOC-R18), right after the setting is written and
+    /// Runs when Settings turned App Lock on or off, right after the setting is written and
     /// the state is updated, in registration order. A prompt that was cancelled or failed runs
     /// nothing. Turning it on does not engage it: `isLocked` is unchanged by this call.
     @discardableResult

@@ -87,7 +87,7 @@ describe("mermaid", () => {
     expect(await renderMermaid("flowchart LR\n  style A fill:url(/x)")).toEqual({ error: expect.stringMatching(/cannot load/) });
   });
 
-  // REN2-R10: the ELK layout (elkjs, EPL-2.0) is not part of the app. The only way left for a diagram
+  // The ELK layout (elkjs, EPL-2.0) is not part of the app. The only way left for a diagram
   // to ask for it (directives and front matter are removed) is the `flowchart-elk` keyword; it is read
   // as a plain `flowchart` so the diagram renders with Mermaid's default layout.
   test("flowchart-elk falls back to the default layout", () => {

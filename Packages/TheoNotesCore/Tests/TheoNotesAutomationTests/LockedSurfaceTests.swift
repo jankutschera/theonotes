@@ -6,7 +6,7 @@ import Testing
 @testable import TheoNotesAutomation
 @testable import TheoNotesCore
 
-/// One locked note across the whole automation surface (rulings M5-R49, M5-R81): reads return
+/// One locked note across the whole automation surface: reads return
 /// `note_locked` or leave the note out, writes return `note_locked`, and the title stays listed.
 /// Every test runs twice: with the plain `isLocked` flag and with a note locked through
 /// `NotePrivacy` (the iOS app's lock: encrypted payload, purged index; integration merge 2026-10-26).

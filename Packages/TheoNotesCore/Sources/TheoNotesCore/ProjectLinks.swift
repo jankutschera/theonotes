@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// The public source of the apps (GPL-3.0 corresponding-source offer, plan task L5, OSS-R4). The About window on
+/// The public source of the apps, offered as the GPL-3.0 requires for corresponding source. The About window on
 /// the Mac and Settings on iPhone and iPad show `sourceOffer`. The repository goes public before the first build
 /// that carries this line ships (1.1.1).
 public enum ProjectLinks {

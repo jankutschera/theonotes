@@ -7,21 +7,21 @@ import Foundation
 import Security
 #endif
 
-/// `CloudKitGateway` on `CKSyncEngine` (CK-R15, CK-R160 to CK-R169). The only implementation that talks to the real service; the rest of
+/// `CloudKitGateway` on `CKSyncEngine`. The only implementation that talks to the real service; the rest of
 /// the sync core knows only the protocol (and `FakeCloudKitDevice` in tests).
 ///
 /// How it differs from a plain "engine wrapper" (each point is a ruling in `docs/decisions.md`):
-/// - Two record zones (CK-R152/R160): `Entity` and `KeyBundle` in the main zone, `BlobPart` in `<zone>Blobs`. The engine never fetches the
+/// - Two record zones: `Entity` and `KeyBundle` in the main zone, `BlobPart` in `<zone>Blobs`. The engine never fetches the
 ///   blob zone; parts are read by name (`fetch`), with `desiredKeys` excluding `asset` when only metadata is needed.
-/// - The engine runs with `automaticallySync = false` (CK-R161): every send and fetch is one a caller asked for. Records reach a sink
+/// - The engine runs with `automaticallySync = false`: every send and fetch is one a caller asked for. Records reach a sink
 ///   only inside `fetchChanges(into:)`.
 /// - The durable truth of what still has to be sent is the caller's `ck_inflight`. The gateway keeps an in-memory queue, empties the
 ///   engine's own pending list when an engine is created and reports every outcome to `CloudGatewayStore.recordSendResult` the moment
-///   the engine reports it (CK-R162). A result that could not be stored stays queued and `submit` throws, so the caller's rows become
-///   `unknown` and are resolved by the restart path (CK-R169).
+/// the engine reports it. A result that could not be stored stays queued and `submit` throws, so the caller's rows become
+/// `unknown` and are resolved by the restart path.
 /// - Every queued save and every engine event is bound to the engine epoch it belongs to; an event from another epoch can never
-///   complete, or change the cache of, a newer attempt (CK-R169). Account changes fence the gateway until `prepare()` (CK-R163).
-///   `deleteZone(expecting:)` binds the deletion to the expected account by naming that account as the zone owner (CK-R164).
+/// complete, or change the cache of, a newer attempt. Account changes fence the gateway until `prepare`.
+/// `deleteZone(expecting)` binds the deletion to the expected account by naming that account as the zone owner.
 public actor LiveCloudKitGateway: CloudKitGateway {
     public nonisolated let events: AsyncStream<CloudGatewayEvent>
     private let continuation: AsyncStream<CloudGatewayEvent>.Continuation
@@ -47,7 +47,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
     private static let maxBatchAssetBytes = 128 * 1_048_576
     private static let lateLimit = 1000
 
-    /// The id of the private-database subscription `prepare()` makes sure exists (CK-R169).
+    /// The id of the private-database subscription `prepare` makes sure exists.
     public static let pushSubscriptionID: CKSubscription.ID = "TheoNotesDatabase"
 
     // engine
@@ -72,7 +72,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
 
     // sending
     private struct BaseEntry { let tag: String; let archive: Data }
-    /// CloudKit's own archive per record id and change tag (CK-R165). The core sees only the change tag; this is where the real
+    /// CloudKit's own archive per record id and change tag. The core sees only the change tag; this is where the real
     /// archive of that version is kept for the next save. A miss (after a restart, or a version never seen here) is repaired by one
     /// fetch by name before the save. Bounded: the oldest entries are dropped first.
     private var baseCache: [CKRecord.ID: BaseEntry] = [:]
@@ -80,7 +80,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
     private static let baseCacheLimit = 4000
     private var queue: [CKRecord.ID: [Entry]] = [:]
     /// Saves that were on the wire of an engine that has since been retired (account change, rebuilt engine, lost response). Their
-    /// late result is still recorded for their own attempt (CK-R45), but they never touch the queue, the engine or the cache.
+    /// late result is still recorded for their own attempt, but they never touch the queue, the engine or the cache.
     private struct LateKey: Hashable { let epoch: Int; let id: CKRecord.ID; let sid: String }
     private var late: [LateKey: Entry] = [:]
     private var lateOrder: [LateKey] = []
@@ -100,7 +100,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         var held: Data?
         var tokenExpired = false
         var zoneGone = false
-        /// The first error `didFetchRecordZoneChanges` reported that is not one of the two above: the fetch is incomplete (CK-R169).
+        /// The first error `didFetchRecordZoneChanges` reported that is not one of the two above: the fetch is incomplete.
         var zoneError: Error?
     }
 
@@ -122,7 +122,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         let assetBytes: Int
         /// The epoch of the engine this save was handed to; nil while it waits.
         var handedEpoch: Int?
-        /// The outcome, once known and until the store has taken it. The entry stays queued until then (CK-R169).
+        /// The outcome, once known and until the store has taken it. The entry stays queued until then.
         var pendingOutcome: CloudSaveOutcome?
         var handed: Bool { handedEpoch != nil }
     }
@@ -130,8 +130,8 @@ public actor LiveCloudKitGateway: CloudKitGateway {
     /// - Parameters:
     ///   - engineState: the serialization the sink saved last (`CloudChangeSink.saveEngineState`); nil for a new device.
     ///   - pinDirectory: a durable folder (the no-backup folder in the app). Assets of a `serverRecordChanged` record are copied here
-    ///     before the result is recorded, because the staging area can be emptied by the system (CK-R60).
-    ///   - batchItemLimit: at most this many records per request (CK-R15: 100). The live contract run lowers or raises it.
+    /// before the result is recorded, because the staging area can be emptied by the system.
+    /// - batchItemLimit: at most this many records per request (100). The live contract run lowers or raises it.
     public init(configuration: CloudKitConfiguration, store: any CloudGatewayStore, engineState: Data?, pinDirectory: URL,
                 batchItemLimit: Int = 100) {
         self.init(configuration: configuration, store: store, engineState: engineState, pinDirectory: pinDirectory,
@@ -139,7 +139,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
     }
 
     /// `automaticallySync: true` (the engine fetches and sends on its own schedule and on push) is NOT supported: the live run with it
-    /// failed three cases (CK-R161: a fetch without a sink consumed records the engine then never offered again). It exists so that
+    /// failed three cases (a fetch without a sink consumed records the engine then never offered again). It exists so that
     /// the run can be repeated when Apple's behaviour changes. `hooks` replace the engine, the account lookup and the subscription for tests.
     init(configuration: CloudKitConfiguration, store: any CloudGatewayStore, engineState: Data?, pinDirectory: URL,
          batchItemLimit: Int, automaticallySync: Bool, hooks: LiveGatewayHooks?) {
@@ -196,7 +196,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         flushOutcomes()
         await acquire()
         defer { release() }
-        // CK-R169: push needs a database subscription; a failure here never blocks syncing (the schedulers fetch anyway) and is
+        // Push needs a database subscription; a failure here never blocks syncing (the schedulers fetch anyway) and is
         // tried again at the next `prepare()`.
         do { try await (hooks?.ensureSubscription ?? { try await self.ensureSubscription() })(); subscriptionError = nil }
         catch { subscriptionError = "\(error)"; trace?("ensureSubscription failed: \(error)") }
@@ -259,8 +259,8 @@ public actor LiveCloudKitGateway: CloudKitGateway {
             await drain(engine, ids: ids)
         }
         flushOutcomes()
-        // CK-R169: a result the store would not take stays queued. The caller must not wait for it: it marks these rows unknown (a
-        // `submit` that throws does exactly that, CK-R71) and the restart path resolves them.
+        // A result the store would not take stays queued. The caller must not wait for it: it marks these rows unknown (a
+        // `submit` that throws does exactly that) and the restart path resolves them.
         if storeRefused || unstoredOutcomeExists(for: attemptIds) { throw CloudSyncError.failed(code: "outcomeNotStored") }
     }
 
@@ -285,11 +285,11 @@ public actor LiveCloudKitGateway: CloudKitGateway {
             let fetch = activeFetch
             activeFetch = nil
             // Whatever goes wrong from here on, the engine may be ahead of what is durable: it is discarded, and the next call builds
-            // one from the last state a sink saved (CK-R169).
+            // one from the last state a sink saved.
             if let failure = fetch?.failure { engineStale = true; throw failure }
             let expired = fetch?.tokenExpired == true || thrown.map(CloudKitErrorMapping.isChangeTokenExpired) == true
             if expired {
-                // CK-R15: the token is gone; start over from nothing inside a new full-refetch bracket.
+                // The token is gone; start over from nothing inside a new full-refetch bracket.
                 persistedState = nil; engineStale = true
                 if attempt < 3 { continue }
                 throw CloudSyncError.failed(code: "changeTokenExpired")
@@ -297,7 +297,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
             if let thrown { engineStale = true; noteRateLimit(thrown); throw CloudKitErrorMapping.syncError(for: thrown) }
             if let zoneError = fetch?.zoneError {
                 // A zone that could not be fetched is an incomplete picture: the bracket stays open, nothing is marked missing and no
-                // state advances (CK-R169).
+                // state advances.
                 engineStale = true; noteRateLimit(zoneError); throw CloudKitErrorMapping.syncError(for: zoneError)
             }
             if fetch?.zoneGone == true { engineStale = true; return }       // the zone vanished: nothing ends or is saved
@@ -366,7 +366,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         try await deleteZones(ownedBy: user)
     }
 
-    /// CK-R164. CloudKit has no "run this operation only for user X". What it has: a private-database zone id carries its owner. The
+    ///. CloudKit has no "run this operation only for user X". What it has: a private-database zone id carries its owner. The
     /// zone ids sent here name the expected user as owner (`ownerName` = that user's record name, not the "current user" placeholder),
     /// so an operation that reaches the server while another account is signed in addresses zones that account does not own. The check
     /// of the expected user happens immediately before. If the signed-in user cannot be determined the call throws without deleting.
@@ -377,7 +377,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         try await deleteZones(ownedBy: user)
     }
 
-    /// The gateway's own `CKSyncEngine.cancelOperations()` (CK-R92 step 2): the fence takes it as its `cancelOperations` closure.
+    /// The gateway's own `CKSyncEngine.cancelOperations`: the fence takes it as its `cancelOperations` closure.
     public func cancelOperations() async {
         await engine?.cancelOperations()
     }
@@ -386,7 +386,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
 
     /// For `application(_:didReceiveRemoteNotification:)` (Task 16): a notification about the private database becomes `.remoteChange`
     /// (the coordinator then runs its cycle). Returns whether it was one. The subscription that makes CloudKit send it is ensured by
-    /// `prepare()` (CK-R169); the apps never rely on push alone (iOS also fetches at launch, in the foreground and on a background
+    /// `prepare`; the apps never rely on push alone (iOS also fetches at launch, in the foreground and on a background
     /// refresh; the Mac on its timer).
     @discardableResult
     public nonisolated func handleRemoteNotification(_ userInfo: [AnyHashable: Any]) -> Bool {
@@ -396,7 +396,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         return true
     }
 
-    /// CK-R169. A database subscription exists once per database (the live run: saving a second one answers success and lists nothing
+    ///. A database subscription exists once per database (the live run: saving a second one answers success and lists nothing
     /// new), so ANY database subscription is enough, the engine's `CKSyncEngineDatabaseSubscription-Private` as well as ours. If there
     /// is none, ours is saved with a fixed id (a save of an id that exists replaces it, so this is idempotent).
     func ensureSubscription() async throws {
@@ -414,7 +414,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
 
     func fetchOptions(_ context: CKSyncEngine.FetchChangesContext) -> CKSyncEngine.FetchChangesOptions {
         var options = context.options
-        // CK-R152: the blob zone is never fetched by the engine. CK-R161: the main zone only while a caller's sink is waiting for it.
+        // The blob zone is never fetched by the engine. the main zone only while a caller's sink is waiting for it.
         // Named zones, not "everything but the blob zone": the live run showed that `allExcluding` also fetches every other zone in the
         // private database (the leftover zones of earlier runs came through), and those records would reach the sink.
         options.scope = activeFetch != nil ? .zoneIDs([zones.main]) : .zoneIDs([])
@@ -483,7 +483,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
     // MARK: - event processing (plain values, so the unit tests can drive it without CloudKit)
 
     /// During a fetch the state is only buffered, whatever kind of fetch it is: it is saved after the whole fetch completed and every
-    /// commit it follows has been made (CK-R15), and dropped if the fetch did not complete (CK-R169, round 2). Outside a fetch it is kept
+    /// commit it follows has been made, and dropped if the fetch did not complete. Outside a fetch it is kept
     /// in memory only.
     func processState(_ data: Data, epoch: Int) {
         guard epoch == self.epoch else { return }
@@ -545,7 +545,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
     /// Which queued save an event from engine `epoch` is about. Name + epoch + attempt id must all match. The attempt id is the record's
     /// `sid` (the publisher sets it to the attempt id; Entity records carry it; BlobPart and KeyBundle do not, which is why an engine that lost a response is never used for that
     /// record again, see `retire`). Whatever else is at the head of the same record id's queue is a different attempt and is never
-    /// completed by this event (CK-R169).
+    /// completed by this event.
     private func claim(_ id: CKRecord.ID, epoch: Int, sid: String?) -> Claim {
         if epoch == self.epoch, let head = queue[id]?.first, head.handedEpoch == epoch, head.sid == sid {
             return .current(head.token)
@@ -590,7 +590,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
             case .current(let token):
                 noteRateLimit(error)
                 if error.code == .limitExceeded, effectiveBatchItems > 1 {
-                    // CK-R46: halve and send again; only a single record that is too large surfaces as the outcome.
+                    // Halve and send again; only a single record that is too large surfaces as the outcome.
                     shrink = true
                     queue[id]?[0].handedEpoch = nil
                     requeue.append(id)
@@ -609,7 +609,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
                     guard let server else { throw CloudSyncError.failed(code: "assetNotAvailable") }
                     return try self.pinned(CloudRecordMapping.makeCloudRecord(from: server))
                 }
-                engine?.removePendingSaves([id])      // the engine would retry it; the caller owns retries (CK-R162)
+                engine?.removePendingSaves([id])      // the engine would retry it; the caller owns retries
                 settle(id, token: token, outcome)
             }
         }
@@ -715,7 +715,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
     private func pinnedOrNil(_ record: CKRecord) -> CloudRecord? { try? pinned(CloudRecordMapping.makeCloudRecord(from: record)) }
 
     /// The server record of a `serverRecordChanged` error comes without the files of its asset fields; the whole record is read again
-    /// when it has any, so that the conflict can be merged and its payload pinned (CK-R60). The caller remembers the result, and only
+    /// when it has any, so that the conflict can be merged and its payload pinned. The caller remembers the result, and only
     /// after checking that this answer still belongs to the attempt that asked.
     private func completeServerRecord(_ record: CKRecord?) async -> CKRecord? {
         guard let record else { return nil }
@@ -750,7 +750,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
             let pending = Set(engine.pendingSaveIDs)
             for id in ids {
                 guard let head = queue[id]?.first, !pending.contains(id), head.pendingOutcome == nil else { continue }
-                // Sent (or tried) and no outcome learned: the response is lost, the caller resolves it as unknown (CK-R4, CK-R77).
+                // Sent and no outcome learned: the response is lost, the caller resolves it as unknown.
                 // The save stays reachable as a late result of this epoch, but leaves the queue.
                 if head.handed { retire(id) }
                 else { await failDormant(id) }
@@ -798,7 +798,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         }
     }
 
-    // MARK: - outcomes (CK-R169: an entry leaves the queue only after its result is stored)
+    // MARK: - outcomes (an entry leaves the queue only after its result is stored)
 
     /// A result for a save that is not queued (refused before it was queued): stored now, or the error reaches the caller.
     private func recordNow(_ save: CloudSave, _ outcome: CloudSaveOutcome) throws {
@@ -807,7 +807,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         catch { throw CloudSyncError.failed(code: "outcomeNotStored") }
     }
 
-    /// The store refuses a result because the durable fence is up or the save belongs to another generation (CK-R99, CK-R171): the
+    /// The store refuses a result because the durable fence is up or the save belongs to another generation: the
     /// session that sent it was stopped or switched, so the result is moot. It is dropped, not kept for a store that will never take it.
     private static func isRevoked(_ error: Error) -> Bool {
         switch error as? CloudSyncStoreError {
@@ -904,7 +904,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         }
     }
 
-    /// Copies each asset into the durable pin folder and checks the size; the staging copy may already be gone (CK-R60).
+    /// Copies each asset into the durable pin folder and checks the size; the staging copy may already be gone.
     private func pinned(_ record: CloudRecord?) throws -> CloudRecord {
         guard var copy = record else { throw CloudSyncError.failed(code: "unmappableRecord") }
         try FileManager.default.createDirectory(at: pinDirectory, withIntermediateDirectories: true)
@@ -927,7 +927,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
     }
 
     /// An engine for the saved state, with an empty pending list: what is still to be sent is `ck_inflight` (the caller's), and a
-    /// save that was only in the old engine's list has no record to build from here (CK-R15, CK-R162). Replacing an engine starts a
+    /// save that was only in the old engine's list has no record to build from here. Replacing an engine starts a
     /// new epoch: what was on the old one's wire can only be answered by the old one, as a late result.
     private func ensureEngine() -> any SyncEngineHandle {
         if let engine, !engineStale { return engine }
@@ -947,7 +947,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
         return created
     }
 
-    /// CK-R163 steps (1) to (5) on the gateway's side: no more batches, outstanding operations cancelled, the engine and its state
+    /// steps (1) to (5) on the gateway's side: no more batches, outstanding operations cancelled, the engine and its state
     /// dropped, saves that never left stay reported as `fenced`; saves already on the wire can only be answered as late results.
     private func fenceNow() {
         fenced = true
@@ -1059,7 +1059,7 @@ public actor LiveCloudKitGateway: CloudKitGateway {
 
     // MARK: - hooks for the live contract run and the unit tests
 
-    /// One engine fetch with no caller sink: must deliver nothing and only announce `.remoteChange` (CK-R161). Returns how many records
+    /// One engine fetch with no caller sink: must deliver nothing and only announce `.remoteChange`. Returns how many records
     /// reached the gateway without a sink (0 when the scope gating works).
     func fetchWithoutSink() async throws -> Int {
         await acquire()

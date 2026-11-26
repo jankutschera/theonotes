@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Allow-list export of the repository for publication (REN2-R20, plan task P1). Publishes nothing.
+"""Allow-list export of the repository for publication. Publishes nothing.
 
 Usage: python3 -I scripts/oss/export.py --out DIR [--init-git --author "Name <mail>"] [--ref HEAD]
        python3 -I scripts/oss/export.py --dry-run

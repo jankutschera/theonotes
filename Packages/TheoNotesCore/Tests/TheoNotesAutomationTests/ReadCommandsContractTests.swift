@@ -39,7 +39,7 @@ import Testing
             if parserMarkers.contains(where: { stdout.contains($0) || stderr.contains($0) }) { continue }
             let run = cli(lib, args)
             #expect(run.exit == Int32(entry["exit"]?.intValue ?? -1), "\(args)")
-            // Messages are our own wording (ruling M5-R269): the exit status, the error code of a JSON reply,
+            // Messages are our own wording: the exit status, the error code of a JSON reply,
             // the stream the text goes to and the `Error: ` lead of a plain one are what is compared.
             if stdout.isEmpty {
                 #expect(run.out.isEmpty, "\(args)")

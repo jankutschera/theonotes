@@ -5,7 +5,7 @@ import CryptoKit
 import Foundation
 import GRDB
 
-// The publisher (CK-R4, CK-R5 fence, CK-R15, CK-R21): local edits to sealed records, and the outcome of every save.
+// The publisher: local edits to sealed records, and the outcome of every save.
 //
 //   sync_dirty (journal, one row per entity, generation counter)
 //     -> prepare: snapshot + seal + one ck_inflight row, in ONE transaction (immutable afterwards)
@@ -42,7 +42,7 @@ public struct CloudPublishReport: Sendable, Equatable {
     public var paused: [CloudEntityRef] = []
     /// Not sent now: fenced, paused, waiting for a merge, or its blobs are not ready.
     public var blocked: [CloudEntityRef] = []
-    /// Results of an older account generation, discarded (CK-R15).
+    /// Results of an older account generation, discarded.
     public var discardedStaleResults = 0
     /// Saves that landed while a fetched version had already advanced the pair: nothing written, nothing cleared, snapshot dropped.
     public var advanced: [CloudEntityRef] = []
@@ -83,7 +83,7 @@ public struct CloudPublisher: Sendable {
     ///   - assetDirectory: where a sealed payload over 200 KiB is written for the one save that carries it as an asset.
     ///   - intake: how a cloud version found by name or inside a conflict is stored (the receiver's sink in production).
     ///   - keyReadiness: called before anything is prepared or submitted; it throws while key creation is incomplete, because no
-    ///     `Entity` or `BlobPart` may be saved before then (CK-R14: a lost key-creation race would leave data under a key nobody
+    /// `Entity` or `BlobPart` may be saved before then (a lost key-creation race would leave data under a key nobody
     ///     shares). The error reaches the caller; dirty generations and prepared snapshots stay exactly as they are. Deliberately
     ///     required: the coordinator wires it to the key layer, and a publisher with no gate must be a visible choice (`{}`).
     public init(database: AppDatabase, paths: AppPaths, store: CloudSyncStore, gateway: any CloudKitGateway,
@@ -99,7 +99,7 @@ public struct CloudPublisher: Sendable {
     // MARK: lifecycle
 
     /// Call once at launch: a send that was `sending` when the process ended may or may not have landed, so it becomes
-    /// `unknown` and the CK-R4 table decides.
+    /// `unknown` and the table decides.
     @discardableResult
     public func treatSendingAsUnknown() throws -> Int { try store.interruptSending() }
 
@@ -190,7 +190,7 @@ public struct CloudPublisher: Sendable {
         }
     }
 
-    /// 128 random bits, base64url without padding (CK-R21).
+    /// 128 random bits, base64url without padding.
     static func newIncarnation() -> String {
         Data((0..<16).map { _ in UInt8.random(in: 0...255) }).base64EncodedString()
             .replacingOccurrences(of: "+", with: "-").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "=", with: "")
@@ -290,7 +290,7 @@ public struct CloudPublisher: Sendable {
     // MARK: results
 
     /// Consumes every `ck_send_result` row (idempotent by attempt id). A result of an older account generation is
-    /// discarded; the snapshot stays and is resolved by the outcome table when its account returns (CK-R15).
+    /// discarded; the snapshot stays and is resolved by the outcome table when its account returns.
     @discardableResult
     public func consumeResults() throws -> CloudPublishReport {
         var report = CloudPublishReport()
@@ -317,7 +317,7 @@ public struct CloudPublisher: Sendable {
         case .serverRecordChanged(let server):
             try resolve(attempt, server: server, serverChanged: true, report: &report)
         case .unknownItem:
-            // A base was held and the record is not there (CK-R5): pause. Without a base the create cannot be "unknown".
+            // A base was held and the record is not there: pause. Without a base the create cannot be "unknown".
             if attempt.baseSystemFields != nil { try pause(attempt, reason: "unknownItem", report: &report) }
             else { try requeue(attempt, report: &report) }
         case .quotaExceeded, .limitExceeded, .zoneNotFound, .unauthenticated, .fenced:
@@ -397,7 +397,7 @@ public struct CloudPublisher: Sendable {
         report.paused.append(attempt.entity)
     }
 
-    // MARK: ambiguous outcomes (CK-R4)
+    // MARK: ambiguous outcomes
 
     /// Resolves every `unknown` snapshot against the cloud: fetch the record by name, then the six rows of the table.
     /// Offline or unauthenticated leaves them for the next cycle.

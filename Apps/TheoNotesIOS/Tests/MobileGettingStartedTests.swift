@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import BaerchenIOS
 
-/// REL-R79 on iPhone and iPad: the one decision "is this a brand-new library" for every way a library
+/// on iPhone and iPad: the one decision "is this a brand-new library" for every way a library
 /// comes to exist or is opened, and Settings ▸ Restore Getting Started Notes. Temporary libraries only.
 @Suite @MainActor
 struct MobileGettingStartedTests {
@@ -20,7 +20,7 @@ struct MobileGettingStartedTests {
         try MobileLibrary(paths: AppPaths(root: root), seedsGettingStarted: seeds)
     }
 
-    // MARK: STARTER-R18: the first launch of the new texts
+    // MARK: the first launch of the new texts
 
     /// What the first release left behind: the frozen first texts under the fixed ids and stamps, the seeded flag set.
     private static func writeFirstReleaseStarters(into store: NoteStore) throws {

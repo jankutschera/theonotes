@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// REN-R14: a process that runs under a test never resolves, moves or opens the real library.
+/// A process that runs under a test never resolves, moves or opens the real library.
 /// "Real" is injected as a temporary folder here, so no test touches the real Application Support.
 @Suite struct AppPathsTestGuardTests {
     private struct Fixture {

@@ -36,7 +36,7 @@ enum ParseOutcome {
     case completion(shell: String)
 }
 
-/// The hand-written argv parser (ruling M5-R2). Error texts reproduce what bearcli's
+/// The hand-written argv parser. Error texts reproduce what bearcli's
 /// swift-argument-parser prints, as observed in `Fixtures/cli/cli-observed.json`.
 enum ArgvParser {
     static let shells = ["zsh", "bash", "fish"]

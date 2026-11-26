@@ -884,7 +884,7 @@ test("scroll restoration keeps each note identity during rapid switches", async 
   } finally { vi.useRealTimers(); }
 });
 
-// W1: the capture-close freeze/drain (FOC-R343 ...). The reply is the editor's word that nothing
+// W1: the capture-close freeze/drain. The reply is the editor's word that nothing
 // typed before it is still on its way and nothing more can be typed.
 describe("BridgeClient freezeForClose", () => {
   type Frozen = Extract<EditorToHost, { type: "frozenForClose" }>;

@@ -43,7 +43,7 @@ extension AppEnvironment {
     }
 
     /// Locks each note that can be locked (not locked yet, not in the Trash; the Archive is fine,
-    /// M9-R10) with the unlocked vault's access. An open note keeps its edits and its editor shows
+    ///) with the unlocked vault's access. An open note keeps its edits and its editor shows
     /// it again, keyed. One note failing does not stop the others. Throws `accessRevoked` when
     /// the vault is locked: ask for the password first.
     func lockNotes(ids: [String]) async throws -> NoteLockOutcome {

@@ -330,12 +330,12 @@ final class MobileSyncController {
 
     static let movedStatus = "This library moved to iCloud"
 
-    /// "Move This Library to iCloud" (MOVE-R1 to MOVE-R3): one final sync with the server, the check that nothing is left in either
+    /// "Move This Library to iCloud": one final sync with the server, the check that nothing is left in either
     /// direction, a verified backup and the detach, all in `PrivateServerMove.run`; then this device signs out of the private server
     /// for this library (the sign-in and the account keys go from the Keychain, the device identity stays, the server's copy stays),
     /// so nothing reconnects or binds it again. Throws the reason when it cannot move; nothing has changed then. Mac twin:
     /// `MacSyncController.leaveForICloud`.
-    /// `withoutMissingFiles`: the owner chose "Move to iCloud Without These Files…" after the refusal offered it (MOVE-R10).
+    /// `withoutMissingFiles`: the owner chose "Move to iCloud Without These Files…" after the refusal offered it.
     func leaveForICloud(withoutMissingFiles: Bool = false) async throws {
         guard !paused else { throw PrivateServerMoveRefusal.syncPaused }
         guard !busy, !stopping, receivingTask == nil else { throw PrivateServerMoveRefusal.syncRunning }
@@ -598,7 +598,7 @@ final class MobileSyncController {
     @ObservationIgnored private var pauseFixtureStarted = false
 
     /// The disposable UI-test library bound to the private server as a finished sync leaves it (account, uploads on), with no sign-in
-    /// and no network: Settings ▸ iCloud then shows the move (MOVE-R1). Used for the evidence screenshots only.
+    /// and no network: Settings ▸ iCloud then shows the move. Used for the evidence screenshots only.
     func runPrivateServerUITestFixtureIfRequested() {
         let arguments = ProcessInfo.processInfo.arguments
         guard arguments.contains("--ui-testing"), arguments.contains("--private-server-fixture"), let library,
@@ -724,7 +724,7 @@ final class MobileSyncController {
 
     private func loadAccount() async throws {
         guard !stopping else { throw CancellationError() }
-        // A move that stopped between the detach and the sign-out finishes here: the library never binds again (MOVE-R3).
+        // A move that stopped between the detach and the sign-out finishes here: the library never binds again.
         if let library, try PrivateServerMove.hasLeft(library.database) {
             try await keychain.clearAuthentication()
             UserDefaults.standard.set(false, forKey: namespace + ".connected")

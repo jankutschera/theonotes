@@ -52,7 +52,7 @@ enum InlineScanner {
     /// `? ! . , : * _ ~`: trailing punctuation that ends a sentence, not the URL (GFM autolinks).
     private static let urlTrailing: Set<Unicode.Scalar> = ["?", "!", ".", ",", ":", "*", "_", "~"]
 
-    /// Where a bare URL running from `bodyFrom` (after `://`) to `to` really ends (M6-R43, GFM's
+    /// Where a bare URL running from `bodyFrom` (after `://`) to `to` really ends (GFM's
     /// extended autolink rule; JS `urlEnd`): trailing `? ! . , : * _ ~` are dropped, and a trailing
     /// `)` only while the URL has more `)` than `(`. Never before `bodyFrom`.
     static func urlEnd(_ s: [Unicode.Scalar], bodyFrom: Int, to: Int) -> Int {

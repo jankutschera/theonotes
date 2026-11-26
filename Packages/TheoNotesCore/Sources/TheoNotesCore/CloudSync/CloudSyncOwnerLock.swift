@@ -4,8 +4,8 @@
 import Darwin
 import Foundation
 
-/// Only one sync owner per library (CK-R133). The app process is the owner: it alone runs the CloudKit gateway, the key layer
-/// and the blob transfers (the blob assembly files rely on an in-process per-hash lock, CK-R112, and two engines on one library
+/// Only one sync owner per library. The app process is the owner: it alone runs the CloudKit gateway, the key layer
+/// and the blob transfers (the blob assembly files rely on an in-process per-hash lock,, and two engines on one library
 /// would race for the same base pairs). The command-line helper and the MCP server (`theonotes`) never sync: they write through
 /// the SQLite triggers like any other writer and the app's next cycle uploads what they changed.
 ///

@@ -8,7 +8,7 @@ import GRDB
 public enum BackupError: Error, Equatable {
     case pendingEdits, pendingFiles, invalidManifest, checksumMismatch, missingAttachment, unsupportedVersion
     case passwordsRequired, attachmentIdentityCollision, restoreFilesPending
-    /// Creating a backup found a note whose saved history does not match its lock state (FOC-R277).
+    /// Creating a backup found a note whose saved history does not match its lock state.
     case inconsistentHistory
 }
 
@@ -31,7 +31,7 @@ extension BackupError: LocalizedError {
 
 struct BackupFile: Codable, Sendable { let path: String; let bytes: Int64; let sha256: String }
 struct BackupManifest: Codable, Sendable {
-    /// 2 since the focus state (FOC-R5); the reader accepts 1 and 2.
+    /// 2 since the focus state; the reader accepts 1 and 2.
     var version = 2
     let createdAt: Int64
     let noteIds: [String]
@@ -67,7 +67,7 @@ struct BackupNoteRecord: Codable, Sendable {
     let note: SyncNotePayload
     let attachments: [BackupAttachment]
     let selection: String?, foldState: String?, scrollTop: Double?
-    // Backup v2 (FOC-R5). All nil in a v1 archive.
+    // Backup v2. All nil in a v1 archive.
     var captureSource: String? = nil
     var lastOpenedAt: Int64? = nil
     var pings: [BackupPing]? = nil
@@ -119,7 +119,7 @@ public struct LibraryBackup: Sendable {
     }
 
     /// The catalogue id of exactly this archive, or nil: a caller that just made and verified a backup names that one, never
-    /// another (MOVE-R2).
+    /// another.
     public func catalogID(of archive: URL) throws -> String? {
         try localBackups().first { $0.url.standardizedFileURL == archive.standardizedFileURL }?.id
     }
@@ -267,7 +267,7 @@ public struct LibraryBackup: Sendable {
         }
     }
 
-    /// What one note carries besides its text (FOC-R5). A locked note exports only what it may:
+    /// What one note carries besides its text. A locked note exports only what it may
     /// no open time, no hides, and its snapshots as the ciphertext the database holds. A row that
     /// breaks the rule "sealed if and only if locked" fails the backup (`inconsistentHistory`).
     struct FocusState {
@@ -531,7 +531,7 @@ public struct LibraryBackup: Sendable {
 
     /// The dates SQLite text can hold and GRDB reads back: 0001-01-01 to 9999-12-31, in milliseconds.
     /// That is narrower than the sync revision range, which a stored year 287396 would satisfy and
-    /// which no later read of the row could decode (FOC-R275).
+    /// which no later read of the row could decode.
     static let earliestDate: Int64 = -62_135_596_800_000, latestDate: Int64 = 253_402_300_799_999
 
     private static func inRevisionRange(_ value: Int64) -> Bool {
@@ -555,7 +555,7 @@ public struct LibraryBackup: Sendable {
     }
     private static let focusRecordKeys: Set<String> = ["captureSource", "lastOpenedAt", "pings", "hides", "snapshots"]
 
-    /// Every focus field of a record is hostile input (FOC-R5, FOC-R272). `ids` holds the ping and
+    /// Every focus field of a record is hostile input. `ids` holds the ping and
     /// snapshot ids of the whole archive so far: they are unique across it.
     private static func validateFocus(_ record: BackupNoteRecord, keys: Set<String>, isV2: Bool, hasEnvelope: Bool, ids: inout Set<String>) throws {
         let invalid = BackupError.invalidManifest
@@ -577,7 +577,7 @@ public struct LibraryBackup: Sendable {
                 guard (1...maximumAnchorLine).contains(line), LineAnchor.isValidHash(hash) else { throw invalid }
             }
         }
-        // A locked note keeps one reminder and it names no line (FOC-R10).
+        // A locked note keeps one reminder and it names no line.
         if locked { guard pings.count <= 1, pings.allSatisfy({ $0.anchorLine == nil }) else { throw invalid } }
 
         var keys = Set<String>()
@@ -600,7 +600,7 @@ public struct LibraryBackup: Sendable {
         }
     }
 
-    /// FOC-R8's grammar, for the hides of one note. `pool` belongs to `library.json`.
+    /// 's grammar, for the hides of one note. `pool` belongs to `library.json`.
     private static func isValidHideKey(_ key: String, noteId: String, pingIDs: Set<String>) -> Bool {
         if key.hasPrefix("note:") { return key == "note:" + noteId }
         if key.hasPrefix("ping:") { return pingIDs.contains(String(key.dropFirst("ping:".count))) }
@@ -680,10 +680,10 @@ public struct LibraryBackup: Sendable {
             && UUID(uuidString: String(name.dropFirst(prefix.count).dropLast(suffix.count))) != nil
     }
 
-    /// The file extension of an export the person chooses (REN2-R37): `.theonotes-backup`. Archives made by the
+    /// The file extension of an export the person chooses: `.theonotes-backup`. Archives made by the
     /// first release (`.baerchen-backup`) restore the same way; the format inside is unchanged.
     /// The copies the app keeps itself (rolling, restore safety, daily snapshots, all in `backup_catalog`) keep the
-    /// legacy `baerchen-<id>.baerchen-backup` / `.sqlite` names on purpose (REN2-R50): an older build after a
+    /// legacy `baerchen-<id>.baerchen-backup` / `.sqlite` names on purpose: an older build after a
     /// rollback treats an unknown catalog name as an invalid manifest. // LegacyNames (A2)
     public static let backupExtension = "theonotes-backup"
 }

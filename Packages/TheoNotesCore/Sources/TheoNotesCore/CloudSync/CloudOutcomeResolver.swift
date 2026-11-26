@@ -3,13 +3,13 @@
 
 import Foundation
 
-/// What the publisher does about a save whose outcome is not a plain `saved`: the rows of the CK-R4 table, as pure
+/// What the publisher does about a save whose outcome is not a plain `saved`: the rows of the table, as pure
 /// decisions over values (the in-flight snapshot, the base pair we held, the record the cloud returns now). Nothing here
 /// reads or writes a table, so each row is testable by itself; `CloudPublisher` executes the decision.
 public enum CloudAmbiguousDecision: Sendable, Equatable {
     /// Rows 1 and 5: the save did not land. Send the same snapshot again, with the same base and the same attempt id.
     case resendSameSnapshot
-    /// Row 2: the record is gone although we held a base. Pause the entity (CK-R5); keep everything.
+    /// Row 2: the record is gone although we held a base. Pause the entity; keep everything.
     case pauseEntity
     /// Row 3: our save landed and is still the newest version. The pair becomes (this tag, ancestor = our snapshot).
     case saveLanded(systemFields: Data)
@@ -63,14 +63,14 @@ public enum CloudOutcomeResolver {
 
     /// The merge ancestor for a cloud version that arrived while a snapshot of ours is in flight (the receiver asks).
     /// Row 4 knows an exact one (our own snapshot); every other case merges against the base ancestor we held, which is
-    /// `nil` for a create (CK-R13: a never-synced entity merges against an empty base).
+    /// `nil` for a create (a never-synced entity merges against an empty base).
     public static func mergeBase(attempt: CloudInflight, remote: CloudRemoteVersion) -> Data? {
         if remote.sid != attempt.attemptId, remote.sids.contains(attempt.attemptId) { return attempt.sealed }
         return attempt.baseAncestor
     }
 
     /// The identity of a conflict copy made while a snapshot of ours is in flight: `(attempt id, cloud version)`, so a
-    /// replay of the same ambiguous situation makes the same copy (CK-R4 row 6). Without a snapshot the receiver uses
+    /// replay of the same ambiguous situation makes the same copy. Without a snapshot the receiver uses
     /// the fetched version's own `sid` and `ver`.
     public static func conflictIdentity(attempt: CloudInflight, remote: CloudRemoteVersion) -> (mutationID: String, remoteRevision: Int64) {
         (attempt.attemptId, remote.ver)

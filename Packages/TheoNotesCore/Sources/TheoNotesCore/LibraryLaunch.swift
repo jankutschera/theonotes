@@ -12,14 +12,14 @@ public enum SyncLaunchPolicy: Sendable, Equatable {
     case localOnly
 }
 
-/// The library a launch opens and the sync policy that comes with it (INT-R14).
+/// The library a launch opens and the sync policy that comes with it.
 public struct LibraryLaunch: Sendable {
     public let paths: AppPaths
     public let syncPolicy: SyncLaunchPolicy
-    /// What the launch did about a library still in the pre-rename folder (REN-R2).
+    /// What the launch did about a library still in the pre-rename folder.
     public let legacyMove: LegacyLibraryMove
     /// Whether the app may create the library folder: only for a fresh install, where neither
-    /// the new nor the old folder existed at the first check of the launch (REN-R12). Any other
+    /// the new nor the old folder existed at the first check of the launch. Any other
     /// launch opens a folder it has seen, and refuses to open one that has vanished since.
     public let createsLibraryFolder: Bool
 

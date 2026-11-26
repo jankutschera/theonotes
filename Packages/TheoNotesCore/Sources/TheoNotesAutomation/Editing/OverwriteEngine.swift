@@ -9,7 +9,7 @@ enum OverwriteEngine {
     /// Whole note: `content`. A section (heading line through its subsections): `content` must be
     /// empty or begin with a heading of the section's level. A preamble: `content` must not begin
     /// with a heading. Empty content deletes the whole section or preamble, blank lines included.
-    /// Other content replaces the target (ruling M5-R76), except that each edge run of blank lines
+    /// Other content replaces the target, except that each edge run of blank lines
     /// (before the next heading, and leading a preamble) is kept unless the content supplies its
     /// own: content ending in blank lines replaces the old trailing run, content starting with a
     /// blank line the old leading run. Writing back exactly what `cat --section` returned therefore

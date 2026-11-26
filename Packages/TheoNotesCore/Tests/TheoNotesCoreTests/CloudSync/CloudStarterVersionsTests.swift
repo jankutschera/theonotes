@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// The first-contact base of a starter note is chosen from the shipped versions (STARTER-R2): the merge rules, without a coordinator.
+/// The first-contact base of a starter note is chosen from the shipped versions: the merge rules, without a coordinator.
 /// v1 is the frozen first set; "v2" here is v1 with most lines rewritten, the case that makes a three-way merge over v1 conflict.
 @Suite struct CloudStarterVersionsTests {
     static let id = GettingStartedNotes.ids[1]

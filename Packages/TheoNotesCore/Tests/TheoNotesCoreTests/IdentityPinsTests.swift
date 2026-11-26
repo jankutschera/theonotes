@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// REN2-R45 ... R49 (rename stage 2, task A2): every persisted identity string and every frozen crypto or
+/// R49 (rename stage 2, task A2): every persisted identity string and every frozen crypto or
 /// protocol label has ONE source (`LegacyNames`, `ProtocolLabels`). These pins hold today's bytes. A value that
 /// changes here breaks data on disk (locked notes, edit journals), the Keychain items of the installed app or the
 /// signatures the sync Worker verifies. The only legitimate way to change an identity string is the cutover
@@ -103,7 +103,7 @@ extension IdentityPinsTests {
         #expect(AppIdentity.productionBundleIdentifier == LegacyNames.bundleRoot)
     }
 
-    /// REN2-R51 (task B3): the stores read their Keychain services from `AppIdentity`, which reads the bundle root, so the
+    /// (task B3): the stores read their Keychain services from `AppIdentity`, which reads the bundle root, so the
     /// cutover moves them with the bundle id. Today's bytes are the ones the installed app's items live under.
     @Test func test_keychain_services_follow_the_bundle_root_and_keep_todays_bytes() {
         #expect(AppIdentity.syncKeychainService == AppIdentity.productionBundleIdentifier + ".sync")

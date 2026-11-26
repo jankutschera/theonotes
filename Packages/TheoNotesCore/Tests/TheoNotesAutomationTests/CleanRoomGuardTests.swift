@@ -4,7 +4,7 @@
 import Foundation
 import Testing
 
-/// Ruling M5-R269: no sentence of eight words or more from the private research dumps (the reference
+///: no sentence of eight words or more from the private research dumps (the reference
 /// tool's help text and MCP descriptions) may appear in a shipping source. `scripts/ip-guard.py` does the
 /// comparison; `scripts/test-all.sh` runs it as well.
 @Suite struct CleanRoomGuardTests {

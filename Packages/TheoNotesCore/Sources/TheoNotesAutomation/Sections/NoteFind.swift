@@ -9,7 +9,7 @@ enum NoteFind {
     /// `ignoreCase` compares case-insensitively but diacritic-sensitively; canonically equivalent
     /// spellings (`é` and `e` + U+0301) match either way. A needle with `\r` or `\n` is compared
     /// literally (scalar by scalar), because `\r\n` is one grapheme cluster and would otherwise
-    /// never match a lone `\n` (ruling M5-R65). `word`: the match starts and ends on a Unicode
+    /// never match a lone `\n`. `word`: the match starts and ends on a Unicode
     /// word boundary (`WordBoundaries`). An empty needle has no occurrences. `limit` stops after
     /// that many occurrences (a first-only edit asks for one).
     static func occurrences(

@@ -56,7 +56,7 @@ import Testing
         #expect(try parsed("show", "N", "--title=-x").value("--title") == "-x")
     }
 
-    /// Rulings M5-R44 and M5-R46. The lines marked observed are in `cli-observed.json` and replayed by
+    ///. The lines marked observed are in `cli-observed.json` and replayed by
     /// `parseErrorsEqualTheObservedBearcliTexts` / `commandLinesBearcliAcceptsAreAcceptedHere`.
     @Test func dashLeadingValuesFollowTheProbe() throws {
         // Observed: --query (accepted), --string (accepted), --title, --section, --limit, --tag (refused).
@@ -161,7 +161,7 @@ import Testing
 
     /// Every parse-level usage error bearcli printed in the probe comes out the same here, with
     /// `bearcli` and `Bear` reworded. The option help quoted in the `Help:` line is our own prose
-    /// (ruling M5-R269) and is stored as a placeholder in the fixture, so both sides are compared with it masked.
+    /// and is stored as a placeholder in the fixture, so both sides are compared with it masked.
     @Test func parseErrorsEqualTheObservedBearcliTexts() throws {
         let observed = try JSONValue(parsing: Data(contentsOf: Self.observedURL))
         var checked = 0
@@ -289,7 +289,7 @@ import Testing
         #expect(seen.root == nil)
     }
 
-    // MARK: Lazy library (M5-R45)
+    // MARK: Lazy library
 
     /// `app open --data-dir <empty folder>` decides on `app_unavailable` without touching the library.
     @Test func handlerThatNeverAsksNeverOpensTheLibrary() throws {

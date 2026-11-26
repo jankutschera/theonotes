@@ -5,7 +5,7 @@ import TheoNotesCore
 import Foundation
 import Observation
 
-/// The state and actions behind Settings ▸ Privacy (M9M-R65..R70). Every action goes through the
+/// The state and actions behind Settings ▸ Privacy. Every action goes through the
 /// vault and the core, never around them; nothing here logs a password or a note.
 @MainActor
 @Observable

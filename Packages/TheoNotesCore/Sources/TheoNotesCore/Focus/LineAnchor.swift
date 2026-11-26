@@ -4,7 +4,7 @@
 import Foundation
 
 /// Points at one line of a note: `line` (1-based) and `hash` (8 lowercase hex, FNV-1a 32 over the
-/// line's UTF-8 bytes, the same rule the editor's folds use, FOC-R6). The hash lets the anchor
+/// line's UTF-8 bytes, the same rule the editor's folds use). The hash lets the anchor
 /// follow its line when lines are added or removed above it.
 ///
 /// Lines are split on `\n`; a trailing `\r` is not part of the line (CRLF text). The text is
@@ -13,7 +13,7 @@ public struct LineAnchor: Codable, Equatable, Hashable, Sendable {
     public let line: Int
     public let hash: String
 
-    /// How far from the stored line `resolve(in:)` looks for the hash (FOC-R6).
+    /// How far from the stored line `resolve(in)` looks for the hash.
     static let window = 50
 
     public init(line: Int, hash: String) {

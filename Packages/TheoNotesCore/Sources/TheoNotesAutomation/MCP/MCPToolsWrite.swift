@@ -33,7 +33,7 @@ extension MCPTools {
         return Self.flat(record)
     }
 
-    /// `capture_thought` (FOC-R14): the text, stored as given. Same result shape as `create_note`.
+    /// `capture_thought`: the text, stored as given. Same result shape as `create_note`.
     func captureThought(_ a: MCPArguments) throws(AutomationError) -> JSONValue {
         guard let text = try a.string("text") else {
             throw AutomationError(code: .usage, message: "missing required field: text")
@@ -98,7 +98,7 @@ extension MCPTools {
     }
 
     /// `edits`: each has `find` and exactly one of `replace`, `insertAfter`, `insertBefore` or
-    /// `delete: true`; `delete: false` is no deletion. An empty list is `usage` (ruling M5-R93).
+    /// `delete: true`; `delete: false` is no deletion. An empty list is `usage`.
     private static func editSpecs(_ a: MCPArguments) throws(AutomationError) -> [EditSpec] {
         let items = try a.objects("edits") ?? []
         guard !items.isEmpty else { throw AutomationError(code: .usage, message: "At least one edit is required") }

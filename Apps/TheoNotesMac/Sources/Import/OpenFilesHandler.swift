@@ -7,7 +7,7 @@ import Foundation
 
 /// Files the Finder hands to the app (Open With, a drop on the Dock icon, `open -a`): each becomes a
 /// new note through the same importer as File ▸ Import Notes (default options), and the last note made
-/// is shown in the frontmost main window (FIX-R1 … FIX-R6).
+/// is shown in the frontmost main window.
 ///
 /// Files that arrive before the library is open (a cold launch through Open With) or while App Lock is
 /// engaged wait here, in order, and run once there is a `target` and the app is unlocked.
@@ -150,7 +150,7 @@ final class OpenFilesHandler {
         target.didImport()
         let report = outcome.report
         if target.isLocked() {
-            // What a locked app shows is nothing (M9M-R63).
+            // What a locked app shows is nothing.
             appLogger.notice("open files: \(report.created) imported, result not shown while locked")
         } else {
             if let id = report.createdNoteIds.last, !target.show(id) {
@@ -191,7 +191,7 @@ extension OpenFilesHandler {
 
 extension OpenFilesHandler {
     /// SwiftUI shows no launch window when the app was started by an opened file that it left to the
-    /// delegate (FIX-R7), and no window means nothing has installed `openWindow` yet. If, shortly after
+    /// delegate, and no window means nothing has installed `openWindow` yet. If, shortly after
     /// the note was queued, there still is no main window and no window host, ask for one the way a Dock
     /// click does (the reopen event); the queued note opens in it. Nothing happens when a window came by
     /// itself, so there is never a second one.

@@ -9,7 +9,7 @@ import Speech
 public enum VoiceAvailability: Equatable, Sendable {
     case ready
     /// The on-device speech model for this (supported) locale is not installed. Downloading it
-    /// needs the user's OK (FOC-R9).
+    /// needs the user's OK.
     case needsModelDownload(Locale)
     case unsupportedLocale
     /// On-device transcription is not available on this device.
@@ -18,7 +18,7 @@ public enum VoiceAvailability: Equatable, Sendable {
 }
 
 /// The questions asked before a voice note starts. There is deliberately no speech-recognition
-/// authorization here: on-device transcription needs the microphone only (FOC-R9).
+/// authorization here: on-device transcription needs the microphone only.
 public protocol VoicePreflighting: Sendable {
     /// Never prompts and never touches the network.
     func availability(locale: Locale) async -> VoiceAvailability

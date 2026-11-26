@@ -61,7 +61,7 @@ import Testing
         let view = try menu("View")
         let all = titles(view)
         #expect(!all.contains("Show Sidebar") && !all.contains("Hide Sidebar"), "\(all)")
-        // No window tabs (MAC11-R13): the system's tab items are gone with automatic tabbing.
+        // No window tabs: the system's tab items are gone with automatic tabbing.
         #expect(!NSWindow.allowsAutomaticWindowTabbing)
         #expect(!all.contains("Show Tab Bar") && !all.contains("Show All Tabs") && !all.contains("Hide Tab Bar"), "\(all)")
         // The layout presets stay; Quick Open moved here from File.
@@ -72,7 +72,7 @@ import Testing
 
     @Test func viewMenuHasTheSectionsAndNoteSorting() throws {
         let view = try menu("View")
-        // The menu mirrors the sidebar: its sections, its order, its names (MAC11-R11).
+        // The menu mirrors the sidebar: its sections, its order, its names.
         let sections = SectionMenu.items.map { SectionMenu.title($0.scope) }
         #expect(sections == [
             "Show Notes", "Show Inbox", "Show Ideas", "Show Logs", "Show References", "Show Pinned", "Show Untagged",

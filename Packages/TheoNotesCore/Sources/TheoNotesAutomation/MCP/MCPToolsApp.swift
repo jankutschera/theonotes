@@ -5,7 +5,7 @@ import TheoNotesCore
 import Foundation
 
 /// `app_open_note` and `app_get_selection`: the tools that need the running app. Arguments are
-/// checked first, the library is opened afterwards (ruling M5-R45), as everywhere in `MCPTools`.
+/// checked first, the library is opened afterwards, as everywhere in `MCPTools`.
 extension MCPTools {
     func appOpenNote(_ a: MCPArguments) throws(AutomationError) -> JSONValue {
         let selector = try noteSelector(a)
@@ -41,7 +41,7 @@ extension MCPTools {
                 return try NoteRecord.load(note, db: db, attachments: attachments(library))
             }
         } catch {
-            // A note outside this server's scope is not there as far as the caller can tell (M5-R18).
+            // A note outside this server's scope is not there as far as the caller can tell.
             if error.code == .outOfScope { return .object([]) }
             throw error
         }

@@ -3,9 +3,9 @@
 
 import Foundation
 
-/// One crash, hang or resource report, reduced to facts that cannot hold what a person wrote (REL-R42).
+/// One crash, hang or resource report, reduced to facts that cannot hold what a person wrote.
 ///
-/// A record is what the platform adapters (MetricKit, REL-R44) build and what the store writes. It has no
+/// A record is what the platform adapters (MetricKit) build and what the store writes. It has no
 /// free-text field: `facts` accepts only the keys in `allowedFactKeys`, each with a value of a fixed shape;
 /// frames carry binary names, UUIDs and numbers. `scrubbed()` enforces that again at the point of writing, so a
 /// careless adapter, or a field a future OS adds, cannot put note text into a file.

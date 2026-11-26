@@ -7,7 +7,7 @@ import GRDB
 
 public enum SyncQueueError: Error, Equatable {
     case accountMismatch, notEnabled, invalidReceipt, mutationNotFound, snapshotUnavailable
-    /// This library moved to iCloud; the private-server engine never binds it again (MOVE-R3).
+    /// This library moved to iCloud; the private-server engine never binds it again.
     case movedToICloud
 }
 
@@ -45,7 +45,7 @@ public struct SyncQueue: Sendable {
             let current = try String.fetchOne(db, sql: "SELECT accountId FROM sync_control WHERE id=1")
             guard current == nil || current == accountID else { throw SyncQueueError.accountMismatch }
             if try PrivateServerMove.hasLeft(db) { throw SyncQueueError.movedToICloud }
-            // A library bound to CloudKit belongs to that engine, whatever account id is offered (CK-R12).
+            // A library bound to CloudKit belongs to that engine, whatever account id is offered.
             guard try String.fetchOne(db, sql: "SELECT backend FROM sync_control WHERE id=1") != "cloudkit" else { throw SyncQueueError.accountMismatch }
             try db.execute(sql: "UPDATE sync_control SET accountId=? WHERE id=1", arguments: [accountID])
         }

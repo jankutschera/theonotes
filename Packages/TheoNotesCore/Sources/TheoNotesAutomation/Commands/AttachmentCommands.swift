@@ -4,7 +4,7 @@
 import TheoNotesCore
 import Foundation
 
-/// `attachments list|add|add-url|delete|save`. Check order (rulings M5-R45, M5-R51, M5-R59):
+/// `attachments list|add|add-url|delete|save`. Check order
 /// arguments (note, then `--filename` / `--url`, then the terminal checks), the library, the note,
 /// the lock, then the attachment. State-changing commands print nothing on success.
 enum AttachmentCommands {
@@ -47,7 +47,7 @@ enum AttachmentCommands {
     private static func list(_ parsed: ParsedCommand, _ env: CommandEnvironment) throws(AutomationError) {
         let selector = try selector(parsed)
         let service = try service(env)
-        // As in `show`: the note resolves first, then the fields, then the lock (M5-R51).
+        // As in `show`: the note resolves first, then the fields, then the lock.
         var fields: [String] = []
         let files = try service.listAttachments(selector) { _ throws(AutomationError) in
             fields = try NoteFields.parse(parsed.fieldsArgument, spec: parsed.spec)
@@ -114,7 +114,7 @@ enum AttachmentCommands {
 
     // MARK: save
 
-    /// The raw bytes of the file on stdout (ruling M5-R33), read and written one chunk at a time.
+    /// The raw bytes of the file on stdout, read and written one chunk at a time.
     private static func save(_ parsed: ParsedCommand, _ env: CommandEnvironment) throws(AutomationError) {
         let selector = try selector(parsed)
         let name = try requiredFilename(parsed)

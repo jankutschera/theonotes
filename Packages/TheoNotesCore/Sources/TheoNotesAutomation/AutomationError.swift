@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-/// Error codes of the `{"error":{"code",…}}` envelope (ruling M5-R12).
+/// Error codes of the `{"error":{"code",…}}` envelope.
 public enum ErrorCode: String, Sendable, CaseIterable {
     // Observed from bearcli.
     case usage

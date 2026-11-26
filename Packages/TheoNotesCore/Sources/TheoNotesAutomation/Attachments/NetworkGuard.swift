@@ -66,7 +66,7 @@ public struct SystemResolver: HostResolver {
 /// Limits how many host lookups are in flight at once. A lookup counts until its resolver call
 /// returns, also after its caller timed out, so lookups that hang cannot pile up without bound.
 public final class LookupGate: Sendable {
-    /// Lookups allowed at once, process-wide (ruling M5-R105).
+    /// Lookups allowed at once, process-wide.
     public static let limit = 4
     public static let shared = LookupGate(limit: limit)
 
@@ -98,8 +98,8 @@ public final class LookupGate: Sendable {
     func release() { running.withLock { $0 -= 1 } }
 }
 
-/// Keeps a fetch away from the machine's own services and the local network (rulings M5-R105 to
-/// M5-R108): an agent driven by injected text must not pull a local page into a note. A host is
+/// Keeps a fetch away from the machine's own services and the local network
+///): an agent driven by injected text must not pull a local page into a note. A host is
 /// refused when it is `localhost`, a `.localhost` or `.local` name, a literal address in a blocked
 /// range, or when any address it resolves to is in one. After the transfer the addresses actually
 /// connected to are checked as well (`verifyPeer`).
@@ -304,7 +304,7 @@ enum NetworkGuard {
     // MARK: Addresses
 
     /// 4 bytes: IPv4; 16 bytes: IPv6. Everything that is not global unicast space is blocked
-    /// (M5-R105, M5-R108).
+    ///.
     static func isBlocked(_ address: [UInt8]) -> Bool {
         address.count == 4 ? isBlockedV4(address) : address.count == 16 ? isBlockedV6(address) : true
     }

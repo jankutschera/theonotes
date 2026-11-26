@@ -6,7 +6,7 @@ import Testing
 
 @testable import TheoNotesCore
 
-/// The two scans the automation layer needs beyond `metadata(for:)` (M5-R233, M5-R234):
+/// The two scans the automation layer needs beyond `metadata(for)`
 /// every heading line, empty ones included, and every tag occurrence with its UTF-8 byte range.
 @Suite struct NoteParserSpansTests {
     @Test func sectionHeadingsKeepEmptyOnesInDocumentOrder() {

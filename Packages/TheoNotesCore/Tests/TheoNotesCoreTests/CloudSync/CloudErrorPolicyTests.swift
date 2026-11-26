@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// Error classification and retry timing (CK-R15). Timing comes from the existing `SyncRetrySchedule`.
+/// Error classification and retry timing. Timing comes from the existing `SyncRetrySchedule`.
 @Suite struct CloudErrorPolicyTests {
     private static let fixed = Date(timeIntervalSince1970: 1_000_000)
 

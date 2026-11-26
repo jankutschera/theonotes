@@ -5,7 +5,7 @@ import AppKit
 import TheoNotesCore
 import SwiftUI
 
-/// Help ▸ Restore Getting Started Notes (REL-R75): the title, the plain words of its notices, and
+/// Help ▸ Restore Getting Started Notes: the title, the plain words of its notices, and
 /// when the command is off.
 enum GettingStartedMenu {
     static let title = "Restore Getting Started Notes"
@@ -73,7 +73,7 @@ extension AppModel {
 }
 
 extension AppEnvironment {
-    /// First launch of a brand-new library (REL-R71): `GettingStartedNotes.seedNewLibrary`. A failure is
+    /// First launch of a brand-new library: `GettingStartedNotes.seedNewLibrary`. A failure is
     /// logged and never stops the launch; the person simply starts with an empty library.
     @discardableResult
     func seedGettingStartedNotes(isNewLibrary: Bool) -> [String] {
@@ -85,7 +85,7 @@ extension AppEnvironment {
         }
     }
 
-    /// First launch of a build with the new texts (STARTER-R18): `GettingStartedNotes.upgradeFirstShipped` replaces each untouched
+    /// First launch of a build with the new texts: `GettingStartedNotes.upgradeFirstShipped` replaces each untouched
     /// first-release starter once. A failure is logged and never stops the launch; the marker is then not set and the next launch tries again.
     @discardableResult
     func upgradeGettingStartedNotes() -> [String] {

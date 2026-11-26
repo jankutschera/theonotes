@@ -4,7 +4,7 @@
 import AVFoundation
 import Foundation
 
-/// Something that happened to the audio input while recording (FOC-R9).
+/// Something that happened to the audio input while recording.
 public enum AudioInputEvent: Equatable, Sendable {
     /// iOS: a call, Siri or another app took the audio session.
     case interruptionBegan

@@ -4,7 +4,7 @@
 import Foundation
 
 // The CloudKit-shaped value types of the sync seam. They import no CloudKit symbol: the live gateway (Task 14,
-// `CloudSync/Live/`) maps them to `CKRecord`. Draft until Gate G0 (CK-R16).
+// `CloudSync/Live/`) maps them to `CKRecord`. Draft until Gate G0.
 
 public enum CloudValue: Sendable, Equatable, Codable {
     case int(Int64), string(String), bytes(Data), strings([String]), asset(URL)
@@ -82,7 +82,7 @@ public enum ZoneRemoval: String, Sendable, Equatable, Codable {
     case deleted, userDeletedZone, purged, encryptedDataReset
 }
 
-/// The person-visible zone lifecycle kept in `ck_state.zoneState` (CK-R15). The gateway creates the zone only from `unknown`.
+/// The person-visible zone lifecycle kept in `ck_state.zoneState`. The gateway creates the zone only from `unknown`.
 public enum CloudZoneState: Sendable, Equatable {
     case unknown, created, removed(ZoneRemoval)
 }

@@ -20,7 +20,7 @@ enum CaptureThoughtMenu {
 
 extension AppModel {
     /// File ▸ Capture Thought: makes an empty note (`captureSource` command) and opens it in a new
-    /// note window with the caret at its start. That window's own load is not an open (FOC-R3), and
+    /// note window with the caret at its start. That window's own load is not an open, and
     /// closing it with nothing typed moves the note to the Trash (`captureWindowClosed`). Returns the
     /// note's id, or nil when nothing was made: App Lock is engaged, the note could not be stored, or
     /// the window could not be requested (the empty note is cancelled again).
@@ -49,11 +49,11 @@ extension AppModel {
     /// The window of `noteId` closed; `finish` lets go of its editor (commits the note, detaches).
     ///
     /// For the window Capture Thought opened this is the one door to cancelling the capture, and it
-    /// goes through the editor first (FOC-R343): the editor is frozen and drained, so text typed
+    /// goes through the editor first: the editor is frozen and drained, so text typed
     /// just before the close has reached the session, and only then is "untouched" decided. An
     /// untouched capture goes to the Trash; anything else, and any doubt (the editor cannot
     /// confirm in time, App Lock engaged, the app quitting, another window showing the note), keeps
-    /// it (FOC-R252, FOC-R344 … FOC-R346). `finish` runs once the answer is in. Any other window
+    /// it. `finish` runs once the answer is in. Any other window
     /// closes at once.
     func captureWindowClosed(noteId: String, editor: EditorBridgeController, finish: @escaping @MainActor () -> Void) {
         guard environment.takeCaptureWindow(noteId: noteId) else { return finish() }

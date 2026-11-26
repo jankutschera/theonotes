@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-// Mermaid diagrams (M6 Task 12, M6-R45): a ```mermaid fence renders through the block layer.
+// Mermaid diagrams (M6 Task 12): a ```mermaid fence renders through the block layer.
 // Caret outside: the code is collapsed and the diagram shows; caret inside: the code block as
 // usual with a live preview below (re-rendered once typing rests 300 ms). The diagram is an
 // `<img>` of Mermaid's SVG (a data URL) in the layer's shadow root, never live SVG DOM, so labels

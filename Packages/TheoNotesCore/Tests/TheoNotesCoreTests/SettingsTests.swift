@@ -47,7 +47,7 @@ import GRDB
         #expect(try settings.snapshot().typewriterMode == false)
     }
 
-    /// M8 Task 1 (M8-R4): "Keep tags when exporting" is on until the user turns it off.
+    /// M8 Task 1: "Keep tags when exporting" is on until the user turns it off.
     @Test func keepTagsOnExportDefaultsToTrueAndRoundTrips() throws {
         let db = try AppDatabase.inMemory()
         let settings = Settings(db: db)
@@ -178,7 +178,7 @@ import GRDB
         #expect(try Settings(db: db).snapshot() == Settings.Snapshot())
     }
 
-    /// M9M-R2/R3: note relock delay (seconds) and the Touch ID cache opt-in. Device-local settings.
+    /// Note relock delay (seconds) and the Touch ID cache opt-in. Device-local settings.
     @Test func noteRelockDelayDefaultsToImmediateAndOnlyKeepsKnownChoices() throws {
         let db = try AppDatabase.inMemory()
         let settings = Settings(db: db)
@@ -206,7 +206,7 @@ import GRDB
         // Neither value travels in the UI snapshot.
         #expect(try settings.snapshot() == Settings.Snapshot())
     }
-    /// M9M-R61: the app lock settings. Device-local, off by default, same delay choices as the note relock.
+    /// The app lock settings. Device-local, off by default, same delay choices as the note relock.
     @Test func appLockIsOffByDefaultAndKeepsOnlyKnownDelays() throws {
         let db = try AppDatabase.inMemory()
         let settings = Settings(db: db)

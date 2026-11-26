@@ -117,7 +117,7 @@ import Testing
 
     private let searchDoc = "Foo before\n# Top\nfoo in lead\n## Sub\nxFOOx\n"
 
-    /// Observed against Bear (M5-R237): a snippet carries `\n \t \r \\` as two-character escapes in
+    /// Observed against Bear: a snippet carries `\n \t \r \\` as two-character escapes in
     /// JSON and CSV too, not only in TSV; the window is counted on the raw text.
     @Test func snippetsCarryTheirEscapesInEveryFormat() throws {
         let lib = try TestLibrary.make([TestNote(text: searchDoc), TestNote(text: "a\tb\\ foo")])
@@ -262,7 +262,7 @@ import Testing
 
     // MARK: fix round 1
 
-    /// `\r\n` is one grapheme cluster; a multi-line `--string` must still find it (ruling M5-R65).
+    /// `\r\n` is one grapheme cluster; a multi-line `--string` must still find it.
     @Test func searchInMatchesMultiLineStringsInCRLFNotes() throws {
         let text = "# T\r\nfoo\r\nbar\r\nFOO\r\nBAR\r\n"
         // `NoteStore.create` normalizes line endings, so the CRLF text is stored the way an external
@@ -281,7 +281,7 @@ import Testing
         #expect(NoteFind.occurrences(of: "\nFOO", in: text, within: nil, ignoreCase: false, word: true) == [14..<18])
     }
 
-    /// A file linked in `# A` and again in `## B` is searched at its first link inside the range (M5-R61).
+    /// A file linked in `# A` and again in `## B` is searched at its first link inside the range.
     @Test func duplicateAttachmentLinkUsesTheFirstLinkInsideTheRange() throws {
         let text = "# A\n![](scan.png)\n## B\n![](scan.png)\n"
         let lib = try TestLibrary.make([TestNote(text: text)])
@@ -428,7 +428,7 @@ import Testing
             case let template?:
                 let actual = try result.json()
                 problems += Self.sameShape(actual, template, sortedKeys: exit != 0).map { "\(name) \($0)" }
-                // The message is our own wording (ruling M5-R269): present, and counting the candidates it lists.
+                // The message is our own wording: present, and counting the candidates it lists.
                 if template["error"]?["message"]?.string != nil {
                     let count = actual["error"]?["details"]?["candidates"]?.array?.count ?? 0
                     let message = actual["error"]?["message"]?.string ?? ""

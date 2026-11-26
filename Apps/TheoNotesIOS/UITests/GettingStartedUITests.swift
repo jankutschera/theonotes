@@ -3,7 +3,7 @@
 
 import XCTest
 
-/// REL-R79: a fresh install lists the twelve getting started notes under their tag, a relaunch does not
+/// A fresh install lists the twelve getting started notes under their tag, a relaunch does not
 /// add more, and Settings ▸ Restore Getting Started Notes says "Nothing to restore" when nothing is missing. Runs only against
 /// the disposable --ui-testing library (`--reset-library` is the "erased app data" of a fresh install).
 @MainActor final class GettingStartedUITests: XCTestCase {
@@ -100,7 +100,7 @@ import XCTest
     }
 
     /// A fresh install: the twelve notes under their tag, the Welcome note opens with its text, a tap on one of its scenario links opens
-    /// that guide (LINK-TAP-R1, STARTER-R16), and a relaunch adds nothing.
+    /// that guide, and a relaunch adds nothing.
     func testFreshInstallOpensTheTourAndARelaunchAddsNothing() throws {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--reset-library", "--seed-getting-started"]

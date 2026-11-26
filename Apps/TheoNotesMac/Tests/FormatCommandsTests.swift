@@ -395,7 +395,7 @@ import Testing
         #expect(try item("Unfold All Headings").isEnabled(in: state))
     }
 
-    /// M7 final review I4 (M7-R22): the heading badge's Copy Link to Here has a Format menu item for the heading
+    /// M7 final review I4: the heading badge's Copy Link to Here has a Format menu item for the heading
     /// at the caret, so a keyboard-only user can reach it. It is a host action (the badge menu's), not an editor
     /// command, so it sits beside `FormatMenu.items` in `FormatMenu.entries`, right after Unfold All Headings.
     @Test func copyLinkToHereIsAFormatMenuItemForTheHeadingAtTheCaret() throws {
@@ -453,7 +453,7 @@ import Testing
         #expect(readOnly.commands == [.applyCommand(name: .toggleFold)])
     }
 
-    /// M6-R5: ⌘' is the physical key (kVK_ANSI_Quote, 39), so a layout that types another
+    /// ⌘' is the physical key (kVK_ANSI_Quote, 39), so a layout that types another
     /// character there (German "ä") triggers Toggle Fold too, and the typed "'" elsewhere does not.
     @Test func toggleFoldMatchesThePhysicalQuoteKey() {
         #expect(FormatMenu.item(for: key("'", nil, 39, .command))?.title == "Toggle Fold")
@@ -476,7 +476,7 @@ import Testing
         #expect(FormatMenu.item(for: key("t", nil, 17, [.command, .option]))?.title == "Create Table")
     }
 
-    /// M6-R4: the system Show/Hide Toolbar (⌥⌘T) and Customize Toolbar are replaced, so ⌥⌘T has
+    /// The system Show/Hide Toolbar (⌥⌘T) and Customize Toolbar are replaced, so ⌥⌘T has
     /// one owner, Format ▸ Table ▸ Create Table. A window with a toolbar is what makes AppKit
     /// and SwiftUI offer them.
     @Test func theAppRemovesTheSystemToolbarCommands() throws {

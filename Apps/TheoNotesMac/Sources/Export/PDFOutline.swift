@@ -4,13 +4,13 @@
 import TheoNotesCore
 import PDFKit
 
-/// The PDF outline of an exported or printed note (M8-R7): one entry per heading, nested by level.
+/// The PDF outline of an exported or printed note: one entry per heading, nested by level.
 /// An extension of PDFKit's `PDFOutline` rather than a type of the same name, which would shadow
-/// PDFKit's class in this module (M8-R60).
+/// PDFKit's class in this module.
 extension PDFOutline {
     /// Replaces `document`'s outline. Each heading's destination is the first match of its text
     /// after the previous heading's match (`PDFDocument.findString(_:fromSelection:withOptions:)`)
-    /// that is a line of its own, else the first match at all (M8-R62), at the top left of the
+    /// that is a line of its own, else the first match at all, at the top left of the
     /// match; a heading whose text is not found is skipped. A heading nests under the nearest
     /// earlier one of a lower level.
     static func add(_ headings: [RenderedHeading], to document: PDFDocument) {

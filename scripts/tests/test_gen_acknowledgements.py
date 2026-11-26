@@ -315,7 +315,7 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(entry["licence"], "OFL-1.1")
         self.assertIn("Reserved Font Name", entry["note"])
 
-    # ---- GPL-3.0 gate (L1, LIC-R6 amended)
+    # ---- GPL-3.0 gate (L1, amended)
 
     def test_epl2_without_secondary_notice_fails(self):
         fx = self.fx
@@ -534,7 +534,7 @@ class GeneratorTests(unittest.TestCase):
         self.assertTrue((resources / "Extra/data.bin").exists())
 
     def test_codesign_metadata_of_a_nested_bundle_is_not_shipped_content(self):
-        # An ad hoc signed dev build (FOC-R368) signs the SwiftPM resource bundles: their
+        # An ad hoc signed dev build signs the SwiftPM resource bundles: their
         # `_CodeSignature` files come from codesign, not from any package or asset.
         fx = self.fx
         fx.add_package("alpha", "1.0.0", "MIT", MIT.format(who="2020 A"))
@@ -652,7 +652,7 @@ class CommittedFileTests(unittest.TestCase):
         self.assertEqual(self.by_name["@codemirror/view"]["licence"], "MIT")
 
     def test_elkjs_is_not_listed(self):
-        # REN2-R10: elkjs (EPL-2.0 without a GPL secondary licence) is not in the editor bundle.
+        # Elkjs (EPL-2.0 without a GPL secondary licence) is not in the editor bundle.
         self.assertNotIn("elkjs", self.by_name)
         self.assertNotIn("EPL-2.0", [e["licence"] for e in self.document["entries"]])
 

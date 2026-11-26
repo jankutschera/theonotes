@@ -4,7 +4,7 @@
 import AppKit
 import Foundation
 
-/// Word (DOCX) export (A8, MAC11-R15). Our own writer, because the system writer drops every link
+/// Word (DOCX) export. Our own writer, because the system writer drops every link
 /// target and flattens tables to one paragraph per cell. It walks the attributed string RTF export
 /// already uses and writes WordprocessingML: paragraphs, runs (bold, italic, underline, strike,
 /// monospace, size, colour, superscript), Word heading styles from the paragraph's `headerLevel`,

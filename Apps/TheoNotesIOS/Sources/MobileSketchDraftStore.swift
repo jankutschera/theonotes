@@ -335,7 +335,7 @@ actor MobileSketchDraftStore {
             var published = false
             defer {
                 if !published {
-                    // IOS-SKETCH-R1: an already-started Complete/excluded candidate may finish
+                    // An already-started Complete/excluded candidate may finish
                     // after lock. It cannot publish; a durable marker allows safe launch cleanup.
                     try? atomic(Data([1]), to: snapshot.appendingPathComponent("discarded"))
                     try? FileManager.default.removeItem(at: snapshot)

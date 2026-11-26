@@ -5,14 +5,14 @@ import CryptoKit
 import Foundation
 import GRDB
 
-// Verified, resumable blob transfer as CloudKit `BlobPart` records (Task 7, CK-R8, CK-R110 to CK-R114).
+// Verified, resumable blob transfer as CloudKit `BlobPart` records.
 //
 //   upload   local ciphertext (verified against its hash) -> metadata read of the parts that exist -> missing parts, one at a time,
 //            each from a scratch slice -> metadata read again -> `ck_blob_part` rows `verified`
 //   download metadata of every part first -> each asset moved out of the system staging area at once, size and SHA-256 checked,
 //            appended through a 1 MiB buffer -> size and SHA-256 of the whole blob -> pinned in `SyncDownloads/<hash>`
 //
-// Nothing here deletes a record (v1 never deletes blob parts, CK-R8) and nothing writes outside the library's no-backup scratch
+// Nothing here deletes a record (v1 never deletes blob parts) and nothing writes outside the library's no-backup scratch
 // folder except the pinned result. The publisher awaits `ensureUploaded` before it submits an Entity that names a blob; the
 // receiver calls `download(hash:)` before it applies an attachment.
 
@@ -59,7 +59,7 @@ public struct CloudBlobTiming: Sendable {
     /// How long one part save may stay unanswered before the upload gives up for now (the next run asks the cloud).
     public var outcomeTimeout: TimeInterval
     /// How often an unanswered save is looked up in the cloud by name. A last resort only: results are kept by the orphan
-    /// sweep (CK-R114), so an unanswered save normally means the gateway has not sent it yet.
+    /// sweep, so an unanswered save normally means the gateway has not sent it yet.
     public var cloudLookupInterval: TimeInterval
     public init(pollInterval: TimeInterval = 0.25, outcomeTimeout: TimeInterval = 600, cloudLookupInterval: TimeInterval = 60) {
         self.pollInterval = pollInterval; self.outcomeTimeout = outcomeTimeout; self.cloudLookupInterval = cloudLookupInterval
@@ -88,7 +88,7 @@ public actor CloudKitBlobTransfer: CloudBlobUploading, SyncBlobTransport {
     private var closed = false
 
     /// - Parameters:
-    ///   - fence: every transfer runs through `fence.run` so an account change cancels and drains it (CK-R15, CK-R92).
+    /// - fence: every transfer runs through `fence.run` so an account change cancels and drains it.
     ///   - keyReadiness: called before any `BlobPart` is saved; it throws while key creation is incomplete (Task 8,
     ///     `CloudKeyCreation.requireComplete`). Downloads do not need it.
     ///   - freeBytes: free space on the volume of the library, for the pre-flight (default: the system's answer).
@@ -265,7 +265,7 @@ extension CloudKitBlobTransfer {
             return (path, size)
         }
 
-        /// A complete set of `verified` rows younger than 24 h (CK-R8). Anything else is checked against the cloud.
+        /// A complete set of `verified` rows younger than 24 h. Anything else is checked against the cloud.
         private func trusted(hash: String, size: Int) throws -> Bool {
             let rows = try parts.rows(hash: hash)
             guard let first = rows.first else { return false }
@@ -332,7 +332,7 @@ extension CloudKitBlobTransfer {
             let record = CloudRecordCodec.encode(header)
             _ = try CloudRecordCodec.decode(record)
             let attemptId = CloudSyncStore.blobAttemptPrefix + UUIDv7.make()
-            // Readiness and the account fence are checked again right before the save leaves (CK-R14, CK-R92).
+            // Readiness and the account fence are checked again right before the save leaves.
             try keyReadiness()
             try fence.requireCurrent(generation)
             if try store.isAccountFenced() { throw CloudSyncError.fenced }
@@ -358,7 +358,7 @@ extension CloudKitBlobTransfer {
                     switch result.outcome {
                     case .saved: return
                     case .serverRecordChanged:
-                        // The name exists: the save is create-only (no system fields), so nothing was overwritten (CK-R116).
+                        // The name exists: the save is create-only (no system fields), so nothing was overwritten.
                         // Read what is there; the same part written by another device is fine, anything else is foreign.
                         if let found = try await metadata([name])[name], matches(found, hash: hash, plan: plan, part: index, sha: sha) { return }
                         throw CloudBlobError.corruptRemotePart(hash: hash, part: index)
@@ -404,7 +404,7 @@ extension CloudKitBlobTransfer {
 
         // MARK: download
 
-        /// One download of a hash at a time in the whole process and library, whichever transfer instance asks (CK-R117): the
+        /// One download of a hash at a time in the whole process and library, whichever transfer instance asks: the
         /// deterministic assembly file and the pin are only touched under this lock, and a caller that waited finds the pin.
         func downloadWithRetry(hash: String, generation: Int64, cancel: CloudBlobCancel) async throws -> URL {
             let namespace = "cloud-blob-download|\(paths.root.standardizedFileURL.path)|\(hash)"
@@ -429,7 +429,7 @@ extension CloudKitBlobTransfer {
             } catch let crash as CrashInjected {
                 throw crash                  // a crash runs no cleanup; the assembly stays for the next launch (age policy: a day)
             } catch {
-                removeAssemblies(hash: hash)    // an error or a cancel leaves nothing behind (CK-R118)
+                removeAssemblies(hash: hash)    // an error or a cancel leaves nothing behind
                 throw error
             }
         }

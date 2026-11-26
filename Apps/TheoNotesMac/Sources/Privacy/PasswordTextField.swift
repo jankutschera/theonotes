@@ -4,7 +4,7 @@
 import AppKit
 import SwiftUI
 
-/// The field every Note Password is typed into (M9M-R55): an `NSSecureTextField` whose field editor
+/// The field every Note Password is typed into: an `NSSecureTextField` whose field editor
 /// keeps no undo history and which asks for no credential autofill.
 ///
 /// Apple's documentation, as far as it goes: `NSTextField` adopts `NSTextContent`, whose

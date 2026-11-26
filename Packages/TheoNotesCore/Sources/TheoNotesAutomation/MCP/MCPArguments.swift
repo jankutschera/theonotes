@@ -77,7 +77,7 @@ struct MCPArguments {
         return result
     }
 
-    /// `missing required field: <name>` for the first of `names` that is absent (ruling M5-R29).
+    /// `missing required field: <name>` for the first of `names` that is absent.
     func require(_ names: [String]) throws(AutomationError) {
         for name in names where !has(name) {
             throw AutomationError(code: .usage, message: "missing required field: \(path)\(name)")

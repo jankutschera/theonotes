@@ -8,7 +8,7 @@ public enum FocusClock {
     /// Longest line shown on a card or in a notification body.
     static let displayLimit = 200
 
-    /// The first local midnight strictly after `date` (when a hide ends, FOC-R8). On a daylight
+    /// The first local midnight strictly after `date` (when a hide ends). On a daylight
     /// saving day that is 23 or 25 hours long it is still the start of the next calendar day.
     public static func nextLocalMidnight(after date: Date, calendar: Calendar) -> Date {
         let start = calendar.startOfDay(for: date)
@@ -18,7 +18,7 @@ public enum FocusClock {
         return calendar.startOfDay(for: tomorrow)
     }
 
-    /// The default reminder time (FOC-R10): 09:00 today when `date` is before 09:00, otherwise
+    /// The default reminder time: 09:00 today when `date` is before 09:00, otherwise
     /// 09:00 tomorrow.
     public static func nextNineAM(after date: Date, calendar: Calendar) -> Date {
         func nine(on day: Date) -> Date? {

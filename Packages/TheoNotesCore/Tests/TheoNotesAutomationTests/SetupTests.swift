@@ -93,7 +93,7 @@ struct SetupTests {
         #expect(plain.sudoCommand() == "sudo mkdir -p /usr/local/bin && sudo ln -sfh '/Applications/Baerchen.app/Contents/Helpers/theonotes' /usr/local/bin/theonotes")
     }
 
-    // MARK: Race safety (M5-R198)
+    // MARK: Race safety
 
     /// Replaces whatever is at `path` with a regular file, the way another process could between
     /// the installer's check and its change.
@@ -173,7 +173,7 @@ struct SetupTests {
         #expect(Self.hiddenLeftovers(home).isEmpty)
     }
 
-    // MARK: The bin folder (M5-R199)
+    // MARK: The bin folder
 
     @Test func newFoldersAreCreatedWith0755WhateverTheUmask() throws {
         let (home, _, _, installer) = try Self.fixture()
@@ -216,7 +216,7 @@ struct SetupTests {
         #expect(installer.status(.userLocalBin) == .installed(pointsHere: true))
     }
 
-    // MARK: /usr/local/bin command (M5-R200)
+    // MARK: /usr/local/bin command
 
     @Test func sudoCommandIsBlockedWhereLnWouldDoTheWrongThing() throws {
         let (_, bin, system, installer) = try Self.fixture()

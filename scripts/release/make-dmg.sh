@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# Packs a built Theo Notes into a disk image: the app plus a link to /Applications (REL-R64). Nothing is mounted
+# Packs a built Theo Notes into a disk image: the app plus a link to /Applications. Nothing is mounted
 # or executed.
 #
 #   scripts/release/make-dmg.sh --app <Theo Notes.app> --out <file.dmg> --identity <SHA-1 of the Developer ID Application cert>

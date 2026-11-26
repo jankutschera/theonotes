@@ -32,7 +32,7 @@ bash scripts/check-identities.sh
 bash scripts/tests/test_check_identities.sh
 xcodebuild -project TheoNotes.xcodeproj -scheme TheoNotes -configuration Debug \
   -derivedDataPath build/DerivedData test
-# LIC-R17: the licence list must cover the app that was just built (every file in its Resources).
+# The licence list must cover the app that was just built (every file in its Resources).
 python3 -I scripts/gen-acknowledgements.py --check
 # Perf pass (R29): every `.perf` test (named `testPerf…`), strict and one at a time.
 BAERCHEN_PERF=1 swift test --package-path Packages/TheoNotesCore --no-parallel --filter '/testPerf'

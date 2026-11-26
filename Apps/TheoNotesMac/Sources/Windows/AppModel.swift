@@ -42,7 +42,7 @@ final class AppModel {
 
     /// Opens a SwiftUI window; installed by the windows' views from `@Environment(\.openWindow)`.
     /// Requests made before it is installed (the automation socket starts before the first window
-    /// exists) wait in `queuedWindowRequests` and run when it is (ruling M5-R195).
+    /// exists) wait in `queuedWindowRequests` and run when it is.
     @ObservationIgnored var openWindowRequest: ((WindowRequest) -> Void)? {
         didSet { drainWindowRequests() }
     }
@@ -77,7 +77,7 @@ final class AppModel {
     @ObservationIgnored var captureCloses: [UUID: Task<Void, Never>] = [:]
     /// Told when the window Capture Thought opened has closed (capture from any app hands focus back).
     @ObservationIgnored var onCaptureWindowClosed: ((String) -> Void)?
-    /// The app is quitting: a capture whose close is still undecided is kept (FOC-R346).
+    /// The app is quitting: a capture whose close is still undecided is kept.
     @ObservationIgnored var isQuitting = false
     /// The open note windows, held weakly (a window's view owns its state). `app open` finds the
     /// window of a note and the key editor through them (AppModel+Automation.swift).
@@ -85,11 +85,11 @@ final class AppModel {
     /// What `app open --new-window` / `--float` asks of a note window that is still being opened.
     @ObservationIgnored var pendingNoteOpens: [String: OpenNoteRequest] = [:]
     /// What `app open` and x-callback URLs ask of the main window that is still being opened (none was
-    /// open): note opens, sidebar and workspace changes, in arrival order (ruling M5-R229).
+    /// open): note opens, sidebar and workspace changes, in arrival order.
     @ObservationIgnored var pendingMainActions: [(MainWindowState) -> Void] = []
     /// Brings Theo Notes to the front (tests replace it).
     @ObservationIgnored var activate: () -> Void = { NSApp.activate() }
-    /// When each window last became key (weak keys), for `keyEditor`'s fallback (ruling M5-R196).
+    /// When each window last became key (weak keys), for `keyEditor`'s fallback.
     @ObservationIgnored let windowActivation = NSMapTable<NSWindow, NSNumber>.weakToStrongObjects()
     @ObservationIgnored private var activationCounter = 0
     /// Orders windows by when they were made, across main and note windows.
@@ -118,7 +118,7 @@ final class AppModel {
         }
         environment.voiceCaptureBusy = { [weak voice] in voice?.isBusy == true }
         environment.linkUpdater?.preferredPresenter = { [weak self] in self?.frontmostMainWindow?.model }
-        // Before the state is published: titles and Dock images are neutral when the lock shows (M9M-R78).
+        // Before the state is published: titles and Dock images are neutral when the lock shows.
         environment.appLock.addWillLockHandler { [weak self] in self?.appLockEngaged() }
         environment.appLock.addDidUnlockHandler { [weak self] in self?.appLockOpened() }
         activationObserver = NotificationCenter.default.addObserver(
@@ -141,14 +141,14 @@ final class AppModel {
         windowActivation.setObject(NSNumber(value: activationCounter), forKey: window)
     }
 
-    /// Most requests that wait for `openWindow` (ruling M5-R208).
+    /// Most requests that wait for `openWindow`.
     static let maxQueuedWindowRequests = 16
 
     /// Runs a window request now, or keeps it until SwiftUI's `openWindow` is installed. False when the
     /// request could not be kept (the queue is full): the caller must not report success.
     @discardableResult
     func requestWindow(_ request: WindowRequest) -> Bool {
-        // A note window is tagged with the lock generation it was asked for under (M9M-R81): its
+        // A note window is tagged with the lock generation it was asked for under: its
         // host may appear only after a lock came and went, and then must not open the note.
         if case .note(let id) = request { noteRequestGenerations[id, default: []].append(environment.appLock.generation) }
         if let openWindowRequest {
@@ -183,7 +183,7 @@ final class AppModel {
     /// pulls from Bear when the setting asks for it.
     /// The window views call this when they appear and again when the app unlocks: while App Lock is
     /// engaged no window state is made, so no note is read, no session opened and no editor page
-    /// loaded before the Mac has confirmed its owner (M9M-R75).
+    /// loaded before the Mac has confirmed its owner.
     func makeMainWindowIfUnlocked() -> MainWindowState? {
         isLocked ? nil : makeMainWindow()
     }
@@ -231,7 +231,7 @@ final class AppModel {
     func makeMainWindow(editor: EditorBridgeController? = nil) -> MainWindowState {
         let state = MainWindowState(environment: environment, defaults: defaults, editor: editor, settings: settings)
         state.openNoteWindow = { [weak self] in self?.openNoteInNewWindow(id: $0) }
-        // The empty Next Up card offers a voice note (FOC-R311).
+        // The empty Next Up card offers a voice note.
         state.nextUp.startVoiceCapture = { [weak self] in self?.captureVoiceNote() }
         state.startNoteFromTemplate = { [weak self, weak state] in
             guard let self, let state else { return nil }
@@ -279,7 +279,7 @@ final class AppModel {
         return mainWindows.last
     }
 
-    /// App Lock is engaged: nothing that shows or reaches library content runs (M9M-R63).
+    /// App Lock is engaged: nothing that shows or reaches library content runs.
     var isLocked: Bool { environment.appLock.isLocked }
 
     /// File ▸ New Window.
@@ -407,7 +407,7 @@ struct MainWindowHost: View {
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
-        // App Lock (M9M-R62): while it is engaged the lock screen replaces the whole window content.
+        // App Lock: while it is engaged the lock screen replaces the whole window content.
         AppLockGate(lock: app?.environment.appLock) {
             Group {
                 if let state {

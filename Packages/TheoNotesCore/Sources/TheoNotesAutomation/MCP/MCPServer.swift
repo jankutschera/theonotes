@@ -12,7 +12,7 @@ protocol MCPToolHandler: Sendable {
 }
 
 /// The MCP server over stdio (protocol 2025-06-18 and the two older versions it negotiates down to).
-/// It needs no library of its own: `initialize`, `ping` and `tools/list` answer without one (ruling M5-R45),
+/// It needs no library of its own: `initialize`, `ping` and `tools/list` answer without one,
 /// and only the handler opens it, per call.
 final class MCPServer: Sendable {
     static let supportedVersions = ["2025-06-18", "2025-03-26", "2024-11-05"]

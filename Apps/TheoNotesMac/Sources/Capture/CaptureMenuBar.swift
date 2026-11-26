@@ -45,7 +45,7 @@ enum CaptureMenuItem: CaseIterable {
     }
 }
 
-/// The menu bar item's menu (GC-R1: it lives and dies with `CaptureSettings.showInMenuBar`).
+/// The menu bar item's menu (it lives and dies with `CaptureSettings.showInMenuBar`).
 struct CaptureMenuBarContent: View {
     let actions: CaptureMenuBarActions
 

@@ -132,7 +132,7 @@ struct MobileCallbackNavigation: Equatable {
                 }
             }
             if !callbackSent, let callback = request.callback(request.success, values: result.values) { openURL(callback) }
-            // The answer is handed back: a later identical request is a new one (REL-R93).
+            // The answer is handed back: a later identical request is a new one.
             if let receipt = result.receipt { XCallbackReceipts(database: library.database).settle(receipt) }
         } catch {
             if !callbackSent, let callback = request.callback(request.failure, values: ["errorCode": "1", "errorMessage": String(describing: error)]) { openURL(callback) }

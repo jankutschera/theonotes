@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// FOC-R306: the privacy cleanup lock is a flock(2) on `.privacy-cleanup.lock`. A child process
+/// The privacy cleanup lock is a flock(2) on `.privacy-cleanup.lock`. A child process
 /// that is spawned while a descriptor is open holds a copy of it until the child execs, and a
 /// flock belongs to the open file description, not to the descriptor: the lock looks held for a
 /// moment after its owner closed it. Other suites in the same test process spawn children all the

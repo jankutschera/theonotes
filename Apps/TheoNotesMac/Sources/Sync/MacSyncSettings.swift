@@ -27,7 +27,7 @@ struct MacSyncSettings: View {
         if sync.isLocalOnly { localOnlyForm } else { syncForm }
     }
 
-    /// A library opened with a launch folder (INT-R14): no account, pairing or sync controls.
+    /// A library opened with a launch folder: no account, pairing or sync controls.
     private var localOnlyForm: some View {
         Form {
             Section {

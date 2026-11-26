@@ -60,7 +60,7 @@ enum WriteFailure {
 
 /// Every write of the CLI, the MCP server and x-callback goes through here: one place resolves
 /// the note, refuses locked and read-only notes, runs the change and retries on a revision
-/// conflict (ruling M5-R49 for locks, M5-R8 for read-only notes).
+/// conflict.
 final class AutomationService: Sendable {
     /// Tries before a note that keeps changing is given up on.
     static let maxAttempts = 8
@@ -91,7 +91,7 @@ final class AutomationService: Sendable {
     // MARK: Records
 
     /// What a caller is told when a write committed and the note then left the scope: the change is
-    /// stored, but nothing about the note is returned (ruling M5-R176).
+    /// stored, but nothing about the note is returned.
     static let savedButOutsideScope = AutomationError(
         code: .outOfScope, message: "The change was saved, but the note is now outside this server's scope",
         details: .object([("committed", .bool(true))]))
@@ -108,7 +108,7 @@ final class AutomationService: Sendable {
 
     /// The record of a note a write just changed. Under a scope it is read in one transaction with
     /// the scope check, so a note that left the scope in the meantime is never described to the
-    /// caller (ruling M5-R171). `afterCommit` marks a write that already committed: any failure then
+    /// caller. `afterCommit` marks a write that already committed: any failure then
     /// says so (`committed`).
     func record(of note: Note, afterCommit: Bool = false) throws(AutomationError) -> NoteRecord {
         if afterCommit { self.afterCommit?() }
@@ -153,10 +153,10 @@ final class AutomationService: Sendable {
         code: .outOfScope, message: "The new note would be outside this server's scope")
 
     /// The store the writes of a scoped caller go through. Its write transactions check the scope
-    /// themselves, before they commit (ruling M5-R143): a failed check rolls the transaction back,
+    /// themselves, before they commit: a failed check rolls the transaction back,
     /// so nothing is written and nothing needs undoing. `notes` must be in scope when the write
     /// starts (a note that left the scope since it was resolved is not re-admitted by a write that
-    /// puts the tag back, ruling M5-R170) and still afterwards, a `creating` write may only add
+    /// puts the tag back) and still afterwards, a `creating` write may only add
     /// notes that are in scope, `template` must be in scope when the write starts, and `tags` (a
     /// rename's or delete's subjects) must not be carried by a note outside the scope. Without a
     /// scope this is the plain store.
@@ -195,7 +195,7 @@ final class AutomationService: Sendable {
     /// returns the text unchanged writes nothing.
     ///
     /// `preflight` runs after the note is found and before the lock check: the place for checks
-    /// that must not depend on the note's content (an address's syntax, ruling M5-R59).
+    /// that must not depend on the note's content (an address's syntax).
     /// `didCommit` runs right after the text was committed, before anything else can fail.
     func mutate(
         _ selector: NoteSelector, preservingModifiedDate: Bool,
@@ -334,7 +334,7 @@ final class AutomationService: Sendable {
     }
 
     /// A removed link counts when its file exists in the note's attachment storage or the note
-    /// has a live `attachment` row for it (the bytes may still be arriving, ruling M5-R80). A link
+    /// has a live `attachment` row for it (the bytes may still be arriving). A link
     /// with neither loses nothing.
     func checkGate(_ mode: AttachmentGateMode, note: Note, newText: String) throws(AutomationError) {
         let candidates = AttachmentGate.removed(before: note.text, after: TextNormalization.normalizeLineEndings(newText))
@@ -442,7 +442,7 @@ final class AutomationService: Sendable {
             if !tokens.isEmpty {
                 let line = tokens.joined(separator: " ")
                 if text.isEmpty {
-                    // The new-note layout of an empty note (ruling M5-R94).
+                    // The new-note layout of an empty note.
                     text = position == .bottom ? "\n\n" + line : line + "\n\n"
                 } else {
                     text = NoteStore.addingTagLine(line, to: text, position: position)
@@ -457,14 +457,14 @@ final class AutomationService: Sendable {
     }
 
     /// The check `capture` makes before it touches the library: the text must hold something besides
-    /// whitespace (FOC-R14).
+    /// whitespace.
     static func validateCapture(text: String) throws(AutomationError) {
         if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             throw AutomationError(code: .usage, message: "text must not be empty")
         }
     }
 
-    /// `capture_thought` (FOC-R14): the text becomes a new note with `captureSource = mcp`. Nothing is
+    /// `capture_thought`: the text becomes a new note with `captureSource = mcp`. Nothing is
     /// titled, tagged or rewritten, with one exception that `create` shares: under a scope with a single
     /// `--only-tags` value, that tag is added on a line of its own unless the text already carries a tag
     /// that qualifies. With several scope tags the call fails like `create`, as `out_of_scope`.
@@ -489,7 +489,7 @@ final class AutomationService: Sendable {
 
     /// The template named by title or id: a note in Notes tagged `#template`. Under a scope a title
     /// finds in-scope templates only and an id outside the scope is `out_of_scope`, as for any note
-    /// (ruling M5-R18); the scope is checked again when the copy is written.
+    ///; the scope is checked again when the copy is written.
     private func templateNote(_ reference: String) throws(AutomationError) -> Note {
         let keys = Set(NoteStore.titleLookupKeys(reference))
         let found: Note? = try ReadFailure.read(library) { db in
@@ -538,7 +538,7 @@ final class AutomationService: Sendable {
 
     // MARK: Attachments
 
-    /// The files the note's text links that exist on disk, once each, in text order (ruling M5-R5).
+    /// The files the note's text links that exist on disk, once each, in text order.
     private func linkedFiles(of note: Note, in db: Database) throws -> [(filename: String, url: URL)] {
         var seen = Set<String>()
         var files: [(filename: String, url: URL)] = []
@@ -624,7 +624,7 @@ final class AutomationService: Sendable {
             return (result, placed?.name ?? name)
         } catch {
             // The file was put down before the guarded commit. When the write failed for good (out of
-            // scope, busy, ...) no text links it: take it away again. After a commit it stays (M5-R172).
+            // scope, busy,...) no text links it: take it away again. After a commit it stays.
             if !committed, let placed {
                 Self.discard(placed.name, of: placed.noteId, remove: attachments.delete, report: Self.logCleanupFailure)
             }
@@ -633,7 +633,7 @@ final class AutomationService: Sendable {
     }
 
     /// Removes a file a failed write put down. A removal that fails is reported (file name and note
-    /// id, never text) and does not replace the error the caller gets (ruling M5-R179).
+    /// id, never text) and does not replace the error the caller gets.
     static func discard(
         _ name: String, of noteId: String, remove: (String, String) throws -> Void,
         report: (String, String, any Error) -> Void
@@ -690,7 +690,7 @@ final class AutomationService: Sendable {
             .id(note.id), data: fetched.data, filename: name, preservingModifiedDate: preservingModifiedDate)
     }
 
-    /// Takes every link to the file out of the note (ruling M5-R5: the file itself stays; the app's
+    /// Takes every link to the file out of the note (the file itself stays; the app's
     /// cleanup removes it, R23). `attachment_not_found` when the text links no such file.
     func deleteAttachment(
         _ selector: NoteSelector, filename: String, preservingModifiedDate: Bool
@@ -755,7 +755,7 @@ final class AutomationService: Sendable {
         let oldKey = CanonicalKey.make(old)
         let newKey = CanonicalKey.make(new)
         // Both names: merging into a tag that notes outside the scope carry is as much a change of
-        // their state as renaming one of theirs (ruling M5-R174).
+        // their state as renaming one of theirs.
         try refuseTagChange(
             [(oldKey, old), (newKey, new)], subjects: [(oldKey, old), (newKey, new)], rewritten: (oldKey, old))
         let (oldExists, newExists, locked) = try tagState(oldKey: oldKey, newKey: newKey)
@@ -777,7 +777,7 @@ final class AutomationService: Sendable {
         }
     }
 
-    /// The normalized names of a rename, or `usage`: checks that need no library (M5-R45).
+    /// The normalized names of a rename, or `usage`: checks that need no library.
     static func validateRename(old rawOld: String, new rawNew: String) throws(AutomationError) -> (String, String) {
         let old = try TagArgument.name(rawOld)
         let new = try TagArgument.name(rawNew)
@@ -812,7 +812,7 @@ final class AutomationService: Sendable {
     }
 
     /// Under a scope: refuses `tags` that define it (pure, no library) and any of `subjects` that a
-    /// note outside the scope carries (ruling M5-R142). The write checks the second again inside its
+    /// note outside the scope carries. The write checks the second again inside its
     /// transaction; checking first keeps a refused caller from learning anything from the later
     /// `tag_exists` / `locked_notes` answers.
     private func refuseTagChange(
@@ -837,7 +837,7 @@ final class AutomationService: Sendable {
         try ReadFailure.read(library) { db in
             // Under a scope only tags that in-scope notes carry exist for the caller: no
             // `tag_exists` answer about tags only hidden notes use, and no rename or delete of a
-            // tag row no visible note carries (ruling M5-R175).
+            // tag row no visible note carries.
             let visible = scope.predicate(note: "n")
             let keys = try String.fetchAll(
                 db,
@@ -894,7 +894,7 @@ final class AutomationService: Sendable {
         let (note, before) = try resolveWritable(selector, textWrite: false)
         try ReadFailure.read(library) { db in
             // Under a scope a tag that no in-scope note carries does not exist for the caller, so
-            // the answer is the same as for an unknown tag (ruling M5-R173).
+            // the answer is the same as for an unknown tag.
             let visible = scope.predicate(note: "n")
             let tagSQL =
                 scope.isRestricted
@@ -925,7 +925,7 @@ final class AutomationService: Sendable {
         }
         beforeCommit?(0)
         do {
-            // One transaction for every target: a refusal rolls all of them back (ruling M5-R177).
+            // One transaction for every target: a refusal rolls all of them back.
             try guardedStore(notes: [note.id]).setPins([note.id], pinned: pinned, inTags: tagNames, global: global)
         } catch {
             throw WriteFailure.wrap(error)

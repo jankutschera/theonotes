@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# The safety steps of Jan's cutover session (rename stage 2, B7; REN2-R63, R64), one command per step so nothing is typed by hand:
+# The safety steps of Jan's cutover session (rename stage 2, B7), one command per step so nothing is typed by hand
 #
 #   scripts/cutover-safety.sh preflight        the gate before an install: refuses unless the old app is still launchable for at least 24
 #                                              more hours (its embedded profile, read statically) and its zip exists and verifies
@@ -18,7 +18,7 @@
 # Why a folder copy and not only the product's own backup: the installed old app refuses a library that a newer build has
 # migrated (v16 to v18; it contains LibraryOpenError.newerThanThisBuild and knows no migration after v14/v15), so it can neither
 # open the migrated library nor restore a backup into it. Rollback therefore puts the pre-cutover FOLDER back, never the migrated
-# database (REN2-R63).
+# database.
 #
 # Paths come from the environment so the tests can run in a temp directory: THEO_LIBRARY (default ~/Library/Application Support/Theo Notes),
 # THEO_APPLICATIONS (~/Applications), THEO_DESKTOP (~/Desktop), THEO_OLD_GROUP (the old App Group container), LSREGISTER, LSOF,
@@ -93,7 +93,7 @@ zip_holds_old_app() {
 
 case "${1:-}" in
   preflight)
-    # Read only and static: nothing is launched, nothing is written. The old app is the way back (REN2-R63); it cannot start once its
+    # Read only and static: nothing is launched, nothing is written. The old app is the way back; it cannot start once its
     # embedded provisioning profile has expired, so an install is refused unless it stays launchable for at least $min_hours more hours.
     [ -d "$installed" ] || die "no app at $installed"
     [ "$(bundle_id_of "$installed")" = "$old_id" ] || die "$installed is not the old app (bundle id '$(bundle_id_of "$installed")', expected $old_id)"

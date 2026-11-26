@@ -8,7 +8,7 @@ import SwiftUI
 import Testing
 @testable import TheoNotes
 
-/// The formatting bar is the pointer surface of the Format menu (MACBAR-R1 … R6).
+/// The formatting bar is the pointer surface of the Format menu.
 @MainActor
 @Suite struct FormattingBarTests {
     private var barItems: [FormatMenuItem] { FormattingBar.controls.flatMap(\.items) }

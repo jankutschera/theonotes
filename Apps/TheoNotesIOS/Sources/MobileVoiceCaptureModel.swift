@@ -84,7 +84,7 @@ private struct AuthorizedVoicePreflight: VoicePreflighting {
         !backgroundPending && !library.appLocked && !library.libraryOperationBusy && !library.isClosed && !library.isClosing
     }
 
-    /// Recovery removed a leftover that could not be played (FOC-R399).
+    /// Recovery removed a leftover that could not be played.
     static let unreadableRemovedMessage = "A voice recording could not be read and was removed."
 
     /// Call after journal recovery, before starting any recorder. An error keeps recordings for retry.

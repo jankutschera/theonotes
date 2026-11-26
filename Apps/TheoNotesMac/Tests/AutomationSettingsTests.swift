@@ -126,7 +126,7 @@ import Testing
         // The copy is a whole root object ...
         #expect(parsed.keys == ["mcpServers"])
         #expect(parsed["mcpServers"]?["theonotes"]?["command"] == .string(binary.path))
-        // ... and the guidance next to the button says so (M5-R201).
+        // and the guidance next to the button says so.
         let text = AutomationSettingsModel.claudeGuidance
         #expect(text.contains("complete claude_desktop_config.json"))
         #expect(text.contains("merge the \"theonotes\" entry"))

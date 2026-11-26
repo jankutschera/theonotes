@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// The fence (CK-R5) and the lifecycle of a send: crashes, quota, account switches, batches.
+/// The fence and the lifecycle of a send: crashes, quota, account switches, batches.
 @Suite struct CloudPublisherLifecycleTests {
     static func quarantine(_ a: PublisherDevice, _ id: String, reason: String = "version:2") throws {
         try a.store.quarantine(record: CloudQuarantineRecord(recordName: "e.note.\(id)", reason: reason, v: 2, rawFields: Data("{}".utf8)), pinned: [])
@@ -172,7 +172,7 @@ import Testing
         await a.gateway.switchAccount(to: other)                                   // the account changes
         #expect(try a.store.generation() > generation)
         await a.gateway.deliverLateCompletions()                                   // the old save completes after all
-        // CK-R171: the store refuses the result of an older generation, so nothing is recorded for the late completion at all
+        // The store refuses the result of an older generation, so nothing is recorded for the late completion at all
         #expect(try a.store.sendResult(attemptId: inflight.attemptId) == nil)
         try a.publisher.treatSendingAsUnknown()
         let report = try a.publisher.consumeResults()

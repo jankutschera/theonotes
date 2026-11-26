@@ -20,7 +20,7 @@ struct MobileImportOptionsSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                // IOS-DESIGN-R10: the files as a plain row; Title Case switches on one line, the examples in the footer.
+                // The files as a plain row; Title Case switches on one line, the examples in the footer.
                 Section {
                     LabeledContent(urls.count == 1 ? "File" : "Files") {
                         Text(itemsText).lineLimit(3).truncationMode(.middle)

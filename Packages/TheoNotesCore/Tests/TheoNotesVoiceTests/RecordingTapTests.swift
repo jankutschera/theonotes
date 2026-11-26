@@ -8,7 +8,7 @@ import Testing
 @testable import TheoNotesVoice
 
 /// The input tap's format on real hardware varies: a built-in microphone array reported four
-/// channels at 48 kHz (K4, FOC-R380), and the AAC encoder cannot write that layout. The tap turns
+/// channels at 48 kHz (K4), and the AAC encoder cannot write that layout. The tap turns
 /// whatever arrives into one mono recording and one analyzer feed.
 @Suite struct RecordingTapTests {
     /// 16 kHz mono Int16: what the speech analyzer asks for.
@@ -63,7 +63,7 @@ import Testing
         #expect(written.processingFormat.channelCount == 1, "a mono recording")
     }
 
-    /// FOC-R393: the same microphone changes its format mid-recording (a headset leaving its call
+    /// The same microphone changes its format mid-recording (a headset leaving its call
     /// profile). Both rates end up in one recording at the first rate, and the analyzer hears both.
     @Test func aChangeOfSampleRateMidRecordingKeepsRecording() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("tap-\(UUID().uuidString).m4a")

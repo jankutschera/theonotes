@@ -8,7 +8,7 @@ import Foundation
 import Testing
 @testable import TheoNotes
 
-/// M9M-R62: what a screen reader and the window list see while App Lock is engaged. A hosted offscreen
+/// What a screen reader and the window list see while App Lock is engaged. A hosted offscreen
 /// window exposes no SwiftUI accessibility children (see `AccessibilityAuditTests`), so these run only
 /// with `BAERCHEN_AX_AUDIT=1` on an unlocked screen, where the window is on screen and the tree is live.
 /// On a locked screen they are NOT VERIFIED (GUI).

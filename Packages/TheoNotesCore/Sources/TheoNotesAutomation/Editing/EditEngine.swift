@@ -65,12 +65,12 @@ extension EditSpec {
 struct EditResult {
     var text: String
     /// Per edit, in order: the UTF-8 byte offset in the final text of the start of its first match
-    /// (ruling M5-R74): the replacement's start or the deletion point; for `insertAfter` the match
+    ///: the replacement's start or the deletion point; for `insertAfter` the match
     /// start; for `insertBefore` the match start after the inserted text.
     var ops: [(index: Int, firstMatch: Int)]
 }
 
-/// Find-and-change over note text (ruling M5-R9): edits apply one after another, each find on
+/// Find-and-change over note text: edits apply one after another, each find on
 /// the text produced so far; without `all` only the first occurrence changes. With `within`, every
 /// match must lie wholly inside that section of the input; its range follows the edits. One
 /// miss and nothing is returned: the error reports every edit.

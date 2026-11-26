@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Leaving a sync account never touches the person's notes (CK-R10, CK-R12): only engine
+/// Leaving a sync account never touches the person's notes: only engine
 /// bookkeeping goes, `sync_dirty` stays so a later first sync still publishes everything.
 @Suite struct SyncAccountDetachTests {
     /// A library with a tagged note, an attachment and a few queue rows.

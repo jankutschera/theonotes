@@ -23,12 +23,12 @@ enum LibraryBanner: Equatable {
     case commandFailed(action: String)
     /// The Info panel's "Link" was refused; nothing changed.
     case mentionNotLinked(MentionLinkError)
-    /// Copy As left out locked notes (M8-R75).
+    /// Copy As left out locked notes.
     case notesNotCopied(locked: Int)
     /// Lock Note left these notes unlocked: in the Trash, or busy (unsaved text, attachments still
     /// being stored, a refused store).
     case notesNotLocked(inTrash: Int, other: Int)
-    /// Launch recovery removed a voice recording that could not be played (FOC-R399).
+    /// Launch recovery removed a voice recording that could not be played.
     case voiceRecordingRemoved
 }
 

@@ -4,7 +4,7 @@
 import Foundation
 import Testing
 
-/// CK-R19, CK-R160: `import CloudKit` exists only under `Sources/TheoNotesCore/CloudSync/Live/`.
+/// `import CloudKit` exists only under `Sources/TheoNotesCore/CloudSync/Live/`.
 @Suite struct CloudKitImportBoundaryTests {
     private static let packageRoot: URL = URL(fileURLWithPath: #filePath)
         .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()

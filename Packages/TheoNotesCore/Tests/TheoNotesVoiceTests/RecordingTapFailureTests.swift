@@ -8,7 +8,7 @@ import Testing
 @testable import TheoNotesVoice
 
 /// A recording that cannot be written is a failure of its own: it is reported once, so the engine
-/// can end with an error instead of looking like a microphone change (FOC-R381).
+/// can end with an error instead of looking like a microphone change.
 @Suite struct RecordingTapFailureTests {
     private final class Counter: @unchecked Sendable {
         private let lock = NSLock()

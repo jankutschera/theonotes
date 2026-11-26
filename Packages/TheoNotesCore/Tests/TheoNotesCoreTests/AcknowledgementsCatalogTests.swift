@@ -96,7 +96,7 @@ import Testing
         #expect(grdb.licence == "MIT" && grdb.kind == .swiftpm)
         let codemirror = try #require(catalog.entries.first { $0.name == "@codemirror/view" })
         #expect(codemirror.licence == "MIT" && codemirror.kind == .npm)
-        // REN2-R10: elkjs (EPL-2.0) is not part of the app.
+        // Elkjs (EPL-2.0) is not part of the app.
         #expect(catalog.entries.contains { $0.name == "elkjs" } == false)
         #expect(catalog.entries.contains { $0.licence == "EPL-2.0" } == false)
     }

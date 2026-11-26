@@ -4,7 +4,7 @@
 import TheoNotesCore
 import Foundation
 
-/// One shared item, once loaded (FOC-R342).
+/// One shared item, once loaded.
 enum SharedPart: Sendable {
     case text(String)
     case file(URL)
@@ -35,7 +35,7 @@ final class StagingArea {
     func remove() { try? FileManager.default.removeItem(at: directory) }
 }
 
-/// What the share sheet knows and does, without any window (FOC-R342): collecting what was shared,
+/// What the share sheet knows and does, without any window: collecting what was shared,
 /// the text the user edits, the notes the picker offers, and the hand-over to the inbox. The view
 /// controller only draws it. Compiled into the extension and into `TheoNotesMacTests`.
 @MainActor

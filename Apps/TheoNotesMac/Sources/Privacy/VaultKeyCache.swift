@@ -9,7 +9,7 @@ import Security
 
 /// Secret bytes in memory we own: allocated outside Swift's copy-on-write storage so that
 /// `wipe()` really overwrites the one copy (`memset_s` is not optimized away). Wiped on `deinit`.
-/// Limits (M9M-R19): CryptoKit's `SymmetricKey` keeps its own copy, and bytes the Keychain
+/// Limits: CryptoKit's `SymmetricKey` keeps its own copy, and bytes the Keychain
 /// hands back in an immutable `CFData` cannot be scrubbed by us.
 final class SecretBytes: @unchecked Sendable {
     private let pointer: UnsafeMutableRawPointer
@@ -145,12 +145,12 @@ enum VaultKeyCacheError: Error, Equatable, Sendable {
     /// The Keychain cannot be used right now (`errSecInteractionNotAllowed`, -25308): the Mac or
     /// its screen is locked, or no UI may be shown. The item is fine; ask for the password instead.
     case unavailableNow
-    /// Deleting the item failed, or it was still there when read back (M9M-R18).
+    /// Deleting the item failed, or it was still there when read back.
     case notRemoved
     case failed(OSStatus)
 }
 
-/// A device-local, authenticated cache of the vault key (M9M-R4). Never synced, never backed up.
+/// A device-local, authenticated cache of the vault key. Never synced, never backed up.
 protocol VaultKeyCache: Sendable {
     /// Whether a new item can be protected as designed (biometry enrolled).
     var isAvailable: Bool { get }

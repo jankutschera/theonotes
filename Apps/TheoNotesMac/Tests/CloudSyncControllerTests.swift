@@ -9,7 +9,7 @@ import Testing
 @testable import TheoNotes
 
 // Task 15: Settings ▸ iCloud against the in-memory iCloud (`FakeCloudKit.swift`, compiled into this target from the Core test folder;
-// see project.yml and CK-R140). Nothing here reaches the real iCloud. Real behaviour is NOT VERIFIED until Gate G0 and Task 14.
+// see project.yml and). Nothing here reaches the real iCloud. Real behaviour is NOT VERIFIED until Gate G0 and Task 14.
 
 /// Counts how often the shipped services were asked for anything.
 final class CloudTouchCounter: @unchecked Sendable {
@@ -589,7 +589,7 @@ final class LockedFlags: @unchecked Sendable {
         #expect(CloudSyncStrings.status(for: .failed(kind: "something else")) == CloudSyncState.message(for: .failed(kind: "something else")))
     }
 
-    // MARK: account change (CK-R10)
+    // MARK: account change
 
     @Test func aDifferentAccountPausesAndKeepOfflineIsTheDefault() async throws {
         try await with { d in
@@ -694,7 +694,7 @@ final class LockedFlags: @unchecked Sendable {
         }
     }
 
-    // MARK: move this library to iCloud (MOVE-R1 to MOVE-R6)
+    // MARK: move this library to iCloud
 
     /// The private-server binding as the old engine leaves it after a finished sync: an account, uploads on, empty queue.
     private func bindToPrivateServer(_ d: CloudMacDevice) async throws {
@@ -783,7 +783,7 @@ final class LockedFlags: @unchecked Sendable {
         }
     }
 
-    /// MOVE-R13: the card's words, the same on Mac and iOS; six notes list five titles and "and 1 more", one per line.
+    /// The card's words, the same on Mac and iOS; six notes list five titles and "and 1 more", one per line.
     @Test func theMissingFilesCardSaysWhatHappensInShortLines() {
         let text = CloudSyncStrings.moveUnavailable(notes: ["A", "B", "C", "D", "E"], moreNotes: 1, canMoveWithout: true)
         #expect(text.split(separator: "\n").map(String.init) == [
@@ -796,7 +796,7 @@ final class LockedFlags: @unchecked Sendable {
         #expect(CloudSyncStrings.moveWithoutFilesMessage == CloudSyncStrings.moveMessage + "\n\nThe missing attachment files stay missing.")
     }
 
-    /// MOVE-R10: the refusal names notes whose files no device and no server ever had; "Move to iCloud Without These Files…" then moves.
+    /// The refusal names notes whose files no device and no server ever had; "Move to iCloud Without These Files…" then moves.
     @Test func missingFilesNoDeviceHadOfferMoveWithoutTheseFilesWhichMoves() async throws {
         try await with { d in
             let note = try d.note("# Imported cover\nkept")
@@ -824,7 +824,7 @@ final class LockedFlags: @unchecked Sendable {
         }
     }
 
-    /// MOVE-R12: another reason is shown first; once it is gone the missing-files message with the button comes back.
+    /// Another reason is shown first; once it is gone the missing-files message with the button comes back.
     @Test func anotherReasonIsShownBeforeTheMissingFilesAndTheButton() async throws {
         try await with { d in
             try await bindToPrivateServer(d)

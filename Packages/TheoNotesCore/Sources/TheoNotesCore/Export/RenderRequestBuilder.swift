@@ -4,7 +4,7 @@
 import Foundation
 import GRDB
 
-/// Where the export page loads attachment files from (M8-R5), by filename as written in the note.
+/// Where the export page loads attachment files from, by filename as written in the note.
 public enum AttachmentSources: Sendable {
     /// `baerchen-asset://attachment/<enc(noteId)>/<enc(file)>`: the editor's own scheme (PDF, print, Copy As).
     case assetURLs

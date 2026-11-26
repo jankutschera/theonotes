@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// Copy Link to Here (M6 Task 9, M6-R20): `NoteStore.headingLink` builds `[[Title/Heading]]`, and the
+/// Copy Link to Here (M6 Task 9): `NoteStore.headingLink` builds `[[Title/Heading]]`, and the
 /// link, parsed and resolved by the real `WikiLinkResolver` (R16), opens the heading it was made for.
 @Suite struct HeadingLinkTests {
     let tmp: TempPaths

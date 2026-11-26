@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Rehearsal 2 (REN2-R63): the rollback rehearsal needs a library COPY that the new build has migrated (v16 to v18), also when the
+/// Rehearsal 2: the rollback rehearsal needs a library COPY that the new build has migrated (v16 to v18), also when the
 /// screen is locked and the app cannot be launched. This opens the copy named by `THEONOTES_REHEARSAL_MIGRATE` with the normal
 /// opener (the migrations run exactly as at the app's launch) and closes it again. It prints nothing about the content.
 /// Without the variable the test is skipped, so a normal test run never opens a library it was not given.

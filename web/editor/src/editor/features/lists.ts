@@ -531,7 +531,7 @@ function convertMarker(at: ParsedLine, target: ListKind, out: ChangeSpec[]): voi
   // The number is fixed by renumbering (the item joins an ordered run).
   else if (target.kind === "ordered" && own.kind === "bullet" && !own.box) out.push({ from, to: textFrom, insert: `1${target.delim} ` });
   else if (target.kind === "bullet" && own.kind === "bullet" && target.marker !== own.marker) out.push({ from, to: from + 1, insert: target.marker });
-  // `1.` joining a `1)` list (or the reverse) takes its delimiter, so it joins its run (M6-R43).
+  // `1.` joining a `1)` list takes its delimiter, so it joins its run.
   else if (target.kind === "ordered" && own.kind === "ordered" && target.delim && own.delim !== target.delim) {
     const delimAt = from + own.marker.length - 1;
     out.push({ from: delimAt, to: delimAt + 1, insert: target.delim });
@@ -690,7 +690,7 @@ export const insertNewlineContinueList: StateCommand = ({ state, dispatch }) => 
 };
 
 /**
- * Enter on a folded list item (folding.ts, M6-R28): a new sibling item (its marker continued as
+ * Enter on a folded list item (folding.ts): a new sibling item (its marker continued as
  * Enter would, an unchecked box for a todo) on a new line inserted at `at`, the end of the item's
  * folded block, so the hidden children stay with their item. Null when line `n` is no list item.
  */
@@ -707,7 +707,7 @@ export function newItemAfterBlock(state: EditorState, n: number, at: number): Tr
 }
 
 /**
- * A list-aware edit made by another feature (a new line at a table's edge, M6-R77): one
+ * A list-aware edit made by another feature (a new line at a table's edge): one
  * transaction and one undo step, the ordered runs around the selection renumbered.
  */
 export function listEditTransaction(state: EditorState, changes: ChangeSpec, selection: EditorSelection, userEvent = "input"): Transaction {

@@ -338,7 +338,7 @@ public final class NoteSession {
     }
 
     /// Words a voice capture is still recognising (a UTF-16 range of `text`): journaled like any
-    /// edit, but `flush` and the debounced commit leave them out of the store (FOC-R395). The
+    /// edit, but `flush` and the debounced commit leave them out of the store. The
     /// capture keeps it current and clears it.
     public var heldRange: Range<Int>?
 
@@ -360,7 +360,7 @@ public final class NoteSession {
     }
 
     /// Commits `text` without its `held` range; nothing when only held words are new (the journal
-    /// keeps them). Fail-open: a range that does not fit commits everything (FOC-R400).
+    /// keeps them). Fail-open: a range that does not fit commits everything.
     private func commitUnheld(_ text: String, held: Range<Int>?, expectedRevision: Int) throws {
         var committing = text
         if let held, held.upperBound <= text.utf16.count,

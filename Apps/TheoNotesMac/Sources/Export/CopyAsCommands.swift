@@ -6,12 +6,12 @@ import TheoNotesCore
 import SwiftUI
 
 /// Starts copies, one at a time app-wide: a new copy cancels the one before it (which stops waiting
-/// for the renderer and, being superseded, never writes the pasteboard or beeps, M8-R75).
+/// for the renderer and, being superseded, never writes the pasteboard or beeps).
 @MainActor
 enum CopyAsRunner {
     private static var current: Task<CopyAs.Outcome, Never>?
 
-    /// The lock engaged: the running copy stops and writes nothing (M9M-R76).
+    /// The lock engaged: the running copy stops and writes nothing.
     static func cancelCurrent() { current?.cancel() }
 
     @discardableResult
@@ -23,7 +23,7 @@ enum CopyAsRunner {
     }
 }
 
-/// Puts Edit ▸ Copy As directly after Copy (M8-R78). SwiftUI's `CommandGroup` has no placement
+/// Puts Edit ▸ Copy As directly after Copy. SwiftUI's `CommandGroup` has no placement
 /// between Copy and Paste, so the item it builds is moved in the Edit `NSMenu`.
 ///
 /// `NSMenu.removeItem(_:)` and `insertItem(_:at:)` (AppKit's NSMenu.h) move an item within its
@@ -72,7 +72,7 @@ enum CopyAsMenuPlacement {
 }
 
 extension MainWindowState {
-    /// Copy As for this window: locked notes left out are reported in the note list's banner (M8-R75).
+    /// Copy As for this window: locked notes left out are reported in the note list's banner.
     func makeCopyAs() -> CopyAs {
         let environment = model.environment
         return CopyAs(
@@ -89,7 +89,7 @@ extension MainWindowState {
 }
 
 /// The "Keep Tags" item of every Copy As submenu: the same stored setting as Settings ▸ General ▸
-/// "Keep tags when exporting" (MAC11-R17), shown as a checkmark.
+/// "Keep tags when exporting", shown as a checkmark.
 struct CopyAsKeepTags: View {
     static let title = "Keep Tags"
     /// Nil while no library is open: the item is shown, switched off.
@@ -121,7 +121,7 @@ extension AppModel {
     }
 }
 
-/// Edit ▸ Copy As ▸ Markdown / Plain Text / HTML / Rich Text (M8-R8, A10). The command group puts it in the Edit
+/// Edit ▸ Copy As ▸ Markdown / Plain Text / HTML / Rich Text. The command group puts it in the Edit
 /// menu's pasteboard group; `CopyAsMenuPlacement` moves it directly under Copy. The target is
 /// resolved when the item is chosen.
 struct CopyAsCommands: Commands {

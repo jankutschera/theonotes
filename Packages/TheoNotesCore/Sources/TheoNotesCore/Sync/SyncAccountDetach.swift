@@ -4,7 +4,7 @@
 import Foundation
 import GRDB
 
-/// Which engine a library is bound to (`sync_control.backend`, CK-R2, CK-R12). A library binds to
+/// Which engine a library is bound to (`sync_control.backend`). A library binds to
 /// one backend; changing it goes through `SyncAccountDetach` after a verified backup.
 public enum SyncBackend: String, Sendable, Equatable {
     case none, cloudflare, cloudkit
@@ -24,11 +24,11 @@ public enum SyncAccountDetachError: Error, Equatable {
 /// Ends a library's binding to one sync account without touching a single note, attachment or
 /// tag, and without touching `sync_dirty` (the journal of local edits stays, so a later first
 /// sync still publishes everything). Only engine bookkeeping is cleared; the Keychain and the
-/// cloud are not touched (CK-R9). It only reads and writes tables: no existing function changes.
+/// cloud are not touched. It only reads and writes tables: no existing function changes.
 public enum SyncAccountDetach {
     /// Cloudflare queue state, children before parents (`sync_attachment_cache` references `sync_blob_state`).
     /// `sync_conflict` stays: it is not queue state but the "conflict copy of" link of a note, part of the note's synced content
-    /// that the iCloud engine publishes too (MOVE-R4).
+    /// that the iCloud engine publishes too.
     static let cloudflareClearedTables = [
         "sync_attachment_cache", "sync_blob_state", "sync_outbox", "sync_shadow", "sync_inbox",
         "sync_receipt", "sync_entity_state", "sync_device",
@@ -37,7 +37,7 @@ public enum SyncAccountDetach {
     static let cloudKitClearedTables = [
         "ck_record", "ck_inflight", "ck_send_result", "ck_remote", "ck_quarantine", "ck_missing", "ck_blob_part",
     ]
-    /// The tables CloudKit shares with the Cloudflare engine (CK-R2). Their rows are keyed by ids
+    /// The tables CloudKit shares with the Cloudflare engine. Their rows are keyed by ids
     /// derived from the old account's key, so they cannot outlive the binding either.
     static let sharedTables = ["sync_attachment_cache", "sync_blob_state", "sync_entity_state"]
 
@@ -88,7 +88,7 @@ public enum SyncAccountDetach {
     }
 }
 
-/// Why "Move This Library to iCloud" refuses (MOVE-R2). Every refusal leaves the library bound to the private server, as it was.
+/// Why "Move This Library to iCloud" refuses. Every refusal leaves the library bound to the private server, as it was.
 public enum PrivateServerMoveRefusal: Error, Equatable, Sendable {
     case notBoundToPrivateServer
     /// The app has no working connection to the server (signed out, waiting for approval or recovery words): no final sync.
@@ -98,9 +98,9 @@ public enum PrivateServerMoveRefusal: Error, Equatable, Sendable {
     /// The library's first sync with the server never finished (uploads were never switched on).
     case firstSyncNotFinished
     /// Attachments waiting to be sent whose file is on this device in no form: they can never be sent. `notes` holds the titles of
-    /// up to five notes they belong to, `moreNotes` how many other notes are affected. Retrying does not help (MOVE-R8).
+    /// up to five notes they belong to, `moreNotes` how many other notes are affected. Retrying does not help.
     /// `canMoveWithout`: every such row was never received by the server and waits for no download, and nothing else stops the
-    /// move, so "Move Without These Files" may leave them behind (MOVE-R10).
+    /// move, so "Move Without These Files" may leave them behind.
     case unavailableAttachments(notes: [String], moreNotes: Int, canMoveWithout: Bool)
     /// Local changes the server has not confirmed (dirty journal and outbox), the unavailable attachments not counted.
     case unsentChanges(Int)
@@ -112,7 +112,7 @@ public enum PrivateServerMoveRefusal: Error, Equatable, Sendable {
     case attachmentBeingSaved
 }
 
-/// "Move This Library to iCloud" (MOVE-R1 to MOVE-R6): leave the private server so that the iCloud switch can take the library.
+/// "Move This Library to iCloud": leave the private server so that the iCloud switch can take the library.
 /// The order is fixed: one final sync (the caller's), the check that nothing is left in either direction, a verified backup, then in
 /// ONE write transaction the check again, the detach and the mark that stops the private-server engine from binding this library
 /// again. A failure before the transaction changes nothing; the transaction is all or nothing. The server's copy is not touched.
@@ -123,7 +123,7 @@ public enum PrivateServerMove {
     /// The whole operation. `finalSync` runs one complete sync with the server and throws when it cannot (offline, signed out,
     /// paused); `makeBackup` returns the id of a verified backup.
     @discardableResult
-    /// `withoutMissingFiles`: the owner chose "Move Without These Files"; attachments that qualify (MOVE-R10) no longer stop the move.
+    /// `withoutMissingFiles`: the owner chose "Move Without These Files"; attachments that qualify no longer stop the move.
     public static func run(database: AppDatabase, paths: AppPaths, finalSync: @Sendable () async throws -> Void, makeBackup: @Sendable () async throws -> String,
                            withoutMissingFiles: Bool = false, crash: CrashPoint = .never, now: Date = Date()) async throws -> SyncAccountDetach.Result {
         guard try CloudSyncStore(database: database).backend() == .cloudflare else { throw PrivateServerMoveRefusal.notBoundToPrivateServer }
@@ -137,7 +137,7 @@ public enum PrivateServerMove {
     }
 
     /// Every reason the library cannot move right now, most specific first; empty when it can. Read after the final sync. It only
-    /// reads, so it is also the preflight a rehearsal runs on a copy of a library (MOVE-R8).
+    /// reads, so it is also the preflight a rehearsal runs on a copy of a library.
     public static func refusals(in database: AppDatabase, paths: AppPaths, withoutMissingFiles: Bool = false) throws -> [PrivateServerMoveRefusal] {
         try database.pool.read { try refusals($0, paths: paths, includingLocalEdits: true, withoutMissingFiles: withoutMissingFiles) }
     }
@@ -146,7 +146,7 @@ public enum PrivateServerMove {
     /// unavailable rows), the app never saw its bytes (no size, no hash recorded: an import that brought only the reference), the
     /// row is a change, not a deletion, the server never received this attachment (no server revision, no server copy) and no
     /// download for it waits. Such an attachment exists on no device and on no server. The caller also requires that the
-    /// `Attachments` folder can be opened: an unreadable folder makes every file look missing (MOVE-R12).
+    /// `Attachments` folder can be opened: an unreadable folder makes every file look missing.
     static func leavable(_ db: Database, attachmentID id: String) throws -> Bool {
         let entityIDs = [id] + (try String.fetchAll(db, sql: "SELECT entityId FROM sync_entity_state WHERE entityType='attachment' AND localId=?", arguments: [id]))
         let marks = entityIDs.map { _ in "?" }.joined(separator: ",")
@@ -189,7 +189,7 @@ public enum PrivateServerMove {
         if try count("privacy_transition") > 0 { found.append(.lockOrUnlockInProgress) }
         if try count("staging_batch") > 0 { found.append(.attachmentBeingSaved) }
         // Missing files that may be left behind come last, so the person first sees what else stops the move; once that is gone,
-        // the missing-files refusal with its second button is first. Missing files that may not be left behind come first (MOVE-R12).
+        // the missing-files refusal with its second button is first. Missing files that may not be left behind come first.
         if case .unavailableAttachments(let notes, let more, let leavable)? = missingRefusal {
             if leavable { found.append(.unavailableAttachments(notes: notes, moreNotes: more, canMoveWithout: found.isEmpty)) }
             else { found.insert(.unavailableAttachments(notes: notes, moreNotes: more, canMoveWithout: false), at: 0) }
@@ -197,7 +197,7 @@ public enum PrivateServerMove {
         return found
     }
 
-    /// The final sync's summary must say the sync finished: a run that needs the note password again did not (MOVE-R2).
+    /// The final sync's summary must say the sync finished: a run that needs the note password again did not.
     public static func requireFinished(_ summary: SyncRunSummary) throws {
         if summary.passwordRefreshRequired { throw NotePrivacyError.accessRevoked }
     }
@@ -214,7 +214,7 @@ public enum PrivateServerMove {
         }
     }
 
-    /// This library moved from the private server to iCloud: the private-server engine must never bind it again (MOVE-R3).
+    /// This library moved from the private server to iCloud: the private-server engine must never bind it again.
     public static func hasLeft(_ database: AppDatabase) throws -> Bool {
         try database.pool.read { try hasLeft($0) }
     }
@@ -222,7 +222,7 @@ public enum PrivateServerMove {
     /// Device-local: the owner dismissed the "move your other devices now" notice.
     static let noticeDismissedKey = "privateServerMoveNoticeDismissed"
 
-    /// After a move the sync settings keep telling the owner to move the other devices, until the owner dismisses it (MOVE-R6).
+    /// After a move the sync settings keep telling the owner to move the other devices, until the owner dismisses it.
     public static func showsOtherDevicesNotice(_ database: AppDatabase) throws -> Bool {
         try database.pool.read { db in
             try hasLeft(db) && Bool.fetchOne(db, sql: "SELECT EXISTS(SELECT 1 FROM setting WHERE key=?)", arguments: [noticeDismissedKey]) == false

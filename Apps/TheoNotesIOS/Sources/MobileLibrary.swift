@@ -451,7 +451,7 @@ final class MobileLibrary {
     /// Times the wiki-link follower's debounce; tests set a manual one before opening a session.
     @ObservationIgnored var linkScheduler: any DebounceScheduler = TaskDebounceScheduler()
     @ObservationIgnored private var linkMonitorStorage: TitleChangeMonitor?
-    /// Follows titles typed in any open session and rewrites wiki links to them, as on the Mac (IOS-LINKS-R1).
+    /// Follows titles typed in any open session and rewrites wiki links to them, as on the Mac.
     private var linkMonitor: TitleChangeMonitor {
         if let linkMonitorStorage { return linkMonitorStorage }
         let monitor = TitleChangeMonitor(
@@ -507,7 +507,7 @@ final class MobileLibrary {
     var sharingError: String?
     var sharingEnabled: Bool { shareInbox != nil }
 
-    /// `seedsGettingStarted` is true only for the app's own launches (REL-R79); a library opened by a test or
+    /// `seedsGettingStarted` is true only for the app's own launches; a library opened by a test or
     /// tool is never given the notes.
     init(paths: AppPaths = .production, shareContainer: URL? = nil, seedsGettingStarted: Bool = false) throws {
         self.shareContainer = shareContainer
@@ -522,9 +522,9 @@ final class MobileLibrary {
         if FileManager.default.fileExists(atPath: previews.path) { try FileManager.default.removeItem(at: previews) }
         database = try AppDatabase(path: paths.database)
         store = NoteStore(db: database, notifier: nil, paths: paths)
-        // REL-R71/R79: a failure never stops the launch; the person starts with an empty library.
+        // A failure never stops the launch; the person starts with an empty library.
         _ = try? GettingStartedNotes.seedNewLibrary(in: store, isNewLibrary: isNewLibrary)
-        // STARTER-R18: untouched first-release starters get the new texts once; a failure leaves the marker unset for the next launch.
+        // Untouched first-release starters get the new texts once; a failure leaves the marker unset for the next launch.
         if seedsGettingStarted { _ = try? GettingStartedNotes.upgradeFirstShipped(in: store, paths: paths) }
         ocr = OCRQueue(store: AttachmentTextStore(database: database), files: AttachmentStore(paths: paths, database: database), extractor: AttachmentTextExtractor())
         _ = try AttachmentFiles(paths: paths, database: database).recover()
@@ -813,7 +813,7 @@ final class MobileLibrary {
     }
 
     /// The links to `id` follow its new title (`NoteStore.rewriteWikiLinks`, same rules as the Mac);
-    /// false waits and tries again (an editor still typing, or the library is busy, IOS-LINKS-R3).
+    /// false waits and tries again (an editor still typing, or the library is busy).
     private func rewriteLinks(to id: String, from previous: LinkTargetState, busy: Set<String>) -> Bool {
         guard !isClosed, !libraryOperationBusy,
               forcingLinkRewrites || (!isClosing && !sceneOperationPending && !sceneDrainInFlight && !attachmentWriteInFlight) else { return false }
@@ -829,7 +829,7 @@ final class MobileLibrary {
     }
 
     /// Close runs the pending rewrites now, as the Mac does on window close and quit; a closing
-    /// library's own fences must not hold them back (IOS-LINKS-R4).
+    /// library's own fences must not hold them back.
     @ObservationIgnored private var forcingLinkRewrites = false
     private func runPendingLinkRewrites(forced: Bool) {
         forcingLinkRewrites = forced
@@ -838,7 +838,7 @@ final class MobileLibrary {
     }
 
     /// A restore or another library operation replaced what the follower last saw: start over from
-    /// the notes as they are now (IOS-LINKS-R5).
+    /// the notes as they are now.
     private func resetLinkMonitor() {
         linkMonitorStorage = nil
         if !sessions.isEmpty { linkMonitor.watch(Set(sessions.keys)) }
@@ -1833,7 +1833,7 @@ final class MobileLibrary {
     func setActive(_ requested: Bool) {
         guard !isClosed else { return }
         let active = hasRegisteredSceneWindows ? hasActiveSceneWindows : requested
-        // Leaving the front may end the app before the pause is over (IOS-LINKS-R4).
+        // Leaving the front may end the app before the pause is over.
         if !active { runPendingLinkRewrites(forced: false) }
         ocrActive = active
         if active {

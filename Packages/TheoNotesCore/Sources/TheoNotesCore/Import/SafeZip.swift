@@ -6,7 +6,7 @@ import Darwin
 import Foundation
 
 /// The one extractor for zip archives from outside the app: `.bear`, `.bearnote` and `.panda`
-/// imports and `.baerchen-backup` restores (ruling S7, M8-R100..R104). Own code only: no ditto,
+/// imports and `.baerchen-backup` restores. Own code only: no ditto,
 /// no third-party parser; deflate goes through Apple's Compression framework
 /// (`COMPRESSION_ZLIB` is raw DEFLATE, RFC 1951, per `compression.h`).
 ///
@@ -49,14 +49,14 @@ public enum SafeZip {
             self.maxDepth = maxDepth
         }
 
-        /// `.bear`, `.bearnote`, `.panda`: one note with its attachments (M8-R101).
+        /// `.bear`, `.bearnote`, `.panda`: one note with its attachments.
         public static let imports = Limits()
         /// `.zip`, `.textpack`, `.bear2bk`: up to a whole Bear backup, within what a zip without
-        /// ZIP64 can hold (65,534 entries, entries under 4 GiB; M8-R101).
+        /// ZIP64 can hold (65,534 entries, entries under 4 GiB).
         public static let bulkImports = Limits(
             maxEntries: 65_534, maxEntryBytes: 0xFFFF_FFFE, maxTotalBytes: 20 << 30, maxDirectoryBytes: 64 << 20,
             maxFolders: 65_534)
-        /// `.baerchen-backup`: a whole library, within what a zip without ZIP64 can hold (M8-R101).
+        /// `.baerchen-backup`: a whole library, within what a zip without ZIP64 can hold.
         public static let backups = Limits(
             maxEntries: 65_534, maxEntryBytes: 0xFFFF_FFFE, maxTotalBytes: 8 << 30, maxDirectoryBytes: 64 << 20,
             maxFolders: 65_534)

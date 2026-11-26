@@ -3,10 +3,10 @@
 
 import Foundation
 
-/// What a build offers, decided when it is built (REL-R4, M10-D5). The build setting
+/// What a build offers, decided when it is built. The build setting
 /// `THEONOTES_SYNC_SETUP` is written into the Info.plist as `THEONOTES_SyncSetupAvailable`: YES in Jan's own
 /// builds (Debug and Production), NO in the public Release build. The code behind it is compiled in either
-/// way (REL-R7); this only decides whether anything reaches it.
+/// way; this only decides whether anything reaches it.
 public enum ReleaseFeatures {
     public static let syncSetupInfoKey = "THEONOTES_SyncSetupAvailable"
 
@@ -24,7 +24,7 @@ public enum ReleaseFeatures {
         }
     }
 
-    // MARK: private sync server host (OSS-R2)
+    // MARK: private sync server host
 
     public static let privateSyncHostInfoKey = "THEONOTES_PrivateSyncHost"
     /// Where an unconfigured build points: the reserved `.invalid` name never resolves (RFC 6761).
@@ -44,7 +44,7 @@ public enum ReleaseFeatures {
         return url
     }
 
-    // MARK: iCloud sync (CK-J2, CloudKit plan Task 12)
+    // MARK: iCloud sync
 
     public static let cloudKitContainerInfoKey = "THEONOTES_CloudKitContainer"
     public static let iCloudSyncInfoKey = "THEONOTES_ICloudSyncAvailable"

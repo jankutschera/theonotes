@@ -5,7 +5,7 @@
 // outside code, math and comments. References render as superscript labels (their `[^` and `]`
 // are hidden by hiding.ts unless the caret is inside); definitions get a dimmed label. A click on
 // a rendered label moves the caret to its counterpart. Renaming a label in one edit renames its
-// single counterpart in the same transaction (one undo step, M6-R41).
+// single counterpart in the same transaction (one undo step).
 
 import { EditorSelection, EditorState, type Extension, type Line, type Range as Ranged } from "@codemirror/state";
 import { Decoration, type DecorationSet, EditorView, ViewPlugin, type ViewUpdate } from "@codemirror/view";

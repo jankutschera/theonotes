@@ -4,7 +4,7 @@
 import CryptoKit
 import Foundation
 
-// A device joining an account that already has a KeyBundle (CK-R6, CK-R14): it looks up the seed by the bundle's
+// A device joining an account that already has a KeyBundle: it looks up the seed by the bundle's
 // account id in iCloud Keychain, rebuilds the keys with `AccountKeys(masterKey:envelope:)` and proves them on the
 // bundle's canary, which authenticates every field of the bundle. Without a seed it waits (iCloud Keychain can take
 // minutes) and offers the recovery key; with a seed that does not open the bundle, a changed bundle, a bundle of another
@@ -25,7 +25,7 @@ public struct CloudKeyJoinEvaluation: Sendable {
     public let retryAfter: TimeInterval?
     /// Why `keyMismatch`: `keyMismatch` (keys or bundle content), `bundleRollback` or `accountMismatch`.
     public let mismatch: CloudKeyError?
-    /// The bundle that was verified (only with `.ready`): the coordinator keeps it for an offline launch (CK-R130).
+    /// The bundle that was verified (only with `.ready`): the coordinator keeps it for an offline launch.
     public var verifiedBundle: CloudKeyBundle?
 }
 

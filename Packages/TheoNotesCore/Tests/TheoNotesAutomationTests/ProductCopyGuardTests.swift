@@ -4,7 +4,7 @@
 import Foundation
 import Testing
 
-/// FOC-R1 and the positioning rule of the focus layer: no user-facing string names a condition.
+/// and the positioning rule of the focus layer: no user-facing string names a condition.
 /// `scripts/copy-guard.py` does the scan; `scripts/test-all.sh` runs it as well.
 @Suite struct ProductCopyGuardTests {
     private static func guardRun(_ arguments: [String]) throws -> (status: Int32, stderr: String) {

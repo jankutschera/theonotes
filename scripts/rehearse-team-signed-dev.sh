@@ -2,27 +2,27 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# Rehearsal 2 of the identity and team cutover (rename stage 2, plan task B6; REN2-R57 ... R62).
+# Rehearsal 2 of the identity and team cutover (rename stage 2, plan task B6; R62).
 #
 # Rehearsal 1 (scripts/rehearse-identity-flip.sh) proved that a build with the flipped bundle root opens a copy of the
 # library. This one runs after the B7 cutover commit is in HEAD and uses what only the NEW TEAM adds: the dev identity
 # (com.truebrewbirdie.theonotes.dev) signed by team Q446J364FH, its keychain access group, its App Group container, the share
 # drain on that container, the empty vault key cache in the new group, and the counts of a library copy opened by it.
 #
-# What it never does (dispatch rules, REL-R37, FOC-R362):
+# What it never does (dispatch rules)
 #   - it never writes to the source library (ditto, and `sqlite3 -readonly ... .backup` for the database);
 #   - it never launches, opens or builds the PRODUCTION identity, and never touches ~/Applications, Jan's keychain items or
 #     his sync account; the tests it runs use throw-away keychain accounts and a throw-away library;
 #   - it never kills by name: the one process it starts is stopped by its own PID;
 #   - it prints COUNTS and digests only, never a note title or text.
 #
-# Signing (REN2-R58): `xcodebuild -allowProvisioningUpdates` with the App Store Connect key cannot create the profile of a new
+# Signing: `xcodebuild -allowProvisioningUpdates` with the App Store Connect key cannot create the profile of a new
 # App ID ("Authentication failed ... bearer token", measured 2026-10-31), so scripts/release/asc_dev_profile.py makes the App ID,
 # the capabilities and a MAC_APP_DEVELOPMENT profile through the public API and installs it. The throw-away tree (a
 # `git archive HEAD` copy; the worktree is never edited) signs the app with the committed Debug settings, which name that profile
 # (project.yml). The container association of the dev App ID is a portal click (Jan, "Final session" in
 # docs/release/team-migration.md): while the profile does not list the container, the COPY's dev entitlements drop the four
-# iCloud keys (REN2-R59) and the result says so; as soon as the profile lists it the committed entitlements are used unchanged.
+# iCloud keys and the result says so; as soon as the profile lists it the committed entitlements are used unchanged.
 #
 # Usage: scripts/rehearse-team-signed-dev.sh [--keep] [--evidence FILE]
 # Environment: ASC_KEY_PATH, ASC_KEY_ID, ASC_ISSUER_ID (never printed); SOURCE_LIBRARY (default "$HOME/Library/Application Support/Theo Notes");
@@ -159,7 +159,7 @@ metrics "$DB" "$LIB" > "$BEFORE"
 INODE_BEFORE="$(stat -f %i "$DB")"
 say "before the launch: $(tr '\n' ';' < "$BEFORE" | sed 's/;/; /g')"
 
-# The safety steps of the cutover session (REN2-R63), on the COPY: the pre-cutover folder copy is made before the new build opens the
+# The safety steps of the cutover session, on the COPY: the pre-cutover folder copy is made before the new build opens the
 # library, and the rollback below puts it back after the build migrated the copy.
 export THEO_LIBRARY="$LIB" THEO_DESKTOP="$WORK/desktop"
 mkdir -p "$THEO_DESKTOP"
@@ -334,7 +334,7 @@ for key in envelope_digest locked_payload_digest; do
     && check PASS "$key byte-identical (locked notes untouched)" "$(val "$AFTER" $key)" \
     || check FAIL "$key changed" "before $(val "$BEFORE" $key), after $(val "$AFTER" $key)"
 done
-# ---------------------------------------------------------------- 7. rollback rehearsal on the copy (REN2-R63)
+# ---------------------------------------------------------------- 7. rollback rehearsal on the copy
 # The old app refuses a migrated library (it knows no migration after v15 and has LibraryOpenError.newerThanThisBuild), so the
 # rollback is the folder copy made above, never the migrated database. The migrated copy is moved aside, not deleted.
 if [ "$(val "$AFTER" migrations)" = "$(val "$BEFORE" migrations)" ]; then

@@ -120,7 +120,7 @@ test("highlights follow edits and a new loadNote drops them", async ({ page }) =
   await expect(page.locator(".cm-bc-searchMatch")).toHaveCount(0);
 });
 
-// Final review I4 (M6-R78): a current match inside a rendered block (a table grid) shows its source.
+// Final review I4: a current match inside a rendered block (a table grid) shows its source.
 test("⌘G to a match inside a rendered table shows the table's source with the match; moving on renders it", async ({ page }) => {
   const doc = "intro zebra\n\n| a | b |\n|---|---|\n| zebra | c |\n\nend";
   await page.goto("/index.html?mock");

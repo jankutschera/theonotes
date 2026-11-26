@@ -3,7 +3,7 @@
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
 # Theo Notes (Mac) release: archive, sign (Developer ID), verify, notarize, staple, DMG, notarize and staple the
-# DMG, final Gatekeeper assessment. REL-R60 ... R69, procedure in docs/release/release-procedure.md.
+# DMG, final Gatekeeper assessment R69, procedure in docs/release/release-procedure.md.
 #
 #   scripts/release-mac.sh              real run: needs a Developer ID Application certificate for the team in
 #                                       config/release.env, two Developer ID provisioning profiles and a stored
@@ -14,10 +14,10 @@
 #   --out DIR       where everything goes (default build/release; git-ignored)
 #   --archive PATH  use this existing .xcarchive instead of running xcodegen and xcodebuild archive
 #
-# Configuration (config/release.env, REL-R61): THEONOTES_TEAM_ID, THEONOTES_NOTARY_PROFILE (the name given to
+# Configuration (config/release.env): THEONOTES_TEAM_ID, THEONOTES_NOTARY_PROFILE (the name given to
 # `xcrun notarytool store-credentials`), THEONOTES_PROFILE_APP (the Developer ID provisioning profile of the app)
 # and THEONOTES_PROFILE_APPEX (the share extension's; optional, empty today because its signature claims no
-# restricted entitlement, REL-R67). The last three can be overridden by an environment variable of the same name.
+# restricted entitlement). The last three can be overridden by an environment variable of the same name.
 # Credentials never appear here: the notary profile lives in the keychain.
 #
 # The built app is never launched, opened or installed.
@@ -90,7 +90,7 @@ archived_app="$archive/Products/Applications/Theo Notes.app"
 # ---- 2. export ---------------------------------------------------------------------------------------------
 # Export re-signs the archive inside-out with the Developer ID certificate and the Developer ID profiles
 # (xcodebuild -exportArchive, method developer-id). The archive was signed with the development identity; the
-# project settings are not changed for this (REL-R62).
+# project settings are not changed for this.
 options="$work/ExportOptions.plist"
 write_export_options() { # <certificate> <app profile> <appex profile>
   rm -f "$options"

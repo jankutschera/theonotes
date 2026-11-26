@@ -307,7 +307,7 @@ test("perf: 500k chars rich blocks", async ({ page }) => {
   expect([...requests.entries()].filter(([, n]) => n > 1)).toEqual([]);
 });
 
-// Final review M4 (M6-R82): a 6000-line `$$` block (over MAX_TEX, so it can never render) and a
+// Final review M4: a 6000-line `$$` block (over MAX_TEX, so it can never render) and a
 // 6000-row table (over MAX_GRID_ROWS) right below the typing line always show their source, so
 // CodeMirror's viewport settles: no "Viewport failed to stabilize" while typing above them, and
 // the 500k gate holds.
@@ -386,5 +386,5 @@ test("perf: 500k chars huge blocks", async ({ page }) => {
   await expect(page.locator(".cm-content .cm-bc-table-spacer")).toHaveCount(0);
   // Not gated: each keystroke in the table re-parses the whole 6000-row Table leaf block
   // (Lezer markdown reuses fragments only at block boundaries), about 20 ms of the 20 ms
-  // Work.Apply parse budget per keystroke. Fixing that is a parser change (M6-R87).
+  // Work.Apply parse budget per keystroke. Fixing that is a parser change.
 });

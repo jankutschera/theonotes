@@ -8,7 +8,7 @@ import os
 private let preferencesLogger = Logger(subsystem: "com.truebrewbirdie.baerchen", category: "preferences-migration")
 
 /// Copies the window and layout preferences of the pre-stage-2 app (defaults domain
-/// `com.truebrewbirdie.baerchen`) into the domain of the renamed app, once (REN2-R38).
+/// `com.truebrewbirdie.baerchen`) into the domain of the renamed app, once.
 ///
 /// - Only an allow-list is copied (`keys`, and every key that starts with one of `prefixes`: the window
 ///   frames AppKit saves under `NSWindow Frame <autosave name>`). Nothing else is read.

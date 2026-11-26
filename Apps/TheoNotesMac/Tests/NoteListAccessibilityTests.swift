@@ -124,7 +124,7 @@ import Testing
         #expect(secondElement.accessibilityLabel() == "H2 Two")
     }
 
-    /// VoiceOver searches through every entry to build its rotor menu (M7-R21), so a search must not parse the
+    /// VoiceOver searches through every entry to build its rotor menu, so a search must not parse the
     /// note: the headings are cached per session revision and recomputed only when the text changes.
     @Test func theHeadingsRotorParsesTheNoteOncePerRevision() async throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent("TheoNotesAX-\(UUID().uuidString)")

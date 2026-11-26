@@ -15,7 +15,7 @@ struct OptionSpec: Equatable, Sendable {
     var repeatable = false
     /// The value must be a whole number; checked while parsing.
     var integer = false
-    /// Arbitrary text: a value that starts with `-` is accepted after a space too (ruling M5-R44).
+    /// Arbitrary text: a value that starts with `-` is accepted after a space too.
     var freeText = false
 
     var isFlag: Bool { valueName == nil }
@@ -33,7 +33,7 @@ struct CommandSpec: Equatable, Sendable {
     var options: [OptionSpec]
     var acceptsFormat: Bool
     var defaultFields: [String]
-    /// What `--fields all` selects; never contains the `extraFields` (ruling M5-R32).
+    /// What `--fields all` selects; never contains the `extraFields`.
     var allFields: [String]
     /// Fields that only an explicit `--fields …,content` adds.
     var extraFields: [String] = []

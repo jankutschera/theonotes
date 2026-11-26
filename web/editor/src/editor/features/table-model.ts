@@ -2,8 +2,8 @@
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
 // The table model (M6 Task 4): rows and cells of a Bear table, read from the Lezer `Table*` nodes
-// (dialect-blocks.ts, ruling M6-R1), so `\|`, code spans, wiki links and the other masked pipes
-// follow the parser (M6-R3). Pure: the grid widget, the aligned source mode and the AX mirror
+// (dialect-blocks.ts), so `\|`, code spans, wiki links and the other masked pipes
+// follow the parser. Pure: the grid widget, the aligned source mode and the AX mirror
 // (tables.ts) all read it.
 
 import type { EditorState } from "@codemirror/state";

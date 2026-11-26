@@ -7,7 +7,7 @@ import Testing
 
 @testable import TheoNotes
 
-/// Rehearsal 1 of the identity flip (stage-2 plan B6, REN2-R52): the preferences row. The plan seeded a fake defaults
+/// Rehearsal 1 of the identity flip (stage-2 plan B6): the preferences row. The plan seeded a fake defaults
 /// domain through `CFFIXED_USER_HOME`; on this macOS the preferences daemon ignores that variable (probed: a plist in a
 /// fake home is not found by `CFPreferencesCopyAppValue`), so the legacy domain is a throw-away suite seeded from the
 /// fixture plist instead, like `LegacyPreferencesMigrationTests`. `scripts/rehearse-identity-flip.sh` runs this inside

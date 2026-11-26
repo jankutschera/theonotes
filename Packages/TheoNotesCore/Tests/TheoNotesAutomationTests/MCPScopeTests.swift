@@ -7,7 +7,7 @@ import Testing
 @testable import TheoNotesAutomation
 @testable import TheoNotesCore
 
-/// MCP tag scoping (rulings M5-R18, M5-R140...): `--only-tags` / `--exclude-tags` narrow what the
+/// MCP tag scoping: `--only-tags` / `--exclude-tags` narrow what the
 /// tools see and what a write may leave behind.
 private struct ScopedFixture {
     let f: ToolFixture
@@ -326,7 +326,7 @@ private let moved = "The change would move the note out of this server's scope"
         #expect(try scope([], [:]) == .unrestricted)
     }
 
-    /// THEONOTES_MCP_* are the variables of the renamed product; BAERCHEN_MCP_* still work and lose when both are set (REN-R4).
+    /// THEONOTES_MCP_* are the variables of the renamed product; BAERCHEN_MCP_* still work and lose when both are set.
     @Test func theRenamedVariablesWinAndTheOldOnesStillWork() throws {
         func scope(_ environment: [String: String]) throws -> NoteScope {
             guard case .command(let parsed) = try ArgvParser.parse(["theonotes", "mcp-server"]) else {

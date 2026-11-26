@@ -6,7 +6,7 @@ import Foundation
 import GRDB
 
 /// `list`, `search`, `show`, `tags list` and `pin list`. Each checks its arguments before it asks
-/// for the library (ruling M5-R45), so usage errors come before library errors.
+/// for the library, so usage errors come before library errors.
 enum ReadCommands {
     static let handlers: [[String]: CommandHandler] = [
         ["list"]: list,
@@ -113,7 +113,7 @@ enum ReadCommands {
         let selector = try optionalSelector(parsed)
         let counting = parsed.flag("--count")
         // Without a note there is nothing to look up first, so the fields are checked before the
-        // library (M5-R45); with a note, as in `show`, the note resolves first.
+        // library; with a note, as in `show`, the note resolves first.
         var fields: [String] = []
         if selector == nil, !counting { fields = try NoteFields.parse(parsed.fieldsArgument, spec: parsed.spec) }
         let library = try env.library()

@@ -1,6 +1,6 @@
 # Font licence texts
 
-Copies of the licence files of the fonts behind the maths rendering (LIC-R34). They are the input
+Copies of the licence files of the fonts behind the maths rendering. They are the input
 of the Acknowledgements entries (`assets` in `scripts/acknowledgements-config.json`); the app shows
 them from `Acknowledgements.json`, not from this folder. Never edit them: they are upstream's text.
 

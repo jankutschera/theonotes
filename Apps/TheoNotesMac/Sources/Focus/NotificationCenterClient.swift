@@ -5,20 +5,20 @@ import TheoNotesCore
 import Foundation
 import UserNotifications
 
-/// The slice of `UNUserNotificationCenter` the reminder scheduler uses (FOC-R260). Tests give it a
+/// The slice of `UNUserNotificationCenter` the reminder scheduler uses. Tests give it a
 /// fake, so no test ever posts a real notification.
 @MainActor
 protocol NotificationCenterClient: AnyObject {
     /// Asks for permission to show alerts and sounds; the system prompts only the first time.
     func requestAuthorization() async -> Bool
-    /// Whether notifications may be shown right now. Never prompts (FOC-R260).
+    /// Whether notifications may be shown right now. Never prompts.
     func isAuthorized() async -> Bool
     func pendingIdentifiers() async -> Set<String>
     func deliveredIdentifiers() async -> [String]
     /// The synchronous wrappers cold launch uses: no enumeration, no waiting.
     func removeDeliveredNow(_ ids: [String])
     func removePendingNow(_ ids: [String])
-    /// Schedules `n` under `identifier` (FOC-R260: the id comes from the ledger).
+    /// Schedules `n` under `identifier` (the id comes from the ledger).
     func add(_ n: PlannedNotification, identifier: String) async throws
     func addTimer(identifier: String, title: String, at: Date) async throws
     func removePending(_ ids: [String])
@@ -28,7 +28,7 @@ protocol NotificationCenterClient: AnyObject {
 }
 
 /// The `reminder` category: two snooze actions, and `.customDismissAction` so a swipe-away reaches
-/// the delegate (FOC-R10).
+/// the delegate.
 enum MacNotificationCategory {
     static let snoozeHourTitle = "In 1 Hour"
 
@@ -117,7 +117,7 @@ final class LiveNotificationCenter: NotificationCenterClient {
     func removeDelivered(_ ids: [String]) { removeDeliveredNow(ids) }
 
     /// What the system shows for a planned reminder: the note title as the title, the line as the
-    /// body, in separate fields (FOC-R391).
+    /// body, in separate fields.
     static func content(for n: PlannedNotification) -> UNMutableNotificationContent {
         let content = UNMutableNotificationContent()
         content.title = n.title

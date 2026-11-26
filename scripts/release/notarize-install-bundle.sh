@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# Notarizes and staples the Production bundle that Jan installs on his own Mac (REN2-R66), headlessly with the App Store Connect
+# Notarizes and staples the Production bundle that Jan installs on his own Mac, headlessly with the App Store Connect
 # API key (notarytool --key, no keychain profile needed):
 #
 #   scripts/release/notarize-install-bundle.sh <path to Theo Notes.app of the Production build>

@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotes
 
-/// The share extension's request building (C17, FOC-R334). The builder file is compiled into this
+/// The share extension's request building (C17). The builder file is compiled into this
 /// bundle as well as into the extension, so it is tested here without an extension host.
 @Suite struct ShareRequestBuilderTests {
     let dir: URL

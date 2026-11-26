@@ -88,11 +88,11 @@ public struct AccountKeys: Sendable {
         accountID = envelope.accountId; masterKey = master
         vaultKey = try Self.open(envelope.wrappedVaultKey, key: master, context: Self.context(accountID, "vault"))
     }
-    /// Rebuilds the keys from the account master key (the synchronizable Keychain seed, CK-R6) and the public envelope.
+    /// Rebuilds the keys from the account master key (the synchronizable Keychain seed) and the public envelope.
     public init(masterKey: SymmetricKey, envelope: AccountKeyEnvelope) throws {
         try self.init(master: masterKey, envelope: envelope)
     }
-    /// The account master key bytes, only for the synchronizable Keychain seed (CK-R6). Never log or upload them.
+    /// The account master key bytes, only for the synchronizable Keychain seed. Never log or upload them.
     public var masterKeyData: Data { masterKey.withUnsafeBytes { Data($0) } }
     public init(recovery: RecoveryKey, envelope: AccountKeyEnvelope) throws {
         try Self.validate(envelope)

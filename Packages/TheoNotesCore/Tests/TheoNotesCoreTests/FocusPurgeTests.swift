@@ -7,7 +7,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// `FocusPurge` (FOC-R10, FOC-R11): what locking a note, here or through sync, does to its
+/// `FocusPurge`: what locking a note, here or through sync, does to its
 /// reminders, hides, snapshots and notification ledger rows. The call sites are in the locking
 /// transaction itself, so a failure later in that transaction leaves all of it unchanged.
 @Suite struct FocusPurgeTests {

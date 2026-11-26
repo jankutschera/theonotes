@@ -102,7 +102,7 @@ final class MobileEditor: NSObject, WKScriptMessageHandlerWithReply, WKNavigatio
     private(set) var formatState: FormatState?
     private(set) var hasSelection = false
     var previewURL: URL?
-    /// The theme's page colour, so the editor column behind the bars matches the page (IOS-TOOLBAR-R8).
+    /// The theme's page colour, so the editor column behind the bars matches the page.
     private(set) var pageBackground: Color?
     var linkRequest: EditLinkRequest?
     var headingMenu: HeadingMenuRequest?
@@ -209,7 +209,7 @@ final class MobileEditor: NSObject, WKScriptMessageHandlerWithReply, WKNavigatio
         return page
     }
 
-    /// IOS-TOOLBAR-R10: WebKit's form bar (previous, next, done) sat above the keyboard on top of our editor bar.
+    /// WebKit's form bar (previous, next, done) sat above the keyboard on top of our editor bar.
     /// The page's content view is the scroll view's text-input subview; a runtime subclass of it returns no
     /// accessory view. Public runtime calls only, no private class or selector names.
     private static func hideFormAccessoryBar(in page: WKWebView) {

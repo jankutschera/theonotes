@@ -6,8 +6,8 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// `v15-focus`: the device-local state of the capture-and-next-up layer (FOC-R2, FOC-R3, FOC-R10,
-/// FOC-R11, FOC-R17). Constraints are part of the contract, so each is pinned here.
+/// `v15-focus`: the device-local state of the capture-and-next-up layer
+///). Constraints are part of the contract, so each is pinned here.
 @Suite struct FocusMigrationTests {
     let tmp: TempPaths
     let db: AppDatabase

@@ -498,7 +498,7 @@ import Testing
     }
 }
 
-// MARK: - Backup v2: focus state (C9, FOC-R5)
+// MARK: - Backup v2: focus state (C9)
 
 extension LibraryBackupTests {
     static func fixtureArchive(_ name: String) -> URL {
@@ -794,7 +794,7 @@ extension LibraryBackupTests {
 
     /// The invariant "sealed rows only on locked notes" is kept by the lock paths. A row that breaks it
     /// anyway (a damaged library) is never written in the clear and never dropped silently: the
-    /// backup fails with a clear error and nothing is left behind (FOC-R277).
+    /// backup fails with a clear error and nothing is left behind.
     @Test func anInconsistentSnapshotRowFailsTheBackupAndLeavesNothing() throws {
         let source = try FocusLibrary()
         defer { source.cleanup() }

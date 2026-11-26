@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// STARTER-R18 …: at the first launch of 1.1, each UNEDITED first-release starter is replaced once by its new text.
+/// …: at the first launch of 1.1, each UNEDITED first-release starter is replaced once by its new text.
 @Suite struct GettingStartedUpgradeTests {
     /// A library made by the first release: frozen v1 texts, flag set.
     static func firstReleaseLibrary() throws -> GettingStartedNotesTests.Library {

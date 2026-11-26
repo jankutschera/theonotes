@@ -113,7 +113,7 @@ final class PartBlockingGateway: CloudKitGateway, @unchecked Sendable {
             await a.coordinator.endAsIfTheProcessDied()
             // the app starts again; nobody asked to enable again, but the person's switch is still on
             #expect(try await a.makeCoordinator().launch() == .needsNotePassword)
-            // The password comes before the keys now (CK-R143): no key exists yet after this restart, so the person is asked about the
+            // The password comes before the keys now: no key exists yet after this restart, so the person is asked about the
             // recovery words again (the choice made before the restart lived in memory only), then the first sync goes on.
             await #expect(throws: CloudCoordinatorError.recoveryChoiceRequired) { _ = try await a.coordinator.syncNow(notePassword: "correct horse") }
             #expect(try await a.enable(notePassword: "correct horse") == .upToDate(lastSync: a.clockValue.value))
@@ -321,7 +321,7 @@ final class PartBlockingGateway: CloudKitGateway, @unchecked Sendable {
             #expect(try await b.coordinator.syncNow() == .failed(kind: "keyRollback"))
             let held = try #require(try b.store.remote(recordName: "e.note.\(note.id)")).ver
             // the real bundle returns for a moment, A publishes a second version, the old bundle is put back again:
-            // the newest version replaces the held one (CK-R5)
+            // the newest version replaces the held one
             try await Self.put(newer, from: a, in: world.cloud)
             try a.edit(note.id, "# Note\nfirst line by A, again\n\nmiddle\n\nlast line\n")
             try await a.coordinator.syncNow()

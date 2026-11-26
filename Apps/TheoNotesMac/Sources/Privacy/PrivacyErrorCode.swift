@@ -4,7 +4,7 @@
 import TheoNotesCore
 import Foundation
 
-/// The only thing privacy code logs about a failure (M9M-R20): a fixed code per error case. An
+/// The only thing privacy code logs about a failure: a fixed code per error case. An
 /// interpolated error can carry a note id, a protected attachment name or a path, so no log line
 /// and no state shown to the UI ever contains `\(error)`. The switches over our own error types
 /// have no `default`: adding a case does not compile until it is classified.

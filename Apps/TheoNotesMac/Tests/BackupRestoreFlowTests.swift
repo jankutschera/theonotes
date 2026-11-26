@@ -7,7 +7,7 @@ import Testing
 import UniformTypeIdentifiers
 @testable import TheoNotes
 
-/// Backup Notes… and Restore Backup… on the one backup format (`LibraryBackup`, INT-R11): the app
+/// Backup Notes… and Restore Backup… on the one backup format (`LibraryBackup`): the app
 /// flow around it. The archive itself (hostile files, round trip, vault-aware restore) is tested
 /// in TheoNotesCore.
 @MainActor
@@ -603,7 +603,7 @@ import UniformTypeIdentifiers
         #expect(BackupFileType.allowedTypes.first?.identifier == BackupFileType.identifier)
     }
 
-    /// REN2-R37: files of the first release keep opening: their type is declared as imported, and the panels accept it.
+    /// Files of the first release keep opening: their type is declared as imported, and the panels accept it.
     @Test func theOldBackupTypeIsStillDeclaredAsImported() throws {
         let imported = Bundle.main.object(forInfoDictionaryKey: "UTImportedTypeDeclarations") as? [[String: Any]]
         let entry = try #require(imported?.first { $0["UTTypeIdentifier"] as? String == BackupFileType.legacyIdentifier })

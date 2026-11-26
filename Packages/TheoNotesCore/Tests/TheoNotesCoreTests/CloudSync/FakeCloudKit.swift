@@ -5,7 +5,7 @@ import CryptoKit
 import Foundation
 @testable import TheoNotesCore
 
-// An in-memory CloudKit for everything before the Apple account exists (CK-R16: the fake is the test strategy, and nothing it
+// An in-memory CloudKit for everything before the Apple account exists (the fake is the test strategy, and nothing it
 // teaches is frozen before Gate G0). Each behaviour below is tagged
 //   [doc]  modelled on documentation (URL in docs/superpowers/specs/2026-10-28-cloudkit-record-v1.md, "Fake fidelity"), or
 //   [G0]   an ASSUMPTION that Gate G0 / the live contract run must confirm or correct.
@@ -428,7 +428,7 @@ actor FakeCloudKitDevice: CloudKitGateway {
     private var sendBatchBytes = 1_048_576
     private var atomicByZone = false
     private var deliversBlobPartAssets = true   // [G0 A3] CKSyncEngine hands over the assets of the records it fetches eagerly (measured: 252 MB)
-    /// [G0 A3, CK-R152, CK-R160] `BlobPart` records live in a second zone that the engine is told not to fetch: `fetchChanges` never
+    /// [G0 A3, ] `BlobPart` records live in a second zone that the engine is told not to fetch: `fetchChanges` never
     /// delivers them (nor their deletions); they are read by name with `fetch`. A test can switch the zone on to model a newer or
     /// misbehaving peer that puts parts into the fetched zone.
     private var fetchesBlobZone = false
@@ -580,7 +580,7 @@ actor FakeCloudKitDevice: CloudKitGateway {
     }
 
     /// A save leaves the durable pending list only after its outcome is durable in the store (or the device is told nothing at all).
-    /// A failure after the send, or while storing, leaves the rest pending; the resend of a landed save conflicts and is resolved by CK-R4.
+    /// A failure after the send, or while storing, leaves the rest pending; the resend of a landed save conflicts and is resolved by.
     func sendPending() async throws {
         if sending { return }
         sending = true
@@ -591,7 +591,7 @@ actor FakeCloudKitDevice: CloudKitGateway {
             try crash.hit("afterSend")
             for (save, outcome) in zip(batch, outcomes) {
                 if let outcome {
-                    // Like the live gateway: a result the durable fence or the generation refuses is moot and dropped (CK-R171).
+                    // Like the live gateway: a result the durable fence or the generation refuses is moot and dropped.
                     do { try store.recordSendResult(attemptId: save.attemptId, accountGeneration: save.accountGeneration, outcome: outcome) }
                     catch CloudSyncStoreError.accountFenced {}
                     catch CloudSyncStoreError.staleAccountGeneration {}
@@ -775,7 +775,7 @@ actor FakeCloudKitDevice: CloudKitGateway {
         return outcomes.map { outcome in
             guard case .serverRecordChanged(let server) = outcome else { return outcome }
             // [G0] assets in the conflict record. The result is persisted, so its assets are staged and then pinned into the
-            // gateway's own durable folder before the result is recorded (CK-R60); if that fails the result says so.
+            // gateway's own durable folder before the result is recorded; if that fails the result says so.
             do { return .serverRecordChanged(server: try pin(try stage(server))) } catch { return .failed(code: "conflictAssetUnavailable") }
         }
     }

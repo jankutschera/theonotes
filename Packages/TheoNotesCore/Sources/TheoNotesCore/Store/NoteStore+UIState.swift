@@ -6,7 +6,7 @@ import GRDB
 
 /// Per-note editor state that is not note content (`note_ui_state`, migration v1): the folds
 /// (M6 Task 8). Only line numbers and line hashes are stored, never note text. A locked note keeps
-/// none: a 32-bit hash of a short heading can be found by dictionary search (M6-R81).
+/// none: a 32-bit hash of a short heading can be found by dictionary search.
 extension NoteStore {
     /// The stored folds of `noteId`; none when there are none, the note is locked, or the stored
     /// JSON does not decode (invalid entries are dropped, `FoldEntry.valid`).
@@ -27,7 +27,7 @@ extension NoteStore {
     /// Stores the folds of `noteId` (at most `EditorBridge.maxFolds`). It never touches `note`:
     /// no revision or `modifiedAt` change, no index run and no change notification (Review Focus 5).
     /// A note that no longer exists stores nothing; a locked note stores nothing and loses any
-    /// row written before it was locked (M6-R81).
+    /// row written before it was locked.
     public func setFoldState(noteId: String, _ folds: [FoldEntry]) throws {
         let data = try JSONEncoder().encode(Array(folds.prefix(EditorBridge.maxFolds)))
         let json = String(decoding: data, as: UTF8.self)

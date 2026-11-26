@@ -45,7 +45,7 @@ extension AppModel {
             return true
         }
         // Shown by `makeMainWindow` once the window exists, in arrival order with the other actions that
-        // wait for it (ruling M5-R229). A window that is up shows it now.
+        // wait for it. A window that is up shows it now.
         let waits = frontmostMainWindow == nil
         guard withMainWindow({ [weak self] main in self?.show(request, in: main) }) else { return false }
         if waits, request.showWindow { activate() }
@@ -54,7 +54,7 @@ extension AppModel {
 
     /// Selects the note in `main`'s list, shows it in its editor and applies the request. The window is
     /// not made here (it may not be attached yet): a window that is up is brought forward.
-    /// False when the note could not be shown (it is gone); the log names no note (ruling M5-R231).
+    /// False when the note could not be shown (it is gone); the log names no note.
     @discardableResult
     func show(_ request: OpenNoteRequest, in main: MainWindowState) -> Bool {
         main.model.refresh()
@@ -93,13 +93,13 @@ extension AppModel {
         if request.edit || request.selection != nil { editor.focusEditor() }
     }
 
-    /// Most actions that wait for a main window (ruling M5-R216).
+    /// Most actions that wait for a main window.
     static let maxPendingMainActions = 16
 
     /// Runs `action` on the frontmost main window, or keeps it until `makeMainWindow` makes one; the
     /// kept actions (note opens and sidebar or workspace changes alike) run in arrival order. The first
-    /// one asks for a window, unless the launch window is still to come (M5-R195); the rest wait for
-    /// the same window. False when the queue is full (ruling M5-R229).
+    /// one asks for a window, unless the launch window is still to come; the rest wait for
+    /// the same window. False when the queue is full.
     @discardableResult
     func withMainWindow(_ action: @escaping (MainWindowState) -> Void) -> Bool {
         if let main = frontmostMainWindow {
@@ -115,7 +115,7 @@ extension AppModel {
 
     /// The editor of the window the user works in: the key window's, else the frontmost Theo Notes
     /// window that has one, else the window that was key most recently (main and note windows alike;
-    /// ties and windows never key go to the newest), ruling M5-R196.
+    /// ties and windows never key go to the newest),.
     func keyEditor() -> EditorBridgeController? {
         func editor(of window: NSWindow) -> EditorBridgeController? {
             if let main = mainWindows.first(where: { $0.window === window }) { return main.editor }

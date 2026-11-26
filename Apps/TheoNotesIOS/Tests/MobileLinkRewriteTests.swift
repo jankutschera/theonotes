@@ -80,7 +80,7 @@ import Testing
         #expect(session.apply(txId: id, baseRevision: revision, changeSet: ChangeSet(sections: sections), origin: nil) == .acked(revision: revision + 1))
     }
 
-    /// IOS-LINKS-R4: a rename still in its pause is followed when the app leaves the front.
+    /// A rename still in its pause is followed when the app leaves the front.
     @Test func goingToTheBackgroundRunsAPendingRewrite() throws {
         let (library, _) = try makeLibrary()
         defer { try? library.close(); try? FileManager.default.removeItem(at: library.paths.root) }
@@ -94,7 +94,7 @@ import Testing
         #expect(try library.store.note(id: linking.id)?.text == "See [[New]]")
     }
 
-    /// IOS-LINKS-R4: closing the library runs a pending rewrite before the sessions go.
+    /// Closing the library runs a pending rewrite before the sessions go.
     @Test func closingTheLibraryRunsAPendingRewrite() throws {
         let (library, _) = try makeLibrary()
         let paths = library.paths
@@ -136,7 +136,7 @@ import Testing
         #expect(try library.store.note(id: b.id)?.text == "typed Start [[Beta]] end!")
     }
 
-    /// IOS-LINKS-R5: after a restore the follower starts from the restored notes, not from what it
+    /// After a restore the follower starts from the restored notes, not from what it
     /// saw before.
     @Test func aRestoreResetsWhatTheFollowerSawBefore() async throws {
         let (library, scheduler) = try makeLibrary()

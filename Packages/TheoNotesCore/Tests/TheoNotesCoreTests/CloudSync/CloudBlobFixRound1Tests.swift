@@ -10,7 +10,7 @@ import Testing
 /// Fix round 1 (Codex review of Task 7): C1, C2, I1 to I5.
 @Suite(.serialized) struct CloudBlobFixRound1Tests {
     /// A publisher cycle runs right after a save reached the cloud and before the transfer read its result: the moment the
-    /// orphan sweep used to eat BlobPart results (CK-R114).
+    /// orphan sweep used to eat BlobPart results.
     static func sweepAfterEverySave(_ rig: BlobRig, _ device: PublisherDevice) {
         rig.gateway.afterSubmit = { _ in _ = try? device.publisher.consumeResults() }
     }

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Export scanner (REN2-R20): fails when a tree about to be published holds anything private.
+"""Export scanner: fails when a tree about to be published holds anything private.
 
 Usage: python3 -I scripts/oss/scan.py DIR [--research DIR] [--manifest FILE]
                                       [--disable r1,r2|all] [--enable r1,r2] [--gitleaks]

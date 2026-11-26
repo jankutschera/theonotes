@@ -6,8 +6,8 @@ import Foundation
 import GRDB
 import Synchronization
 
-/// What a share extension asks the app to do (FOC-R12). Written as `request.json` next to the
-/// shared files; the app treats it as hostile input (FOC-R140 ... FOC-R145).
+/// What a share extension asks the app to do. Written as `request.json` next to the
+/// shared files; the app treats it as hostile input.
 public struct CaptureRequest: Codable, Equatable, Sendable {
     public var version = 1
     public let itemId: String
@@ -36,20 +36,20 @@ public enum CaptureInboxError: Error, Equatable, Sendable {
 }
 
 /// The App Group folder (`CaptureInbox`) that share extensions drop items into and the app drains
-/// (FOC-R12). One item is a folder `<itemId>.capture/` holding `request.json` plus the files.
+///. One item is a folder `<itemId>.capture/` holding `request.json` plus the files.
 public struct CaptureInbox: Sendable {
     public let directory: URL
 
-    // Limits (FOC-R141).
+    // Limits.
     static let maxTextBytes = 2 * 1024 * 1024
     static let maxRequestBytes = 8 * 1024 * 1024
     static let maxFiles = 10
     static let maxFileBytes = 25 * 1024 * 1024
     static let maxTotalBytes = 50 * 1024 * 1024
-    /// A `.tmp` folder untouched for this long was abandoned (FOC-R142).
+    /// A `.tmp` folder untouched for this long was abandoned.
     static let staleTmpAge: TimeInterval = 3600
     static let receiptAge: TimeInterval = 30 * 86400
-    /// Rejected items are kept this long after the rejection, and at most `maxRejected` of them (FOC-R335).
+    /// Rejected items are kept this long after the rejection, and at most `maxRejected` of them.
     static let rejectedAge: TimeInterval = 7 * 86400
     static let maxRejected = 20
 
@@ -104,7 +104,7 @@ public struct CaptureInbox: Sendable {
     /// appended to), in item order. Rejected items go to `rejected/`; items that failed for a
     /// transient reason stay for the next drain.
     /// `holdingAppendsTo` names notes that cannot take an append right now (the app has unsaved text of
-    /// them open): an append item for one of them stays in the inbox for a later drain (FOC-R340).
+    /// them open): an append item for one of them stays in the inbox for a later drain.
     public func drain(
         into store: NoteStore, attachments: AttachmentStore, now: Date = .now, holdingAppendsTo held: Set<String> = []
     ) throws -> [String] {
@@ -196,7 +196,7 @@ public struct CaptureInbox: Sendable {
     }
 
     /// Appends to `target`, or returns nil when it cannot take the text (missing, deleted, locked,
-    /// trashed or read-only), so the caller saves a new note instead (FOC-R143).
+    /// trashed or read-only), so the caller saves a new note instead.
     private func append(
         _ request: CaptureRequest, to target: String, from item: URL, store: NoteStore,
         now: Date, afterNoteWrite: (@Sendable (String) throws -> Void)?
@@ -386,7 +386,7 @@ public struct CaptureInbox: Sendable {
 
     /// Deletes rejected items more than `rejectedAge` after their rejection (or dated more than a day
     /// ahead of `now`, which a clock jump or a planted date can cause), then the oldest beyond the
-    /// newest `maxRejected`. Links are removed, never followed (FOC-R335).
+    /// newest `maxRejected`. Links are removed, never followed.
     private func pruneRejected(now: Date) {
         let fm = FileManager.default
         let folder = directory.appendingPathComponent(Self.rejectedName, isDirectory: true)
@@ -480,7 +480,7 @@ public struct CaptureInbox: Sendable {
     }
 }
 
-/// The notes the share extension offers for "Append to Note…" (FOC-R12, FOC-R144). Holds ids and
+/// The notes the share extension offers for "Append to Note…". Holds ids and
 /// titles of unlocked notes only, and does not exist while App Lock is enabled.
 public struct RecentNotesFile: Codable, Equatable, Sendable {
     public let notes: [Entry]
@@ -516,7 +516,7 @@ public struct RecentNotesFile: Codable, Equatable, Sendable {
     }
 }
 
-/// Files the app puts into the App Group container for the extensions (FOC-R12, FOC-R144).
+/// Files the app puts into the App Group container for the extensions.
 public enum SharedContainerFiles {
     /// Writes `file` atomically as `recent-notes.json`; nil removes a stale one.
     public static func publish(_ file: RecentNotesFile?, in container: URL) throws {
@@ -531,7 +531,7 @@ public enum SharedContainerFiles {
     }
 
     /// Whether the container really works: writes, reads back and deletes a probe file. An invalid
-    /// App Group can still hand out a plausible URL (FOC-R12).
+    /// App Group can still hand out a plausible URL.
     public static func validate(container: URL) -> Bool {
         let probe = container.appendingPathComponent(".probe-\(UUID().uuidString)")
         let payload = Data(UUID().uuidString.utf8)

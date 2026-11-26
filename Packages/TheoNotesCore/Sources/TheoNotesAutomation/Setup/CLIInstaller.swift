@@ -9,7 +9,7 @@ import Foundation
 /// link that points at this binary. `/usr/local/bin` needs administrator rights, so the app shows
 /// its `sudo` command for the user to run (`sudoCommand()`) and only reads that folder.
 ///
-/// Changing the link never trusts an earlier check (M5-R198): the new link is made under a
+/// Changing the link never trusts an earlier check: the new link is made under a
 /// temporary name and moved into place with `renamex_np`, and whatever it displaced is examined
 /// afterwards and put back if it is not a link.
 public struct CLIInstaller: Sendable {

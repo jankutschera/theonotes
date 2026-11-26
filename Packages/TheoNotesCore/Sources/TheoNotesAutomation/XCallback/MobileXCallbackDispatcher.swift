@@ -145,7 +145,7 @@ public struct MobileXCallbackResult: Sendable {
             if p["open_note"] != "no" { result.noteID = note.id }
             result.header = p["header"]; result.find = p["search"]; result.edit = request.yes("edit")
         case "create", "grab-url":
-            // A request whose answer may not have arrived gets its first note back (REL-R90, REL-R92).
+            // A request whose answer may not have arrived gets its first note back.
             // `wait=no` already answered before the work, so it gets no receipt.
             let answers = request.action != "grab-url" || p["wait"] != "no"
             let receipts = XCallbackReceipts(database: database)

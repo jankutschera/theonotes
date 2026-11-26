@@ -70,7 +70,7 @@ import Testing
         #expect(try store.foldState(noteId: note.id).isEmpty)
     }
 
-    /// Final review M3 (M6-R81): line hashes of a locked note's headings are metadata about its
+    /// Final review M3: line hashes of a locked note's headings are metadata about its
     /// text, so a locked note keeps no fold state: a write stores nothing and clears an older row,
     /// a read returns none.
     @Test func testLockedNotesKeepNoFoldState() throws {

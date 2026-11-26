@@ -358,7 +358,7 @@ let publicPeer: @Sendable (URLSessionTaskMetrics) -> [String?] = { _ in ["93.184
         }
     }
 
-    // MARK: Proxy (M5-R106)
+    // MARK: Proxy
 
     @Test func theSessionNeverUsesAProxy() {
         let configuration = HTTPSFetcher.makeConfiguration(requestTimeout: 15, totalTimeout: 30, protocolClasses: [])
@@ -368,7 +368,7 @@ let publicPeer: @Sendable (URLSessionTaskMetrics) -> [String?] = { _ in ["93.184
         #expect(configuration.timeoutIntervalForRequest == 15 && configuration.timeoutIntervalForResource == 30)
     }
 
-    // MARK: Peer address (M5-R107)
+    // MARK: Peer address
 
     @Test func aResponseFromABlockedOrUnknownPeerNeverReachesTheCaller() async throws {
         let url = "https://peer-check.example/x"
@@ -395,7 +395,7 @@ let publicPeer: @Sendable (URLSessionTaskMetrics) -> [String?] = { _ in ["93.184
         #expect(ok.data == Data("private page".utf8))
     }
 
-    // MARK: Local network (M5-R105)
+    // MARK: Local network
 
     private static let refusal = "Refusing to fetch a local or private network address"
 

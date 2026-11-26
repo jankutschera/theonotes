@@ -585,7 +585,7 @@ final class Scratch {
         #expect(try String(contentsOf: scratch.url.appendingPathComponent("outside/secret.txt"), encoding: .utf8) == "TOPSECRETKEY")
     }
 
-    /// Every archive type goes through SafeZip (M8-R100): a link anywhere refuses the whole archive.
+    /// Every archive type goes through SafeZip: a link anywhere refuses the whole archive.
     @Test func testSymlinkedTextAndAssetInArchiveAreNeverRead() throws {
         let report = try run([try craftedArchive()])
 
@@ -784,7 +784,7 @@ final class Scratch {
         #expect(report.warnings.first?.hasPrefix("v/secret.md") == true)
     }
 
-    // MARK: - Theo Notes' own info.json key (M8-R15)
+    // MARK: - Theo Notes' own info.json key
 
     @Test func readsTheTheoNotesInfoKeyIncludingTagPins() throws {
         let bundle = try scratch.dir("own.textbundle")
@@ -1256,7 +1256,7 @@ extension FileImporterTests {
     }
 }
 
-// MARK: - Attachment size caps (IMP-R61)
+// MARK: - Attachment size caps
 
 extension FileImporterTests {
     private func limitedRun(

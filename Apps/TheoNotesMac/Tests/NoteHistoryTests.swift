@@ -9,7 +9,7 @@ import Testing
 @testable import TheoNotes
 
 /// Focus layer C16: the history recorder wired into the app's sessions, the sealed snapshot at
-/// relock, and the Note History model (spec A5, FOC-R11, FOC-R16, FOC-R290 … FOC-R299).
+/// relock, and the Note History model (spec A5).
 @MainActor
 @Suite struct NoteHistoryTests {
     // MARK: Fixtures
@@ -438,7 +438,7 @@ import Testing
     // MARK: Fix round 1
 
     /// The real path of Note ▸ Note History… over a note window: opening the sheet must not save, evict
-    /// or snapshot anything (FOC-R297).
+    /// or snapshot anything.
     @Test func openingTheHistoryWritesNothing() async throws {
         let suiteName = "TheoNotesHistory-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
@@ -471,7 +471,7 @@ import Testing
     }
 
     /// An editor transaction that is typed but not yet at the host: Replace waits for the editor,
-    /// finds it ahead of the session, writes nothing and says so (FOC-R297).
+    /// finds it ahead of the session, writes nothing and says so.
     @Test func replaceRefusesWhileAnEditorTransactionIsStillOnItsWay() async throws {
         let env = try PlainEnv()
         let note = try env.store.create(text: "start")
@@ -510,7 +510,7 @@ import Testing
     }
 
     /// At full retention one row goes out as another comes in: count, newest id and sealed count do
-    /// not change, the list must (FOC-R294).
+    /// not change, the list must.
     @Test func theListFollowsARetentionSwapAtFullRetention() async throws {
         let env = try PlainEnv()
         let note = try env.store.create(text: "x")

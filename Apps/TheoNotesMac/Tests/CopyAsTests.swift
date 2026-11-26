@@ -98,7 +98,7 @@ import Testing
         let html = try #require(pasteboard.string(forType: .html))
         #expect(html.contains("<strong") || html.contains("<b"))
         #expect(html.contains("charset"))
-        // Plain text per M8-R14: emphasis delimiters are gone, tags stay.
+        // Plain text per emphasis delimiters are gone, tags stay.
         let plain = try #require(pasteboard.string(forType: .string))
         #expect(plain == PlainTextExport.text(Self.sample))
         #expect(!plain.contains("**"))

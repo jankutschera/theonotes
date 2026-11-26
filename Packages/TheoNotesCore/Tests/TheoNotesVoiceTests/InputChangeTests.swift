@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotesVoice
 
-/// What a configuration change of the audio engine means for a running recording (FOC-R381): the
+/// What a configuration change of the audio engine means for a running recording: the
 /// engine posts it for any change of its hardware, including ones that leave the microphone alone
 /// (a Bluetooth headset switching profile on the output side). Only a changed input ends the note.
 @Suite struct InputChangeTests {
@@ -34,7 +34,7 @@ import Testing
     }
 
     /// Two USB interfaces, or a headset and the built-in mic, can share a channel count and rate
-    /// (FOC-R384): the notice is for the device, not the format.
+    ///: the notice is for the device, not the format.
     @Test func aDifferentDeviceWithTheSameFormatEndsTheRecording() {
         let builtIn = InputFormatSummary(channels: 1, sampleRate: 48000, device: "BuiltInMicrophoneDevice")
         let headset = InputFormatSummary(channels: 1, sampleRate: 48000, device: "AA-BB-CC-DD-EE-FF:input")
@@ -44,7 +44,7 @@ import Testing
         #expect(InputChange.decide(recording: builtIn, current: builtIn, engineIsRunning: false) == .restart)
     }
 
-    /// K5 (FOC-R393): a Bluetooth headset switches its profile and format when the microphone opens.
+    /// K5: a Bluetooth headset switches its profile and format when the microphone opens.
     /// The same device with a new format goes on in the new format; another device still stops.
     @Test func theSameDeviceWithANewFormatContinuesInTheNewFormat() {
         let uid = "AA-BB-CC-DD-EE-FF:input"

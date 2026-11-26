@@ -82,7 +82,7 @@ import XCTest
         attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
     }
 
-    /// IOS-CLUTTER-R8: Quick Open and From Template are in Note Actions exactly when the list's bottom bar is not on screen
+    /// Quick Open and From Template are in Note Actions exactly when the list's bottom bar is not on screen
     /// or is covered by the on-screen keyboard.
     func testQuickOpenAndTemplateFollowTheListColumn() throws {
         let app = launch()
@@ -146,7 +146,7 @@ import XCTest
                       "a tap at the row's trailing edge selects it")
     }
 
-    /// IOS-CLUTTER-R4, R10: search lives in the search field (and ⌘F); List Options and the row menu hold no copy.
+    /// Search lives in the search field; List Options and the row menu hold no copy.
     func testSearchLivesInTheSearchField() {
         let app = launch()
         createNote("Searchable fixture\nBody", app)
@@ -176,7 +176,7 @@ import XCTest
         shot("Search field", app)
     }
 
-    /// IOS-CLUTTER-R5, R6: the selection menu offers Pin or Unpin, Archive or Restore; section keys use the Mac numbers.
+    /// The selection menu offers Pin or Unpin, Archive or Restore; section keys use the Mac numbers.
     func testSelectionMenuMatchesSelectionAndScope() {
         let app = launch()
         createNote("Selection fixture\nBody", app)
@@ -215,7 +215,7 @@ import XCTest
         XCTAssertTrue(row("Selection fixture", app).waitForExistence(timeout: 30))
     }
 
-    /// IOS-CLUTTER-R6, R7, R16: no Navigate submenu, no second "All Notes"; Library Options keeps its entries.
+    /// No Navigate submenu, no second "All Notes"; Library Options keeps its entries.
     func testSidebarHoldsEachEntryOnce() {
         let app = launch()
         createNote("Workspace fixture\n#clutterspace ", app)
@@ -244,7 +244,7 @@ import XCTest
         XCTAssertTrue(app.staticTexts["Workspace"].firstMatch.waitForNonExistence(timeout: 30))
     }
 
-    /// IOS-CLUTTER-R11, R12: one export tag switch in Settings, the wiki link switch in the export menu, the renamed to-do switch.
+    /// One export tag switch in Settings, the wiki link switch in the export menu, the renamed to-do switch.
     func testSettingsHoldTheExportAndToDoSwitchesOnce() {
         let app = launch()
         createNote("Export fixture\nBody", app)

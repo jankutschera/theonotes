@@ -20,7 +20,7 @@ extension CloudSyncStore: CloudGatewayStore {
         }
     }
 
-    /// A change of zone state bumps the generation (CK-R15); setting the same state is a no-op.
+    /// A change of zone state bumps the generation; setting the same state is a no-op.
     public func setZoneState(_ state: CloudZoneState) throws {
         let name: String, reason: String?
         switch state {
@@ -36,9 +36,9 @@ extension CloudSyncStore: CloudGatewayStore {
         }
     }
 
-    /// The first report for an attempt is kept; a repeated report for it changes nothing. Like `recordSaved` (CK-R99, CK-R171), the write
+    /// The first report for an attempt is kept; a repeated report for it changes nothing. Like `recordSaved`, the write
     /// is refused inside its transaction while the durable fence is up and when the save belongs to another generation: the result of
-    /// a stopped or switched session is moot and writes nothing. A late result of the CURRENT generation is still recorded (CK-R45).
+    /// a stopped or switched session is moot and writes nothing. A late result of the CURRENT generation is still recorded.
     public func recordSendResult(attemptId: String, accountGeneration: Int64, outcome: CloudSaveOutcome) throws {
         let encoded = try outcome.encoded()
         try database.pool.write { db in

@@ -356,7 +356,7 @@ final class EditorBridgeController: NSObject, WKScriptMessageHandlerWithReply, W
             self.sendExternalChange(changeSet, for: next)
         }
         // Once per note this editor starts showing, not for a reload of the one it shows; the load
-        // that directly follows a capture is not an open (FOC-R3, FOC-R250).
+        // that directly follows a capture is not an open.
         if !environment.consumeOpenRecordSuppression(noteId) { environment.recordOpened(noteId: noteId) }
         sendLoadNote()
     }
@@ -473,7 +473,7 @@ final class EditorBridgeController: NSObject, WKScriptMessageHandlerWithReply, W
         showAfterSessionClosed(noteId: closed.noteId)
     }
 
-    /// Phase 1 of a lock change (M9M-R54): this editor lets go of `closed` and its page drops the
+    /// Phase 1 of a lock change: this editor lets go of `closed` and its page drops the
     /// note's text through the same confirmed clear as a relock (`waitUntilCleared()` completes
     /// once the page confirmed it, a fresh document committed, or the web view was replaced).
     /// Nothing is reopened yet. False when this editor shows another note.
@@ -499,7 +499,7 @@ final class EditorBridgeController: NSObject, WKScriptMessageHandlerWithReply, W
         }
         // The note still exists. A relock (or a sync that locked it) closed the session: with the
         // vault locked the lock view takes its place, with it unlocked the note reopens keyed. A
-        // note that is not locked (its lock was removed, or a lock failed) reopens plain (M9M-R47).
+        // note that is not locked (its lock was removed, or a lock failed) reopens plain.
         if !note.isLocked || environment.vault.isUnlocked {
             do {
                 try open(noteId: noteId)
@@ -702,7 +702,7 @@ final class EditorBridgeController: NSObject, WKScriptMessageHandlerWithReply, W
         }
     }
 
-    // MARK: - Capture close (W1, FOC-R343 … FOC-R349)
+    // MARK: - Capture close (W1)
 
     /// How long `freezeForClose` waits for the page. The page gives up itself after 2 s and says so;
     /// this is the backstop for a page that cannot answer at all.

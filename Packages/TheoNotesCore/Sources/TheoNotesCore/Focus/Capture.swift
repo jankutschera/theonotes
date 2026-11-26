@@ -4,7 +4,7 @@
 import Foundation
 import GRDB
 
-/// The gesture that made a note (FOC-R2). Device-local: it is not in the sync payload.
+/// The gesture that made a note. Device-local: it is not in the sync payload.
 public enum CaptureSource: String, Codable, Sendable, CaseIterable, DatabaseValueConvertible {
     case share, voice, lockscreen, shortcut, command, mcp
 }
@@ -17,11 +17,11 @@ extension NoteStore {
         }
     }
 
-    /// Records that an editor loaded `noteId` (`note_ui_state.lastOpenedAt`, FOC-R3).
+    /// Records that an editor loaded `noteId` (`note_ui_state.lastOpenedAt`).
     ///
     /// Like `saveEditorState`, it never touches `note`: no revision or `modifiedAt` change, no
     /// index run and no change notification. A locked, deleted or unknown note stores nothing,
-    /// because a locked note has no `note_ui_state` row (M9-R5).
+    /// because a locked note has no `note_ui_state` row.
     public func recordOpened(noteId: String, now: Date = .now) throws {
         try db.pool.write { db in
             guard let note = try Note.fetchOne(db, key: noteId), note.deletedAt == nil, !note.isLocked else { return }
@@ -46,7 +46,7 @@ extension NoteStore {
 
     /// Cancels a capture: moves `noteId` to the Trash, but only when it is a captured note
     /// (`captureSource` set), still in Notes and unlocked, and its text still equals `createdText`
-    /// (what the gesture created, FOC-R2). Returns whether it was trashed. An edited capture and
+    /// (what the gesture created). Returns whether it was trashed. An edited capture and
     /// an ordinary note are left alone.
     @discardableResult
     public func cancelCapture(noteId: String, createdText: String, now: Date = .now) throws -> Bool {

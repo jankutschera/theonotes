@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// REL-R42/R44: the older MetricKit API hands over a call stack tree as JSON; only its frame facts are taken.
+/// The older MetricKit API hands over a call stack tree as JSON; only its frame facts are taken.
 @Suite struct DiagnosticsCallStackJSONTests {
     private let json = """
         {"callStackPerThread": true,

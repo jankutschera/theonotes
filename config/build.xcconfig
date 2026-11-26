@@ -1,4 +1,4 @@
 #include "release.env"
 #include "identity.env"
-// OSS-R2: the private sync server host lives only in the owner's config/private-sync.xcconfig (never exported).
+// The private sync server host lives only in the owner's config/private-sync.xcconfig (never exported).
 #include? "private-sync.xcconfig"

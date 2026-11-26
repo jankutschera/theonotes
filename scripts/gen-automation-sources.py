@@ -7,7 +7,7 @@
 Usage: python3 -I scripts/gen-automation-sources.py          write the generated files
        python3 -I scripts/gen-automation-sources.py --check  fail when a generated file is stale
 
-Clean room (ruling M5-R269): nothing under docs/research/ is read here. Interface facts and our own
+Clean room: nothing under docs/research/ is read here. Interface facts and our own
 prose come from four files under Fixtures/:
 
 Help part
@@ -279,7 +279,7 @@ def inject(node, path, descriptions, used):
 
 
 def extension_tool(owned, tools, extension):
-    """An extension tool beyond the 26 (rulings M5-R38, FOC-R14): the owned structure, its descriptions
+    """An extension tool beyond the 26: the owned structure, its descriptions
     and the output schema of the tool it names. Key order inside the input schema is the fixture's; the
     tool's own keys are in alphabetical order like every other tool of the catalog."""
     owned = dict(owned)

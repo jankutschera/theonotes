@@ -480,7 +480,7 @@ describe("Enter in a cell", () => {
     expect(text(list.state)).toBe("1. \n2. | h | x |\n   |---|---|\n   | a | b |\n3. next");
     expect(head(list.state)).toBe(3);
     expect(text(drive(list.state, (view) => undo(view)).state)).toBe(ordered);
-    // A body row's line start still moves into its first cell (M6-R37).
+    // A body row's line start still moves into its first cell.
     expect(text(drive(make("| a |\n|---|\n‸| c |"), tableEnter).state)).toBe("| a |\n|---|\n| <br>c |");
   });
 

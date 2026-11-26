@@ -8,12 +8,12 @@ import os
 
 private let reminderLogger = Logger(subsystem: "com.truebrewbirdie.baerchen", category: "reminders")
 
-/// Applies the reminder plan to the notification center (FOC-R10, FOC-R17, FOC-R260 … FOC-R265). It
+/// Applies the reminder plan to the notification center. It
 /// decides nothing about content: `PingPlanner` plans, `NotificationLedger` matches the plan against
 /// what was scheduled, and this class adds, removes and reads back. Log lines carry counts only.
 @MainActor
 final class MacNotificationScheduler {
-    /// At most this many notifications are scheduled at once (parity with iOS, FOC-R260).
+    /// At most this many notifications are scheduled at once (parity with iOS).
     static let scheduleCap = 64
 
     /// What setting a reminder came to.
@@ -29,7 +29,7 @@ final class MacNotificationScheduler {
     private let calendar: Calendar
 
     /// Shows a note, with the caret at `caret` (UTF-16) when given. True when it was shown; a tap
-    /// that could not open the note (App Lock is engaged) leaves its reminder in place (FOC-R261).
+    /// that could not open the note (App Lock is engaged) leaves its reminder in place.
     var openNote: (_ noteId: String, _ caret: Int?) -> Bool = { _, _ in false }
 
     private var inFlight: Task<Void, Never>?
@@ -52,7 +52,7 @@ final class MacNotificationScheduler {
     // MARK: Cold launch
 
     /// Removes, by id and without enumerating, the notifications of every locked or deleted note, and
-    /// of all reminders while App Lock is enabled (FOC-R17). Synchronous: it runs during library
+    /// of all reminders while App Lock is enabled. Synchronous: it runs during library
     /// initialization, before any window exists, and when App Lock is turned on.
     func coldLaunchScrub() {
         guard let environment, let ledger else { return }
@@ -112,8 +112,8 @@ final class MacNotificationScheduler {
 
             let (add, remove) = try ledger.reconcile(planned: planned, now: current)
             let known = Dictionary(try ledger.entries().map { ($0.identifier, $0) }, uniquingKeysWith: { first, _ in first })
-            // A banner the person has not dealt with yet stays (FOC-R262); so does a due request the
-            // Mac has not delivered yet, as long as it still says what the plan would say (FOC-R266).
+            // A banner the person has not dealt with yet stays; so does a due request the
+            // Mac has not delivered yet, as long as it still says what the plan would say.
             var kept = Set<String>()
             if !remove.isEmpty {
                 let delivered = Set(await center.deliveredIdentifiers())
@@ -154,7 +154,7 @@ final class MacNotificationScheduler {
         }
     }
 
-    /// The second line (FOC-R17): removes `reminder:` ids no ledger row knows, enumerates again, and
+    /// The second line: removes `reminder:` ids no ledger row knows, enumerates again, and
     /// forgets the rows whose notification is gone. Runs only after every add has completed.
     private func sweepAndReadBack(ledger: NotificationLedger, retired: Set<String>) async -> Bool {
         let pending = await center.pendingIdentifiers()
@@ -195,7 +195,7 @@ final class MacNotificationScheduler {
     // MARK: Setting, launch and activation
 
     /// Sets the reminder and schedules it. The first call asks for permission (the system prompts
-    /// once); a refusal keeps the reminder and schedules nothing (FOC-R263).
+    /// once); a refusal keeps the reminder and schedules nothing.
     @discardableResult
     func setReminder(noteId: String, anchor: LineAnchor?, fireAt: Date) async throws -> Outcome {
         guard let environment else { return .notificationsOff }
@@ -206,7 +206,7 @@ final class MacNotificationScheduler {
     }
 
     /// Launch and every activation: a reminder that came due while the app was not in front is
-    /// marked fired (it stays until handled), then the center is reconciled (FOC-R264).
+    /// marked fired (it stays until handled), then the center is reconciled.
     func catchUp() async {
         guard let environment else { return }
         do {
@@ -218,7 +218,7 @@ final class MacNotificationScheduler {
     }
 
     /// A timer notification (the Next Up timer). Its id is recorded before it is added, like a
-    /// reminder's, and the ledger never removes it by itself (FOC-R265).
+    /// reminder's, and the ledger never removes it by itself.
     @discardableResult
     func scheduleTimer(title: String, at date: Date) async throws -> String {
         guard let ledger else { throw CancellationError() }
@@ -228,7 +228,7 @@ final class MacNotificationScheduler {
         return identifier
     }
 
-    // MARK: The Next Up timer (FOC-R282)
+    // MARK: The Next Up timer
 
     /// Timer notifications whose end a Next Up panel may show itself. Each answers, when the notification arrives, whether the panel that owns the timer would
     /// open for its end right now (in front, unlocked, key window); only then the banner is skipped.
@@ -305,9 +305,9 @@ final class MacNotificationScheduler {
         return LineAnchor.utf16Offset(ofLine: line, in: note.text)
     }
 
-    /// Whether a notification that arrives while the app is in front is shown (FOC-R266). Decided
+    /// Whether a notification that arrives while the app is in front is shown. Decided
     /// from the library as it is now, synchronously, because the notification was written earlier:
-    /// - a timer is shown, unless the Next Up panel runs it and shows its end itself (FOC-R282);
+    /// - a timer is shown, unless the Next Up panel runs it and shows its end itself;
     /// - a reminder is shown only if its reminder still exists, its note is unlocked, in Notes and
     ///   not deleted, and, while App Lock is enabled, only if it was scheduled with the generic text;
     /// - anything else is not shown, is removed by id (pending and delivered) and, when its reminder

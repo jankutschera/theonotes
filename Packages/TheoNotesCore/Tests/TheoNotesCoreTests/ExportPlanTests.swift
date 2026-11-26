@@ -6,7 +6,7 @@ import Testing
 import GRDB
 @testable import TheoNotesCore
 
-/// M8 Task 1: export file names (M8-R2) and where notes go (M8-R3).
+/// M8 Task 1: export file names and where notes go.
 @Suite struct ExportPlanTests {
     private func candidate(
         _ id: String, _ title: String = "T", tags: [String] = [], location: NoteLocation = .notes, locked: Bool = false
@@ -163,7 +163,7 @@ import GRDB
         #expect(tree.items.map(\.stem) == ["x", "x 2"])
     }
 
-    /// M8-R3: a tag tree holds Notes only. The planner enforces it, whatever the provider returns.
+    /// A tag tree holds Notes only. The planner enforces it, whatever the provider returns.
     @Test func tagTreePlanIgnoresArchiveAndTrashCandidates() {
         let notes = [
             candidate("n", "N", tags: ["w"]),

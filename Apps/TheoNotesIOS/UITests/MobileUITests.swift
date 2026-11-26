@@ -17,7 +17,7 @@ final class MobileUITests: XCTestCase {
         app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Note text")).firstMatch
     }
 
-    /// IOS-CLUTTER-R8: side by side the list's bottom bar holds Quick Open and From Template; stacked, Note Actions does.
+    /// Side by side the list's bottom bar holds Quick Open and From Template; stacked, Note Actions does.
     private func listOrNoteAction(_ identifier: String, in app: XCUIApplication) {
         let bar = app.buttons[identifier].firstMatch
         if bar.exists && bar.isHittable { bar.tap(); return }

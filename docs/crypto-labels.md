@@ -2,7 +2,7 @@
 
 Twelve strings in the code still say `baerchen`. They are not a name. They are byte strings that
 went into encrypted data and signatures, and they stay as they are for as long as that data exists.
-The product rename (stage 2) leaves them alone on purpose (REN2-R2, REN2-R45).
+The product rename (stage 2) leaves them alone on purpose.
 
 One source in the apps: `ProtocolLabels` in `Packages/*/Sources/*/Crypto/ProtocolLabels.swift`. The private
 sync server (not part of this repository) keeps its own copy and checks it against
@@ -48,7 +48,7 @@ fails loudly. The damage shows as duplicates after the next sync.
 2. A new format uses neutral labels from its first byte (`theonotes-<purpose>:2`, for example). The `:2`
    suffix is the version marker; `:1` stays assigned to the old labels and is never reused.
 3. Every new label gets one constant per side, a row in the table above and a vector in `Fixtures`.
-4. CloudKit sync (REL-R2) is a new format and follows rule 2 for anything it introduces. It reuses the
+4. CloudKit sync is a new format and follows rule 2 for anything it introduces. It reuses the
    frozen `syncCipher` and `semanticID` only where it has to read or write the same payloads as the
    Cloudflare sync.
 

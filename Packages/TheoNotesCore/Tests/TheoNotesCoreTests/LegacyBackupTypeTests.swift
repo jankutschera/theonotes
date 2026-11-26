@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// REN2-R37 and its amendment in REN2-R50: exports the person chooses are written as `.theonotes-backup`; the
+/// and its amendment in exports the person chooses are written as `.theonotes-backup`; the
 /// copies the app keeps itself (rolling, restore safety, daily snapshots, all in the backup catalog) keep the
 /// legacy names, so a rollback to an older build keeps its backup listing and Replace-All restore working.
 /// Files of both kinds restore. Temporary libraries only.

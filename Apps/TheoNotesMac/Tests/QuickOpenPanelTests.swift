@@ -572,7 +572,7 @@ import Testing
         #expect(sharing.map(\.title) == ["Quick Open…"])
     }
 
-    /// M7-R26: the selected row draws `OnAccentColor` (white) on `AccentColor` (a fill-safe red), which meets AA in
+    /// The selected row draws `OnAccentColor` (white) on `AccentColor` (a fill-safe red), which meets AA in
     /// light and dark. The high-contrast variants cannot be resolved here (`NSAppearance(named:)` returns plain
     /// Aqua for them); all four variants are pinned by `ThemeTests.testAccentColorCarriesWhiteTextOnItsFill`.
     /// This checks `QuickOpenColors`, not the SwiftUI row: every text run and icon of the selected `QuickOpenRow`

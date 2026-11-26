@@ -131,7 +131,7 @@ import Testing
         #expect(try #require(try env.store.note(id: id)).text == "XY abc")
     }
 
-    /// FOC-R401: while a voice capture holds unfinished words out of the store, the live text and
+    /// While a voice capture holds unfinished words out of the store, the live text and
     /// the stored one differ; offsets from the live text would not fit what the caller reads, so
     /// only the note is named.
     @Test func getSelectionNamesOnlyTheNoteWhileWordsAreHeldOutOfTheStore() async throws {

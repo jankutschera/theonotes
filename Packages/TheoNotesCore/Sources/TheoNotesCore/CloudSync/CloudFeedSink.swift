@@ -6,11 +6,11 @@ import Foundation
 public enum CloudSinkError: Error, Equatable {
     /// A commit of this fetch threw, so the engine state that would follow it is withheld (the state is never ahead of the data).
     case stateWithheld
-    /// A full refetch is never started after the zone was removed (CK-R15): the picture would be empty, not authoritative.
+    /// A full refetch is never started after the zone was removed: the picture would be empty, not authoritative.
     case zoneRemoved
 }
 
-/// The production implementation of the fetch side (CK-R5). The gateway calls `commit` per batch and `saveEngineState` for the
+/// The production implementation of the fetch side. The gateway calls `commit` per batch and `saveEngineState` for the
 /// state that follows it. For every record:
 ///
 /// 1. decode and validate the structure (`CloudRecordCodec`); anything this build cannot fully understand is quarantined with its
@@ -25,7 +25,7 @@ public enum CloudSinkError: Error, Equatable {
 /// stored a prefix and the redelivery finds it as echoes (idempotent), so the outcome equals one transaction per batch.
 ///
 /// Every store write carries the account generation this sink was created for, so a batch delivered after an account change
-/// stores nothing (CK-R15, CK-R98). It also passes the generation to `saveEngineState`.
+/// stores nothing. It also passes the generation to `saveEngineState`.
 public final class CloudFeedSink: CloudChangeSink, CloudRemoteIntake, @unchecked Sendable {
     public typealias KeyBundleHandler = @Sendable (CloudKeyBundleHeader) throws -> Void
 
@@ -89,7 +89,7 @@ public final class CloudFeedSink: CloudChangeSink, CloudRemoteIntake, @unchecked
     }
 
     /// The fetch returned the cloud's whole current picture. Every entity we hold a base pair for that it did not return, and
-    /// that is not quarantined, is paused with its local content untouched (CK-R5). Nothing is republished.
+    /// that is not quarantined, is paused with its local content untouched. Nothing is republished.
     public func endFullRefetch() throws {
         let names = lock.withLock { () -> Set<String> in let taken = delivered; full = false; delivered = []; return taken }
         let quarantined = try store.quarantinedRecordNames()
@@ -111,7 +111,7 @@ public final class CloudFeedSink: CloudChangeSink, CloudRemoteIntake, @unchecked
         let gen = try generation()
         let decoded: CloudDecodedRecord
         do { decoded = try decode(record) } catch {
-            // A key bundle this build cannot read still counts as a changed key bundle: data work waits for its verification (CK-R135).
+            // A key bundle this build cannot read still counts as a changed key bundle: data work waits for its verification.
             if record.type == .keyBundle { onUnreadableKeyBundle() }
             return try quarantineUnreadable(record, reason: Self.reason(error), generation: gen)
         }
@@ -239,7 +239,7 @@ public final class CloudFeedSink: CloudChangeSink, CloudRemoteIntake, @unchecked
 
     // MARK: deletions seen in the feed
 
-    /// A record the cloud reports as deleted (by hand in the Console, or lost): the entity pauses, local content stays (CK-R5).
+    /// A record the cloud reports as deleted (by hand in the Console, or lost): the entity pauses, local content stays.
     private func recordDeletion(of name: String) throws {
         guard let entity = CloudEntityRef.parse(recordName: name),
               try store.pair(for: entity) != nil,

@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotes
 
-/// The vault as the app environment owns it (M9M-R16): one per library environment.
+/// The vault as the app environment owns it: one per library environment.
 @MainActor
 @Suite struct AppEnvironmentVaultTests {
     private func makeEnvironment(cache: FakeVaultKeyCache) throws -> (AppEnvironment, ManualLifecycleSource, URL) {
@@ -81,7 +81,7 @@ import Testing
         #expect(cache.items.count == 1)
     }
 
-    /// M9M-R17: the first-sync password check proves the password and leaves nothing unlocked
+    /// The first-sync password check proves the password and leaves nothing unlocked
     /// and nothing in the Keychain; only the explicit unlock does.
     @Test func theFirstSyncPasswordCheckLeavesTheVaultLocked() async throws {
         let cache = FakeVaultKeyCache()

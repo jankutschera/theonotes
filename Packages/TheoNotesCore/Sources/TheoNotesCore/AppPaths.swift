@@ -19,7 +19,7 @@ public enum LegacyLibraryMove: Equatable, Sendable {
     case newFolderExists
     /// Another process holds the single-instance lock of the old folder (`app.sock.lock`): an
     /// older app, a second launch or its recovery flow is running. This launch opens the old
-    /// folder; the move is retried on a later launch (REN-R11).
+    /// folder; the move is retried on a later launch.
     case keptBecauseAnotherInstanceRuns
     /// An active or prepared sync recovery selection sits next to the old base and names it:
     /// moving would orphan it, so the old folder stays the library.
@@ -44,7 +44,7 @@ public struct AppPaths: Sendable {
     }
 
     /// The library folder name of the PRODUCTION identity inside Application Support: `Theo Notes` on
-    /// macOS. iOS keeps `Baerchen` in Stage 1 (REN-R3). Fixed: this is the folder the guards protect.
+    /// macOS. iOS keeps `Baerchen` in Stage 1. Fixed: this is the folder the guards protect.
     #if os(macOS)
     public static let productionLibraryFolderName = "Theo Notes"
     #else
@@ -96,12 +96,12 @@ public struct AppPaths: Sendable {
         /// The override names the real library (`production`): launch without it instead.
         case isTheRealLibrary(String)
         /// A library seen at the start of the launch is gone (another copy of the app moved or
-        /// removed it): the launch is refused instead of creating an empty library (REN-R12).
+        /// removed it): the launch is refused instead of creating an empty library.
         case libraryVanished(String)
         /// A process running under a test (XCTest, Swift Testing) was asked for the real library
-        /// (REN-R14): tests inject a temporary production root or a `--data-dir` instead.
+        ///: tests inject a temporary production root or a `--data-dir` instead.
         case testMayNotUseRealLibrary(String)
-        /// A dev-identity build was asked for the production library (FOC-R362), by default or by an
+        /// A dev-identity build was asked for the production library, by default or by an
         /// override: the folder `Theo Notes`, the old `Baerchen` folder, anything inside or holding them.
         case devBuildMayNotUseProductionLibrary(String)
 
@@ -122,7 +122,7 @@ public struct AppPaths: Sendable {
     }
 
     public static let dataDirArgument = "--data-dir"
-    /// The older variable name, still honoured (REN-R4).
+    /// The older variable name, still honoured.
     public static let dataDirEnvironmentKey = LegacyNames.dataDirEnvironment
     /// The variable of the renamed product; wins over `BAERCHEN_DATA_DIR` when both are set.
     public static let theonotesDataDirEnvironmentKey = "THEONOTES_DATA_DIR"
@@ -193,7 +193,7 @@ public struct AppPaths: Sendable {
             + [production(applicationSupport: applicationSupport, identity: .dev).root]
     }
 
-    /// FOC-R362: throws when a dev-identity build is pointed at the production library: as its default
+    /// Throws when a dev-identity build is pointed at the production library: as its default
     /// (`url` is the folder it would open) or as an override. Checked before anything is looked at,
     /// moved or created, and whether or not the folder exists.
     private static func refuseProductionLibraryForDev(
@@ -206,7 +206,7 @@ public struct AppPaths: Sendable {
         throw DataDirectoryError.devBuildMayNotUseProductionLibrary(value)
     }
 
-    /// REN-R14: throws when a test run would use the real library through `production` (or the old
+    /// Throws when a test run would use the real library through `production` (or the old
     /// folder next to it). Tests inject a temporary production root, which stays valid.
     private static func refuseRealLibraryInATestRun(
         production: AppPaths, underTest: TestRunDetector, realApplicationSupport: URL
@@ -220,7 +220,7 @@ public struct AppPaths: Sendable {
         }
     }
 
-    /// REN-R14 for an override: under a test run, a folder that is, lies inside or holds the real
+    /// for an override: under a test run, a folder that is, lies inside or holds the real
     /// library (`Theo Notes` or `Baerchen` in `realApplicationSupport`) is refused, whether or not it exists.
     private static func refuseRealLibraryOverrideInATestRun(
         _ url: URL, value: String, underTest: TestRunDetector, realApplicationSupport: URL
@@ -232,17 +232,17 @@ public struct AppPaths: Sendable {
         throw DataDirectoryError.testMayNotUseRealLibrary(value)
     }
 
-    /// `resolve` plus the sync policy of the launch (INT-R14). An override is opened exactly as
+    /// `resolve` plus the sync policy of the launch. An override is opened exactly as
     /// given, never redirected by recovery files inside or next to it, and is `localOnly`.
     /// Without one, the active recovery selection of `production` is followed and sync may run.
     ///
-    /// On macOS a default launch also finishes the rename (REN-R2): when `Theo Notes` does not
+    /// On macOS a default launch also finishes the rename: when `Theo Notes` does not
     /// exist and `Baerchen` does, the old folder is renamed to the new name, once, atomically and
     /// without ever replacing anything. It stays where it is when both exist (the new one is
     /// opened) or when a sync recovery selection sits next to it (the selection names the old
     /// folder, so the app keeps opening that one). `movesLegacyLibrary: false` only reads.
     ///
-    /// REN-R14: under a test run (`underTest`), a default launch whose `production` is the real
+    /// Under a test run (`underTest`), a default launch whose `production` is the real
     /// library of `realApplicationSupport` (or the old folder next to it) throws
     /// `testMayNotUseRealLibrary` before it looks at, moves or creates anything.
     public static func resolveLaunch(
@@ -279,12 +279,12 @@ public struct AppPaths: Sendable {
         guard let (value, source) = override else {
             try refuseProductionLibraryForDev(
                 production.root, value: production.root.path, identity: identity, realApplicationSupport: realApplicationSupport)
-            // REN-R14: before anything can move, create or hand out the real library.
+            // Before anything can move, create or hand out the real library.
             try refuseRealLibraryInATestRun(
                 production: production, underTest: underTest, realApplicationSupport: realApplicationSupport)
-            // REN-R12: only a fresh install (neither folder at the first check) may get a new library.
+            // Only a fresh install (neither folder at the first check) may get a new library.
             let legacy = legacyProduction(for: production)
-            // The dev library has no old folder to move, but REN-R12 holds for it all the same.
+            // The dev library has no old folder to move, but holds for it all the same.
             let isDevLibrary = identity == .dev && production.root.lastPathComponent == AppIdentity.dev.libraryFolderName
             let observed = isDevLibrary
                 ? entryExists(production.root)
@@ -340,7 +340,7 @@ public struct AppPaths: Sendable {
             libraryMoveLogger.notice("library move skipped: both the old and the new library folder exist; opening the new one")
             return .newFolderExists
         }
-        // REN-R11: decide and rename only under the old folder's single-instance lock, the file the
+        // Decide and rename only under the old folder's single-instance lock, the file the
         // app's socket server holds. It also covers a recovery flow of another instance.
         let lock: Int32
         switch acquireInstanceLock(in: legacy.root) {
@@ -480,7 +480,7 @@ public struct AppPaths: Sendable {
     public var backups: URL { root.appendingPathComponent("Backups", isDirectory: true) }
     public var logs: URL { root.appendingPathComponent("Logs", isDirectory: true) }
     /// Voice recordings while they are made (`Recordings/<noteId>/`); a file left here is adopted
-    /// or deleted at the next launch (FOC-R9).
+    /// or deleted at the next launch.
     public var recordings: URL { root.appendingPathComponent("Recordings", isDirectory: true) }
 
     /// Whether two folder URLs name the same folder: the file system's identity when both exist

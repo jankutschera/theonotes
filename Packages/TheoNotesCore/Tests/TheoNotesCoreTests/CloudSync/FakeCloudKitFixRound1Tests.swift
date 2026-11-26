@@ -20,7 +20,7 @@ struct SplitMix {
     mutating func below(_ n: Int) -> Int { Int(next() % UInt64(n)) }
 }
 
-/// The CK-R5 ordering rule for one incarnation: keep the highest `ver`, ignore lower and equal.
+/// The ordering rule for one incarnation: keep the highest `ver`, ignore lower and equal.
 final class VersionOrderingSink: CloudChangeSink, @unchecked Sendable {
     private let lock = NSLock()
     private(set) var held: [String: Int64] = [:]
@@ -155,7 +155,7 @@ final class VersionOrderingSink: CloudChangeSink, @unchecked Sendable {
         #expect(await cloud.recordNames.sorted() == ["e.note.n1", "e.note.n2"], "the saves did land")
         #expect(store.attemptIds.isEmpty)
         #expect(disk.pending.map(\.attemptId) == ["p1", "p2"])
-        // restart: the intent is resent; the landed creates come back as conflicts carrying our attempt ids (resolved by CK-R4)
+        // restart: the intent is resent; the landed creates come back as conflicts carrying our attempt ids (resolved by)
         let restarted = try await Peer.make(cloud, disk: disk, store: store)
         try await restarted.device.sendPending()
         for id in ["p1", "p2"] { #expect(store.outcome(for: id)?.isConflict == true) }

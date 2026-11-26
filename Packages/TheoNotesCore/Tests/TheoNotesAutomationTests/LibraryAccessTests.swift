@@ -96,7 +96,7 @@ import Testing
     }
 
     /// The CLI runs from `Baerchen.app/Contents/Helpers/`, where SwiftPM's `Bundle.module` for
-    /// `TheoNotesCore` (tag icons, emoji, themes) cannot be found and would trap (ruling M5-R25).
+    /// `TheoNotesCore` (tag icons, emoji, themes) cannot be found and would trap.
     /// Forbidden in the automation sources: `Bundle.module` itself, every type declared at the top
     /// level of a core file that uses it (found by scanning, so a new one such as `ThemeCatalog` is
     /// caught without editing this list), and the core types known to reach one of those. Words

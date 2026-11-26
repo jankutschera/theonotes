@@ -8,7 +8,7 @@ import Testing
 @testable import TheoNotesCore
 
 /// An insert-mode voice capture (its guard keeps the note's journal) must never leave plaintext
-/// in the journal of a note that a lock committed (FOC-R199 addendum 3).
+/// in the journal of a note that a lock committed.
 @Suite struct CaptureLockInsertGapTests {
     private static func token() -> String { UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased() }
 
@@ -93,7 +93,7 @@ import Testing
         #expect(guardian.isLocked)
     }
 
-    // MARK: - A waiting note does not stop the sync pass (FOC-R303)
+    // MARK: - A waiting note does not stop the sync pass
 
     @Test func aRemoteLockThatMustWaitForACaptureLeavesTheOtherNotesAndTheUploadsOfTheSamePass() async throws {
         let library = try SyncMaterializerTests.Library(); defer { library.cleanup() }

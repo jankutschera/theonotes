@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-/// The persisted identity strings that still carry the working title (REN2-R46). Every source file that needs
+/// The persisted identity strings that still carry the working title. Every source file that needs
 /// one of them reads it here, so the cutover (task B7) and the later removal (B8) touch one file.
 ///
 /// `bundleRoot` is mirrored by `config/identity.env` (`THEONOTES_BUNDLE_ROOT`), which project.yml feeds to every
@@ -15,7 +15,7 @@ public enum LegacyNames {
     /// File extension of a full library backup, without the dot.
     public static let backupExtension = "baerchen-backup"
     /// Type identifier of the first release's backup file, imported so old backups open (Info.plist `UTImportedTypeDeclarations`).
-    /// A literal, not derived from `bundleRoot`: it names the OLD bundle root and must not follow the cutover (B7, REN2-R57).
+    /// A literal, not derived from `bundleRoot`: it names the OLD bundle root and must not follow the cutover (B7).
     public static let backupUTI = "com.truebrewbirdie.baerchen.backup"
     /// Root of the production bundle id, the Keychain services and the exported types.
     public static let bundleRoot = "com.truebrewbirdie.theonotes"

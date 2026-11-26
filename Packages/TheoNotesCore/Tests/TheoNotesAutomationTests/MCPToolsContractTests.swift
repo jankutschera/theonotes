@@ -98,7 +98,7 @@ import Testing
                     #expect(envelope["error"]?["message"] == "2 sections match that address; repeat the call with one of the candidates.")
                     problems += Self.sameShape(envelope["error"]?["details"] ?? .null, want["error"]?["details"] ?? .null).map { "\(name) \($0)" }
                 } else {
-                    // Messages are our own wording (ruling M5-R269): the code and the shape are what is compared.
+                    // Messages are our own wording: the code and the shape are what is compared.
                     #expect(envelope["error"]?["message"]?.string?.isEmpty == false, "\(name)")
                     #expect(envelope["error"]?.keys == want["error"]?.keys, "\(name)")
                 }

@@ -7,8 +7,8 @@ import GRDB
 import Testing
 @testable import TheoNotes
 
-/// Focus layer C15: the Next Up card of a main window and its two-minute timer (spec A3, FOC-R280 …
-/// FOC-R289). The notification center is the fake of `MacNotificationSchedulerTests`: no test posts
+/// Focus layer C15: the Next Up card of a main window and its two-minute timer (spec A3, …
+///). The notification center is the fake of `MacNotificationSchedulerTests`: no test posts
 /// a real notification.
 @MainActor
 @Suite struct NextUpModelTests {
@@ -329,7 +329,7 @@ import Testing
         #expect(try f.env.ledger.entries().isEmpty)
     }
 
-    /// K5 P-N8 (FOC-R392): the toolbar symbol never changes under an open popover.
+    /// K5 P-N8: the toolbar symbol never changes under an open popover.
     @Test func theToolbarSymbolWaitsForThePopoverToClose() async throws {
         let f = try Fixture()
         f.appIsActive = true

@@ -7,7 +7,7 @@ import Security
 import Testing
 @testable import TheoNotes
 
-/// FOC-R360 ... FOC-R363: the build that runs the tests is a dev-identity build, and the identity the
+/// the build that runs the tests is a dev-identity build, and the identity the
 /// code reports is the one the bundle was really built and signed with (Info.plist, entitlements).
 /// The production side is pinned by `AppIdentityTests` (values) and `scripts/check-identities.sh`
 /// (build settings of both configurations).
@@ -43,7 +43,7 @@ import Testing
     }
 
     @Test func theTeamIsOneBuildSettingThatEveryDerivedValueFollows() throws {
-        // REL-R20 / R21: THEONOTES_TEAM_ID is written into the Info.plist, and the team the code uses, the
+        // THEONOTES_TEAM_ID is written into the Info.plist, and the team the code uses, the
         // App Group and (when team-signed) the application identifier and keychain access group all start with it.
         let info = try #require(Bundle.main.infoDictionary)
         let team = try #require(info[AppIdentity.teamInfoKey] as? String, "Info.plist has no THEONOTES_TeamID")
@@ -67,8 +67,8 @@ import Testing
     }
 
     @Test func theExportedTypesKeepTheirIdentifiers() throws {
-        // REN2-R46: the note-ids and tag-path ids come from THEONOTES_BUNDLE_ROOT, the Swift ids from LegacyNames (a changed
-        // id orphans every dragged note list). REN2-R50: the backup type is fixed; old and internal backups keep the
+        // The note-ids and tag-path ids come from THEONOTES_BUNDLE_ROOT, the Swift ids from LegacyNames (a changed
+        // id orphans every dragged note list). the backup type is fixed; old and internal backups keep the
         // imported legacy type so every backup file the system knows still opens.
         let info = try #require(Bundle.main.infoDictionary)
         let types = try #require(info["UTExportedTypeDeclarations"] as? [[String: Any]])
@@ -81,7 +81,7 @@ import Testing
     }
 
     @Test func theLockedNoteKeychainServiceFollowsTheBundleRoot() {
-        // The Touch ID copy of the note key is stored under this service. The cutover (B7, REN2-R57) moved it with the
+        // The Touch ID copy of the note key is stored under this service. The cutover (B7) moved it with the
         // bundle id: the old items stay in the old access group and the new app asks for the password once.
         #expect(KeychainVaultKeyCache.defaultService == "com.truebrewbirdie.theonotes.note-vault")
     }

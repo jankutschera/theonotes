@@ -7,12 +7,12 @@ import Darwin
 import Foundation
 import os
 
-/// The app's end of the automation socket (`<library>/app.sock`, ruling M5-R16): the `baerchen`
+/// The app's end of the automation socket (`<library>/app.sock`): the `baerchen`
 /// CLI and MCP server ask it to open a note or report the selection. One JSON line in, one out,
-/// then the connection closes (M5-R150).
+/// then the connection closes.
 ///
 /// Only the user who runs the app may connect (socket mode 0600, and the peer's uid is checked with
-/// `getpeereid`); a request line over 1 MiB closes the connection (M5-R152). Nothing is logged but
+/// `getpeereid`); a request line over 1 MiB closes the connection. Nothing is logged but
 /// counts, uids and error codes: note text never reaches the log.
 final class AppSocketServer: @unchecked Sendable {
     enum StartError: Error, Equatable, CustomStringConvertible {
@@ -22,11 +22,11 @@ final class AppSocketServer: @unchecked Sendable {
         case occupied(String)
         case pathTooLong(String)
         /// The socket's folder is not ours alone (a symlink, another owner, group- or world-writable),
-        /// so the socket would not be safe there (ruling M5-R191).
+        /// so the socket would not be safe there.
         case unsafeDirectory(String)
-        /// An existing lock file is not a regular file of ours with mode 0600 (ruling M5-R209).
+        /// An existing lock file is not a regular file of ours with mode 0600.
         case unsafeLockFile(String)
-        /// The volume does not support the exclusive rename that publishes the socket (ruling M5-R212).
+        /// The volume does not support the exclusive rename that publishes the socket.
         case unsupportedVolume(String)
         case system(String, errno: Int32)
 
@@ -59,7 +59,7 @@ final class AppSocketServer: @unchecked Sendable {
     private var boundInode: ino_t = 0
     private var boundDevice: dev_t = 0
     /// The held `flock` on `<socket>.lock`: this process is the one instance for this library until
-    /// `stop()` (or exit: the kernel drops it, so a crash leaves no live-looking lock; ruling M5-R194).
+    /// `stop`.
     private var lockFD: Int32 = -1
     private var running = 0
     private let requestTimeout: Duration
@@ -73,7 +73,7 @@ final class AppSocketServer: @unchecked Sendable {
     /// At most this many connections are served at once; more are closed at the door.
     static let maxConnections = 16
     /// How long the whole request line may take to arrive, and the whole reply to go out (ruling
-    /// M5-R193). Without a limit on the whole, a peer sending a byte at a time would keep a slot.
+    ///). Without a limit on the whole, a peer sending a byte at a time would keep a slot.
     static let defaultRequestTimeout: Duration = .seconds(10)
     /// How long a request may wait for the main actor before the caller gets an error.
     static let defaultHandlerTimeout: Duration = .seconds(20)
@@ -106,7 +106,7 @@ final class AppSocketServer: @unchecked Sendable {
 
     // MARK: - Start and stop
 
-    /// Binds the socket and starts serving. Order (ruling M5-R191, M5-R194): the folder must be ours and
+    /// Binds the socket and starts serving. Order: the folder must be ours and
     /// not writable by others; the start-up lock is taken (a second instance fails here,
     /// `alreadyRunning`); a stale socket file is replaced; the socket is bound in a private staging
     /// folder, checked and only then published.
@@ -167,7 +167,7 @@ final class AppSocketServer: @unchecked Sendable {
     /// world-writable, unless sticky like `/tmp`). The fallback folder is made 0700 if it is not; a
     /// library folder that others can write to is refused rather than changed. A swap of an ancestor by
     /// the same user between this check and the bind is accepted: it is outside the threat model, and
-    /// macOS has no `bind` relative to a directory descriptor (ruling M5-R206).
+    /// macOS has no `bind` relative to a directory descriptor.
     private func verifyFolder(_ folder: String, repairing: Bool) throws {
         var info = stat()
         guard lstat(folder, &info) == 0, (info.st_mode & S_IFMT) == S_IFDIR, info.st_uid == ownUID else {
@@ -187,7 +187,7 @@ final class AppSocketServer: @unchecked Sendable {
     }
 
     /// `flock` on `<socket>.lock`. A lock file that exists must be a regular file of ours with mode 0600,
-    /// else the start is refused (it is logged, M5-R209); one that does not is created exclusively and
+    /// else the start is refused (it is logged); one that does not is created exclusively and
     /// set to 0600. Held for the life of the server: the kernel releases it when the process dies, which
     /// makes a leftover socket file provably stale. A same-user deletion of the lock file can split the
     /// brain (two instances locking different files); accepted, it is the user's own doing.
@@ -270,7 +270,7 @@ final class AppSocketServer: @unchecked Sendable {
         }
     }
 
-    /// Binds the socket where nobody else can reach it, then publishes it (ruling M5-R191). The socket is
+    /// Binds the socket where nobody else can reach it, then publishes it. The socket is
     /// bound inside a fresh 0700 folder next to the final path, made 0600, checked (a socket of ours, mode
     /// 0600), put into `listen` mode and only then renamed to the final name without replacing anything
     /// (`RENAME_EXCL`). Nothing can connect before it is private, and no process-wide `umask` is touched
@@ -439,7 +439,7 @@ final class AppSocketServer: @unchecked Sendable {
     /// handler (which runs on the main actor) and is waited for on this worker thread. On a timeout the
     /// caller gets an error and the handler's task is cancelled (it must not act afterwards), but the
     /// connection slot stays taken until that task has really ended, so at most `maxConnections`
-    /// handlers exist at once (ruling M5-R207).
+    /// handlers exist at once.
     private func answer(_ request: AppSocketRequest, slot: Slot) -> AppSocketResponse {
         if request.method == "ping" { return AppSocketResponse(id: request.id, result: SelectionResult()) }
         let reply = Reply()

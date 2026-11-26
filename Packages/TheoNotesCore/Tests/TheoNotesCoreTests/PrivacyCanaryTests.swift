@@ -95,7 +95,7 @@ struct PrivacyCanaryTests {
         let access = try library.access(password: markers["password"]!, iterations: CryptoEnvelope.publicIterationRange.lowerBound)
         let current = try #require(try library.store.note(id: note.id))
         _ = try library.store.updateText(id: note.id, text: text + "\n" + body, expectedRevision: current.revision)
-        // A plaintext history entry of the note (FOC-R11): the lock below must seal it.
+        // A plaintext history entry of the note: the lock below must seal it.
         _ = try #require(try library.store.takeSnapshot(noteId: note.id, text: text, now: .now))
         let snapshotHoldsBody = try await library.db.pool.read {
             try String.fetchOne($0, sql: "SELECT text FROM note_snapshot WHERE noteId = ?", arguments: [note.id])

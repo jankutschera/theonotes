@@ -32,7 +32,7 @@ import Testing
     }
 }
 
-/// Phase 2 prerequisite (INT-R14): a library named at launch never syncs.
+/// Phase 2 prerequisite: a library named at launch never syncs.
 @MainActor @Suite struct MacSyncIsolationTests {
     /// A unique parent folder: recovery siblings made next to the library are removed with it.
     private func makeParent() throws -> URL {

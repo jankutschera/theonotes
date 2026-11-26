@@ -5,9 +5,9 @@ import Foundation
 
 /// Unicode word boundaries (UAX #29, as `enumerateSubstrings(options: .byWords)` segments text:
 /// `dog's`, `can't`, `3.14` and `x_y` are one word each, CJK is split by dictionary), the
-/// `--word` rule of `edit` and `edit_note` (ruling M5-R63). A position is a boundary unless it lies
+/// `--word` rule of `edit` and `edit_note`. A position is a boundary unless it lies
 /// strictly inside a word. The start and end of the text, and every position next to `\n` or `\r`,
-/// are boundaries, so a find that begins or ends with a line break matches CRLF text (M5-R65).
+/// are boundaries, so a find that begins or ends with a line break matches CRLF text.
 ///
 /// Every line break is a boundary, so words are segmented one line at a time; the last line is
 /// cached, which keeps `--all` over a long line linear.

@@ -247,7 +247,7 @@ final class RenderLog: Sendable {
     }
 
     @Test func testAPDFThatForbidsCopyingIsNoneAndOneThatAllowsItIsIndexed() async throws {
-        // Owner password only: opens without a password; the permissions decide (M6-R11).
+        // Owner password only: opens without a password; the permissions decide.
         let forbidden = try encrypted(
             [.ownerPasswordOption: "owner", .accessPermissionsOption: 3 /* printing only */], as: "nocopy.pdf")
         let forbiddenDocument = try #require(PDFDocument(url: forbidden))

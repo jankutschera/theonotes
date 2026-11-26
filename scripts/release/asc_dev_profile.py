@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Makes sure the dev identity has an App ID and a Mac development profile in the publishing team, headlessly (REN2-R58, R66).
+"""Makes sure the dev identity has an App ID and a Mac development profile in the publishing team, headlessly.
 
 Why this exists: `xcodebuild -allowProvisioningUpdates` with the App Store Connect API key cannot create the profile of a NEW
 App ID ("Authentication failed ... bearer token", measured 2026-10-31), although the same key creates App IDs, capabilities
@@ -16,13 +16,13 @@ and profiles through the public API. This script does exactly this and nothing e
   3. the profile is installed in ~/Library/Developer/Xcode/UserData/Provisioning Profiles/<uuid>.provisionprofile; older local
      copies of the same profile (same name, same App ID) are removed so that copies do not pile up.
 
-It is restricted to the exact App ID and the exact profile name below (REN2-R66): other arguments are refused (exit 2).
+It is restricted to the exact App ID and the exact profile name below: other arguments are refused (exit 2).
 What it cannot do: associate an iCloud container with the App ID. The public API has no endpoint for it; that is a click in
 the portal (docs/release/team-migration.md, "Final session"). The result line says whether the profile lists the container.
 
 Usage: scripts/release/asc_dev_profile.py [com.truebrewbirdie.theonotes.dev "Theo Notes Mac Dev Development" iCloud.com.truebrewbirdie.theonotes]
 Environment: ASC_KEY_PATH, ASC_KEY_ID, ASC_ISSUER_ID (never printed). Output: one JSON line, no secrets.
-Errors print the HTTP status and Apple's error codes only, never the response body (REN2-R66).
+Errors print the HTTP status and Apple's error codes only, never the response body.
 Exit 0 when the profile is installed (whether or not it lists the container), 1 on an API error, 2 on bad usage.
 """
 

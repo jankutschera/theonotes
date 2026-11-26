@@ -9,7 +9,7 @@ import UIKit
 @testable import BaerchenIOS
 
 // Task 16: Settings ▸ iCloud on the iPhone and iPad against the in-memory iCloud (`FakeCloudKit.swift`, compiled into this target from the
-// Core test folder; see project.yml and CK-R178). Nothing here reaches the real iCloud. Real behaviour is NOT VERIFIED until the signed
+// Core test folder; see project.yml and). Nothing here reaches the real iCloud. Real behaviour is NOT VERIFIED until the signed
 // two-device run (docs/release/cloudkit-acceptance.md, section E).
 
 /// Counts how often the shipped services were asked for anything.
@@ -653,7 +653,7 @@ final class LockedFlags: @unchecked Sendable {
         }
     }
 
-    // MARK: move this library to iCloud (MOVE-R1 to MOVE-R6; the Mac twin is in CloudSyncControllerTests)
+    // MARK: move this library to iCloud
 
     /// The private-server binding as the old engine leaves it after a finished sync: an account, uploads on, empty queue.
     private func bindToPrivateServer(_ d: MobileCloudDevice) async throws {
@@ -753,7 +753,7 @@ final class LockedFlags: @unchecked Sendable {
         }
     }
 
-    /// MOVE-R13: the card's words, the same on Mac and iOS; six notes list five titles and "and 1 more", one per line.
+    /// The card's words, the same on Mac and iOS; six notes list five titles and "and 1 more", one per line.
     @Test func theMissingFilesCardSaysWhatHappensInShortLines() {
         let text = MobileCloudSyncStrings.moveUnavailable(notes: ["A", "B", "C", "D", "E"], moreNotes: 1, canMoveWithout: true)
         #expect(text.split(separator: "\n").map(String.init) == [
@@ -766,7 +766,7 @@ final class LockedFlags: @unchecked Sendable {
         #expect(MobileCloudSyncStrings.moveWithoutFilesMessage == MobileCloudSyncStrings.moveMessage + "\n\nThe missing attachment files stay missing.")
     }
 
-    /// MOVE-R10: the refusal names notes whose files no device and no server ever had; "Move to iCloud Without These Files…" then moves.
+    /// The refusal names notes whose files no device and no server ever had; "Move to iCloud Without These Files…" then moves.
     @Test func missingFilesNoDeviceHadOfferMoveWithoutTheseFilesWhichMoves() async throws {
         try await with { d in
             let note = try d.note("# Imported cover\nkept")
@@ -794,7 +794,7 @@ final class LockedFlags: @unchecked Sendable {
         }
     }
 
-    /// MOVE-R12: another reason is shown first; once it is gone the missing-files message with the button comes back.
+    /// Another reason is shown first; once it is gone the missing-files message with the button comes back.
     @Test func anotherReasonIsShownBeforeTheMissingFilesAndTheButton() async throws {
         try await with { d in
             try await bindToPrivateServer(d)

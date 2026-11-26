@@ -29,7 +29,7 @@ public struct PlannedNotification: Equatable, Sendable {
     }
 }
 
-/// Which notifications should exist right now (FOC-R10). The apps' schedulers only apply this
+/// Which notifications should exist right now. The apps' schedulers only apply this
 /// plan; they decide nothing about content.
 public enum PingPlanner {
     /// With App Lock enabled every notification reads like this and names no note.
@@ -111,7 +111,7 @@ public struct LedgerEntry: Equatable, Sendable {
     }
 }
 
-/// The device-local record of every notification identifier the app has scheduled (FOC-R17).
+/// The device-local record of every notification identifier the app has scheduled.
 /// Identifiers are `reminder:<pingId>:<uuid>` or `timer:<uuid>`; they never contain note text.
 /// A row is written before the notification is added, so a crash in between leaves a known id,
 /// and it stays until the notification is confirmed gone (`confirmGone`) or forgotten.
@@ -183,7 +183,7 @@ public struct NotificationLedger: Sendable {
     ///   before it is returned.
     /// - Every `reminder:` row no plan entry kept is in `remove`; timers never are. Removed rows
     ///   stay in the ledger until `confirmGone` or `forget`.
-    /// - A note that is locked is never trusted as unchanged and its row has no hash (FOC-R17), so
+    /// - A note that is locked is never trusted as unchanged and its row has no hash, so
     ///   its notification is rebuilt, title only, on every reconcile.
     public func reconcile(
         planned: [PlannedNotification], now: Date = .now

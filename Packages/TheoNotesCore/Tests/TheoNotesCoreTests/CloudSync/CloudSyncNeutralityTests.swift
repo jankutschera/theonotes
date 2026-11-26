@@ -7,7 +7,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// CK-R19: the sealed payload, the reader and the applier are transport-neutral. A second transport (our own server, the user's
+/// The sealed payload, the reader and the applier are transport-neutral. A second transport (our own server, the user's
 /// own storage) brings its own gateway and tables and reuses these files as they are.
 @Suite struct CloudSyncNeutralityTests {
     static let neutralFiles = ["CloudPayloadSealer", "CloudRemoteReader", "CloudApplier", "CloudApplier+Notes", "CloudApplier+Metadata"]

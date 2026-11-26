@@ -168,9 +168,9 @@ test("the badge is reachable as a button and reports the real fold state", async
   const badge = page.getByRole("button", { name: "Heading level 2" });
   await expect(badge).toHaveCount(1);
   await expect(page.getByRole("button", { name: "Heading level 1" })).toHaveCount(2);
-  // A control now (M6-R23); `aria-haspopup` comes with M7 Task 11.
+  // A control now; `aria-haspopup` comes with M7 Task 11.
   expect(await page.locator(".cm-bc-hbadge").first().getAttribute("aria-hidden")).toBeNull();
-  // M7 Task 11 adds the menu popup now that the badge is exposed (M6-R23).
+  // M7 Task 11 adds the menu popup now that the badge is exposed.
   expect(await page.locator(".cm-bc-hbadge").first().getAttribute("aria-haspopup")).toBe("menu");
 
   const menus = () => api(page).sent().then((s) => s.filter((m) => m.type === "headingMenu").map((m) => [m.line, m.folded]));
@@ -231,7 +231,7 @@ test("a click right of the ⋯ then typing types before the ⋯", async ({ page 
   await expect(placeholder(page)).toHaveCount(1);
 });
 
-// Fix round 2: a caret never rests at a fold's end (M6-R28).
+// Fix round 2: a caret never rests at a fold's end.
 
 const foldEnd = fenced.indexOf("```", fenced.indexOf("code")) + 3;
 const afterFold = foldEnd + 1;
@@ -283,7 +283,7 @@ test("ArrowRight and ArrowLeft step over a fold; End and ⌃E stay before the �
   expect(await api(page).text()).toBe(fenced);
 });
 
-// Final review I1 (M6-R76): deletion keys at a fold's edge unfold it, never edit hidden text.
+// Final review I1: deletion keys at a fold's edge unfold it, never edit hidden text.
 
 test("Delete before the ⋯ and Backspace after the fold unfold it; the next press deletes", async ({ page }) => {
   for (const [caret, key] of [

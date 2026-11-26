@@ -5,7 +5,7 @@ import TheoNotesCore
 import Foundation
 import Testing
 
-/// What the share sheet does without its window (C17 fix round 1, FOC-R342): collecting, editing, the
+/// What the share sheet does without its window (C17 fix round 1): collecting, editing, the
 /// picker following the app, and the hand-over. `ShareSheetModel.swift` is compiled into this bundle.
 @MainActor
 @Suite struct ShareSheetModelTests {

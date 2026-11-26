@@ -7,7 +7,7 @@ import GRDB
 import Testing
 @testable import TheoNotes
 
-/// REL-R4 ... REL-R9: a build made for the public hides the sync setup; Jan's own builds keep it.
+/// a build made for the public hides the sync setup; Jan's own builds keep it.
 /// The switch is the build setting THEONOTES_SYNC_SETUP, read through `ReleaseFeatures` (parsing is tested in core).
 @MainActor @Suite struct ReleaseFeaturesTests {
     private struct Refused: Error {}

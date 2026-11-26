@@ -7,7 +7,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Libraries that already had a life before sync (CK-R13): trash, archive, deletions, protected notes, attachments, tags,
+/// Libraries that already had a life before sync: trash, archive, deletions, protected notes, attachments, tags,
 /// settings, imported notes. Real coordinator, real libraries, `FakeCloudKit`.
 @Suite(.serialized) struct CloudExistingLibraryFirstSyncTests {
     @Test func libraryWithTrashedAndArchivedNotesKeepsTheirStates() async throws {

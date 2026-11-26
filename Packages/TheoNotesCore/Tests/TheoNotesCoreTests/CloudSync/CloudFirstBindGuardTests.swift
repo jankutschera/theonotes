@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// The first-bind guard (STARTER-R4, matrix S13 to S20): a library that made its own Getting Started notes (a fresh iPhone) joins an
+/// The first-bind guard: a library that made its own Getting Started notes (a fresh iPhone) joins an
 /// iCloud library that has notes but never had them. The real `seedNewLibrary`, the real coordinator, `FakeCloudKit`.
 @Suite(.serialized) struct CloudFirstBindGuardTests {
     static func starterVersions(_ world: CoordWorld) async -> [Int] {
@@ -141,7 +141,7 @@ import Testing
     }
 
     @Test func oneUnpublishedNoteOfThePersonsOwnMeansNotFreshAndNothingGoes() throws {
-        // STARTER-R10, direct: each of these alone makes the device "not fresh", and the guard removes nothing at all.
+        //, direct: each of these alone makes the device "not fresh", and the guard removes nothing at all.
         for (label, touch) in [
             ("an own note", { (d: CoordDevice) in _ = try d.noteStore.create(text: "# Written before sync\n") }),
             ("an edited starter", { (d: CoordDevice) in try d.edit(StarterFixtures.ids[0], try #require(try d.note(StarterFixtures.ids[0])).text + "\nEdited.\n") }),
@@ -159,7 +159,7 @@ import Testing
     }
 
     @Test func aDeviceWithOneOwnUnpublishedNoteKeepsAndUploadsItsStarters() async throws {
-        // STARTER-R10 through the coordinator: a long-standing library (or a note written before switching sync on) joins a cloud
+        // through the coordinator: a long-standing library joins a cloud
         // that has notes but no starters. Its starters upload as before; the other device receives them.
         let world = try CoordWorld.make(2); defer { world.cleanup() }
         let mine = try await Self.libraryWithoutStarters(world)
@@ -191,7 +191,7 @@ import Testing
         try await b.enable()
         try await world.converge()
         for device in world.devices {
-            // an untouched copy follows a remote deletion into the Trash, like any remote deletion (CK-R132); none is visible
+            // an untouched copy follows a remote deletion into the Trash, like any remote deletion; none is visible
             let visible = try device.notes().filter { $0.location != .trash }
             #expect(visible.map(\.id) == [mine], "\(device.name): nothing came back, found \(visible.count) visible")
         }

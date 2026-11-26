@@ -46,7 +46,7 @@ enum CommandTable {
         "--limit", "--offset", "--context", "--selection-offset", "--selection-length",
     ]
 
-    /// Options whose value is arbitrary text, so a leading `-` is part of it (rulings M5-R44, M5-R46).
+    /// Options whose value is arbitrary text, so a leading `-` is part of it.
     /// Escaped options are free text, except `--section`, which bearcli treats like `--title`.
     private static let otherFreeTextOptions: Set<String> = ["--query", "--selection-text", "--header"]
 

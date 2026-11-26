@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// The shipped-version list in the first-sync merge (STARTER-R2, matrix S17 a to g): a device of the first release (frozen v1 texts)
+/// The shipped-version list in the first-sync merge: a device of the first release (frozen v1 texts)
 /// and a device of this release (v2 texts) on one iCloud account, through the real coordinator and `FakeCloudKit`.
 @Suite(.serialized) struct CloudStarterVersionMatrixTests {
     static let target = StarterFixtures.ids[4]  // note 5: its v2 text differs from v1 in most lines
@@ -111,7 +111,7 @@ import Testing
 
     @Test func twoEditsOfDifferentVersionsLoseNeitherEdit() async throws {
         // The old device appended a line to v1, the new device a line to v2. Neither side is untouched, so the oldest shipped version is the
-        // base (STARTER-R2): the three-way text merge keeps both endings, or makes one conflict copy. Never a lost edit, never a second copy.
+        // base: the three-way text merge keeps both endings, or makes one conflict copy. Never a lost edit, never a second copy.
         let (v1, v2) = try Self.texts()
         let world = try await Self.world(first: 0, edit: { old, new in
             try old.edit(Self.target, v1 + "\nOld device's ending.\n"); try new.edit(Self.target, v2 + "\nNew device's ending.\n")

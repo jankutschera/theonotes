@@ -21,7 +21,7 @@ import XCTest
         app.buttons["Dismiss Keyboard"].firstMatch.tap()
         return app
     }
-    /// Pickers open from the bar's Attach menu (IOS-CLUTTER-R1); Lock Note stays in Note Actions.
+    /// Pickers open from the bar's Attach menu; Lock Note stays in Note Actions.
     private static let attachEntries = ["Insert File": "toolbar-attach-file", "Photo Library": "toolbar-attach-photos"]
     private func action(_ name: String, app: XCUIApplication) {
         let attach = Self.attachEntries[name]

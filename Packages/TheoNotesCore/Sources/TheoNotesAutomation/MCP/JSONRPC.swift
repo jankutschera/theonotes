@@ -57,7 +57,7 @@ enum JSONRPC {
         return line(.object([("error", body), ("id", id), ("jsonrpc", "2.0")]))
     }
 
-    /// Keys sorted at every level (observed), `/` unescaped (ruling M5-R30), newline-terminated.
+    /// Keys sorted at every level (observed), `/` unescaped, newline-terminated.
     private static func line(_ message: JSONValue) -> Data {
         Data((message.serialized(sortedKeys: true) + "\n").utf8)
     }
