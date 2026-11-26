@@ -5,18 +5,26 @@
 <h1 align="center">Theo Notes</h1>
 
 <p align="center">
-  Markdown notes for Mac, iPhone, iPad and Apple Watch.<br>
-  Plain text you own, tags and links, fast search, iCloud sync, and a command line tool your AI assistant can use.
+  <strong>Open-source alternative to Apple Notes and Obsidian: Markdown notes for Mac, iPhone, iPad and Apple Watch, with an MCP server for Claude.</strong>
+</p>
+
+<p align="center">
+  <a href="https://apps.apple.com/app/id6832478875"><img src="https://img.shields.io/badge/App_Store-iPhone_%7C_iPad_%7C_Watch-0F3B46?logo=apple&logoColor=white" alt="App Store"></a>
+  <a href="../../releases/latest"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Ftheonotes.app%2Flatest.json&query=%24.version&label=release&color=12505E" alt="Latest release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/licence-GPL--3.0-12505E" alt="Licence: GPL-3.0"></a>
+  <img src="https://img.shields.io/badge/platforms-macOS_26_%7C_iOS_26_%7C_watchOS_26-12505E" alt="Platforms: macOS 26, iOS 26, watchOS 26">
+  <a href="#use-with-claude"><img src="https://img.shields.io/badge/MCP-server-E8602C" alt="MCP server"></a>
 </p>
 
 <p align="center">
   <a href="https://apps.apple.com/app/id6832478875">App Store (iPhone, iPad, Apple Watch)</a> ·
   <a href="https://theonotes.app/download">Download for Mac</a> ·
-  <a href="https://theonotes.app">theonotes.app</a>
+  <a href="https://theonotes.app">theonotes.app</a> ·
+  <a href="docs/readme/README_de.md">Deutsch</a>
 </p>
 
 <p align="center">
-  <img src="docs/readme/mac-library-light.png" alt="Theo Notes on the Mac: tag sidebar, note list and a recipe note with a table, a callout and a formula">
+  <img src="docs/readme/claude-mcp.gif" alt="Claude asks theonotes mcp-server for the open tasks of a trip note, then adds a task to it">
 </p>
 
 ## What it is
@@ -39,6 +47,43 @@ Theo Notes is a notes app that stores every note as Markdown, exactly as you typ
 <p align="center">
   <img src="docs/readme/iphone-recipe.png" width="260" alt="A recipe note on iPhone with the editor bar">
 </p>
+
+## Use with Claude
+
+The Mac app ships a command line tool, `theonotes`, and `theonotes mcp-server` serves your library to Claude and other MCP clients over stdio.
+
+1. Install the Mac app and open it once, so it creates your library.
+2. In the app, open **Settings → Automation** and click **Install in ~/.local/bin**.
+3. Add the server to Claude Code (the app's **Copy Claude Code command** button gives the same line with the full path):
+   ```sh
+   claude mcp add theonotes -- ~/.local/bin/theonotes mcp-server
+   ```
+4. For Claude Desktop, click **Copy Claude config** and paste it into `claude_desktop_config.json`.
+5. Ask Claude something like "What is still open in my trip note?". Add `--only-tags work` or `--exclude-tags private` after `mcp-server` to limit which notes Claude sees.
+
+The server reads and writes the library directly, so the app does not need to be running. App Lock does not apply to it.
+
+### Without the app
+
+There is no separate download of `theonotes` yet. You can build it from this repository with Swift alone:
+
+```sh
+cd Packages/TheoNotesCore
+swift build -c release --product theonotes
+.build/release/theonotes --help
+```
+
+It needs an existing Theo Notes library: it never creates one. By default it uses the library of the installed Mac app (`~/Library/Application Support/Theo Notes`); `--data-dir <path>` or `THEONOTES_DATA_DIR` points it at another one. A Homebrew formula will follow once there is demand for it.
+
+## Showcases
+
+What the MCP server is good at, with prompts you can try:
+
+- **Find and act**: "What is still open for my Lisbon trip? Add 'Buy tram tickets'." (the clip above, recorded on a demo library)
+- **Capture from a conversation**: "Save the plan we just made as a note tagged #work/clients."
+- **Tidy up**: "List my notes tagged #inbox and suggest a tag for each."
+
+Built something with it? Share it in [Show and tell](https://github.com/jankutschera/theonotes/discussions/categories/show-and-tell). Questions go to [Q&A](https://github.com/jankutschera/theonotes/discussions/categories/q-a).
 
 ## Get the app
 
@@ -79,7 +124,7 @@ Theo Notes is free software: you can redistribute it and modify it under the ter
 
 The name "Theo Notes", the logo and the app icon are trademarks of True Brew Birdie Ltd. and are **not** covered by the GPL. Read [TRADEMARK.md](TRADEMARK.md) and [BRANDING.md](BRANDING.md) before you distribute a modified version.
 
-Bear, Evernote, Notion and Apple Notes are trademarks of their respective owners. Theo Notes is not affiliated with them; their names appear only to describe what Theo Notes can import.
+Bear, Evernote, Notion, Obsidian and Apple Notes are trademarks of their respective owners. Theo Notes is not affiliated with them; their names appear only to describe what Theo Notes can import or how it compares. Claude is a trademark of Anthropic; Theo Notes is not affiliated with Anthropic.
 
 ## Contributing
 
