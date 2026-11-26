@@ -7,16 +7,19 @@ import TheoNotesCore
 import Observation
 import SwiftUI
 
-/// State of Settings → Automation: the command-line install, the Claude setup text and the
-/// x-callback-url token. Nothing here runs by itself. The only writes are the `baerchen` link in
+/// State of Settings → Automation: the command-line install, the Claude setup and the
+/// x-callback-url token. Nothing here runs by itself. The only writes are the `theonotes` link in
 /// `~/.local/bin` (Install / Uninstall), the token in the library's settings (Show, Copy and
-/// Regenerate) and the pasteboard. No Claude configuration file is ever written.
+/// Regenerate) and the pasteboard. Connect to Claude hands the bundled extension to Claude, which
+/// asks the user before it installs it; the app itself never writes a Claude configuration file.
 @MainActor
 @Observable
 final class AutomationSettingsModel {
     @ObservationIgnored let installer: CLIInstaller
     @ObservationIgnored private let settings: TheoNotesCore.Settings
+    @ObservationIgnored private let database: AppDatabase
     @ObservationIgnored private let pasteboard: NSPasteboard
+    @ObservationIgnored private let claude: ClaudeDesktop
 
     private(set) var userStatus: CLIInstaller.Status = .notInstalled
     private(set) var systemStatus: CLIInstaller.Status = .notInstalled
@@ -28,14 +31,19 @@ final class AutomationSettingsModel {
     /// What the last Copy put on the pasteboard, announced to VoiceOver and shown briefly.
     private(set) var copiedMessage: String?
 
+    /// Where Claude Desktop is installed; nil when it is not.
+    private(set) var claudeApp: URL?
+
     /// Comma-separated tags for `--only-tags` / `--exclude-tags`.
     var onlyTags = ""
     var excludeTags = ""
 
-    init(installer: CLIInstaller, database: AppDatabase, pasteboard: NSPasteboard = .general) {
+    init(installer: CLIInstaller, database: AppDatabase, pasteboard: NSPasteboard = .general, claude: ClaudeDesktop = .live) {
         self.installer = installer
         settings = TheoNotesCore.Settings(db: database)
+        self.database = database
         self.pasteboard = pasteboard
+        self.claude = claude
         refresh()
     }
 
@@ -54,6 +62,7 @@ final class AutomationSettingsModel {
         userStatus = installer.status(.userLocalBin)
         systemStatus = installer.status(.usrLocalBin)
         token = (try? settings.value(.automationToken)) ?? ""
+        claudeApp = claude.appURL()
     }
 
     // MARK: Command-line tool
@@ -93,9 +102,34 @@ final class AutomationSettingsModel {
         copy(sudoCommand, what: "The sudo command")
     }
 
-    // MARK: Claude
+    // MARK: Connect to Claude
 
-    /// The text under the Claude section. "Copy Claude config" copies a whole JSON object, so the
+    /// The download page offered when Claude Desktop is not installed.
+    nonisolated static let claudeDownload = URL(string: "https://claude.ai/download")!
+
+    /// The text under Connect to Claude.
+    nonisolated static let connectGuidance = """
+        Claude asks before it installs it and lets you limit it to some tags. Theo Notes never edits Claude's files. \
+        One tool, add_attachment_from_url, fetches a web address that Claude chooses: review its requests before you \
+        approve them.
+        """
+
+    var canConnect: Bool { claudeApp != nil && claude.extensionURL != nil }
+
+    /// Hands the bundled extension to Claude Desktop, which shows its own install dialog.
+    func connectToClaude() {
+        errorMessage = nil
+        copiedMessage = nil
+        guard let app = claudeApp, let bundle = claude.extensionURL else { return }
+        claude.open(bundle, app) { [weak self] error in
+            guard let error else { return }
+            self?.errorMessage = "Could not open Claude: \(error.localizedDescription)"
+        }
+    }
+
+    // MARK: Other ways (copy)
+
+    /// The text under the copy buttons. "Copy Claude config" copies a whole JSON object, so the
     /// text says to merge it.
     nonisolated static let claudeGuidance = """
         Claude can read and write your notes through the Theo Notes MCP server. "Copy Claude config" copies a complete \
@@ -119,6 +153,17 @@ final class AutomationSettingsModel {
 
     nonisolated static func tags(_ field: String) -> [String] {
         field.split(separator: ",").map(String.init)
+    }
+
+    /// A warning when a tag in the fields does not exist in this library, else nil. An unknown
+    /// exclude-tag hides nothing, so a typo there would show notes meant to stay hidden.
+    var unknownTagWarning: String? {
+        let unknown = ClaudeConfig.unknownTags(onlyTags: onlyList, excludeTags: excludeList, in: database)
+        let list = { (names: [String]) in names.map { "#" + $0 }.joined(separator: ", ") }
+        var lines: [String] = []
+        if !unknown.exclude.isEmpty { lines.append("No tag \(list(unknown.exclude)) in this library: excluding it hides nothing. Check the spelling.") }
+        if !unknown.only.isEmpty { lines.append("No tag \(list(unknown.only)) in this library yet: Claude sees no notes through it.") }
+        return lines.isEmpty ? nil : lines.joined(separator: "\n")
     }
 
     func copyDesktopConfig() {
@@ -184,6 +229,27 @@ final class AutomationSettingsModel {
     }
 }
 
+/// Claude Desktop as the pane sees it, replaceable in tests.
+struct ClaudeDesktop {
+    static let bundleIdentifier = "com.anthropic.claudefordesktop"
+
+    /// The extension built into the app by scripts/build-mcpb.py; nil in a build without it.
+    var extensionURL: URL?
+    var appURL: @MainActor () -> URL?
+    /// Opens `bundle` with the app at `app`; `completion` gets the error, if any, on the main actor.
+    var open: @MainActor (_ bundle: URL, _ app: URL, _ completion: @escaping @MainActor ((any Error)?) -> Void) -> Void
+
+    @MainActor static let live = ClaudeDesktop(
+        extensionURL: Bundle.main.url(forResource: "TheoNotes", withExtension: "mcpb"),
+        appURL: { NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleIdentifier) },
+        open: { bundle, app, completion in
+            NSWorkspace.shared.open([bundle], withApplicationAt: app, configuration: NSWorkspace.OpenConfiguration()) { _, error in
+                let error = error.map { $0 as NSError }
+                Task { @MainActor in completion(error) }
+            }
+        })
+}
+
 /// The accessibility identifiers of the Automation pane.
 enum AutomationControl {
     static let install = "automation-install"
@@ -193,6 +259,10 @@ enum AutomationControl {
     static let excludeTags = "automation-exclude-tags"
     static let copyClaudeConfig = "automation-copy-claude-config"
     static let copyClaudeCode = "automation-copy-claude-code"
+    static let connectClaude = "automation-connect-claude"
+    static let downloadClaude = "automation-download-claude"
+    static let otherWays = "automation-claude-other-ways"
+    static let unknownTags = "automation-unknown-tags"
     static let token = "automation-token"
     static let tokenShow = "automation-token-show"
     static let tokenHide = "automation-token-hide"
@@ -202,8 +272,8 @@ enum AutomationControl {
     static let cancelRegenerate = "automation-token-regenerate-cancel"
 
     static let all = [
-        install, uninstall, copySudo, onlyTags, excludeTags, copyClaudeConfig, copyClaudeCode, token, tokenShow, tokenHide,
-        tokenCopy, tokenRegenerate, confirmRegenerate, cancelRegenerate,
+        install, uninstall, copySudo, onlyTags, excludeTags, copyClaudeConfig, copyClaudeCode, connectClaude, downloadClaude,
+        otherWays, unknownTags, token, tokenShow, tokenHide, tokenCopy, tokenRegenerate, confirmRegenerate, cancelRegenerate,
     ]
 }
 
@@ -297,30 +367,62 @@ struct AutomationSettingsView: View {
 
     private var claudeSection: some View {
         Section {
-            LabeledContent("Only tags") {
-                TextField("Only tags", text: $model.onlyTags, prompt: Text("work, home/kids"))
-                    .labelsHidden()
-                    .accessibilityIdentifier(AutomationControl.onlyTags)
+            LabeledContent {
+                if model.claudeApp == nil {
+                    Link("Download Claude", destination: AutomationSettingsModel.claudeDownload)
+                        .accessibilityIdentifier(AutomationControl.downloadClaude)
+                } else {
+                    Button("Connect to Claude") { model.connectToClaude() }
+                        .buttonStyle(.borderedProminent)
+                        .disabled(!model.canConnect)
+                        .accessibilityHint("Opens the Theo Notes extension in Claude, which asks before it installs it")
+                        .accessibilityIdentifier(AutomationControl.connectClaude)
+                }
+            } label: {
+                Text("Claude Desktop")
+                Text(model.claudeApp == nil ? "Claude is not installed on this Mac." : "Opens the Theo Notes extension in Claude.")
             }
-            LabeledContent("Exclude tags") {
-                TextField("Exclude tags", text: $model.excludeTags, prompt: Text("private"))
-                    .labelsHidden()
-                    .accessibilityIdentifier(AutomationControl.excludeTags)
-            }
-            HStack {
-                Button("Copy Claude config") { model.copyDesktopConfig() }
-                    .accessibilityHint("Copies a claude_desktop_config.json with the theonotes entry, to merge into your own")
-                    .accessibilityIdentifier(AutomationControl.copyClaudeConfig)
-                Button("Copy Claude Code command") { model.copyClaudeCodeCommand() }
-                    .accessibilityHint("Copies a claude mcp add command to run in Terminal")
-                    .accessibilityIdentifier(AutomationControl.copyClaudeCode)
-            }
-        } header: {
-            Text("Claude (MCP)")
-        } footer: {
-            Text(AutomationSettingsModel.claudeGuidance)
+            Text(AutomationSettingsModel.connectGuidance)
+                .font(.callout)
                 .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            DisclosureGroup("Other ways to connect") {
+                otherWays
+            }
+            .accessibilityIdentifier(AutomationControl.otherWays)
+        } header: {
+            Text("Claude")
         }
+    }
+
+    @ViewBuilder private var otherWays: some View {
+        LabeledContent("Only tags") {
+            TextField("Only tags", text: $model.onlyTags, prompt: Text("work, home/kids"))
+                .labelsHidden()
+                .accessibilityIdentifier(AutomationControl.onlyTags)
+        }
+        LabeledContent("Exclude tags") {
+            TextField("Exclude tags", text: $model.excludeTags, prompt: Text("private"))
+                .labelsHidden()
+                .accessibilityIdentifier(AutomationControl.excludeTags)
+        }
+        if let warning = model.unknownTagWarning {
+            Label(warning, systemImage: "exclamationmark.triangle")
+                .foregroundStyle(.orange)
+                .accessibilityIdentifier(AutomationControl.unknownTags)
+        }
+        HStack {
+            Button("Copy Claude config") { model.copyDesktopConfig() }
+                .accessibilityHint("Copies a claude_desktop_config.json with the theonotes entry, to merge into your own")
+                .accessibilityIdentifier(AutomationControl.copyClaudeConfig)
+            Button("Copy Claude Code command") { model.copyClaudeCodeCommand() }
+                .accessibilityHint("Copies a claude mcp add command to run in Terminal")
+                .accessibilityIdentifier(AutomationControl.copyClaudeCode)
+        }
+        Text(AutomationSettingsModel.claudeGuidance)
+            .font(.callout)
+            .foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     // MARK: x-callback-url

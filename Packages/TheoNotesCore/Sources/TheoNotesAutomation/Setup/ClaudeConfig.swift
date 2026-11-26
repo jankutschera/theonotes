@@ -2,6 +2,7 @@
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
 import Foundation
+import TheoNotesCore
 
 /// The text a user pastes into Claude to start the Theo Notes MCP server. The app only builds the
 /// text; it never writes a Claude configuration file.
@@ -44,6 +45,13 @@ public enum ClaudeConfig {
         if !only.isEmpty { args += ["--only-tags", only.joined(separator: ",")] }
         if !exclude.isEmpty { args += ["--exclude-tags", exclude.joined(separator: ",")] }
         return args
+    }
+
+    /// The tags of each list that do not exist in `database`, as the server will read them (it
+    /// warns about the same names at start). Empty when the library cannot be read.
+    public static func unknownTags(onlyTags: [String], excludeTags: [String], in database: AppDatabase) -> (only: [String], exclude: [String]) {
+        let scope = NoteScope(onlyTags: cleaned(onlyTags), excludeTags: cleaned(excludeTags))
+        return (try? database.pool.read { try scope.unknownNames(db: $0) }) ?? ([], [])
     }
 
     static func cleaned(_ tags: [String]) -> [String] {

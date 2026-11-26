@@ -142,6 +142,106 @@ import Testing
         #expect(text.contains("over 2,048 bytes (in their encoded form) are refused"))
     }
 
+    // MARK: Connect to Claude
+
+    /// A Claude Desktop that records what the pane hands it.
+    private final class FakeClaude {
+        var app: URL? = URL(fileURLWithPath: "/Applications/Claude.app")
+        var opened: [(bundle: URL, app: URL)] = []
+        var failure: (any Error)?
+        let bundle = URL(fileURLWithPath: "/tmp/TheoNotes.mcpb")
+
+        @MainActor var desktop: ClaudeDesktop {
+            ClaudeDesktop(
+                extensionURL: bundle, appURL: { self.app },
+                open: { bundle, app, completion in
+                    self.opened.append((bundle, app))
+                    completion(self.failure)
+                })
+        }
+    }
+
+    private func model(with claude: FakeClaude) -> AutomationSettingsModel {
+        AutomationSettingsModel(
+            installer: CLIInstaller(home: home, binary: binary, systemBin: systemBin),
+            database: environment.database, pasteboard: pasteboard, claude: claude.desktop)
+    }
+
+    @Test func connectHandsTheBundledExtensionToClaudeAndWritesNothing() {
+        let claude = FakeClaude()
+        let model = model(with: claude)
+        #expect(model.canConnect)
+        model.connectToClaude()
+        #expect(claude.opened.count == 1)
+        #expect(claude.opened.first?.bundle == claude.bundle)
+        #expect(claude.opened.first?.app == claude.app)
+        #expect(model.errorMessage == nil)
+        #expect(tree().isEmpty)
+        #expect(pasteboard.string(forType: .string) == nil)
+    }
+
+    @Test func withoutClaudeTheButtonGivesWayToTheDownloadLink() {
+        let claude = FakeClaude()
+        claude.app = nil
+        let model = model(with: claude)
+        #expect(model.claudeApp == nil && !model.canConnect)
+        model.connectToClaude()
+        #expect(claude.opened.isEmpty)
+        #expect(AutomationSettingsModel.claudeDownload.absoluteString == "https://claude.ai/download")
+
+        // Installing Claude while the pane is open shows the button on the next refresh.
+        claude.app = URL(fileURLWithPath: "/Applications/Claude.app")
+        model.refresh()
+        #expect(model.canConnect)
+    }
+
+    @Test func aFailedHandOverIsShown() {
+        let claude = FakeClaude()
+        claude.failure = CocoaError(.fileReadNoSuchFile)
+        let model = model(with: claude)
+        model.connectToClaude()
+        #expect(model.errorMessage?.hasPrefix("Could not open Claude: ") == true)
+    }
+
+    @Test func connectGuidanceSaysClaudeAsksAndNamesTheURLFetch() {
+        let text = AutomationSettingsModel.connectGuidance
+        #expect(text.contains("Claude asks before it installs it"))
+        #expect(text.contains("never edits Claude's files"))
+        #expect(text.contains("add_attachment_from_url"))
+        #expect(text.contains("review its requests before you approve them"))
+    }
+
+    /// The app this test runs in carries the extension the button hands over, built for its identity.
+    @Test func theAppBundlesTheDevExtension() throws {
+        let bundle = try #require(ClaudeDesktop.live.extensionURL)
+        let unzip = Process()
+        unzip.executableURL = URL(fileURLWithPath: "/usr/bin/unzip")
+        unzip.arguments = ["-p", bundle.path, "manifest.json"]
+        let out = Pipe()
+        unzip.standardOutput = out
+        try unzip.run()
+        let data = out.fileHandleForReading.readDataToEndOfFile()
+        unzip.waitUntilExit()
+        let manifest = try JSONValue(parsing: data)
+        #expect(manifest["name"] == .string("theonotes-dev"))
+        #expect(manifest["server"]?["type"] == .string("binary"))
+        #expect(manifest["version"] == .string(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""))
+    }
+
+    /// A misspelt exclude-tag would hide nothing, so the pane names tags the library does not have.
+    @Test func anUnknownTagInTheFieldsIsNamed() throws {
+        _ = try environment.store.create(text: "Diary\n#private #work")
+        #expect(model.unknownTagWarning == nil)
+        model.excludeTags = "#private"
+        model.onlyTags = "work"
+        #expect(model.unknownTagWarning == nil)
+        model.excludeTags = "privte"
+        #expect(model.unknownTagWarning == "No tag #privte in this library: excluding it hides nothing. Check the spelling.")
+        model.excludeTags = ""
+        model.onlyTags = "work, later"
+        #expect(model.unknownTagWarning == "No tag #later in this library yet: Claude sees no notes through it.")
+    }
+
     @Test func accessibilityIdentifiersAreUniqueAndPrefixed() {
         let all = AutomationControl.all
         #expect(Set(all).count == all.count)

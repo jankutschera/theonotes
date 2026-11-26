@@ -66,10 +66,18 @@ if [ "$dry" -eq 0 ]; then
   for name in "$profile_app" ${profile_appex:+"$profile_appex"}; do
     python3 -I "$here/release/profiles.py" find "$name" >/dev/null || refuse "provisioning profile '$name' is not installed (~/Library/Developer/Xcode/UserData/Provisioning Profiles)"
   done
+  # The Claude extension inside the app is signed with this certificate (scripts/build-mcpb.py); without it the
+  # build would fall back to a throwaway self-signed one, which is for local builds only.
+  for var in MCPB_SIGN_CERT MCPB_SIGN_KEY; do
+    [ -r "${!var:-}" ] || refuse "no Claude extension signing file: set $var to a readable PEM file (Developer ID certificate and its key)"
+  done
   # Read-only call to the notary service: proves the stored profile works before 20 minutes of building.
   xcrun notarytool history --keychain-profile "$notary_profile" >/dev/null || refuse "notarytool cannot use the keychain profile '$notary_profile' (xcrun notarytool store-credentials)"
 fi
 
+if [ "$dry" -eq 1 ] && { [ -z "${MCPB_SIGN_CERT:-}" ] || [ -z "${MCPB_SIGN_KEY:-}" ]; }; then
+  say "note: MCPB_SIGN_CERT/MCPB_SIGN_KEY unset: the Claude extension is self-signed in this dry run (a real run refuses)"
+fi
 mkdir -p "$work"
 say "team $team, mode $([ "$dry" -eq 1 ] && echo dry-run || echo real), output $work"
 

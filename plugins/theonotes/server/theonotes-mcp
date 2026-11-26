@@ -1,0 +1,49 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
+
+# Starts `theonotes mcp-server` from the installed Theo Notes app. Used by the Claude desktop
+# extension (.mcpb) and the Claude Code plugin. It runs the tool inside the app instead of a copy,
+# so the server always matches the app's library and updates with the app.
+#
+# THEONOTES_CONNECT_ONLY_TAGS / THEONOTES_CONNECT_EXCLUDE_TAGS: comma-separated tags from the
+# host's settings. Empty, or a placeholder the host left unexpanded, means no limit; anything else
+# is handed to the server as --only-tags / --exclude-tags, which rejects a value naming no tag.
+
+# scripts/build-mcpb.py rewrites these three lines for the dev identity.
+APP_NAME="Theo Notes"
+BUNDLE_ID="com.truebrewbirdie.theonotes"
+APP_HINT=""
+
+helper_in() {
+  [ -n "$1" ] && [ -x "$1/Contents/Helpers/theonotes" ] && printf '%s\n' "$1/Contents/Helpers/theonotes"
+}
+
+find_helper() {
+  for app in "$APP_HINT" "/Applications/$APP_NAME.app" "$HOME/Applications/$APP_NAME.app"; do
+    helper_in "$app" && return 0
+  done
+  # Moved elsewhere: ask Spotlight for the bundle id, skipping the Trash and mounted disk images.
+  /usr/bin/mdfind "kMDItemCFBundleIdentifier == '$BUNDLE_ID'" 2>/dev/null | while IFS= read -r app; do
+    case "$app" in */.Trash/* | /Volumes/*) continue ;; esac
+    helper_in "$app" && break
+  done
+}
+
+# True when $1 is a tag list to pass on (not empty, not an unexpanded ${user_config.…}).
+is_set() {
+  case "$1" in '${user_config.'*) return 1 ;; esac
+  case "$1" in *[![:space:]]*) return 0 ;; esac
+  return 1
+}
+
+helper=$(find_helper | /usr/bin/head -n 1)
+if [ -z "$helper" ]; then
+  echo "theonotes-mcp: $APP_NAME is not installed. Get it at https://theonotes.app/download and open it once." >&2
+  exit 69
+fi
+
+set -- mcp-server
+if is_set "${THEONOTES_CONNECT_ONLY_TAGS:-}"; then set -- "$@" --only-tags "$THEONOTES_CONNECT_ONLY_TAGS"; fi
+if is_set "${THEONOTES_CONNECT_EXCLUDE_TAGS:-}"; then set -- "$@" --exclude-tags "$THEONOTES_CONNECT_EXCLUDE_TAGS"; fi
+exec "$helper" "$@"

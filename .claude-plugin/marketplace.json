@@ -1,0 +1,15 @@
+{
+  "name": "theonotes",
+  "description": "Theo Notes for Claude Code: your local notes library as an MCP server.",
+  "owner": {
+    "name": "True Brew Birdie Ltd.",
+    "url": "https://theonotes.app"
+  },
+  "plugins": [
+    {
+      "name": "theonotes",
+      "source": "./plugins/theonotes",
+      "description": "Search, read and write your Theo Notes library from Claude Code."
+    }
+  ]
+}

@@ -50,18 +50,24 @@ Theo Notes is a notes app that stores every note as Markdown, exactly as you typ
 
 ## Use with Claude
 
-The Mac app ships a command line tool, `theonotes`, and `theonotes mcp-server` serves your library to Claude and other MCP clients over stdio.
+The Mac app ships an MCP server, `theonotes mcp-server`, that serves your library to Claude over stdio. It runs on your Mac and reads the library there; nothing goes to a server of ours.
 
-1. Install the Mac app and open it once, so it creates your library.
-2. In the app, open **Settings → Automation** and click **Install in ~/.local/bin**.
-3. Add the server to Claude Code (the app's **Copy Claude Code command** button gives the same line with the full path):
-   ```sh
-   claude mcp add theonotes -- ~/.local/bin/theonotes mcp-server
-   ```
-4. For Claude Desktop, click **Copy Claude config** and paste it into `claude_desktop_config.json`.
-5. Ask Claude something like "What is still open in my trip note?". Add `--only-tags work` or `--exclude-tags private` after `mcp-server` to limit which notes Claude sees.
+**Claude Desktop (one click):** install the Mac app (1.2 or later) and open it once, then open **Settings → Automation** and click **Connect to Claude**. Claude shows its own install dialog; click **Install**. It asks for optional **Only tags** / **Exclude tags** to limit which notes Claude sees.
+
+**Claude Code:** add this repository as a plugin marketplace and install the plugin:
+
+```text
+/plugin marketplace add https://github.com/jankutschera/theonotes
+/plugin install theonotes@theonotes
+```
+
+The plugin starts the server inside the installed app, so it updates with the app. Its tag limits are under `/config`.
+
+Then ask Claude something like "What is still open in my trip note?".
 
 The server reads and writes the library directly, so the app does not need to be running. App Lock does not apply to it.
+
+**Other ways:** **Settings → Automation → Other ways to connect** copies a `claude_desktop_config.json` entry or a `claude mcp add` command for Terminal, with `--only-tags` / `--exclude-tags` filled in from its fields. Other MCP clients start `theonotes mcp-server` the same way (click **Install in ~/.local/bin** first to get the short path `~/.local/bin/theonotes`).
 
 ### Without the app
 

@@ -34,16 +34,24 @@ Theo Notes ist eine Notiz-App, die jede Notiz als Markdown speichert, genau so, 
 
 ## Mit Claude nutzen
 
-1. Installiere die Mac-App und öffne sie einmal, damit sie deine Bibliothek anlegt.
-2. Öffne in der App **Settings → Automation** und klicke **Install in ~/.local/bin**.
-3. Füge den Server in Claude Code hinzu:
-   ```sh
-   claude mcp add theonotes -- ~/.local/bin/theonotes mcp-server
-   ```
-4. Für Claude Desktop: **Copy Claude config** klicken und in `claude_desktop_config.json` einfügen.
-5. Frag Claude zum Beispiel: „Was ist in meiner Reisenotiz noch offen?“ Mit `--only-tags arbeit` oder `--exclude-tags privat` nach `mcp-server` legst du fest, welche Notizen Claude sieht.
+Die Mac-App bringt einen MCP-Server mit, `theonotes mcp-server`, der deine Bibliothek über stdio an Claude gibt. Er läuft auf deinem Mac und liest die Bibliothek dort; nichts geht an einen Server von uns.
+
+**Claude Desktop (ein Klick):** Installiere die Mac-App (ab 1.2) und öffne sie einmal, dann **Settings → Automation** öffnen und **Connect to Claude** klicken. Claude zeigt seinen eigenen Installationsdialog; klicke **Install**. Optional fragt er nach **Only tags** / **Exclude tags**, um einzuschränken, welche Notizen Claude sieht.
+
+**Claude Code:** Füge dieses Repository als Plugin-Marktplatz hinzu und installiere das Plugin:
+
+```text
+/plugin marketplace add https://github.com/jankutschera/theonotes
+/plugin install theonotes@theonotes
+```
+
+Das Plugin startet den Server in der installierten App und wird so mit der App aktualisiert. Die Tag-Grenzen stehen unter `/config`.
+
+Dann frag Claude zum Beispiel: „Was ist in meiner Reisenotiz noch offen?“
 
 Der Server liest und schreibt die Bibliothek direkt; die App muss dafür nicht laufen. Die App-Sperre gilt für ihn nicht.
+
+**Andere Wege:** **Settings → Automation → Other ways to connect** kopiert einen Eintrag für `claude_desktop_config.json` oder einen `claude mcp add`-Befehl fürs Terminal, mit `--only-tags` / `--exclude-tags` aus den Feldern. Andere MCP-Clients starten `theonotes mcp-server` genauso (vorher **Install in ~/.local/bin** klicken, dann gilt der kurze Pfad `~/.local/bin/theonotes`).
 
 ### Ohne die App
 

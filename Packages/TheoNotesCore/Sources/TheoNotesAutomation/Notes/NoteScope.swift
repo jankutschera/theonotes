@@ -70,6 +70,20 @@ struct NoteScope: Sendable, Equatable {
 
     private static let noise = CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "#"))
 
+    /// The only- and exclude-names that match no tag in the library. Such a name is legal, but an
+    /// unknown exclude-tag hides nothing (a typo there shows notes the user meant to hide), so the
+    /// server and the Settings pane say so.
+    func unknownNames(db: Database) throws -> (only: [String], exclude: [String]) {
+        (try Self.unknown(onlyNames, keys: onlyKeys, db: db), try Self.unknown(excludeNames, keys: excludeKeys, db: db))
+    }
+
+    private static func unknown(_ names: [String], keys: [String], db: Database) throws -> [String] {
+        guard !keys.isEmpty else { return [] }
+        let marks = Array(repeating: "?", count: keys.count).joined(separator: ", ")
+        let known = Set(try String.fetchAll(db, sql: "SELECT pathKey FROM tag WHERE pathKey IN (\(marks))", arguments: StatementArguments(keys)))
+        return zip(names, keys).filter { !known.contains($0.1) }.map(\.0)
+    }
+
     // MARK: Notes
 
     /// A SQL boolean over the note table aliased `alias`, with its bound arguments.

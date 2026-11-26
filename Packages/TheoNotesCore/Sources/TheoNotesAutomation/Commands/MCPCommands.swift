@@ -15,6 +15,7 @@ enum MCPCommands {
         // The scope comes from `--only-tags` / `--exclude-tags` and the `THEONOTES_MCP_*` variables (old `BAERCHEN_MCP_*` still read)
         //.
         let scope = try NoteScope.fromMCPServer(flags: parsed, environment: env.context.environment)
+        warnAboutUnknownTags(scope, env)
         let tools = MCPTools(libraryProvider: env.libraryProvider, context: env.context, scope: scope)
         let server = MCPServer(handler: tools, read: lines, write: io.write)
         // The handler is synchronous: block until the async server loop ends (stdin closed). The
@@ -26,6 +27,23 @@ enum MCPCommands {
             finished.signal()
         }
         finished.wait()
+    }
+}
+
+extension MCPCommands {
+    /// One stderr line per scope list naming a tag the library does not have (MCP clients log a
+    /// server's stderr). The scope itself is unchanged; a library that cannot be opened yet is no
+    /// error here, every tool call reports that on its own.
+    static func warnAboutUnknownTags(_ scope: NoteScope, _ env: CommandEnvironment) {
+        guard scope.isRestricted, let library = try? env.library(),
+              let unknown = try? library.database.pool.read({ try scope.unknownNames(db: $0) }) else { return }
+        let list = { (names: [String]) in names.map { "#" + $0 }.joined(separator: ", ") }
+        if !unknown.exclude.isEmpty {
+            env.io.writeError("theonotes mcp-server: warning: --exclude-tags names no tag in this library: \(list(unknown.exclude)). It hides nothing; check the spelling.\n")
+        }
+        if !unknown.only.isEmpty {
+            env.io.writeError("theonotes mcp-server: warning: --only-tags names no tag in this library: \(list(unknown.only)). Notes with it stay out of reach until the tag exists.\n")
+        }
     }
 }
 

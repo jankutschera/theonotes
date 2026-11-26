@@ -95,6 +95,10 @@
         "why": "app names"
       },
       {
+        "pattern": "TheoNotes.mcpb",
+        "why": "Claude desktop extension built by scripts/build-mcpb.py from mcpb/manifest.json, the app icon and our launcher"
+      },
+      {
         "pattern": "Editor/index.html",
         "why": "editor page (web/editor/index.html)"
       },
