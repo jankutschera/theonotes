@@ -9,7 +9,7 @@ import ImageIO
 import UniformTypeIdentifiers
 
 /// Converts an attributed string (RTF / RTFD read by `NSAttributedString`) into Bear-dialect
-/// Markdown (M8-R56). This file is the one place in TheoNotesCore that needs AppKit (fonts, text
+/// Markdown. This file is the one place in TheoNotesCore that needs AppKit (fonts, text
 /// lists, attachments); the rest of the core stays portable.
 ///
 /// - Paragraphs become lines (U+2028 and U+000B are line breaks inside one); no title line is added.

@@ -5,7 +5,7 @@ import SwiftUI
 
 /// Title row and buttons for a single-page sheet that opens over the editor. It replaces a
 /// `NavigationStack` with plain views: a nested stack in such a sheet caused an AttributeGraph
-/// hang on the iPad (device session 2026-11-08, `4906bb8f`; docs/decisions.md IOS-SHEETS-R1).
+/// hang on the iPad (device session 2026-11-08, `4906bb8f`; docs/decisions.md).
 struct MobileSheetChrome<Leading: View, Trailing: View, Content: View>: View {
     let title: String
     @ViewBuilder var leading: Leading
@@ -16,7 +16,7 @@ struct MobileSheetChrome<Leading: View, Trailing: View, Content: View>: View {
         content.safeAreaInset(edge: .top, spacing: 0) {
             // Equal side columns keep the title centred; unlike an overlay it truncates instead of
             // running under the buttons at large Dynamic Type sizes, as a navigation bar title does.
-            // IOS-DESIGN-R3: no band of its own; the sheet's background shows through, the buttons are glass
+            // No band of its own; the sheet's background shows through, the buttons are glass
             // capsules as in a navigation bar (a call site gives its confirming button `.glassProminent`).
             HStack {
                 leading.fixedSize().frame(maxWidth: .infinity, alignment: .leading)
@@ -29,7 +29,7 @@ struct MobileSheetChrome<Leading: View, Trailing: View, Content: View>: View {
     }
 }
 
-/// IOS-DESIGN-R11: a sheet's search field in the system look (magnifier, rounded fill), not a flat band.
+/// A sheet's search field in the system look (magnifier, rounded fill), not a flat band.
 struct MobileSearchFieldLook: ViewModifier {
     func body(content: Content) -> some View {
         HStack(spacing: 6) {

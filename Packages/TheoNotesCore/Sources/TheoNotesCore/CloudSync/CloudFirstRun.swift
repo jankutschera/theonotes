@@ -5,10 +5,10 @@ import CryptoKit
 import Foundation
 import GRDB
 
-// The first-run steps that touch the library (Task 10, CK-R130, CK-R131): switching uploads on for a CloudKit-bound library and
+// The first-run steps that touch the library: switching uploads on for a CloudKit-bound library and
 // clearing the dirty markers that switch created for content the cloud already holds.
 //
-// `SyncQueue.enable` refuses a CloudKit library on purpose (CK-R12), so the CloudKit binding path has its own counterpart.
+// `SyncQueue.enable` refuses a CloudKit library on purpose, so the CloudKit binding path has its own counterpart.
 // The shape of the Cloudflare original is kept (every semantic row of the six synced tables is marked dirty, so a first
 // sync publishes everything this library has), with one change that makes the follow-up cleanup provable:
 //
@@ -21,7 +21,7 @@ import GRDB
 
 public enum CloudFirstRun {
     /// Starter ids with edits not in the library (`AppPaths.hasPendingJournal`: a non-empty journal or one set aside for recovery). The
-    /// first-bind guard leaves them, and so the whole device, alone (STARTER-R11, R15). A folder that cannot be read counts as pending.
+    /// first-bind guard leaves them, and so the whole device, alone. A folder that cannot be read counts as pending.
     static func startersWithPendingJournal(in paths: AppPaths) -> Set<String> {
         Set(GettingStartedNotes.ids.filter { (try? paths.hasPendingJournal(noteId: $0)) ?? true })
     }
@@ -65,7 +65,7 @@ extension CloudSyncStore {
     /// Switches uploads on for this library and marks every semantic row dirty at `enableGeneration`, in one transaction. A row
     /// that is already dirty (a person's edit or an apply since the library was bound) keeps its own, higher generation.
     /// Repeating it is a no-op once enabled. Returns how many markers it created.
-    /// `keeping`: starter ids the first-bind guard must leave alone (an edit journal with text not yet committed, STARTER-R11).
+    /// `keeping`: starter ids the first-bind guard must leave alone (an edit journal with text not yet committed).
     @discardableResult
     public func enableUploads(keeping: Set<String> = []) throws -> Int {
         try database.pool.write { db in
@@ -73,7 +73,7 @@ extension CloudSyncStore {
             guard backend == .cloudkit else { throw CloudSyncStoreError.backendConflict(backend) }
             guard try String.fetchOne(db, sql: "SELECT accountId FROM sync_control WHERE id=1") != nil else { throw CloudSyncStoreError.accountMismatch }
             if try Bool.fetchOne(db, sql: "SELECT enabled FROM sync_control WHERE id=1") == true { return 0 }
-            // In the same transaction, so a stop between the two can never leave the starters dropped and the uploads still off (STARTER-R4).
+            // In the same transaction, so a stop between the two can never leave the starters dropped and the uploads still off.
             try Self.dropUnpublishedStarters(in: db, keeping: keeping)
             try db.execute(sql: "UPDATE sync_control SET enabled=1 WHERE id=1")
             var created = 0
@@ -95,7 +95,7 @@ extension CloudSyncStore {
         }
     }
 
-    /// The first-bind guard (STARTER-R4). A library that made its own Getting Started notes (a fresh iPhone) must not publish twelve of
+    /// The first-bind guard. A library that made its own Getting Started notes (a fresh iPhone) must not publish twelve of
     /// them into a cloud library that has notes but never had them. Runs inside `enableUploads`, after the download-first cycles, and
     /// removes a starter note only when ALL of these hold:
     ///  - its id is one of the fixed starter ids, AND
@@ -107,11 +107,11 @@ extension CloudSyncStore {
     ///  - the cloud holds at least one note record (a first device, with an empty cloud, publishes its starters), AND
     ///  - the device is fresh: EVERY local note the cloud does not know is such an untouched starter. One unpublished note of the
     ///    person's own (a long-standing library joining sync, a note written before switching sync on, an edited or trashed starter)
-    ///    and the guard removes nothing; the starters upload as they always did (STARTER-R10).
+    /// and the guard removes nothing; the starters upload as they always did.
     /// The write runs with `applying` set, as the applier's own writes do, so no tombstone and no dirty marker is made; the product's own
     /// delete removes the row and the tags only it used. `gettingStartedSeeded` stays set: nothing makes them again, Restore does.
     /// The removed ids are remembered in the device-local setting `droppedStartersKey` (it survives sync off/on and an account change),
-    /// so `recordDeletedStarters` never takes them for notes the person deleted (STARTER-R8).
+    /// so `recordDeletedStarters` never takes them for notes the person deleted.
     @discardableResult
     static func dropUnpublishedStarters(in db: Database, keeping: Set<String> = []) throws -> [String] {
         guard try Bool.fetchOne(db, sql: "SELECT EXISTS(SELECT 1 FROM ck_record WHERE entityType='note')") == true else { return [] }
@@ -123,7 +123,7 @@ extension CloudSyncStore {
             guard !known else { continue }
             guard try Bool.fetchOne(db, sql: "SELECT EXISTS(SELECT 1 FROM staging_batch WHERE noteId=?) OR EXISTS(SELECT 1 FROM privacy_transition WHERE noteId=?)",
                                     arguments: [id, id]) == false else { continue }
-            // A pending upload from a write after binding (a Restore while sync was off) is the person's action, not the seed (STARTER-R9).
+            // A pending upload from a write after binding (a Restore while sync was off) is the person's action, not the seed.
             guard try Bool.fetchOne(db, sql: "SELECT EXISTS(SELECT 1 FROM sync_dirty WHERE entityType='note' AND localId=? AND generation>=1)",
                                     arguments: [id]) == false else { continue }
             guard try CloudStarterBase.holdsShippedContent(id, in: db) else { continue }
@@ -241,7 +241,7 @@ extension CloudSyncStore {
     }
 }
 
-// MARK: the person's switch and the starter notes deleted before binding (CK-R132, CK-R134)
+// MARK: the person's switch and the starter notes deleted before binding
 
 extension CloudSyncStore {
     /// The person switched sync on and has not switched it off. Survives a restart, so a first sync that is blocked (a password,
@@ -263,7 +263,7 @@ extension CloudSyncStore {
             var missing: [String] = []
             if seeded {
                 let present = Set(try String.fetchAll(db, sql: "SELECT id FROM note"))
-                // A starter the first-bind guard removed was not deleted by the person (STARTER-R8).
+                // A starter the first-bind guard removed was not deleted by the person.
                 let dropped = Set(Self.decode(try String.fetchOne(db, sql: "SELECT value FROM setting WHERE key=?", arguments: [Self.droppedStartersKey])))
                 missing = GettingStartedNotes.ids.filter { !present.contains($0) && !dropped.contains($0) }
             }

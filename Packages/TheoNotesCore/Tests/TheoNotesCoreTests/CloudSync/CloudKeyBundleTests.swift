@@ -267,7 +267,7 @@ enum KeyTest {
         // The other keychain items of the app: the Cloudflare sync item and the note-password vault (Mac app).
         let vaultSource = try String(contentsOf: SchemaSnapshotTests.fixtureDir.deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("Apps/TheoNotesMac/Sources/Privacy/VaultKeyCache.swift"), encoding: .utf8)
-        // The Mac app reads the service from AppIdentity (REN2-R51, which reads LegacyNames); the value itself is pinned by IdentityPinsTests.
+        // The Mac app reads the service from AppIdentity; the value itself is pinned by IdentityPinsTests.
         #expect(vaultSource.contains("defaultService = AppIdentity.vaultKeychainService"))
         let others = [KeychainSyncStore.keychainService, AppIdentity.vaultKeychainService]
         for name in CloudKeyNames.all {
@@ -307,7 +307,7 @@ enum KeyTest {
         #expect(KeychainCloudKeySeedStore(namespace: "x").accessGroup == AppIdentity.current.keychainAccessGroup)
     }
 
-    /// REN2-R51 (task B3): the iCloud key seed, the pending creation, the probe and the revision mark all live in the
+    /// (task B3): the iCloud key seed, the pending creation, the probe and the revision mark all live in the
     /// access group of the running identity (`AppIdentity.keychainAccessGroup`, which follows team and bundle id), never
     /// in a group written out in this file. A store built the default way reads whatever the identity says.
     @Test func test_every_cloud_key_item_uses_the_identitys_access_group_by_default() {

@@ -6,7 +6,7 @@ import SwiftUI
 
 /// Shows `content` while the app is open and the lock screen in its place while App Lock is
 /// engaged. The content is not built, laid out or exposed to accessibility while locked, so no
-/// note title or text exists in the window until the Mac has confirmed its owner (M9M-R62).
+/// note title or text exists in the window until the Mac has confirmed its owner.
 struct AppLockGate<Content: View>: View {
     let lock: AppLock?
     @ViewBuilder let content: () -> Content

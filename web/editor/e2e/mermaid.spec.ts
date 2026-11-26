@@ -72,7 +72,7 @@ test("flowchart, sequence, gantt, mindmap, class and state diagrams render", asy
   }
 });
 
-// REN2-R10: elkjs is not in the app. A diagram that asks for the ELK layout (`flowchart-elk`; front
+// Elkjs is not in the app. A diagram that asks for the ELK layout (`flowchart-elk`; front
 // matter and directives are removed) is drawn with the default layout, without an error box.
 test("a diagram that asks for the ELK layout renders with the default layout", async ({ page }) => {
   await page.setViewportSize({ width: 900, height: 900 });

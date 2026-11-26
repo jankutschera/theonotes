@@ -260,7 +260,7 @@ func sha256Hex(_ text: String) -> String {
     }
 
     /// A family installed under `~/Library/Fonts` or `/Library/Fonts` renders too, so the editor needs no
-    /// `@font-face` fallback (M7-R16). Skipped (not failed) on a machine with no such font.
+    /// `@font-face` fallback. Skipped (not failed) on a machine with no such font.
     @Test(.enabled(if: UserFonts.renderableFamily() != nil, "no usable font under ~/Library/Fonts or /Library/Fonts"))
     func userInstalledFontFamilyRendersInTheEditor() async throws {
         try await assertFamilyRenders(try #require(UserFonts.renderableFamily()))

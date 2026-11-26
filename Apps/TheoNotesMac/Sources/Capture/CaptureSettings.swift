@@ -5,7 +5,7 @@ import Foundation
 import Observation
 import TheoNotesCore
 
-/// Per-Mac capture preferences (GC-R1): `UserDefaults`, not the synced library.
+/// Per-Mac capture preferences: `UserDefaults`, not the synced library.
 @MainActor
 @Observable
 final class CaptureSettings {

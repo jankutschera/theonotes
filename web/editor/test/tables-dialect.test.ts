@@ -7,7 +7,7 @@ import { ensureSyntaxTree } from "@codemirror/language";
 import { tableRowLines } from "../src/editor/conformance";
 import { bearMarkdown, bearParser } from "../src/editor/dialect";
 
-// Bear tables (ruling M6-R1): a header row, a delimiter row with the same cell count, then body
+// Bear tables: a header row, a delimiter row with the same cell count, then body
 // rows; every row's trimmed text starts with `|` and ends with an unescaped `|`.
 
 type Tree = ReturnType<typeof bearParser.parse>;

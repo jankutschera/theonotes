@@ -1,7 +1,7 @@
 # Open-source notice for Theo Notes
 
 Status: clause text for the app terms (EULA) and the website, written for True Brew Birdie Ltd.
-It is not legal advice; have the lawyer check the final wording (LIC-R32).
+It is not legal advice; have the lawyer check the final wording.
 
 ## Clause to reference from the app terms
 
@@ -35,7 +35,7 @@ It is not legal advice; have the lawyer check the final wording (LIC-R32).
 
 None ships today. The only one the editor used to reach, elkjs (EPL-2.0, through Mermaid's
 optional ELK layout), was removed from the bundle so that the project can be licensed
-GPL-3.0-only (REN2-R10 in `docs/decisions.md`). A new EPL or MPL component needs a ruling and,
+GPL-3.0-only ( in `docs/decisions.md`). A new EPL or MPL component needs a ruling and,
 for each, a source link in the Acknowledgements entry (the generator requires it).
 
 ## Open items

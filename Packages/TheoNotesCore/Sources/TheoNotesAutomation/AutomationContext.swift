@@ -12,14 +12,14 @@ public struct AutomationContext: Sendable {
     public var environment: [String: String]
     /// Fetches the URL of `attachments add-url`; tests put a stub here.
     public var fetcher: any URLFetcher
-    /// The largest attachment `attachments add` and `add-url` take (ruling M5-R6).
+    /// The largest attachment `attachments add` and `add-url` take.
     public var maxAttachmentBytes: Int
     /// The library used when no `--data-dir` is given. Tests point it at a throw-away folder so a
     /// command never reaches the real library or the real app.
     public var production: AppPaths
-    /// The user's home folder, where a long data dir's socket lives (ruling M5-R16).
+    /// The user's home folder, where a long data dir's socket lives.
     public var home: URL
-    /// Starts the app by opening a `theonotes://` URL (ruling M5-R17); tests put a spy here.
+    /// Starts the app by opening a `theonotes://` URL; tests put a spy here.
     public var launcher: @Sendable (URL) throws -> Void
 
     public init(

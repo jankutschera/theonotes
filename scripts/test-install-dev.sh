@@ -5,7 +5,7 @@
 # Dry-run test of scripts/install-dev.sh: a fake HOME, a stub lsregister and stub pgrep/ps/kill, so
 # nothing real is installed, registered or stopped. Fix round 1: with no other registered
 # Baerchen.app (an empty `grep` result) the script must still register "Theo Notes.app".
-# FOC-R364: only a production-identity bundle is installed, and only the installed copy is stopped.
+# Only a production-identity bundle is installed, and only the installed copy is stopped.
 set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 work="$(mktemp -d "${TMPDIR:-/tmp}/theo-install-test.XXXXXX")"
@@ -24,7 +24,7 @@ make_bundle() { # <app dir> [<bundle id>]
 mkdir -p "$work/bin" "$work/home/Desktop"
 make_bundle "$work/home/Applications/Baerchen.app" com.truebrewbirdie.baerchen
 echo old > "$work/home/Applications/Baerchen.app/Contents/marker"
-# The safety zip of the cutover day (REN2-R63): must survive every run, untouched and unmentioned.
+# The safety zip of the cutover day: must survive every run, untouched and unmentioned.
 echo "old app zip" > "$work/home/Desktop/Theo Notes OLD.zip"
 zip_sum="$(shasum "$work/home/Desktop/Theo Notes OLD.zip" | cut -d' ' -f1)"
 make_bundle "$work/build/Theo Notes.app" com.truebrewbirdie.theonotes
@@ -97,7 +97,7 @@ grep -q "^kill 111" "$work/calls" || fail "the installed app was not stopped"
 grep -q "^kill 333" "$work/calls" || fail "the old copy was not stopped"
 if grep -q "^kill 222" "$work/calls"; then fail "stopped a process outside the installed copies (a dev build)"; fi
 if grep -q "^pkill" "$work/calls"; then fail "used pkill (by name)"; fi
-# REN2-R72: the running copy is looked up under every executable name: the new ones and `Baerchen` of 1.1 and earlier.
+# The running copy is looked up under every executable name: the new ones and `Baerchen` of 1.1 and earlier.
 for name in "Theo Notes" "Theo Notes Dev" Baerchen; do
   grep -qx "pgrep -x $name" "$work/calls" || fail "stop-app.sh did not look for '$name'"
 done
@@ -105,7 +105,7 @@ done
 
 # 2. Another copy is registered: it is unregistered, ours is registered last.
 make_bundle "$work/home/Applications/Baerchen.app" com.truebrewbirdie.baerchen
-# Registered records, found by BUNDLE ID whatever the file is called (REN2-R66): a production copy elsewhere, the old app under
+# Registered records, found by BUNDLE ID whatever the file is called: a production copy elsewhere, the old app under
 # other names (a saved copy "Theo Notes OLD.app", one whose file is gone), and records that must survive: dev builds of both
 # identities, a lookalike share bundle, an unrelated app, and an appex.
 make_bundle "$work/other/Baerchen.app" com.truebrewbirdie.theonotes
@@ -140,7 +140,7 @@ if grep -q "lsregister -u $work/home/Applications/Theo Notes.app" "$work/calls";
 DUMP_FILE="" run
 grep -q "lsregister -f " "$work/calls" || fail "not registered with an empty dump"
 
-# 4. A dev-identity build is refused, whatever else is true (FOC-R364).
+# 4. A dev-identity build is refused, whatever else is true.
 make_bundle "$work/home/Applications/Baerchen.app" com.truebrewbirdie.baerchen
 echo old > "$work/home/Applications/Baerchen.app/Contents/marker"
 rm -rf "$work/home/Applications/Theo Notes.app"
@@ -159,7 +159,7 @@ mkdir -p "$work/home/Applications"
 rm -rf "$work/home/Applications/Theo Notes.app"
 make_bundle "$work/home/Applications/Theo Notes.app" com.truebrewbirdie.baerchen
 echo profile > "$work/home/Applications/Theo Notes.app/Contents/embedded.provisionprofile"
-# REN2-R67: with the OLD app installed the install is gated by cutover-safety.sh preflight (profile valid > 24 h, verified zip of the
+# With the OLD app installed the install is gated by cutover-safety.sh preflight (profile valid > 24 h, verified zip of the
 # old app) and, in a terminal, by typing INSTALL. `security` is a stub that prints the profile's expiry date.
 printf '#!/bin/sh\ncat <<PLIST\n<?xml version="1.0" encoding="UTF-8"?>\n<plist version="1.0"><dict><key>ExpirationDate</key><date>%s</date></dict></plist>\nPLIST\n' "2099-01-01T00:00:00Z" > "$work/security"
 chmod +x "$work/security"
@@ -195,7 +195,7 @@ grep -q "lsregister -u $work/home/Applications/Theo Notes.app" "$work/calls" || 
 [ "$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$work/home/Applications/Theo Notes.app/Contents/Info.plist")" = com.truebrewbirdie.theonotes ] || fail "the old app was not replaced by the new one"
 [ "$(tail -1 "$work/calls")" = "lsregister -f $work/home/Applications/Theo Notes.app" ] || fail "registration is not the last step (old destination)"
 
-# 4c. REN2-R66: a bundle at the destination that is NOT a production id is never deleted: the install stops before anything is
+# 4c. a bundle at the destination that is NOT a production id is never deleted: the install stops before anything is
 #     stopped, unregistered or removed. A pre-rename Baerchen.app of another id is left alone, the install goes on.
 rm -rf "$work/home/Applications/Theo Notes.app"
 make_bundle "$work/home/Applications/Theo Notes.app" com.example.somethingelse

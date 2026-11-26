@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-// Code highlighting for the static export (M8-R5): the language the editor would pick for the
+// Code highlighting for the static export: the language the editor would pick for the
 // info string (codeblocks.ts `languageFor`), parsed on its own and coloured with Lezer's
 // `classHighlighter` (`tok-*` classes; the export page colours them with the theme's
 // `--bc-color-code-*` tokens). Unknown languages and blocks over MAX_HIGHLIGHT_CHARS stay plain.

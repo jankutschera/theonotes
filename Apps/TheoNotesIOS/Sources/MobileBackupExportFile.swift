@@ -4,7 +4,7 @@
 import TheoNotesCore
 import Foundation
 
-/// REN2-R37, REN2-R50 (amended in fix round 1): an export the person chooses is a `.theonotes-backup` (the exported backup type
+/// An export the person chooses is a `.theonotes-backup` (the exported backup type
 /// declared in Info.plist). The copies the app keeps itself (rolling, restore safety, daily
 /// snapshots in `backup_catalog`) keep the legacy `baerchen-<id>.baerchen-backup` name, so an older build after a rollback still
 /// reads its catalogue; both restore (the restore picker takes any file and the archive format is the same).

@@ -31,7 +31,7 @@ import Testing
         #expect(ReminderSheetModel.inOneHourTitle == "In 1 Hour")
     }
 
-    /// FOC-R365: the quick button for 09:00 says which day it means, in the locale's time format.
+    /// The quick button for 09:00 says which day it means, in the locale's time format.
     @Test func theNineButtonNamesTheDay() {
         func berlinTime(_ day: Int, _ hour: Int, _ minute: Int = 0) -> Date {
             gregorian("Europe/Berlin").date(from: DateComponents(year: 2026, month: 10, day: day, hour: hour, minute: minute))!
@@ -58,7 +58,7 @@ import Testing
         #expect(model.nineTitle == "Tomorrow 09:00")
     }
 
-    /// FOC-R369: an open sheet crosses 09:00. The label and the click are computed from the same target
+    /// An open sheet crosses 09:00. The label and the click are computed from the same target
     /// date, so they never name different days, and the view re-reads the clock while it is open.
     @Test func theLabelAndTheClickAgreeAcrossNine() {
         let calendar = gregorian("Europe/Berlin")
@@ -87,7 +87,7 @@ import Testing
         #expect(sheet.contains("ReminderNineButton(model: model)"))
     }
 
-    /// FOC-R366: "In 5 Minutes" lives in the sheet only; the banner keeps its two snooze actions
+    /// "In 5 Minutes" lives in the sheet only; the banner keeps its two snooze actions
     /// (a pair shared with the iPhone through `NotificationLedger`), and its "At 9:00" still means the next 9:00.
     @Test func theBannerKeepsItsTwoActions() {
         let category = MacNotificationCategory.reminder(locale: Locale(identifier: "de_DE"), calendar: gregorian("Europe/Berlin"))

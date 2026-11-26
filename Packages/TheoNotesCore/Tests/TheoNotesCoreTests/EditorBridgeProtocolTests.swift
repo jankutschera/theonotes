@@ -337,7 +337,7 @@ import Testing
         #expect(CompletionKind.allCases.map(\.rawValue) == ["tag", "note", "heading", "emoji"])
     }
 
-    /// M7-R4: Swift never sends an unsanitized theme map. The encoding is the one place every
+    /// Swift never sends an unsanitized theme map. The encoding is the one place every
     /// `setSettings` passes through, so it holds for any caller.
     @Test func testSetSettingsNeverSendsAnUnsanitizedThemeMap() throws {
         let dirty = [

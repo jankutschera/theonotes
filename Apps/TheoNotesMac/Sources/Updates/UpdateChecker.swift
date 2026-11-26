@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// The update check (REL-R52 … REL-R59): reads one static file from our own site and compares the version in it
+/// The update check: reads one static file from our own site and compares the version in it
 /// with the installed one. It runs only when the person asks for it; nothing here schedules, downloads or
 /// installs anything. Foundation only, so the request code can be compiled and inspected on its own.
 
@@ -68,7 +68,7 @@ private struct LatestRelease: Decodable {
 }
 
 struct UpdateChecker: Sendable {
-    /// The one address the app asks (REL-R53). A static file on our own site.
+    /// The one address the app asks. A static file on our own site.
     static let endpoint = URL(string: "https://theonotes.app/latest.json")!
     static let siteHost = "theonotes.app"
     static let maxNotesLength = 400
@@ -98,13 +98,13 @@ struct UpdateChecker: Sendable {
         else { return .couldNotCheck(.unreadableAnswer) }
 
         // Newer only. The same version, or an older one named by a stale or tampered file, is "up to date":
-        // the app never offers a downgrade (REL-R55).
+        // the app never offers a downgrade.
         guard latest > installed else { return .upToDate(installed: installedText) }
         return .updateAvailable(
             version: release.version, installed: installedText, downloadPage: page, notes: Self.cleanNotes(release.notes))
     }
 
-    /// Only an https page on our own site is ever offered to the person (REL-R55): no other scheme, host,
+    /// Only an https page on our own site is ever offered to the person: no other scheme, host,
     /// port or login part, so a damaged file cannot send anyone elsewhere.
     static func downloadPage(_ text: String) -> URL? {
         guard let url = URL(string: text), let components = URLComponents(url: url, resolvingAgainstBaseURL: false),

@@ -283,7 +283,7 @@ import Testing
         #expect(metadata.tags == ["travel"])
     }
 
-    // MARK: - Generic HTML (M8 Task 7, M8-R55)
+    // MARK: - Generic HTML (M8 Task 7)
 
     private func generic(_ html: String) -> String {
         HTMLToMarkdown.convert(html, makesTitle: false, keepsRelativeImages: true).markdown
@@ -350,7 +350,7 @@ import Testing
         #expect(generic(#"<pre><code class="language-a`b">x</code></pre>"#) == "```\nx\n```")
     }
 
-    // MARK: Fix round 1 (M8-R55 extended)
+    // MARK: Fix round 1 ( extended)
 
     @Test(arguments: [true, false])
     func deeplyNestedElementsAreFlattenedNotCrashed(generic: Bool) {

@@ -183,7 +183,7 @@ private func schemaProblems(_ value: JSONValue, _ schema: JSONValue, path: Strin
         let before = try f.lib.text(id)
         #expect(before.contains("pic.png"))
 
-        // The schema requires baseHash (ruling M5-R29's wording).
+        // The schema requires baseHash.
         let missing = try await f.fail("overwrite_note", ###"{"id":\###(q),"content":"x"}"###)
         #expect(missing.code == .usage && missing.message == "missing required field: baseHash")
 
@@ -240,7 +240,7 @@ private func schemaProblems(_ value: JSONValue, _ schema: JSONValue, path: Strin
         let miss = try await f.fail("edit_note", ###"{"id":\###(q),"edits":[{"find":"F","replace":"G"},{"find":"nothing here","delete":true}]}"###)
         #expect(miss.code != .internal && miss.code != .busy)
         #expect(try f.lib.text(id) == text)
-        // Each edit has exactly one action; an empty list is a usage error (ruling M5-R93).
+        // Each edit has exactly one action; an empty list is a usage error.
         let none = try await f.fail("edit_note", ###"{"id":\###(q),"edits":[]}"###)
         #expect(none.code == .usage && none.message == "At least one edit is required")
         let two = try await f.fail("edit_note", ###"{"id":\###(q),"edits":[{"find":"a","replace":"b","delete":true}]}"###)
@@ -279,7 +279,7 @@ private func schemaProblems(_ value: JSONValue, _ schema: JSONValue, path: Strin
             == "Invalid position: middle (use beginning or end)")
     }
 
-    // MARK: capture_thought (FOC-R14)
+    // MARK: capture_thought
 
     private static func noteCount(_ f: ToolFixture) throws -> Int {
         try f.lib.library.database.pool.read { try Int.fetchOne($0, sql: "SELECT COUNT(*) FROM note") ?? 0 }
@@ -311,7 +311,7 @@ private func schemaProblems(_ value: JSONValue, _ schema: JSONValue, path: Strin
         #expect(stub.urls.isEmpty)
     }
 
-    /// FOC-R170: "exactly as given" means no trimming, titling or rewriting of the words. The one change is
+    /// "exactly as given" means no trimming, titling or rewriting of the words. The one change is
     /// the store's own, the same for every note: CRLF and a lone CR become LF.
     @Test func captureThoughtNormalisesLineEndingsAndNothingElse() async throws {
         let f = try ToolFixture([])
@@ -477,7 +477,7 @@ private func schemaProblems(_ value: JSONValue, _ schema: JSONValue, path: Strin
         #expect(try await f.ok("search_in_note", ###"{"id":\###(q),"string":"foo","limit":0}"###) == .object([("matches", .array([]))]))
         #expect(try await f.ok("search_in_note", ###"{"id":\###(q),"string":""}"###) == .object([("matches", .array([]))]))
         #expect(try await f.ok("search_in_note", ###"{"id":\###(q),"string":"foo","address":\###(firstArg)}"###)["matches"]?.array?.isEmpty == true)
-        // A hit above the first heading lies in the lead, addressed `preamble` (M5-R233).
+        // A hit above the first heading lies in the lead, addressed `preamble`.
         let g = try ToolFixture([TestNote(text: "lead foo\n# H\nx")])
         let early = try await g.ok("search_in_note", ###"{"id":\###(quoted(try g.lib.firstId())),"string":"foo"}"###)
         #expect(early["matches"]?.array?.first?["section"]?["address"]?.string == "preamble")
@@ -651,7 +651,7 @@ private func schemaProblems(_ value: JSONValue, _ schema: JSONValue, path: Strin
         #expect(try await f.fail("delete_attachment", ###"{"id":\###(q)}"###).message == "missing required field: filename")
     }
 
-    // MARK: Library handling (rulings M5-R45, M5-R72)
+    // MARK: Library handling
 
     @Test func argumentsAreCheckedBeforeTheLibraryOpens() async throws {
         final class Counter: @unchecked Sendable { var opens = 0 }

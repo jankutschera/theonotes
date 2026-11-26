@@ -4,7 +4,7 @@
 import Foundation
 import GRDB
 
-/// What the capture-and-next-up state does when a note becomes locked (FOC-R10, FOC-R11, FOC-R17).
+/// What the capture-and-next-up state does when a note becomes locked.
 /// Every function runs inside the transaction that locks (or unlocks) the note, so a failure later
 /// in that transaction leaves the reminders, hides and ledger exactly as they were.
 ///
@@ -18,13 +18,13 @@ enum FocusPurge {
     }
 
     /// The note arrived locked through sync. The vault may not be open while sync applies, so its
-    /// plaintext snapshots cannot be sealed: they are deleted (FOC-R11). Sealed ones stay.
+    /// plaintext snapshots cannot be sealed: they are deleted. Sealed ones stay.
     static func purgeRemoteLock(noteId: String, in db: Database) throws {
         try purgeLock(noteId: noteId, in: db)
         try db.execute(sql: "DELETE FROM note_snapshot WHERE noteId = ? AND text IS NOT NULL", arguments: [noteId])
     }
 
-    /// The note arrived unlocked through sync after being locked here (FOC-R11). Sealed snapshots
+    /// The note arrived unlocked through sync after being locked here. Sealed snapshots
     /// belong to locked notes only, and the vault may not be open while sync applies, so they are
     /// deleted instead of opened.
     static func purgeRemoteUnlock(noteId: String, in db: Database) throws {
@@ -33,7 +33,7 @@ enum FocusPurge {
 
     private static func purgeLock(noteId: String, in db: Database) throws {
         // A voice capture into this note stops before the lock commits; a failed cleanup aborts the
-        // lock (FOC-R199).
+        // lock.
         try CaptureLockGuard.noteWillLock(noteId)
         // The ledger keeps its identifiers (cold launch removes notifications by id) but no longer
         // knows what the notification said.

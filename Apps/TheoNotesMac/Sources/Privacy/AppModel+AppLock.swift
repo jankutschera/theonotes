@@ -4,7 +4,7 @@
 import AppKit
 
 extension AppModel {
-    /// App Lock is about to engage (`isLocked` is still false), M9M-R64/R76/R78. In this order: work
+    /// App Lock is about to engage (`isLocked` is still false),. In this order: work
     /// that was accepted but not yet run is dropped, running copies stop, panels and sheets close,
     /// every window gets a neutral title and a neutral Dock image. The windows themselves swap to the
     /// lock screen through `AppLockGate` once the state is published.
@@ -24,7 +24,7 @@ extension AppModel {
     }
 
     /// Requests that waited for a window or for the app to finish starting do not survive the lock
-    /// (M9M-R75): an open accepted before it would otherwise show a note right after the unlock.
+    ///: an open accepted before it would otherwise show a note right after the unlock.
     func discardDeferredWork() {
         pendingMainActions = []
         pendingNoteOpens = [:]

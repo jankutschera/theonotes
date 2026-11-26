@@ -191,7 +191,7 @@ test("ArrowDown while composing does not enter the block", async ({ page }) => {
 });
 
 test("ArrowDown on a folded heading whose section holds a block and a table does not unfold it or enter them", async ({ page }) => {
-  // M6 Task 7 (M6-R17/R18): the fold is CodeMirror's (`foldedRanges`), which block entry skips.
+  // M6 Task 7: the fold is CodeMirror's (`foldedRanges`), which block entry skips.
   // The rendered block sits right below the heading, where a move would otherwise enter it.
   const folded = ["# Section", "$$", "x^2", "$$", "| a | b |", "|---|---|", "| 1 | 2 |", "", "# Next", "end"].join("\n");
   const sectionEnd = folded.indexOf("| 1 | 2 |") + "| 1 | 2 |".length;

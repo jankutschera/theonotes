@@ -27,12 +27,12 @@ enum RenderError: Error, Equatable {
 /// Renders notes with the export page (`baerchen-asset://editor/export.html`, M8 Task 10) in one
 /// hidden `WKWebView` inside an offscreen borderless window, and turns the rendered page into a
 /// paginated PDF (WebKit's print operation saved to a file, backgrounds printed, then a PDFKit
-/// outline) or prints it (M8-R7).
+/// outline) or prints it.
 ///
 /// Calls run one at a time: the page shows one note, and a PDF or a print job is made from what
 /// it shows; a call keeps the turn until its job has ended. Every wait on WebKit is bounded
 /// (`Timeouts`) and ends when the calling task is cancelled; the page is then reloaded or stopped
-/// so the next call starts clean (M8-R61). If the web content process ends, the page is reloaded
+/// so the next call starts clean. If the web content process ends, the page is reloaded
 /// and the call in flight fails with `RenderError.pageCrashed`.
 @MainActor
 final class NoteRenderer: NSObject, WKNavigationDelegate {
@@ -168,7 +168,7 @@ final class NoteRenderer: NSObject, WKNavigationDelegate {
             }
             let document = Self.rebuilt(printedDocument)
             PDFOutline.add(result.headings, to: document)
-            // App Lock (M9M-R81): asked again right before the file is written.
+            // App Lock: asked again right before the file is written.
             guard mayProceed() else { throw RenderError.cancelled }
             guard document.write(to: url) else { throw RenderError.printFailed("The PDF could not be written") }
             return document.pageCount
@@ -179,11 +179,11 @@ final class NoteRenderer: NSObject, WKNavigationDelegate {
     /// renderer keeps the turn until the panel is done, so no other call can change the page under
     /// it, and has no time bound for it. Returns whether something was printed. There is no public
     /// way to get the print operation itself: one run after the turn ended could print another
-    /// note (M8-R64).
+    /// note.
     func print(_ request: RenderRequest, for window: NSWindow, mayProceed: @MainActor () -> Bool = { true }) async throws -> Bool {
         try await exclusively {
             _ = try await self.show(request)
-            // App Lock (M9M-R76): checked right before the print panel would open.
+            // App Lock: checked right before the print panel would open.
             guard mayProceed() else { throw RenderError.cancelled }
             let operation = self.webView.printOperation(with: NSPrintInfo.shared.copy() as? NSPrintInfo ?? NSPrintInfo())
             operation.jobTitle = request.title.isEmpty ? "Untitled" : request.title
@@ -309,7 +309,7 @@ final class NoteRenderer: NSObject, WKNavigationDelegate {
 
     /// The pages of `printed` moved into a new `PDFDocument`, with its attributes. PDFKit (macOS 27)
     /// writes no outline for a document it read from a file or data, only for one it built
-    /// (M8-R61). The moved pages keep their link annotations, but an in-document destination does
+    ///. The moved pages keep their link annotations, but an in-document destination does
     /// not reliably follow its page (observed: sometimes page 1 instead of 3), so each one is set
     /// again by page index.
     static func rebuilt(_ printed: PDFDocument) -> PDFDocument {
@@ -456,7 +456,7 @@ final class NoteRenderer: NSObject, WKNavigationDelegate {
 }
 
 extension AppearanceController {
-    /// The look of an exported or printed note (M8-R7): the theme with id `themeId`, or the
+    /// The look of an exported or printed note: the theme with id `themeId`, or the
     /// light-slot theme (Settings ▸ Appearance) when nil or unknown; the typography as Settings has it.
     func exportLook(themeId: String?) -> (theme: [String: String], appearance: EditorAppearance, typography: EditorTypography) {
         let theme = themeId.flatMap(ThemeCatalog.theme(id:))

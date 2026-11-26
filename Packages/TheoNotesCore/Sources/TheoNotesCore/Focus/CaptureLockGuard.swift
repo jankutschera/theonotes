@@ -8,7 +8,7 @@ import os
 private let captureGuardLogger = Logger(subsystem: "com.truebrewbirdie.baerchen", category: "capture")
 
 /// A capture that writes into a note while it records (a voice note) registers one of these, so
-/// that locking the note stops it before the lock commits (FOC-R199 and its addenda).
+/// that locking the note stops it before the lock commits.
 ///
 /// **Everything that changes a guard runs on the database writer**, the serial queue every lock
 /// transaction runs on:
@@ -110,7 +110,7 @@ public final class CaptureLockGuard: @unchecked Sendable {
     /// Runs `body` and returns its result, or returns nil without running it once the note was
     /// locked. A lock waits for a running `body`, so `body` must never write to the database (the
     /// lock holds the writer while it waits): use it for journal writes, not store writes.
-    /// `body` calls `markJournaled()` once its journal write was acknowledged (FOC-R301).
+    /// `body` calls `markJournaled` once its journal write was acknowledged.
     public func ifUnlocked<T>(_ body: () throws -> T) rethrows -> T? {
         gate.lock()
         defer { gate.unlock() }
@@ -154,7 +154,7 @@ public final class CaptureLockGuard: @unchecked Sendable {
     }
 
     /// The capture was dropped while it still recorded, and its engine has been cancelled
-    /// (FOC-R307). Removes the recording, and only the recording: text the capture journaled stays
+    ///. Removes the recording, and only the recording: text the capture journaled stays
     /// for the next launch. It runs the same stop as a lock, on the writer, so a lock that arrives
     /// meanwhile and this cleanup never overlap, and a lock that came first has already done it.
     /// On a failure the obligation is kept like `lockDetected` keeps it (marker, registered guard)

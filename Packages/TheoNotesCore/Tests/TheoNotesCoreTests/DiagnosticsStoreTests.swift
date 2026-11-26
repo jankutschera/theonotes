@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// REL-R40 … REL-R46: what is written for a crash or hang report, where, and how long it stays.
+/// What is written for a crash or hang report, where, and how long it stays.
 @Suite struct DiagnosticsStoreTests {
     /// A note's unique text. It must never appear in a file the store writes.
     static let canary = "CANARY-secret-diary-entry-7731 about my dentist"

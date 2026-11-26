@@ -305,12 +305,12 @@ const highlighter = ViewPlugin.fromClass(
 
 const theme = EditorView.baseTheme({
   ".cm-bc-searchMatch": { backgroundColor: "var(--bc-color-search-match)", borderRadius: "2px" },
-  // M7-R10: the current match also gets a ring in the accent (a non-colour cue; inset, so no layout shift).
+  // The current match also gets a ring in the accent (a non-colour cue; inset, so no layout shift).
   ".cm-bc-searchMatch-current": {
     backgroundColor: "var(--bc-color-search-match-current)",
     boxShadow: "inset 0 0 0 1.5px var(--bc-color-accent)",
   },
 });
 
-// The current match shows a rendered block's source (table grid, `$$` math, Mermaid), M6-R78.
+// The current match shows a rendered block's source (table grid, `$$` math, Mermaid),.
 export const searchHighlight: Extension = [highlightField, highlighter, theme, blockRevealers.of(currentMatch)];

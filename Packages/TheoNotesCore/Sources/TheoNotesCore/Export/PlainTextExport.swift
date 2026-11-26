@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// Plain-text export of a note (M8-R14): the Markdown without its markup.
+/// Plain-text export of a note: the Markdown without its markup.
 ///
 /// Removed: front matter, heading markers (`# `), code fence lines (the code stays verbatim),
 /// table delimiter rows (cell pipes become tabs) and attachment metadata comments. Every other

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# CK-R176 (CloudKit plan Task 16, REL-R13): writes UIBackgroundModes into the built iOS Info.plist from the build setting
+# Writes UIBackgroundModes into the built iOS Info.plist from the build setting
 # THEONOTES_IOS_BACKGROUND_MODES (space separated). An Info.plist file cannot list an entry only when a build setting says so, and
 # INFOPLIST_KEY_UIBackgroundModes is not one of the keys Xcode generates (measured), so the list is written here, before signing.
 # `remote-notification` is in the setting only where THEONOTES_ICLOUD_SYNC is YES (project.yml); MobileIdentityTests pins that.

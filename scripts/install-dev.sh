@@ -3,13 +3,13 @@
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
 # Install a built Theo Notes into ~/Applications and make it the only registered copy.
-# Only a PRODUCTION-identity build is installed (FOC-R364): `scripts/build.sh --production` makes one
-# (configuration Production, bundle id com.truebrewbirdie.theonotes since the B7 cutover, REN2-R57). A dev-identity
+# Only a PRODUCTION-identity build is installed: `scripts/build.sh --production` makes one
+# (configuration Production, bundle id com.truebrewbirdie.theonotes since the B7 cutover). A dev-identity
 # build (the Debug configuration that tests, agents and GUI checks use) and a build of the old identity
 # (com.truebrewbirdie.baerchen) are refused, so neither can replace Jan's app.
-# The Production build product is "Theo Notes.app" (REN2-R72), the name of the installed copy.
+# The Production build product is "Theo Notes.app", the name of the installed copy.
 #
-# Safety rules (REN2-R66): nothing is deleted before its identity is known.
+# Safety rules: nothing is deleted before its identity is known.
 #   - ~/Applications/Theo Notes.app is replaced only when its bundle id is one of the two production ids (new or old);
 #     any other bundle there stops the install before anything is stopped or removed.
 #   - ~/Applications/Baerchen.app (the pre-rename name) is removed only when its bundle id is one of the two production
@@ -60,7 +60,7 @@ if [ -e "$old" ]; then
   else echo "note: leaving $old alone: its bundle id is '$(bundle_id_of "$old")', not a production id" >&2; fi
 fi
 
-# The gate before anything is touched (REN2-R67). When the installed app is the OLD app (the real cutover), the old app must be able
+# The gate before anything is touched. When the installed app is the OLD app (the real cutover), the old app must be able
 # to serve as the way back: `cutover-safety.sh preflight` refuses unless its profile stays valid for 24 more hours and the zip of it
 # verifies. Then, in a terminal, Jan has to type INSTALL; up to this point nothing has been stopped, removed, replaced or migrated.
 if [ "$installed_id" = "$old_production_id" ]; then

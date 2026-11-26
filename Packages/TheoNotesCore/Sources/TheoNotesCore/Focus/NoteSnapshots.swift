@@ -5,7 +5,7 @@ import CryptoKit
 import Foundation
 import GRDB
 
-/// One entry of a note's history (FOC-R11). Device-local: not in the note, the sync payload or
+/// One entry of a note's history. Device-local: not in the note, the sync payload or
 /// any export.
 public struct NoteSnapshot: Equatable, Sendable {
     public let id: String
@@ -30,7 +30,7 @@ public enum SnapshotError: Error, Equatable {
     case snapshotNotFound(id: String)
 }
 
-/// Which snapshots of a note are kept (FOC-R11): the newest `maxCount` that are at most `maxAge`
+/// Which snapshots of a note are kept: the newest `maxCount` that are at most `maxAge`
 /// old, plus the oldest one that is at most `maxAge` old (the floor). Anything older goes.
 public enum SnapshotRetention {
     public static let maxCount = 20
@@ -179,8 +179,8 @@ enum NoteSnapshots {
         var isEmpty: Bool { plaintextOfLocked.isEmpty && sealedOfUnlocked.isEmpty }
     }
 
-    /// Library open (FOC-R305): deletes exactly the rows that break "sealed if and only if locked"
-    /// and so make every backup fail (`BackupError.inconsistentHistory`, FOC-R277). Idempotent;
+    /// Library open: deletes exactly the rows that break "sealed if and only if locked"
+    /// and so make every backup fail (`BackupError.inconsistentHistory`). Idempotent;
     /// a consistent library is not written. One transaction; the caller logs afterwards.
     static func repairInconsistent(in db: Database) throws -> Repair {
         func counts(_ condition: String) throws -> [String: Int] {
@@ -226,7 +226,7 @@ enum NoteSnapshots {
 }
 
 extension NoteStore: SnapshotWriting {
-    /// A plaintext snapshot (FOC-R11). Refuses a locked note: those go through `LockedNoteAccess`.
+    /// A plaintext snapshot. Refuses a locked note: those go through `LockedNoteAccess`.
     /// Writes no note row and posts no change notification.
     public func takeSnapshot(noteId: String, text: String, now: Date) throws -> NoteSnapshot? {
         try db.pool.write { db in

@@ -9,7 +9,7 @@ import GRDB
 /// Synthetic Apple Notes exports built at run time from our own text: Markdown files with
 /// attachment files next to them. Apple documents only that File > Export as > Markdown writes
 /// Markdown files; where the attachments go and how a note links them is not documented, so the
-/// importer reads any standard relative link and these trees cover the usual spellings (ANX-R3).
+/// importer reads any standard relative link and these trees cover the usual spellings.
 @Suite struct AppleNotesExportImporterTests {
     let tmp: TempPaths
     let scratch: Scratch
@@ -77,7 +77,7 @@ import GRDB
         #expect(process.terminationStatus == 0)
     }
 
-    // MARK: - Real macOS 26 export shape (ANX-R30 ... ANX-R40)
+    // MARK: - Real macOS 26 export shape
 
     private let uuidA = "80142F90-E80B-46E7-839C-6010AE085E23"
     private let uuidB = "3BD0C4E2-012F-4DAF-80C2-08CA80FBA445"

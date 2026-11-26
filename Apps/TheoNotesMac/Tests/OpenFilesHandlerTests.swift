@@ -9,7 +9,7 @@ import Testing
 import UniformTypeIdentifiers
 @testable import TheoNotes
 
-/// FIX-R1 … FIX-R6: files the Finder opens (Open With, Dock drop, `open -a`) become new notes.
+/// Files the Finder opens (Open With, Dock drop, `open -a`) become new notes.
 @MainActor
 @Suite struct OpenFilesHandlerTests {
     /// A library in a temp folder, a folder of files to open, and what the handler showed and reported.

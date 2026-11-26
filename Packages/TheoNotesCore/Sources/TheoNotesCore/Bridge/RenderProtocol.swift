@@ -8,7 +8,7 @@ import Foundation
 /// `Fixtures/bridge/render-request.json`.
 
 /// How the page renders: a standalone HTML document (HTML export, PDF, print) or an inline-styled
-/// body fragment (RTF, Copy as Rich Text), M8-R5 / M8-R6.
+/// body fragment (RTF, Copy as Rich Text),.
 public enum RenderMode: String, Codable, Equatable, Sendable {
     case document
     case richText

@@ -38,7 +38,7 @@ import TheoNotesCore
         #expect(try append("X", .end, "# T\nbody\n#a #b\n[^n]: one\n\n#c") == "# T\nbody\nX\n#a #b\n[^n]: one\n\n#c")
     }
 
-    /// The tag-placement setting decides only for a note with no body (ruling M5-R77).
+    /// The tag-placement setting decides only for a note with no body.
     @Test func tagPositionDecidesForNotesWithoutBody() {
         func run(_ position: AppendPosition, _ text: String, _ tags: TagPosition) -> String {
             AppendEngine.apply("X", position: position, target: nil, to: text, tagPosition: tags).text

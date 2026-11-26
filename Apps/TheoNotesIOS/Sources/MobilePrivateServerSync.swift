@@ -4,7 +4,7 @@
 import TheoNotesCore
 import Foundation
 
-/// REL-R5, REL-R6, REL-R9: the private-server sync (Jan's builds) exists only in a build made with `THEONOTES_SYNC_SETUP = YES` (the
+/// The private-server sync (Jan's builds) exists only in a build made with `THEONOTES_SYNC_SETUP = YES` (the
 /// Info.plist key `THEONOTES_SyncSetupAvailable`). In any other build the Settings page is not linked, and nothing of it is made:
 /// no controller, no scheduler, no background session, no background refresh. Every caller asks here instead of reading
 /// `library.sync` (which builds the controller on first use).

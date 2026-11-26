@@ -413,7 +413,7 @@ public struct EditorSettings: Equatable, Sendable {
     public var typography: EditorTypography?
     /// Theme tokens: `--bc-<schema editor token>` CSS variable → value (`[:]`: the default theme).
     /// Encoding passes the map through `ThemeSchema.sanitize(variables:)`, so no other variable and
-    /// no value that is not `#rrggbb[aa]` ever reaches the editor (M7-R4).
+    /// no value that is not `#rrggbb[aa]` ever reaches the editor.
     public var theme: [String: String]?
     /// The editor's dark flag and `color-scheme` (default light; follows the resolved theme's appearance).
     public var appearance: EditorAppearance?

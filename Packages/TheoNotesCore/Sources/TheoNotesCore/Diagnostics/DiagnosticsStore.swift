@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// Where diagnostic reports live (REL-R41): a folder next to the library in Application Support, one per
+/// Where diagnostic reports live: a folder next to the library in Application Support, one per
 /// identity, never inside the library folder. A library can be moved, copied, backed up or exported on its own;
 /// the reports belong to the app on this device, not to the notes.
 public enum DiagnosticsLocation {
@@ -18,7 +18,7 @@ public enum DiagnosticsLocation {
     }
 }
 
-/// How much the folder may hold (REL-R43). Defaults: the last 20 reports, nothing older than 90 days, 2 MiB in
+/// How much the folder may hold. Defaults: the last 20 reports, nothing older than 90 days, 2 MiB in
 /// total, 256 KiB per file.
 public struct DiagnosticsRetention: Equatable, Sendable {
     public var maxFiles: Int
@@ -175,7 +175,7 @@ public struct DiagnosticsStore: Sendable {
 
 // MARK: - The text the user copies
 
-/// A plain-text summary for pasting into an email (REL-R45). Built only from stored, scrubbed records.
+/// A plain-text summary for pasting into an email. Built only from stored, scrubbed records.
 public enum DiagnosticsSummary {
     public static func text(appName: String, appVersion: String, osVersion: String, entries: [DiagnosticsStore.Entry]) -> String {
         var lines = [

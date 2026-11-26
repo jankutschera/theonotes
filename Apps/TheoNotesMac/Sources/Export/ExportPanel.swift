@@ -5,7 +5,7 @@ import AppKit
 import TheoNotesCore
 
 /// The folder panel of an export: an open panel for directories with an accessory view for the
-/// format and its options (M8-R1: "Convert note links to HTML links" and "Embed images" for HTML
+/// format and its options ("Convert note links to HTML links" and "Embed images" for HTML
 /// only, a theme for PDF only; A9: "Include attachments" for Markdown, TextBundle and HTML, "Put
 /// images inside the file" for Markdown only).
 @MainActor

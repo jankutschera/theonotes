@@ -20,13 +20,13 @@ enum CopyAsFormat: CaseIterable, Identifiable {
         }
     }
 
-    /// ⇧⌘C copies as Rich Text (A10, MAC11-R17).
+    /// ⇧⌘C copies as Rich Text (A10).
     var shortcut: KeyboardShortcut? {
         self == .richText ? KeyboardShortcut("c", modifiers: [.command, .shift]) : nil
     }
 }
 
-/// What Copy As copies (M8-R8): the editor's selection, or whole notes in the order given.
+/// What Copy As copies: the editor's selection, or whole notes in the order given.
 enum CopyTarget: Equatable {
     case selection(noteId: String, text: String)
     case notes([String])
@@ -35,14 +35,14 @@ enum CopyTarget: Equatable {
 /// Edit ▸ Copy As ▸ Markdown / Plain Text / HTML / Rich Text and the note list's and the editor's
 /// Copy As submenus (M8 Task 14, A10).
 ///
-/// Pasteboard types (M8-R8): Markdown writes `.string` (the text as stored). Plain Text writes `.string`
+/// Pasteboard types: Markdown writes `.string` (the text as stored). Plain Text writes `.string`
 /// (the text without its markup, as the Plain Text export). HTML writes `.string`
 /// (the HTML source) and `.html`. Rich Text writes `.rtf`, `.html` and `.string` (plain text,
-/// M8-R14). Notes are joined with a blank line (Markdown, plain text) or `<hr>` (HTML). "Keep tags
+///). Notes are joined with a blank line (Markdown, plain text) or `<hr>` (HTML). "Keep tags
 /// when exporting" (Settings, the Keep Tags item of the submenu) applies, read when a run starts
-/// (MAC11-R17; before A10 it did not apply, and it is on by default). A locked note is skipped and counted (`notifyLocked` gets the
+///. A locked note is skipped and counted (`notifyLocked` gets the
 /// count); when nothing is left, or anything else fails, nothing is written and the app beeps
-/// (M8-R75).
+///.
 @MainActor
 struct CopyAs {
     private let environment: AppEnvironment
@@ -90,13 +90,13 @@ struct CopyAs {
     }
 
     /// Bumped by every run: a run whose number is no longer the latest, or whose task was cancelled,
-    /// has been superseded and neither writes the pasteboard, beeps nor reports (M8-R75).
+    /// has been superseded and neither writes the pasteboard, beeps nor reports.
     private static var latestRun = 0
 
     func perform(_ format: CopyAsFormat, target: CopyTarget) async -> Outcome {
         Self.latestRun += 1
         let mine = Self.latestRun
-        // App Lock (M9M-R76): a run that started before the lock engaged, or while it is engaged, writes nothing.
+        // App Lock: a run that started before the lock engaged, or while it is engaged, writes nothing.
         let appLock = environment.appLock
         let generation = appLock.generation
         func superseded() -> Bool { Self.latestRun != mine || Task.isCancelled || !appLock.isCurrent(generation) }
@@ -225,7 +225,7 @@ struct CopyAs {
     }
 }
 
-// MARK: - Resolving the target (M8-R8)
+// MARK: - Resolving the target
 
 extension CopyAs {
     /// The selection while the editor is focused and the selection is non-empty (UTF-16 offsets

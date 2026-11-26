@@ -314,7 +314,7 @@ enum LiveFixtures {
         }
     }
 
-    /// Item L8: CK-R46. 450 records in one batch: the engine's documented limit is 250 per request; the gateway halves and sends again.
+    /// Item L8. 450 records in one batch: the engine's documented limit is 250 per request; the gateway halves and sends again.
     @Test func anOversizedBatchIsHalved() async throws {
         try await withHarness("L8.limitExceeded", batchItemLimit: 450) { harness in
             let (gateway, store, _) = try await CloudKitGatewayContract.ready(harness)
@@ -340,7 +340,7 @@ enum LiveFixtures {
         }
     }
 
-    /// Item L11 (CK-R165): CloudKit's own system-field archive differs in bytes between a save result, a fetch by name (with and without
+    /// Item L11: CloudKit's own system-field archive differs in bytes between a save result, a fetch by name (with and without
     /// `desiredKeys`), an engine fetch and a conflict record, although the change tag is the same (measured: 2395, 2381, 1928 bytes). The
     /// core compares these values byte for byte, so the gateway hands out one value per version.
     @Test func oneVersionHasOneSystemFieldsValueOnEveryPath() async throws {
@@ -389,7 +389,7 @@ enum LiveFixtures {
         }
     }
 
-    /// Item L15 (CK-R169): `prepare()` makes sure the private database has a subscription: after all of them are deleted a prepare
+    /// Item L15: `prepare` makes sure the private database has a subscription: after all of them are deleted a prepare
     /// creates one, and another prepare (same gateway, or a new one) does not add a second.
     @Test func prepareEnsuresTheDatabaseSubscription() async throws {
         try await withHarness("L15.subscription") { harness in

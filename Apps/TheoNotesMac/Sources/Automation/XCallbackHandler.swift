@@ -7,7 +7,7 @@ import TheoNotesCore
 import Foundation
 
 /// URLs that arrive before there is an `XCallbackHandler` (the app is still opening its library) wait
-/// here and run, in order, once it is set (ruling M5-R217).
+/// here and run, in order, once it is set.
 @MainActor
 final class XCallbackInbox {
     static let maxPending = 16
@@ -34,7 +34,7 @@ final class XCallbackInbox {
 /// `baerchen://x-callback-url/<action>`: parses the URL, runs it through `XCallbackExecutor` (the
 /// same service the CLI and MCP use), shows what the executor asks for and opens the callback. The
 /// outcome is used as the executor made it: `detailedErrors` is never changed here, so `x-error`
-/// says no more than the executor allows (M5-R168); only the app's own log sees the code. Never logs
+/// says no more than the executor allows; only the app's own log sees the code. Never logs
 /// the URL or any note text.
 @MainActor
 final class XCallbackHandler {
@@ -54,7 +54,7 @@ final class XCallbackHandler {
     }
 
     func handle(_ url: URL) {
-        // App Lock (M9M-R63): a locked app reads nothing, changes nothing and shows nothing. The caller
+        // App Lock: a locked app reads nothing, changes nothing and shows nothing. The caller
         // gets `x-error` (code 6) with a fixed text and nothing from the library.
         guard !app.isLocked else { return refuseWhileLocked(url) }
         let request: XCallbackRequest
@@ -77,7 +77,7 @@ final class XCallbackHandler {
         }
         if stopsBeforeAnswerForTesting { return }
         callBack(outcome, for: request)
-        // The answer is handed back: a later identical request is a new one (REL-R93).
+        // The answer is handed back: a later identical request is a new one.
         if outcome.failure == nil, let receipt = outcome.receipt {
             XCallbackReceipts(database: app.environment.database).settle(receipt, now: context.now())
         }
@@ -94,7 +94,7 @@ final class XCallbackHandler {
     }
 
     private func callBack(_ outcome: XCallbackOutcome, for request: XCallbackRequest) {
-        // The scheme rule (M5-R160) lives in `callbackURL(for:)`: nothing else opens a callback.
+        // The scheme rule lives in `callbackURL(for)`: nothing else opens a callback.
         if let callback = outcome.callbackURL(for: request) { openURL(callback) }
     }
 
@@ -111,7 +111,7 @@ final class XCallbackHandler {
     }
 
     /// The `x-error` URL of a request `XCallbackRequest.parse` refused: the first `x-error` with a
-    /// value, so an empty one in front does not hide a real one (ruling M5-R230).
+    /// value, so an empty one in front does not hide a real one.
     static func errorTarget(in url: URL) -> URL? {
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
         guard let raw = items.first(where: { $0.name == "x-error" && !($0.value ?? "").isEmpty })?.value

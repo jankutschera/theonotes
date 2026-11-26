@@ -134,7 +134,7 @@ import Testing
 
     private static let t0 = Date(timeIntervalSince1970: 1_900_000_000)
 
-    /// 1.1 A2 (d), FOC-R399: a leftover that cannot be played and whose words were never inserted
+    /// 1.1 A2 (d), a leftover that cannot be played and whose words were never inserted
     /// is marked; it goes only in a later launch and a day after the mark, reported once.
     @Test func anUnplayableLeftoverGoesOnlyInALaterLaunchADayAfterItsMark() throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
@@ -165,7 +165,7 @@ import Testing
         #expect(library.attachmentNames(note.id).isEmpty)
     }
 
-    /// FOC-R399: a marked leftover that can be played by now is adopted like any other.
+    /// A marked leftover that can be played by now is adopted like any other.
     @Test func aMarkedLeftoverThatBecomesPlayableIsAdopted() throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }
         let note = try library.store.create(text: "# Live")

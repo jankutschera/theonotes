@@ -5,7 +5,7 @@ import TheoNotesCore
 import Foundation
 
 /// `create`, `append`, `edit`, `overwrite`, `tags add|remove|rename|delete`, `pin add|remove`,
-/// `trash`, `archive` and `restore`. Check order (rulings M5-R45, M5-R51, M5-R59): arguments, the
+/// `trash`, `archive` and `restore`. Check order: arguments, the
 /// library, the note, the address's syntax, the content lock, the address against the text,
 /// `--base`, then the change. State-changing commands print nothing on success; only `create`
 /// prints a record.
@@ -58,7 +58,7 @@ enum WriteCommands {
             preservingModifiedDate: parsed.flag("--no-update-modified"))
     }
 
-    /// `--content`, else stdin; neither given and nothing on stdin is `usage` (ruling M5-R79). An
+    /// `--content`, else stdin; neither given and nothing on stdin is `usage`. An
     /// explicit `--content ""` is a request for empty content.
     private static func requiredContent(_ parsed: ParsedCommand, _ env: CommandEnvironment) throws(AutomationError) -> String {
         if let given = parsed.value("--content") { return given }

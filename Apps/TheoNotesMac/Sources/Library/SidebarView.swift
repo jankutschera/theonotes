@@ -224,7 +224,7 @@ struct SidebarView: View {
         }
         .listStyle(.sidebar)
         // System sidebar glass and system selection (no theme tint: the system draws the selection
-        // fill and its text); opaque only when the palette says so (M7-R18).
+        // fill and its text); opaque only when the palette says so.
         .modifier(OpaqueSidebarBackground(palette: palette))
         .focused(pane, equals: .sidebar)
         // → on a section row or a leaf tag moves to the note list (← from the list comes back);

@@ -5,7 +5,7 @@ import Foundation
 
 // The structural (plaintext) side of the CloudKit record format, frozen in docs/superpowers/specs/2026-10-28-cloudkit-record-v1.md
 // and Fixtures/sync/cloudkit-record-v1.json. Everything here is a number, a random id, a hash, a timestamp-free counter, or
-// opaque ciphertext. The sealed content format and the kind byte (CK-R17) live in `CloudPayloadSealer` (Task 5).
+// opaque ciphertext. The sealed content format and the kind byte live in `CloudPayloadSealer`.
 
 public enum CloudEntityPayload: Sendable, Equatable {
     case inline(Data)
@@ -15,7 +15,7 @@ public enum CloudEntityPayload: Sendable, Equatable {
 public struct CloudEntityHeader: Sendable, Equatable {
     public var entityType: SyncEntityType
     public var entityId: String
-    /// Incarnation id (CK-R21) and the last 4 superseded ones, newest first.
+    /// Incarnation id and the last 4 superseded ones, newest first.
     public var inc: String
     public var incs: [String]
     /// Version within the incarnation, restarts at 1 in a new incarnation.
@@ -68,7 +68,7 @@ public enum CloudDecodedRecord: Sendable, Equatable {
     case entity(CloudEntityHeader), blobPart(CloudBlobPartHeader), keyBundle(CloudKeyBundleHeader)
 }
 
-/// A record this build cannot fully validate. The receiver quarantines it (CK-R5); it is never a crash.
+/// A record this build cannot fully validate. The receiver quarantines it; it is never a crash.
 public enum CloudRecordRejection: Error, Equatable, Sendable {
     case unsupported(Reason)
 

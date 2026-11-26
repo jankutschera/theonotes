@@ -29,7 +29,7 @@ public enum TagScanner {
         return result
     }
 
-    /// In a table row (`tableRow`) an unmasked `|` separates cells: it ends a tag (ruling M6-R1).
+    /// In a table row (`tableRow`) an unmasked `|` separates cells: it ends a tag.
     static func find(in s: [Unicode.Scalar], mask: [Bool], tableRow: Bool = false) -> [Match] {
         var matches: [Match] = []
         var p = 0

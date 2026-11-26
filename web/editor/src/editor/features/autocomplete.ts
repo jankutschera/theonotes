@@ -409,7 +409,7 @@ const tagconStyle = {
   WebkitMaskPosition: "center",
 };
 
-/** The TagCon rule as CSS text, for widget shadow roots (table cells, M6-R18). */
+/** The TagCon rule as CSS text, for widget shadow roots (table cells). */
 export const TAGCON_CSS = cssText({ ".cm-bc-tagcon": tagconStyle });
 
 const autocompleteTheme = EditorView.baseTheme({

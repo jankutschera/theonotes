@@ -29,7 +29,7 @@ public struct CloudApplyReport: Sendable, Equatable {
     public init() {}
 }
 
-/// Applies the fetched versions waiting in `ck_remote` (CK-R5): in dependency order (key bundle entity, notes, attachments, then
+/// Applies the fetched versions waiting in `ck_remote`: in dependency order (key bundle entity, notes, attachments, then
 /// tags, settings and external references), to a fixpoint; each in one transaction that also moves the base pair, drops the
 /// snapshot of ours that was in flight and lifts the pause. Fetching never touches the library; this does, and only this.
 ///
@@ -54,7 +54,7 @@ public struct CloudReconciler: Sendable {
 
     /// - Parameters:
     ///   - firstContactVersions: the sealed contents an entity may have started from when this device holds no base pair for it,
-    ///     oldest first (the shipped Getting Started texts, CK-R130, STARTER-R2); empty means an empty base (CK-R13). Only consulted on first contact.
+    /// oldest first (the shipped Getting Started texts); empty means an empty base. Only consulted on first contact.
     ///   - blobs: how an attachment ciphertext becomes a verified local file; the default reads the local cache (`sync_blob_state`).
     ///   - generation: the account generation of this run; the default reads the current one (a coordinator passes the captured one).
     public init(database: AppDatabase, paths: AppPaths, store: CloudSyncStore, accountID: String, vaultKey: SymmetricKey,
@@ -160,7 +160,7 @@ public struct CloudReconciler: Sendable {
         }
 
         let inflight = try store.inflight(for: entity)
-        // The merge base (CK-R21, CK-R104). Inside one incarnation versions are totally ordered, so the remote is newer than the
+        // The merge base. Inside one incarnation versions are totally ordered, so the remote is newer than the
         // ancestor we hold (or than the base of our snapshot in flight). Across incarnations nothing orders them: a recovery
         // creates a new history from whatever the recovering device held, which may be older than what we hold, so a list of
         // superseded incarnations proves nothing about content. The remote counts as a descendant only if it is provably one: it
@@ -248,7 +248,7 @@ public struct CloudReconciler: Sendable {
                 for attempt in try CloudSyncStore.fetchInflight(db, sql: "WHERE entityType=? AND entityId=?", [entity.entityType, entity.entityId]) {
                     try CloudSyncStore.dropInflight(db, attemptId: attempt.attemptId)
                 }
-                // The record is in the cloud again: the pause (CK-R5) lifts.
+                // The record is in the cloud again: the pause lifts.
                 try db.execute(sql: "DELETE FROM ck_missing WHERE entityType=? AND entityId=?", arguments: [entity.entityType, entity.entityId])
             })
             leftovers.add(released)

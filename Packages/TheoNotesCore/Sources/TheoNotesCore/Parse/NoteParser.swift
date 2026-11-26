@@ -210,7 +210,7 @@ public enum NoteParser {
         var visibleText: String
     }
 
-    /// 1-based lines of every table header, delimiter and body row (ruling M6-R1, `TableScanner`).
+    /// 1-based lines of every table header, delimiter and body row.
     public static func tableRowLines(in text: String) -> [Int] {
         scan(text).tableRowLines
     }

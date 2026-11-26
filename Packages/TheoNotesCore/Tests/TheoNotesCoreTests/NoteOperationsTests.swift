@@ -186,7 +186,7 @@ import GRDB
         try store.addTag("home", to: [a.id], position: .top)
         #expect(try reload(a).text == "Title\n#home\nbody\n#work")
 
-        // Top insertion goes after the title line, which is below YAML front matter (M5-R95).
+        // Top insertion goes after the title line, which is below YAML front matter.
         let fm = try store.create(text: "---\nkey: v\n---\nTitle")
         try store.addTag("x", to: [fm.id], position: .top)
         #expect(try reload(fm).text == "---\nkey: v\n---\nTitle\n#x")

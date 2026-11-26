@@ -13,7 +13,7 @@ enum ShareRequestBuilder {
               value.hasPrefix("group."), !value.contains("$(") else { return nil }
         return value
     }
-    /// How many notes the picker offers; the app never writes more (FOC-R12).
+    /// How many notes the picker offers; the app never writes more.
     static let pickerLimit = 20
     /// `recent-notes.json` is at most a few kilobytes; anything bigger was not written by the app.
     static let recentNotesMaxBytes = 256 * 1024

@@ -15,7 +15,7 @@ struct BinaryResult {
     var err: String
 }
 
-/// The CLI embedded in the test host, `Theo Notes Dev.app/Contents/Helpers/theonotes` (M5-R23).
+/// The CLI embedded in the test host, `Theo Notes Dev.app/Contents/Helpers/theonotes`.
 /// `Bundle.main.url(forAuxiliaryExecutable: "theonotes")` is not used: it looks in
 /// `Contents/MacOS`, where on a case-insensitive volume `theonotes` names the app executable itself.
 enum EmbeddedCLI {

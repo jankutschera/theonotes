@@ -258,7 +258,7 @@ struct MobileInfoPanel: View {
         MobileSheetChrome(title: "Note Info", leading: { Spacer() }, trailing: { Button("Done") { dismiss() }.disabled(changingType) }) {
             List {
                 Section("Type") {
-                    // IOS-DESIGN-R13: a standard picker row (label primary, value secondary); "No Type" removes the type.
+                    // A standard picker row (label primary, value secondary); "No Type" removes the type.
                     Picker("Note Type", selection: Binding(get: { noteType }, set: { changeType($0) })) {
                         Text("No Type").tag(NoteType?.none)
                         ForEach(NoteType.allCases, id: \.self) { type in Text(type.displayName).tag(NoteType?.some(type)) }

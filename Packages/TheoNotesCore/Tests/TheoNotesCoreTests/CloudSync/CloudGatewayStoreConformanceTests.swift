@@ -14,7 +14,7 @@ import Testing
         let name: String
         let store: any CloudGatewayStore
         let recorded: @Sendable (String) throws -> (accountGeneration: Int64, outcome: CloudSaveOutcome)?
-        /// Makes `generation` the one in force (the SQLite store refuses a result of any other generation, CK-R171).
+        /// Makes `generation` the one in force (the SQLite store refuses a result of any other generation).
         let adopt: @Sendable (Int64) throws -> Void
     }
 

@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Backup v2 (C9, FOC-R5): every rule that checks the focus state of an archive, one test per
+/// Backup v2 (C9): every rule that checks the focus state of an archive, one test per
 /// rule. Each case edits a valid v2 archive's `record.json` (or `library.json`), signs the edit
 /// again so it reaches the checks behind the file hashes, and expects `invalidManifest` from
 /// `inspect` and both restore modes with the target library unchanged (row counts of every table
@@ -444,7 +444,7 @@ import Testing
     }
 
     /// The brief's range (plus or minus the sync revision limit) reaches year 287396, which SQLite
-    /// stores as text GRDB cannot read back: such a row would break every later read (FOC-R275).
+    /// stores as text GRDB cannot read back: such a row would break every later read.
     @Test func datesAtTheEdgesOfTheRangeRestoreAndReadBack() throws {
         let c = try Cases(); defer { c.cleanup() }
         for value in [LibraryBackup.latestDate, LibraryBackup.earliestDate] {

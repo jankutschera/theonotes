@@ -257,7 +257,7 @@ extension PublisherDevice {
             let (payload, record) = try await a.attachmentPayload(id, in: world.account)
             #expect(payload == nil)                                                      // a tombstone
             #expect(record.blobs.isEmpty)                                                // names no blob
-            #expect(await world.account.recordNames.filter { $0.hasPrefix("b.") } == partsBefore)   // parts stay (CK-R8)
+            #expect(await world.account.recordNames.filter { $0.hasPrefix("b.") } == partsBefore)   // parts stay
             #expect(rigA.diagnostics.uploadedParts.count == uploadedBefore)             // no blob work for a tombstone
             #expect(rigA.gateway.deleteCalls.isEmpty && rigA.gateway.zoneDeletes == 0)
 

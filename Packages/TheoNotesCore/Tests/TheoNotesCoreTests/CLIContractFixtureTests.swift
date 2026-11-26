@@ -207,7 +207,7 @@ private func fixtureURL(_ name: String) -> URL {
         #expect(c.command("edit").arguments == [.init(name: "note-id", variadic: false)])
     }
 
-    /// M5-R32: `--fields all` never includes `content`; `content` is an extra, requestable field.
+    /// `--fields all` never includes `content`; `content` is an extra, requestable field.
     @Test func allFieldsNeverIncludeContent() throws {
         let c = try ContractFixture.load()
         let base = ["id", "title", "locked", "tags", "length", "created", "modified", "pins", "location", "todos", "done", "attachments"]
@@ -348,7 +348,7 @@ private func fixtureURL(_ name: String) -> URL {
         #expect(o.facts["mcpUnknownArgumentIgnored"] == .bool(true))
     }
 
-    /// M5-R32: `all` has no `content`; the content probes record exit codes only.
+    /// `all` has no `content`; the content probes record exit codes only.
     @Test func contentIsAnExplicitExtraField() throws {
         let o = try ObservedFixture.load()
         let c = try ContractFixture.load()

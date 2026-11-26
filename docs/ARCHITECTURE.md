@@ -48,7 +48,7 @@ The shipped sync is iCloud: each library syncs through the user's private CloudK
 
 The app was developed under a working title, and some stored names keep it on purpose: the database file, theme ids, the old backup file type, a legacy URL scheme, App Intents identifiers, the executable name of releases up to 1.1 (still recognised by the scripts) and twelve byte strings in encrypted data (`docs/crypto-labels.md`). Renaming them would break existing libraries, backups, links or Shortcuts. `scripts/name-guard.py` lists every allowed place with its reason in `scripts/name-guard.json`; anything a person sees says Theo Notes.
 
-Rule ids in comments (such as `REL-R4` or `REN2-R50`) point to the project's decision log, which is not published.
+Rule ids in comments (such as `` or ``) point to the project's decision log, which is not published.
 
 ## Tests and guards
 

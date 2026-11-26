@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// REL-R46: the collector turns whatever a source hands over into stored files, with no framework in sight.
+/// The collector turns whatever a source hands over into stored files, with no framework in sight.
 @Suite struct DiagnosticsCollectorTests {
     private struct FakeSource: DiagnosticsSource {
         let stream: AsyncStream<[DiagnosticsRecord]>

@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// Task 15 (CK-R140): the actions the Settings screens offer besides the switch, as the coordinator performs them.
+/// Task 15: the actions the Settings screens offer besides the switch, as the coordinator performs them.
 @Suite(.serialized) struct CloudSettingsActionsTests {
     // MARK: quota
 

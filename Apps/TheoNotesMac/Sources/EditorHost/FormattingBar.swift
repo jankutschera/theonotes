@@ -4,7 +4,7 @@
 import AppKit
 import SwiftUI
 
-/// The formatting bar under the editor (MACBAR-R1 … R6): the pointer surface of the Format menu,
+/// The formatting bar under the editor: the pointer surface of the Format menu,
 /// not a second menu. Every control runs a Format menu item through `FormatTarget.perform`, carries
 /// its title (tooltip with the shortcut, accessibility label) and is enabled exactly when the item is.
 enum FormattingBar {
@@ -117,7 +117,7 @@ enum FormattingBar {
 
     // MARK: - Layout
 
-    /// Hit areas (MACBAR-R7): every control at least 28 × 28 points.
+    /// Hit areas: every control at least 28 × 28 points.
     static let buttonWidth: CGFloat = 28
     static let menuWidth: CGFloat = 38
     static let controlHeight: CGFloat = 28
@@ -153,7 +153,7 @@ enum FormattingBar {
 
 extension FormatTarget {
     /// The bar's state: the Format menu's while this window's editor has keyboard focus, so the bar
-    /// does not grey out when the note list or the bar itself has focus (MACBAR-R2).
+    /// does not grey out when the note list or the bar itself has focus.
     var formattingBarState: EditorMenuState { menuState(editorFocused: true) }
 
     /// A bar control: focus goes back to the editor (CodeMirror keeps caret and selection), then the
@@ -172,7 +172,7 @@ extension FormatTarget {
 
 extension View {
     /// The formatting bar under this editor view: a band holding the bar, and a soft edge where the
-    /// text fades into it (MACBAR-R4, R8).
+    /// text fades into it.
     func formattingBar(_ target: any FormatTarget, isShown: Bool) -> some View {
         modifier(FormattingBarPlacement(target: target, isShown: isShown))
     }
@@ -229,7 +229,7 @@ private struct FormattingBarView: View {
 
     var body: some View {
         // One glass capsule like the window's toolbar items; the system material follows the
-        // appearance, Reduce Transparency and Increase Contrast (MACBAR-R6 as amended).
+        // appearance, Reduce Transparency and Increase Contrast.
         GlassEffectContainer {
             HStack(spacing: 0) {
                 ForEach(Array(visible.enumerated()), id: \.element.id) { index, control in

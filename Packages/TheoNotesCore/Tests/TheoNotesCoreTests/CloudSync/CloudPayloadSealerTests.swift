@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// The transport-free sealed payload (CK-R17, CK-R19) and its golden vectors `Fixtures/sync/cloudsync-payload-v1.json`.
+/// The transport-free sealed payload and its golden vectors `Fixtures/sync/cloudsync-payload-v1.json`.
 /// Regenerate only for a deliberate format change: `BAERCHEN_WRITE_PAYLOAD_VECTORS=1 swift test --filter CloudPayloadSealerTests`.
 @Suite struct CloudPayloadSealerTests {
     @Test func semanticEntityIDMatchesExistingWireRuleWithoutWriting() {

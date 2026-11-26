@@ -6,7 +6,7 @@ import Foundation
 import GRDB
 import os
 
-/// Creating link requests whose answer may not have reached the caller (REL-R90, REL-R92 … REL-R95).
+/// Creating link requests whose answer may not have reached the caller.
 /// A `create` is recorded the moment it succeeds and settled once the app has handed its answer
 /// back; a request that comes again while its receipt is open gets the first note instead of a
 /// second one. Device-local (a `setting` row outside the sync and backup allowlists), at most
@@ -44,7 +44,7 @@ public struct XCallbackReceipts: Sendable {
     }
 
     /// The note an open, unexpired receipt names, if that note is still in the library outside the
-    /// Trash (`LibraryQueries.item`'s rule; an archived note counts, REL-R95).
+    /// Trash (`LibraryQueries.item`'s rule; an archived note counts).
     public func noteID(for fingerprint: String, now: Date) -> String? {
         var found: String?
         update(now: now) { entries, db in

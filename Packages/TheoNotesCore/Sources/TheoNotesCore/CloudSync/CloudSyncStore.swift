@@ -5,7 +5,7 @@ import CryptoKit
 import Foundation
 import GRDB
 
-// The durable state of the CloudKit-native engine (CK-R4, CK-R5, CK-R15, CK-R21). Everything the
+// The durable state of the CloudKit-native engine. Everything the
 // publisher and the receiver must keep consistent is one method here, one transaction, so the
 // invariants cannot be broken by calling two methods in the wrong order:
 //
@@ -18,11 +18,11 @@ import GRDB
 // No CloudKit types appear here; the store is plain SQL over `AppDatabase`.
 
 public enum CloudSyncStoreError: Error, Equatable {
-    /// The entity has an unresolved quarantine row (CK-R5).
+    /// The entity has an unresolved quarantine row.
     case entityFenced(String)
     /// The entity is paused after its record went missing; only a new incarnation may be prepared.
     case entityPaused(String)
-    /// A result or write belongs to an older account generation and is discarded (CK-R15).
+    /// A result or write belongs to an older account generation and is discarded.
     case staleAccountGeneration(expected: Int64, actual: Int64)
     case inflightExists(String)
     case unknownAttempt(String)
@@ -32,7 +32,7 @@ public enum CloudSyncStoreError: Error, Equatable {
     case backendConflict(SyncBackend)
     case accountConflict
     case invalidRecordName(String)
-    /// A superseded incarnation id was offered again as a new or current incarnation (CK-R21).
+    /// A superseded incarnation id was offered again as a new or current incarnation.
     case incarnationReused(String)
     /// The quarantine row is no longer the record the caller inspected when it decided to release it.
     case quarantineChanged(String)
@@ -42,7 +42,7 @@ public enum CloudSyncStoreError: Error, Equatable {
     case entityMergePending(String)
     /// The base pair is no longer the one the snapshot was built on.
     case pairAdvanced(String)
-    /// The account fence is up (CK-R15, CK-R92): no write of the old session lands, even while its generation still matches.
+    /// The account fence is up: no write of the old session lands, even while its generation still matches.
     case accountFenced
     /// A guarded write was prepared for another account than the one this library is bound to.
     case accountMismatch
@@ -52,7 +52,7 @@ public struct CloudEntityRef: Hashable, Sendable {
     public let entityType: String
     public let entityId: String
     public init(entityType: String, entityId: String) { self.entityType = entityType; self.entityId = entityId }
-    /// Authoritative record name of an `Entity` record (CK-R3).
+    /// Authoritative record name of an `Entity` record.
     public var recordName: String { "e.\(entityType).\(entityId)" }
     /// `nil` when the name does not name an entity we could hold (a `BlobPart`, the key bundle,
     /// anything unparseable): such a name fences nothing.
@@ -75,7 +75,7 @@ public struct CloudBasePair: Sendable, Equatable {
     public var ver: Int64
     public var inc: String
     public var supersededIncs: [String]
-    /// The attempt-id chain of this version, newest first (CK-R3 `sids`): the next saver extends it.
+    /// The attempt-id chain of this version, newest first (`sids`): the next saver extends it.
     public var sids: [String]
     public init(entity: CloudEntityRef, systemFields: Data, ancestor: Data, ver: Int64, inc: String, supersededIncs: [String] = [],
                 sids: [String] = []) {
@@ -84,7 +84,7 @@ public struct CloudBasePair: Sendable, Equatable {
     }
 }
 
-/// One prepared save: the immutable snapshot plus the base pair it was built on (CK-R4).
+/// One prepared save: the immutable snapshot plus the base pair it was built on.
 public struct CloudInflight: Sendable, Equatable {
     public enum State: String, Sendable { case prepared, sending, unknown }
     public var entity: CloudEntityRef
@@ -114,7 +114,7 @@ public struct CloudInflight: Sendable, Equatable {
     }
 }
 
-/// A copy of an asset made durable before the engine state may advance (CK-R5).
+/// A copy of an asset made durable before the engine state may advance.
 public struct CloudPinnedAsset: Codable, Sendable, Equatable {
     public var field: String
     public var path: String
@@ -186,7 +186,7 @@ public struct CloudMissingRow: Sendable, Equatable {
 }
 
 /// How a version reached us. Only an ordinary incremental fetch may ignore a superseded
-/// incarnation (CK-R21); a full refetch and a `serverRecordChanged` are always followed.
+/// incarnation; a full refetch and a `serverRecordChanged` are always followed.
 public enum CloudDelivery: Sendable { case incremental, fullRefetch, serverRecordChanged }
 
 public enum CloudStoreRemoteOutcome: Sendable, Equatable {
@@ -232,7 +232,7 @@ public struct CloudSyncStore: Sendable {
 
     static let maxLocalSupersededIncs = 8
 
-    // MARK: - Backend binding (CK-R2, CK-R12)
+    // MARK: - Backend binding
 
     public func backend() throws -> SyncBackend {
         try database.pool.read { try Self.backend($0) }
@@ -263,7 +263,7 @@ public struct CloudSyncStore: Sendable {
         }
     }
 
-    // MARK: - Generation, account fence, zone, engine state (CK-R15)
+    // MARK: - Generation, account fence, zone, engine state
 
     public func generation() throws -> Int64 { try database.pool.read { try Self.generation($0) } }
     static func generation(_ db: Database) throws -> Int64 {
@@ -305,7 +305,7 @@ public struct CloudSyncStore: Sendable {
         try database.pool.write { try $0.execute(sql: "UPDATE ck_state SET engineState=NULL WHERE id=1") }
     }
 
-    // MARK: - Fence (CK-R5)
+    // MARK: - Fence
 
     /// `true` while the entity has a quarantine row the person has not chosen to ignore.
     public func isFenced(entityType: String, entityId: String) throws -> Bool {
@@ -322,13 +322,13 @@ public struct CloudSyncStore: Sendable {
 
     /// Writes the immutable snapshot of one entity. Refused for a fenced entity, for a stale
     /// account generation, while one is already in flight, and for a paused (missing) entity
-    /// unless this is a new incarnation (CK-R21).
+    /// unless this is a new incarnation.
     public func insertInflight(_ attempt: CloudInflight) throws {
         try database.pool.write { db in try Self.insertInflight(db, attempt) }
     }
 
     /// The same checks and write inside a transaction the caller owns, so a snapshot of the library and its
-    /// in-flight row commit together (CK-R4 "preparing a send atomically snapshots the current content").
+    /// in-flight row commit together ( "preparing a send atomically snapshots the current content").
     static func insertInflight(_ db: Database, _ attempt: CloudInflight) throws {
         if try Self.isFenced(db, attempt.entity) { throw CloudSyncStoreError.entityFenced(attempt.entity.recordName) }
         let generation = try Self.generation(db)
@@ -385,7 +385,7 @@ public struct CloudSyncStore: Sendable {
         try database.pool.read { try Self.pair($0, entity) }
     }
 
-    /// Result `saved(newSystemFields)` (CK-R4): pair := (new tag, ancestor = the snapshot that was
+    /// Result `saved(newSystemFields)`: pair:= (new tag, ancestor = the snapshot that was
     /// sent, ver = baseVer + 1), delete the in-flight row, delete the dirty row only if its
     /// generation is the one the snapshot was prepared at (I3). One transaction.
     @discardableResult
@@ -422,7 +422,7 @@ public struct CloudSyncStore: Sendable {
         }
     }
 
-    /// A fetched version merged into the library (CK-R5). `libraryWrite` runs inside the same
+    /// A fetched version merged into the library. `libraryWrite` runs inside the same
     /// transaction, before the pair moves, so a failure leaves the old library and the old pair.
     /// Refused for a fenced entity unless the caller releases the quarantine because the app now
     /// understands the version; returns the pinned files of the released rows for the caller to
@@ -479,7 +479,7 @@ public struct CloudSyncStore: Sendable {
                        arguments: [remote.recordName, remote.inc, remote.ver, remote.sid])
     }
 
-    // MARK: - Receive (CK-R5, CK-R21)
+    // MARK: - Receive
 
     public func remote(recordName: String) throws -> CloudRemoteVersion? {
         try database.pool.read { try Self.remote($0, recordName) }
@@ -544,7 +544,7 @@ public struct CloudSyncStore: Sendable {
         }
     }
 
-    // MARK: - Quarantine (CK-R5)
+    // MARK: - Quarantine
 
     /// The row and its pinned asset paths in one transaction. A repeated quarantine of the same
     /// record counts an attempt; a different version of it is a new item and un-ignores it.
@@ -579,7 +579,7 @@ public struct CloudSyncStore: Sendable {
         }
     }
 
-    // MARK: - Absence and incarnations (CK-R5, CK-R21)
+    // MARK: - Absence and incarnations
 
     /// Pauses an entity the cloud no longer returns. Local content is untouched and the base
     /// pair stays; nothing is republished until the person starts recovery.
@@ -606,7 +606,7 @@ public struct CloudSyncStore: Sendable {
         try database.pool.write { try $0.execute(sql: "DELETE FROM ck_missing WHERE entityType=? AND entityId=?", arguments: [entityType, entityId]) }
     }
 
-    /// Starts recovery of a paused entity under a new incarnation (CK-R21): returns the
+    /// Starts recovery of a paused entity under a new incarnation: returns the
     /// incarnation id and the superseded list (`[old inc] + old incs`) for the create-only save,
     /// which `recordSaved` then turns into the new pair. Writes nothing: `ck_record` changes only
     /// through a successful save (I1), and the pause lifts with it.

@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Library copies and recovery libraries stay sync-hard-off (INT-R14) and never inherit sync
+/// Library copies and recovery libraries stay sync-hard-off and never inherit sync
 /// history. The `ck_*` tables follow the same rules as `sync_*`.
 @Suite struct CloudSyncStateResetTests {
     private func populateCloudKitState(_ library: SyncMaterializerTests.Library) throws {
@@ -52,7 +52,7 @@ import Testing
     }
 
     @Test func aLibraryCopyKeepsItsTablesUntouchedAndTheLaunchPolicyKeepsItLocalOnly() throws {
-        // INT-R14: sync-off for a copy comes from how it was opened, never from table content, and
+        // Sync-off for a copy comes from how it was opened, never from table content, and
         // no wipe implements the isolation. The ck_* tables behave exactly like sync_*.
         let original = try SyncMaterializerTests.Library(); defer { original.cleanup() }
         try populateCloudKitState(original)

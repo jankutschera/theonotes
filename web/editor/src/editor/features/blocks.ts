@@ -88,7 +88,7 @@ export const blockRenderers = Facet.define<BlockRenderer>();
 
 /**
  * Ranges that must be visible although no selection is there: the current search match of the
- * note-list highlight and ⌘G (M6-R78). A rendered block holding one shows its source, the way a
+ * note-list highlight and ⌘G. A rendered block holding one shows its source, the way a
  * fold holding it opens.
  */
 export const blockRevealers = Facet.define<(state: EditorState) => { from: number; to: number } | null>();
@@ -426,7 +426,7 @@ export const renderedBlocks = StateField.define<RenderedBlocks>({
   provide: (field) => EditorView.decorations.from(field, (value) => value.decorations),
 });
 
-/** Containers whose children can hold blocks (tables sit in quotes and list items, M6-R1). */
+/** Containers whose children can hold blocks (tables sit in quotes and list items). */
 const containers = new Set(["Document", "Blockquote", "BulletList", "OrderedList", "ListItem"]);
 
 export type Range = { from: number; to: number };
@@ -652,7 +652,7 @@ let paging: boolean | null = null;
 /**
  * PageDown/PageUp on macOS: scroll one page, the selection stays (NSTextView `scrollPageDown:`,
  * Bear), so a tall rendered table is shown page by page. In typewriter mode the caret line stays
- * centred (M6-R19), so the keys move the caret a page instead, past a rendered block (M6-R25).
+ * centred, so the keys move the caret a page instead, past a rendered block.
  */
 const scrollPage = (forward: boolean): Command => (view) => {
   if (view.state.facet(typewriterModeSetting)) return page(forward ? cursorPageDown : cursorPageUp, forward)(view);

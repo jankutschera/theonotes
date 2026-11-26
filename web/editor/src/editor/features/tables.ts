@@ -5,7 +5,7 @@ import { rememberMenuTarget } from "./menu-targets";
 // Tables (M6 Task 4): a Bear table renders as a grid (the block widget layer, blocks.ts), and in
 // source mode its pipes line up.
 //
-// - Grid: CSS grid in the widget's shadow root (M6-R18), the top row bold (Bear: "Top row always
+// - Grid: CSS grid in the widget's shadow root, the top row bold (Bear: "Top row always
 //   bold"), alignment from the delimiter row, ragged rows padded with empty cells. Cell content
 //   uses typography.ts's classes and rules (INLINE_MARKUP_CSS). The widget keeps no document
 //   positions: it is reused by source key, so it finds its block in `renderedBlocks` when it draws
@@ -40,7 +40,7 @@ export type TableMenuDetail = { pos: number; row: number; column: number; rows: 
 const SPACER_CLASS = "cm-bc-table-spacer";
 /**
  * Tables with more rows (header and body) than this always show their plain source: no grid, no
- * aligned pipes (M6-R82). A pasted sheet of thousands of rows otherwise cost frames per keystroke
+ * aligned pipes. A pasted sheet of thousands of rows otherwise cost frames per keystroke
  * above it. Jan's largest table has 41 rows.
  */
 export const MAX_GRID_ROWS = 1000;
@@ -124,7 +124,7 @@ function drawGrid(root: HTMLElement, view: EditorView, key: string) {
 
 /**
  * The cell's ⋯ button: shown on hover, `aria-hidden`, and not focusable (widget DOM holds no
- * focusable element, M6-R18). Its mousedown is the renderer's `click` (blocks.ts). The dots are a
+ * focusable element). Its mousedown is the renderer's `click` (blocks.ts). The dots are a
  * pseudo-element, so the cell's text stays the cell's text.
  */
 function menuButton(): HTMLElement {
@@ -344,7 +344,7 @@ class AxMirror {
 
   /**
    * Mirrors the rendered tables. "Table N" is the table's position among all tables of the note
-   * (M6-R24), counted again when the mirrored list changes or an edit lands before its end. The
+   *, counted again when the mirrored list changes or an edit lands before its end. The
    * DOM is rebuilt only when a key or a number changed (typing above the tables changes neither).
    */
   sync(state: EditorState, renumber = false) {
@@ -486,7 +486,7 @@ class TableAlign {
   /** The table holding the main caret, when it shows its source. */
   private caretTable(state: EditorState): TableModel | null {
     const head = state.selection.main.head;
-    // A table over the row cap is plain source: its pipes are not lined up (M6-R82). Counted
+    // A table over the row cap is plain source: its pipes are not lined up. Counted
     // from its syntax node, so typing in it never builds the model of thousands of rows.
     const rows = tableRowsAt(state, head);
     if (rows === null || rows > MAX_GRID_ROWS) return null;

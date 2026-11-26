@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotes
 
-/// Turning App Lock on or off in Settings reaches the reminders at once (FOC-R18), with the real
+/// Turning App Lock on or off in Settings reaches the reminders at once, with the real
 /// `AppLock` and `AppEnvironment`. Only the system prompt and the notification center are fakes.
 @MainActor
 @Suite struct AppLockEnablementTests {

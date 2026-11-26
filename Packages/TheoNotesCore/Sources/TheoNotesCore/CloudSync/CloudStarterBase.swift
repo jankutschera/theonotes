@@ -5,7 +5,7 @@ import CryptoKit
 import Foundation
 import GRDB
 
-/// The merge base of the Getting Started notes at first contact (CK-R13 amended, CK-R130).
+/// The merge base of the Getting Started notes at first contact.
 ///
 /// A note the app made for a new library has a fixed id and fixed stamps and, in the first shipped version, fixed texts. When a
 /// device meets the cloud copy of such a note for the first time, it has no base pair, so an empty base would turn an
@@ -20,13 +20,13 @@ import GRDB
 /// same function the publisher uses, so they cannot drift from what a device really uploads.
 public enum CloudStarterBase {
     /// Payload JSON of each starter note of the FIRST shipped set, by note id, built from the FROZEN texts (`Resources/starter-v1-*.md`,
-    /// STARTER-R1), never from the bundled ones: a later change of a bundled text must not move the base. Empty if the throwaway
+    ///), never from the bundled ones: a later change of a bundled text must not move the base. Empty if the throwaway
     /// library failed (the base is then empty, which is the plan's old rule: no loss, possibly one conflict copy).
     static let firstShippedPayloads: [String: Data] = {
         do { return try payloads(of: GettingStartedNotes.firstShippedNotes()) } catch { return [:] }
     }()
 
-    /// Payload JSON of each starter note of the SECOND shipped set (`Resources/starter-v2-*.md`, STARTER-R24), by note id.
+    /// Payload JSON of each starter note of the SECOND shipped set (`Resources/starter-v2-*.md`), by note id.
     static let secondShippedPayloads: [String: Data] = {
         do { return try payloads(of: GettingStartedNotes.secondShippedNotes()) } catch { return [:] }
     }()
@@ -56,7 +56,7 @@ public enum CloudStarterBase {
     public static func isStarterNote(_ id: String) -> Bool { GettingStartedNotes.ids.contains(id) }
 
     /// Payload JSON of every shipped version of each starter note, oldest first: the frozen first set, the frozen second set when it differs, then the texts of this build when
-    /// they differ (STARTER-R2). When a bundled text changes in a later release, its old text is frozen as one more resource set and
+    /// they differ. When a bundled text changes in a later release, its old text is frozen as one more resource set and
     /// added here before the new one; nothing already in the list ever changes.
     static let shippedPayloads: [String: [Data]] = {
         var versions: [String: [Data]] = firstShippedPayloads.mapValues { [$0] }
@@ -73,7 +73,7 @@ public enum CloudStarterBase {
         try holds(id, oneOf: shippedPayloads[id], in: db)
     }
 
-    /// Whether the library's copy of starter note `id` still has exactly the content of the FIRST shipped version (STARTER-R18).
+    /// Whether the library's copy of starter note `id` still has exactly the content of the FIRST shipped version.
     static func holdsFirstShippedContent(_ id: String, in db: Database) throws -> Bool {
         try holds(id, oneOf: firstShippedPayloads[id].map { [$0] }, in: db)
     }

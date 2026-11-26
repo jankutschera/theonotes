@@ -7,7 +7,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// "Move This Library to iCloud" (MOVE-R1 to MOVE-R6): every refusal and every interruption leaves the library bound to the private
+/// "Move This Library to iCloud": every refusal and every interruption leaves the library bound to the private
 /// server exactly as it was; a finished move leaves it never synced, backend none, notes untouched, and unbindable by the old engine.
 @Suite struct PrivateServerMoveTests {
     /// A library in step with a fake private server: one tagged note with an attachment, a second note, everything sent.
@@ -261,7 +261,7 @@ import Testing
         await s.cleanup()
     }
 
-    /// The rehearsal's preflight (MOVE-R8), on a COPY of a library only:
+    /// The rehearsal's preflight, on a COPY of a library only
     /// `THEONOTES_MOVE_PREFLIGHT="<library folder>" swift test --package-path Packages/TheoNotesCore --filter preflightOfALibraryCopy`
     /// Prints every reason the move would refuse now and the counts to compare later. The real library folder is refused.
     @Test(.enabled(if: ProcessInfo.processInfo.environment["THEONOTES_MOVE_PREFLIGHT"] != nil))
@@ -290,7 +290,7 @@ import Testing
         print("MOVE-PREFLIGHT counts:", counts.joined(separator: ", "))
     }
 
-    // MARK: Move Without These Files (MOVE-R10)
+    // MARK: Move Without These Files
 
     /// Notes from an import whose image files never reached this device: in Notes and in the Trash, each with an image reference,
     /// the attachment rows without bytes, dirty at generation 1 and never received by the server (the owner's nine rows).

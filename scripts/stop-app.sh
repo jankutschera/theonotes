@@ -4,8 +4,8 @@
 
 # Stops running copies of the app that live under the given folders, one PID at a time.
 #   scripts/stop-app.sh <folder> [<folder> ...]
-# The executable is `Theo Notes` or `Theo Notes Dev` (REN2-R72); builds up to 1.1 call it `Baerchen` in both
-# identities, so stopping by name could reach the other identity (FOC-R364). A process is stopped only when its
+# The executable is `Theo Notes` or `Theo Notes Dev`; builds up to 1.1 call it `Baerchen` in both
+# identities, so stopping by name could reach the other identity. A process is stopped only when its
 # executable path starts with one of the folders.
 # KILL_CMD lets scripts/test-install-dev.sh run this against a stub.
 set -euo pipefail

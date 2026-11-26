@@ -8,13 +8,13 @@ import GRDB
 /// Bear's MCP tools on the automation layer (plus `create_note_from_template` and `capture_thought`). `app_open_note` and
 /// `app_get_selection` need the running app and live in MCPToolsApp.swift.
 ///
-/// Every tool checks its arguments first and asks for the library afterwards, per call (rulings M5-R45,
-/// M5-R72): a library that cannot be opened is a `library_unavailable` tool error, and a later call
+/// Every tool checks its arguments first and asks for the library afterwards, per call
+///): a library that cannot be opened is a `library_unavailable` tool error, and a later call
 /// recovers once it exists. Result objects are plain values; the server writes them with sorted keys.
 /// Writes run through `AutomationService` with the same scope as the reads.
 ///
 /// The service calls are synchronous and short; the one slow tool, `add_attachment_from_url`, awaits the
-/// fetcher, which carries its own 30 s total and 15 s idle timeouts (rulings M5-R73, M5-R97).
+/// fetcher, which carries its own 30 s total and 15 s idle timeouts.
 struct MCPTools: MCPToolHandler {
     let libraryProvider: LibraryProvider
     let context: AutomationContext
@@ -37,7 +37,7 @@ struct MCPTools: MCPToolHandler {
         }
     }
 
-    /// `capture_thought` takes `text` and nothing else, and says so (FOC-R14): a field it would drop
+    /// `capture_thought` takes `text` and nothing else, and says so: a field it would drop
     /// without a word, such as `tags`, is a usage error. The other tools ignore unknown fields.
     private static func refuseUnknownFields(_ arguments: JSONValue, allowed: [String]) throws(AutomationError) {
         if let extra = arguments.keys.first(where: { !allowed.contains($0) }) {
@@ -195,7 +195,7 @@ struct MCPTools: MCPToolHandler {
     private func readNoteContent(_ a: MCPArguments) throws(AutomationError) -> JSONValue {
         let selector = try noteSelector(a)
         let rawAddress = try a.string("address")
-        // The conflict comes first (M5-R59), whatever the slice values are.
+        // The conflict comes first, whatever the slice values are.
         if rawAddress != nil, a.has("offset") || a.has("limit") {
             throw AutomationError(code: .usage, message: "Provide address or offset/limit, not both")
         }

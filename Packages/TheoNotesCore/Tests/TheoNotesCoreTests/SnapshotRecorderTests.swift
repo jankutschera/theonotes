@@ -7,7 +7,7 @@ import Testing
 @testable import TheoNotesCore
 
 /// The recorder takes a snapshot when a note's session closes and after a 15-minute pause in
-/// typing (FOC-R180 ... FOC-R183). The writer decides what is stored; the recorder never writes
+/// typing. The writer decides what is stored; the recorder never writes
 /// snapshot text anywhere else, and never logs it.
 @MainActor
 @Suite struct SnapshotRecorderTests {

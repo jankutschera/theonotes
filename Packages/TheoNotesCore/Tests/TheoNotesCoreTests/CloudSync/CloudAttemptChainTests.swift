@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// CK-R70: the attempt-id chain is stored with the base pair (migration v17) and extended by every saver.
+/// The attempt-id chain is stored with the base pair (migration v17) and extended by every saver.
 @Suite struct CloudAttemptChainTests {
     let entity = CloudEntityRef(entityType: "note", entityId: "n1")
 

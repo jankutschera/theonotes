@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-// The static note renderer (M8-R5, M8-R6): Bear-dialect Markdown → an HTML body, for HTML/PDF
+// The static note renderer: Bear-dialect Markdown → an HTML body, for HTML/PDF
 // export, print and Copy As. One recursive walk over the Lezer tree of the editor's own parser
 // emits strings (no DOM, so it runs in node and in the export page). Block constructs read the
 // editor's models (headings, wiki links, tables, callouts, footnotes, attachments, code blocks),
@@ -78,7 +78,7 @@ const DATA_IMAGE = /^data:image\/(?:png|jpeg|gif|webp|heic);base64,[A-Za-z0-9+/]
 /**
  * An attachment source the host gave, when the export page may load it: a relative path (no
  * scheme, not starting with `/` or `\`), a `baerchen-asset:` URL, or a base64 raster `data:`
- * image (no SVG: image SVG is not sanitized here). Null for anything else (M8-R30).
+ * image (no SVG: image SVG is not sanitized here). Null for anything else.
  */
 function attachmentSource(src: string): string | null {
   if (!src || CONTROL.test(src) || src.trim() !== src) return null;
@@ -90,7 +90,7 @@ const FORMULA_FAILED = "The formula could not be rendered";
 const DIAGRAM_FAILED = "The diagram could not be rendered";
 const tooLong = (tex: string) => `Formula too long (${tex.length} characters, at most ${MAX_TEX})`;
 
-/** Rich text: highlight colours of the default light theme as fixed backgrounds (M8-R6). */
+/** Rich text: highlight colours of the default light theme as fixed backgrounds. */
 function highlightBackground(color: string | undefined): string {
   const key = (color ? `--bc-highlight-${color}` : "--bc-highlight") as keyof typeof bearchenRed;
   return bearchenRed[key] ?? bearchenRed["--bc-highlight"];
@@ -339,8 +339,8 @@ class Renderer {
 
   private table(node: SyntaxNode): void {
     const model = tableModel(this.state, node);
-    // Over MAX_GRID_ROWS the editor shows the source (M6-R82); the export keeps a table but
-    // fills it with each cell's plain text, as the grid would show it, comments omitted (M8-R27).
+    // Over MAX_GRID_ROWS the editor shows the source; the export keeps a table but
+    // fills it with each cell's plain text, as the grid would show it, comments omitted.
     const plain = 1 + model.rows.length > MAX_GRID_ROWS;
     const cells = new Map<number, SyntaxNode>();
     if (!plain) {
@@ -722,7 +722,7 @@ class Renderer {
   }
 }
 
-/** The HTML body of a note (M8-R5; rich-text mode M8-R6) and its headings with their anchors. */
+/** The HTML body of a note and its headings with their anchors. */
 export async function renderBody(input: RenderInput, renderers?: BlockRenderers): Promise<RenderedBody> {
   const text = normalized(input.text);
   const created = EditorState.create({ doc: text, extensions: [bearMarkdown] });

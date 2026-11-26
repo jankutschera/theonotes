@@ -11,7 +11,7 @@ extension MainWindowState {
         model.items.map(\.id).filter(model.selectedNoteIDs.contains)
     }
 
-    /// What ⇧⌘S exports now (M8-R3), nil when there is nothing to export.
+    /// What ⇧⌘S exports now, nil when there is nothing to export.
     var exportTarget: ExportTarget? {
         ExportTarget.resolve(
             scope: model.scope, noteListFocused: bridge.isNoteListFocused, editorFocused: bridge.isEditorFocused,

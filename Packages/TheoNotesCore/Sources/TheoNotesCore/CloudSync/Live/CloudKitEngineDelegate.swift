@@ -5,7 +5,7 @@ import CloudKit
 import Foundation
 
 /// `CKSyncEngineDelegate` for one engine instance. It holds no logic: every callback is forwarded into the gateway actor
-/// (CK-R15: delegate events are handled inside the gateway actor), tagged with the epoch of the engine it came from so that a
+/// (delegate events are handled inside the gateway actor), tagged with the epoch of the engine it came from so that a
 /// discarded engine (after an account change or a failed fetch) cannot move the saved state or complete a newer attempt.
 final class CloudKitEngineDelegate: CKSyncEngineDelegate, @unchecked Sendable {
     let epoch: Int

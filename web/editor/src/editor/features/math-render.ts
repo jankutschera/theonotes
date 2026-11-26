@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-// MathJax 4 (M6 Task 11, M6-R44): the only module that imports MathJax, through dynamic import(),
+// MathJax 4 (M6 Task 11): the only module that imports MathJax, through dynamic import,
 // so the editor bundle does not load it until a formula is shown. Components are imported
 // directly (no loader): TeX input with a fixed package list, SVG output with the STIX Two
-// font (SIL OFL 1.1, LIC-R34), the browser DOM adaptor. Not loaded: `html` (`\href`, `\class`, `\style`, `\data`),
+// font (SIL OFL 1.1), the browser DOM adaptor. Not loaded: `html` (`\href`, `\class`, `\style`, `\data`),
 // `require`, `autoload`, `setoptions`, `action` and the accessibility/speech modules. The font's
 // dynamic files come from the bundle (`import.meta.glob`); any other name is refused, so nothing
 // is fetched from outside the app.
@@ -121,7 +121,7 @@ function safeStyle(style: string): string {
 }
 
 /**
- * Keeps only what a formula needs in a MathJax SVG (M6-R44), an allowlist: unsafe elements go
+ * Keeps only what a formula needs in a MathJax SVG, an allowlist: unsafe elements go
  * (their children stay); `href` only as the SVG's own `#glyph` reference; paint attributes only
  * with a colour; URL-taking attributes and `on*` handlers never; `style` only known layout and
  * colour properties with plain values (so no `url(…)`, `image-set(…)` or CSS escapes); any other

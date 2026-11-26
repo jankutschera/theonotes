@@ -556,7 +556,7 @@ const selectAll: EditorCommand = ({ state, dispatch }) => {
   const fence = fenceAt(treeFor(state), r.head);
   const content = fence && fenceLines(state, fence).content;
   const target = content && !(r.from === content.from && r.to === content.to) ? content : { from: 0, to: state.doc.length };
-  // The folds inside open (M6-R28: ⌘A unfolds every fold it reaches).
+  // The folds inside open (⌘A unfolds every fold it reaches).
   dispatch(state.update({ selection: EditorSelection.single(target.from, target.to), effects: revealEffects(state, target.from, target.to), userEvent: "select" }));
   return true;
 };
@@ -783,7 +783,7 @@ function baseKey(keyCode: number): string | null {
 
 /** Keys matched by their physical position (`KeyboardEvent.code`), whatever the layout types there. */
 function physicalKey(code: string | undefined): string | null {
-  // ⌘' is the key right of ; (kVK_ANSI_Quote, native keyCode 39), "ä" on German layouts (M6-R5).
+  // ⌘' is the key right of; (kVK_ANSI_Quote, native keyCode 39), "ä" on German layouts.
   return code === "Quote" ? "'" : null;
 }
 

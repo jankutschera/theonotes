@@ -9,7 +9,7 @@ import GRDB
 ///
 /// The automation layer runs inside `Baerchen.app/Contents/Helpers/baerchen`, where SwiftPM's
 /// resource-bundle accessor for `TheoNotesCore` does not resolve and would trap. Code reachable
-/// from here must not use the core's bundled resources (tag icons, emoji list); ruling M5-R25,
+/// from here must not use the core's bundled resources (tag icons, emoji list);,
 /// and `LibraryAccessTests` greps the automation targets for the offending names.
 public struct AutomationLibrary: Sendable {
     public let paths: AppPaths
@@ -27,7 +27,7 @@ public struct AutomationLibrary: Sendable {
     /// `dataDir` is the value of `--data-dir` as the argument parser found it (nil when absent);
     /// handing over only that value means a `--data-dir` inside another option's value is never
     /// misread. `THEONOTES_DATA_DIR` (else `BAERCHEN_DATA_DIR`) in `environment` applies when `dataDir` is nil. Never creates
-    /// or migrates a library (ruling M5-R4).
+    /// or migrates a library.
     public static func open(
         dataDir: String?, environment: [String: String], production: AppPaths = .production
     ) throws(AutomationError) -> AutomationLibrary {
@@ -35,7 +35,7 @@ public struct AutomationLibrary: Sendable {
         do {
             let database = try AppDatabase.openExisting(path: paths.database)
             // Every write transaction re-checks the schema before it changes anything: a newer
-            // app may have migrated the library since it was opened (ruling M5-R4, final review I2).
+            // app may have migrated the library since it was opened.
             let store = NoteStore(db: database, notifier: ChangeNotifier(), paths: paths).guarded { db, stage in
                 if stage == .begin, try !AppDatabase.schemaMatchesThisBuild(db) { throw upgraded }
             }
@@ -46,7 +46,7 @@ public struct AutomationLibrary: Sendable {
     }
 
     /// Where the library is, without opening it (`app open` decides about the app first, ruling
-    /// M5-R45). The same rules as `open`.
+    ///). The same rules as `open`.
     public static func resolvePaths(
         dataDir: String?, environment: [String: String], production: AppPaths = .production
     ) throws(AutomationError) -> AppPaths {

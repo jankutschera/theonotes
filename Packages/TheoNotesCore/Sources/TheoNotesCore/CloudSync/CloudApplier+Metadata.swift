@@ -66,7 +66,7 @@ extension CloudApplier {
                     try db.execute(sql: "INSERT INTO sync_dirty(entityType,localId,generation,tombstone) VALUES('keyBundle','lock-vault',1,0) ON CONFLICT(entityType,localId) DO UPDATE SET generation=generation+1,tombstone=0")
                 } else if input.independent, !reconcileReference, [.setting, .tagPreference, .externalRef].contains(type), let localID,
                           try Self.localMetadataDiffers(from: value, type: type, localID: localID, in: db) {
-                    // An independent incarnation (CK-R104): metadata has no conflict copies, so the local value stays and goes out
+                    // An independent incarnation: metadata has no conflict copies, so the local value stays and goes out
                     // again on the new incarnation. Losing a remote change made during a recovery race is the accepted cost.
                     try db.execute(sql: "INSERT INTO sync_dirty(entityType,localId,generation,tombstone) VALUES(?,?,1,0) ON CONFLICT(entityType,localId) DO UPDATE SET generation=generation+1,tombstone=0",
                                    arguments: [type.rawValue, localID])

@@ -5,7 +5,7 @@ import AppKit
 
 /// VoiceOver's "Headings" rotor on the editor web view (M7 Task 12): one entry per heading of the
 /// shown note ("H2 Install"), in `NoteParser` order. WebKit's own heading rotor does not cross into
-/// the web content's tree from the host (M7-R20 spike), so the host offers this one.
+/// the web content's tree from the host, so the host offers this one.
 ///
 /// Searching has no side effect: VoiceOver searches through every entry to build its rotor menu.
 /// Each entry is a `HeadingElement`; the editor scrolls to the heading only when VoiceOver lands on

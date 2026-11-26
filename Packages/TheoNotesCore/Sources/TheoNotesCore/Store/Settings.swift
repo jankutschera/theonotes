@@ -41,13 +41,13 @@ extension SettingKey where Value == Bool {
     /// Typewriter mode (Edit ▸ Typewriter Mode, ⌃⌘T; M6 Task 14): the caret line stays at the
     /// vertical centre of the editor. App-wide.
     public static var typewriterMode: SettingKey<Bool> { .init("typewriterMode", default: false) }
-    /// Settings ▸ General "Keep tags when exporting" (M8-R4): off drops tags from exported files.
+    /// Settings ▸ General "Keep tags when exporting": off drops tags from exported files.
     public static var keepTagsOnExport: SettingKey<Bool> { .init("keepTagsOnExport", default: true) }
     /// Mac: keep the unlocked note key in the Keychain behind Touch ID so a relaunch can unlock
-    /// without the password. Opt-in (M9M-R16): off until the user turns it on, so no Keychain item
+    /// without the password. Opt-in: off until the user turns it on, so no Keychain item
     /// exists before explicit consent. Device-local; never part of `Settings.Snapshot`.
     public static var useTouchIDForNotes: SettingKey<Bool> { .init("useTouchIDForNotes", default: false) }
-    /// Mac: require Touch ID or the Mac password to open the app (App Lock, M9M-R61). Off until the
+    /// Mac: require Touch ID or the Mac password to open the app (App Lock). Off until the
     /// user turns it on. Device-local; never part of `Settings.Snapshot`.
     public static var appLockEnabled: SettingKey<Bool> { .init("appLockEnabled", default: false) }
 }
@@ -241,7 +241,7 @@ public struct Settings: Sendable {
         nonmutating set { write(.editorZoom, newValue) }
     }
 
-    /// The relock delays the app offers, in seconds (M9M-R2).
+    /// The relock delays the app offers, in seconds.
     public static let noteRelockDelayOptions = [0, 60, 300, 900, 3600]
 
     /// A stored value outside `noteRelockDelayOptions` counts as 0 (lock at once); a setter call
@@ -267,7 +267,7 @@ public struct Settings: Sendable {
         nonmutating set { write(.appLockEnabled, newValue) }
     }
 
-    /// The App Lock delays the app offers, in seconds (M9M-R61).
+    /// The App Lock delays the app offers, in seconds.
     public static let appLockDelayOptions = [0, 60, 300, 900, 3600]
 
     /// A stored value outside `appLockDelayOptions` counts as the default (5 minutes); a setter call

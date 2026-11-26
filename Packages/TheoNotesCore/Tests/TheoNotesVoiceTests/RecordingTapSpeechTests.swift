@@ -8,7 +8,7 @@ import Testing
 @testable import TheoNotesVoice
 
 /// Speech through the real analyzer: a spoken sentence, played to the tap as a four-channel 48 kHz
-/// input (the format K4 met), must come out as text (FOC-R380). It needs the English speech model
+/// input (the format K4 met), must come out as text. It needs the English speech model
 /// installed and `say`; without them the test returns without checking (the live engine check
 /// in the task report covers the microphone itself).
 @Suite struct RecordingTapSpeechTests {

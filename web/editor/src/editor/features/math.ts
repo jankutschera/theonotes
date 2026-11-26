@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-// Math (M6 Task 11, M6-R44): inline `$…$` (and one-line `$$…$$`) and `$$` blocks rendered by
+// Math (M6 Task 11): inline `$…$` and `$$` blocks rendered by
 // MathJax (math-render.ts). Inline, caret outside: the source is hidden (hiding.ts; it stays in
 // the DOM) and a widget shows the rendering; caret inside: the source with dimmed `$` and a live
 // preview after it. Blocks render through the block layer (`mathBlockRenderer`), centred; in
@@ -291,7 +291,7 @@ export const mathBlockRenderer: BlockRenderer = {
   preview: (block) => new MathWidget(blockTex(block.key), true, "block"),
   styles: MATH_CSS,
   // TeX over MAX_TEX never renders (renderMath refuses it): the source stays shown with the error
-  // below, instead of an error widget over thousands of collapsed lines (M6-R82).
+  // below, instead of an error widget over thousands of collapsed lines.
   sourceOnly: (block) => block.key.length > MAX_TEX && blockTexLength(block.key) > MAX_TEX,
   entry(state, block, from) {
     const first = state.doc.lineAt(block.from);

@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// STARTER-R18 with sync on: the one-time replacement of untouched first-release starters, through the real coordinator and
+/// with sync on: the one-time replacement of untouched first-release starters, through the real coordinator and
 /// `FakeCloudKit`. No conflict copy, no ping-pong, an edit on the other device wins.
 @Suite(.serialized) struct CloudStarterUpgradeSyncTests {
     static let target = StarterFixtures.ids[4]  // its v2 text differs from v1 in most lines

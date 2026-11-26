@@ -7,7 +7,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// Attributed strings built in code → Bear Markdown (M8 Task 7, M8-R56).
+/// Attributed strings built in code → Bear Markdown (M8 Task 7).
 @Suite struct AttributedStringToMarkdownTests {
     private static let size: CGFloat = 13
 

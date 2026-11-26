@@ -8,7 +8,7 @@ import OSLog
 import Testing
 @testable import TheoNotes
 
-/// Focus layer C17: the app side of the Mac share extension (FOC-R12, FOC-R330 ... FOC-R338). A
+/// Focus layer C17: the app side of the Mac share extension. A
 /// temporary folder stands in for the App Group container, so no entitlement is needed.
 @MainActor
 @Suite struct ShareInboxDrainTests {
@@ -306,7 +306,7 @@ import Testing
         #expect(entries.contains { $0.contains("sharing is off") }, "logged: \(entries.suffix(5))")
     }
 
-    // MARK: - Which launches use the container (FOC-R337)
+    // MARK: - Which launches use the container
 
     @Test func onlyTheDefaultLibraryUsesTheSharedContainerUnlessAskedTo() {
         let container = URL(fileURLWithPath: "/tmp/group")

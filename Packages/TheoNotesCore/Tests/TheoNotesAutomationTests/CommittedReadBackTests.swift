@@ -8,7 +8,7 @@ import Testing
 @testable import TheoNotesCore
 
 /// A write that committed and then could not read its result back (`busy`, `internal`) says that
-/// it committed (`details.committed: true`), as the scope refusal after a commit does (M5-R176): an
+/// it committed (`details.committed: true`), as the scope refusal after a commit does: an
 /// agent that retried an ordinary-looking failure would append twice (final review M3).
 @Suite struct CommittedReadBackTests {
     private static let committed: JSONValue = .object([("committed", .bool(true))])

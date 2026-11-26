@@ -472,7 +472,7 @@ import GRDB
     }
 }
 
-// MARK: - Attachment size caps (IMP-R61)
+// MARK: - Attachment size caps
 
 extension NotionImporterTests {
     private var pageId: String { "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa01" }

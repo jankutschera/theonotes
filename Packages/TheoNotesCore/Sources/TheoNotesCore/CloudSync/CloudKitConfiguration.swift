@@ -12,7 +12,7 @@ public struct CloudKitConfiguration: Sendable, Equatable {
 
     public let containerIdentifier: String
     public let zoneName: String
-    /// The second record zone (CK-R152, CK-R160): `BlobPart` records only. `CKSyncEngine` never fetches it.
+    /// The second record zone: `BlobPart` records only. `CKSyncEngine` never fetches it.
     public var blobZoneName: String { zoneName + "Blobs" }
 
     public init(containerIdentifier: String, zoneName: String = CloudKitConfiguration.defaultZoneName) {

@@ -8,7 +8,7 @@ import GRDB
 // `ck_record` (the base pair keeps exactly two writers, I1) or `sync_dirty` (cleared only by `recordSaved`, I3).
 extension CloudSyncStore {
     /// A crash (or a gateway that reported nothing) leaves `sending` rows: the send may or may not have landed, so they
-    /// become `unknown` and the outcome table decides (CK-R4). Returns how many rows changed.
+    /// become `unknown` and the outcome table decides. Returns how many rows changed.
     @discardableResult
     public func interruptSending() throws -> Int {
         try database.pool.write { db in
@@ -38,13 +38,13 @@ extension CloudSyncStore {
         }
     }
 
-    /// Removes a send result (consumed, or discarded because it belongs to an older account generation, CK-R15).
+    /// Removes a send result (consumed, or discarded because it belongs to an older account generation).
     public func deleteSendResult(attemptId: String) throws {
         try database.pool.write { try $0.execute(sql: "DELETE FROM ck_send_result WHERE attemptId=?", arguments: [attemptId]) }
     }
 
     /// Attempt ids of `BlobPart` saves start with this. Their results have no in-flight row: the blob transfer reads and deletes
-    /// them itself, so the orphan sweep leaves them alone (CK-R114).
+    /// them itself, so the orphan sweep leaves them alone.
     public static let blobAttemptPrefix = "blob-"
 
     /// Results nobody waits for any more: the in-flight row they answer is gone. `BlobPart` results (attempt ids with
@@ -65,7 +65,7 @@ extension CloudSyncStore {
 
     /// Drops the in-flight snapshot of an attempt. The receiver calls the static form inside the transaction in which it
     /// merged the server version into the library: from then on the content lives in the library and in the (still
-    /// present) dirty generation, so nothing is lost (CK-R4 `serverRecordChanged`). Also removes its send result.
+    /// present) dirty generation, so nothing is lost (`serverRecordChanged`). Also removes its send result.
     static func dropInflight(_ db: Database, attemptId: String) throws {
         try db.execute(sql: "DELETE FROM ck_inflight WHERE attemptId=?", arguments: [attemptId])
         try db.execute(sql: "DELETE FROM ck_send_result WHERE attemptId=?", arguments: [attemptId])

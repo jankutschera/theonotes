@@ -220,7 +220,7 @@ import Testing
         #expect(try a.store.inflight(attemptId: attempt.attemptId) == nil && report.advanced == [a.ref(id)])
     }
 
-    // MARK: I1 ruling CK-R78: every save carries the base's system fields, or is a create
+    // MARK: I1: every save carries the base's system fields, or is a create
 
     @Test func everySaveCarriesTheBaseSystemFieldsExceptACreateAndNoPolicyOverridesTheCheck() async throws {
         let world = try await PublisherWorld.make(1); defer { world.cleanup() }

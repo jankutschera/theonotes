@@ -154,7 +154,7 @@ import UIKit
         #expect(try library.store.note(id: id)?.text == "# Caller 🐻\nExact **text**")
         #expect(library.pendingCallbackNavigation?.noteID == id)
     }
-    /// REL-R90: the app locks after the note was saved, the caller gets `x-error` and runs the
+    /// The app locks after the note was saved, the caller gets `x-error` and runs the
     /// same request again; it gets the first note back, and only an answered request repeats.
     @Test func retryAfterLockingReturnsTheFirstNoteInsteadOfASecond() async throws {
         let paths = AppPaths(root: FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString))

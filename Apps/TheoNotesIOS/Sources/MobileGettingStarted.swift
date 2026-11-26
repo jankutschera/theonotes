@@ -4,7 +4,7 @@
 import TheoNotesCore
 import Foundation
 
-/// REL-R79 on iPhone and iPad: when the getting started notes are made, and Settings ▸ Restore Getting
+/// on iPhone and iPad: when the getting started notes are made, and Settings ▸ Restore Getting
 /// Started Notes. The wording matches the Mac's Help command (`GettingStartedMenu`).
 enum MobileGettingStarted {
     static let title = "Restore Getting Started Notes"

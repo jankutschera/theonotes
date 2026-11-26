@@ -144,7 +144,7 @@ struct CloudSyncSettingsView: View {
                 get: { controller.isOn },
                 set: { value in Task { await controller.setSwitch(value) } }
             ))
-            .disabled(controller.isWorking && !controller.isOn)    // switching OFF always works, even during a hung sync (CK-R171)
+            .disabled(controller.isWorking && !controller.isOn)    // switching OFF always works, even during a hung sync
             .accessibilityIdentifier("cloud-sync-switch")
             statusRow
             if let lastSync = controller.lastSync, controller.isOn {

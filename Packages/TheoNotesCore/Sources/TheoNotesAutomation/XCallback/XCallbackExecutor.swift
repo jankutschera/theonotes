@@ -7,8 +7,8 @@ import GRDB
 
 /// Runs one parsed x-callback request against the library through the same service the CLI and
 /// the MCP server use, and says what the app should show and what the caller gets back. It never
-/// opens a URL or touches the UI itself. Rules: inventory §2.18, rulings M5-R19, R21, R22 and
-/// M5-R120…R129.
+/// opens a URL or touches the UI itself. Rules: inventory §2.18, and
+///.
 public final class XCallbackExecutor {
     private let library: AutomationLibrary
     private let context: AutomationContext
@@ -31,10 +31,10 @@ public final class XCallbackExecutor {
     }
 
     public func execute(_ r: XCallbackRequest) -> XCallbackOutcome {
-        // Whether the caller proved itself decides how much an error may say (ruling M5-R168).
+        // Whether the caller proved itself decides how much an error may say.
         let detailed = (try? tokenIsValid(r)) ?? false
         do throws(XCallbackFailure) {
-            // A token that is given must be right, whatever the action (ruling M5-R167).
+            // A token that is given must be right, whatever the action.
             _ = try tokenIsValid(r)
             var outcome = try dispatch(r)
             outcome.detailedErrors = detailed
@@ -94,7 +94,7 @@ public final class XCallbackExecutor {
 
     /// True for a valid `token`, false without one; a token that does not match is failure 4.
     private func tokenIsValid(_ r: XCallbackRequest) throws(XCallbackFailure) -> Bool {
-        // `token=` (empty) is a token that was given, and it is wrong (ruling M5-R167).
+        // `token=` (empty) is a token that was given, and it is wrong.
         guard let given = r.params["token"] else { return false }
         let stored = (try? Settings(db: library.database).value(.automationToken)) ?? ""
         guard AutomationToken.matches(given, stored) else { throw .badToken }
@@ -105,7 +105,7 @@ public final class XCallbackExecutor {
         guard try tokenIsValid(r) else { throw .badToken }
     }
 
-    /// Replacing text is destructive, so it needs the token (ruling M5-R161).
+    /// Replacing text is destructive, so it needs the token.
     private func requireTokenForReplace(_ mode: XCallbackMode, _ r: XCallbackRequest) throws(XCallbackFailure) {
         if mode == .replace || mode == .replaceAll { try requireToken(r) }
     }
@@ -193,7 +193,7 @@ public final class XCallbackExecutor {
         let ui = openIntent(r, id: note.id, header: value(r, "header"), find: value(r, "search"))
         if note.isLocked { return XCallbackOutcome(ui: ui, success: nil, failure: .locked("Note is locked: \(note.id)")) }
         if r.flag("pin") == true { _ = try wrap { () throws(AutomationError) in try service.addPins(.id(note.id), targets: ["global"]) } }
-        // Without the token the note opens, but nothing about it goes back to the caller (M5-R162).
+        // Without the token the note opens, but nothing about it goes back to the caller.
         guard withData else { return XCallbackOutcome(ui: ui, success: [], failure: nil) }
         let record = try wrap { () throws(AutomationError) in try service.record(id: note.id) }
         let success: [(String, String)] = [
@@ -214,7 +214,7 @@ public final class XCallbackExecutor {
     private func create(_ r: XCallbackRequest) throws(XCallbackFailure) -> XCallbackOutcome {
         let withData = try tokenIsValid(r)
         var text = textParameter(r)
-        // A request whose answer may not have arrived gets its first note back (REL-R90, REL-R92).
+        // A request whose answer may not have arrived gets its first note back.
         let receipts = XCallbackReceipts(database: library.database)
         let fingerprint = XCallbackReceipts.fingerprint(
             action: r.action.rawValue, parameters: r.params, clipboard: r.flag("clipboard") == true ? text : nil)
@@ -228,18 +228,18 @@ public final class XCallbackExecutor {
         var images: [ImportedAttachment] = []
         if r.params["type"]?.lowercased() == "html" {
             // `url` is the page the HTML came from: relative images resolve against it as text,
-            // nothing is fetched (final review M7, amends M5-R123).
+            // nothing is fetched (final review M7, amends).
             let base = r.params["url"].flatMap { URL(string: $0.trimmingCharacters(in: .whitespacesAndNewlines)) }
             let converted = HTMLToMarkdown.convert(
                 text, imageLimits: .init(each: imageLimit, total: imageLimit), baseURL: base)
-            // Oversized images were not decoded at all (ruling M5-R169).
+            // Oversized images were not decoded at all.
             if converted.oversizedImages > 0 {
                 throw .invalid("The HTML images are larger than \(URLFetchPolicy.describe(limit: imageLimit))")
             }
             text = converted.markdown
             images = converted.images
         }
-        // Everything is checked before the note exists (ruling M5-R163).
+        // Everything is checked before the note exists.
         var total = 0
         for image in images {
             total += image.data.count
@@ -255,7 +255,7 @@ public final class XCallbackExecutor {
         if title == nil, text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, file == nil, images.isEmpty {
             throw .invalid("Empty notes are not allowed")
         }
-        // From the moment the note is stored, every failure undoes it (ruling M5-R166): the id
+        // From the moment the note is stored, every failure undoes it: the id
         // comes from the create step itself, so even a failed read of the new record is covered.
         var createdId: String?
         let record: NoteRecord
@@ -318,7 +318,7 @@ public final class XCallbackExecutor {
         guard !content.isEmpty || !tags.isEmpty else { throw .invalid("Nothing to add: text is required") }
         if note.isLocked { throw .locked("Note is locked: \(note.id)") }
         let header = value(r, "header")
-        // A header that is not there fails before anything is written, tags included (M5-R124).
+        // A header that is not there fails before anything is written, tags included.
         if let header { _ = try wrap { () throws(AutomationError) in try XCallbackTextEdit.section(header: header, in: note.text) } }
         let newLine = r.flag("new_line") == true
         if !content.isEmpty {
@@ -357,7 +357,7 @@ public final class XCallbackExecutor {
         // The file is stored before the link is placed, so a missing header must fail first.
         if let header { _ = try wrap { () throws(AutomationError) in try XCallbackTextEdit.section(header: header, in: note.text) } }
         let position = service.tagPosition
-        // If the gate refuses the change, the service takes the stored file out again (M5-R164).
+        // If the gate refuses the change, the service takes the stored file out again.
         _ = try wrap { () throws(AutomationError) in
             try service.addAttachment(
                 .id(note.id), data: file.data, filename: file.filename, preservingModifiedDate: false

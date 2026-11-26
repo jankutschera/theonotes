@@ -240,7 +240,7 @@ test("editing a reference's label renames its definition", async ({ page }) => {
   expect(await hooks(page).text()).toBe(doc);
 });
 
-// LINK-TAP-R1: on a touch screen a tap on a link's text opens it; a scroll, a long press, a
+// On a touch screen a tap on a link's text opens it; a scroll, a long press, a
 // second finger or a tap while text is selected does not.
 test.describe("touch", () => {
   test.use({ hasTouch: true });

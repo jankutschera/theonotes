@@ -64,7 +64,7 @@ import Testing
         #expect(item.line == nil)
     }
 
-    /// K5 P-R1: "Untitled" / "oneThe text." was the plan working as written. The note's first line was
+    /// K5 "Untitled" / "oneThe text." was the plan working as written. The note's first line was
     /// blank (so no title) and its second line really read `oneThe text.`; title and line stay in
     /// separate fields and are never joined.
     @Test func aBlankFirstLineGivesUntitledAndTheLineIsTheBodyAsWritten() throws {

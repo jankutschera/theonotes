@@ -170,7 +170,7 @@ import Testing
         #expect(try await vault.unlockWithBiometrics() == .noCachedKey)
     }
 
-    /// REN2-R51 (task B3): after the team move the new access group holds no cached key. That is a normal state: no
+    /// (task B3): after the team move the new access group holds no cached key. That is a normal state: no
     /// error, no Keychain prompt, the person types the password once, and the key is cached again for Touch ID.
     @Test func test_absent_cache_asks_for_password_once() async throws {
         let library = try VaultLibrary()

@@ -13,7 +13,7 @@ private let notionImportLogger = Logger(subsystem: "com.truebrewbirdie.baerchen"
 /// database (`Name <id>.csv`) becomes one note holding a Markdown table, links between pages
 /// become `[[wiki links]]` (resolved by id, so two pages with the same name stay apart), images
 /// and files next to a page become attachments, and the page's place in the tree becomes a tag
-/// (`notion/<Parent>/<Child>`, see `docs/decisions.md` IMP-R21...). A failing page goes to the
+/// (`notion/<Parent>/<Child>`, see `docs/decisions.md`...). A failing page goes to the
 /// report and never stops the run; archives are extracted by `SafeZip` into a temporary
 /// directory that is always removed.
 public final class NotionImporter: Sendable {
@@ -43,7 +43,7 @@ public final class NotionImporter: Sendable {
             attachmentLimits: .standard)
     }
 
-    /// `attachmentLimits` caps the files a page's links copy as attachments (IMP-R61): one file,
+    /// `attachmentLimits` caps the files a page's links copy as attachments: one file,
     /// the files of one page, and everything one run copies. It is separate from `budget`, which
     /// bounds what extraction writes to disk.
     init(

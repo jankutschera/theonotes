@@ -297,7 +297,7 @@ enum Migrations {
         }
 
         // Attachment rows (spec §3.4, ruling X6): one per (note, file) with a stable UUIDv7 `id`
-        // (M9 encryption binds it into the AAD; sync carries it, M6-R6). A file is identified by
+        // (M9 encryption binds it into the AAD; sync carries it). A file is identified by
         // `filenameKey` (`AttachmentFiles.fileSystemKey`: NFC + lowercased, like the file system),
         // so `Foto.png` / `foto.png` / NFC / NFD are one row; `filename` is the spelling in the
         // text. `deletedAt` is a tombstone set when the link leaves the text: a re-link revives the
@@ -440,7 +440,7 @@ enum Migrations {
             try SyncCaptureSchemaV2.install(db)
         }
 
-        // Capture & Next Up (FOC-R2, R3, R8, R10, R11, R12, R17). Device-local state: nothing here
+        // Capture & Next Up. Device-local state: nothing here
         // is in the sync payload. `notification_ledger` has no foreign key on purpose: its rows
         // outlive a deleted note, so a cold launch can still remove that note's notifications.
         migrator.registerMigration("v15-focus") { db in
@@ -479,7 +479,7 @@ enum Migrations {
                 """)
         }
 
-        // CloudKit-native sync state (CK-R2, CK-R3, CK-R4, CK-R5, CK-R12). Additive: a library that
+        // CloudKit-native sync state. Additive: a library that
         // never syncs gains one column (`backend`, default 'none'), empty tables and one trigger.
         // `sync_dirty`, `sync_entity_state`, `sync_blob_state` and `sync_control` are reused as they are.
         // The trigger keeps `backend` truthful for the Cloudflare engine, which is not edited: it
@@ -538,7 +538,7 @@ enum Migrations {
                 """)
         }
 
-        // The attempt-id chain of a version (CK-R3 `sids`, CK-R4 ambiguous-outcome table). The base pair must carry
+        // The attempt-id chain of a version (`sids`, ambiguous-outcome table). The base pair must carry
         // the chain of the version it was built on, or the next saver cannot extend it and a lost response could
         // never be proven by it; `ck_inflight` keeps the chain exactly as it was sent. Additive, empty by default.
         migrator.registerMigration("v17-cloudkit-attempt-chain") { db in
@@ -549,9 +549,9 @@ enum Migrations {
                 """)
         }
 
-        // The verified key bundle (CK-R130): a library that verified the account's `KeyBundle` once keeps the record's content
+        // The verified key bundle: a library that verified the account's `KeyBundle` once keeps the record's content
         // (account id, revision, the public envelope and the canary: public keys and ciphertext only) so that an offline launch
-        // can rebuild its keys from the device's keychain seed without the network. `switchedOn` is the person's switch (a blocked first sync goes on by itself, CK-R134); `deletedStarters` lists fixed-id Getting Started notes deleted before the first binding (CK-R132). Additive, empty by default.
+        // can rebuild its keys from the device's keychain seed without the network. `switchedOn` is the person's switch (a blocked first sync goes on by itself); `deletedStarters` lists fixed-id Getting Started notes deleted before the first binding. Additive, empty by default.
         migrator.registerMigration("v18-cloudkit-key-bundle-cache") { db in
             try db.execute(sql: """
                 ALTER TABLE ck_state ADD COLUMN keyBundleCache BLOB;

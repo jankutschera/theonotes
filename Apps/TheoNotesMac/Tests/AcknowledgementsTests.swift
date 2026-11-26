@@ -40,7 +40,7 @@ import Testing
         #expect(model.visibleEntries.map(\.name) == ["GRDB.swift"])
         model.query = "codemirror"
         #expect(model.visibleEntries.contains { $0.name == "@codemirror/view" && $0.licence == "MIT" })
-        // REN2-R10: elkjs (EPL-2.0) is not part of the app.
+        // Elkjs (EPL-2.0) is not part of the app.
         model.query = "elkjs"
         #expect(model.visibleEntries.isEmpty)
     }
@@ -129,7 +129,7 @@ import Testing
         #expect(AboutInfo(name: "Theo Notes", version: "", build: "", copyright: "").menuTitle == "About Theo Notes")
     }
 
-    /// "Theo Notes" in production, "Theo Notes Dev" in the dev build (FOC-R390).
+    /// "Theo Notes" in production, "Theo Notes Dev" in the dev build.
     @Test func theBundleSaysTheoNotes() {
         let info = AboutInfo(bundle: .main)
         #expect(info.name == AppIdentity.current.displayName)

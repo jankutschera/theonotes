@@ -3,7 +3,7 @@
 
 import XCTest
 
-/// MOVE-R1, MOVE-R6: Settings ▸ iCloud offers the move and a tap opens the confirmation; after a move the "move your other devices
+/// Settings ▸ iCloud offers the move and a tap opens the confirmation; after a move the "move your other devices
 /// now" notice shows. Cancel only: the move itself is covered by the unit tests. Runs only against the disposable --ui-testing library.
 /// For the evidence screenshots (taken with `simctl io` from the host) each test holds its screen for a few seconds after writing a
 /// marker file into the host's caches folder; without a host (a device) it does not wait.
@@ -79,7 +79,7 @@ import XCTest
         XCTAssertFalse(notice.waitForExistence(timeout: 3))
     }
 
-    /// MOVE-R10, MOVE-R13: the refusal for files no device ever had shows the card and offers "Move to iCloud Without These Files…",
+    /// The refusal for files no device ever had shows the card and offers "Move to iCloud Without These Files…",
     /// which opens the same confirmation as the move. The fixture stands in for the private server's answer (the move itself is
     /// covered by the unit tests); the taps are real.
     private func refuseForMissingFiles(_ extra: [String]) -> XCUIApplication {

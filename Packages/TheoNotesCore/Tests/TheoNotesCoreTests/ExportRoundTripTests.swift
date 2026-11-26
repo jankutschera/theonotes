@@ -215,7 +215,7 @@ import Testing
         }
     }
 
-    /// Found by `bear-oracle --roundtrip-check` on a real library copy (M8-R133): an attachment
+    /// Found by `bear-oracle --roundtrip-check` on a real library copy: an attachment
     /// named like a note file (`.txt`, `.md`) was left as a dead `assets/…` link and dropped,
     /// because the importer reads such a link target as a link to another note.
     @Test func textFileAttachmentsSurviveTheTextBundleRoundTrip() throws {

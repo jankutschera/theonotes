@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// The only code that makes the update request (REL-R54). A plain GET of the given address:
+/// The only code that makes the update request. A plain GET of the given address
 ///
 /// - no header, body or query of ours; what goes on the wire besides the request line is what the system's
 ///   HTTP stack adds to every request (see docs/release/privacy-audit.md, D6);

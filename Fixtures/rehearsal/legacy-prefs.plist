@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!-- Synthetic preferences of the pre-stage-2 app for scripts/rehearse-identity-flip.sh (REN2-R52). Not a real
+<!-- Synthetic preferences of the pre-stage-2 app for scripts/rehearse-identity-flip.sh. Not a real
      person's data. Nine keys are on the migration's allow-list (seven names and two prefixes); the last three must
      never be copied: two Cloudflare sync flags and one key that is on no list. -->
 <plist version="1.0">

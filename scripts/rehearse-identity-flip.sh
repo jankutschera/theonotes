@@ -2,14 +2,14 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# Rehearsal 1 of the identity flip (rename stage 2, plan task B6; REN2-R51 ... R55).
+# Rehearsal 1 of the identity flip (rename stage 2, plan task B6; R55).
 #
 # What it proves, on a COPY of Jan's library and a throw-away build: that the app with the FLIPPED identity
 # (bundle root com.truebrewbirdie.theonotes, ad hoc signed, no team) opens a library of the old identity without
-# changing a count, keeps the database under its frozen name (Baerchen.sqlite, REN2-R50), reads an old
+# changing a count, keeps the database under its frozen name (Baerchen.sqlite), reads an old
 # .baerchen-backup, copies the fixture preferences once, and leaves the frozen crypto labels alone.
 #
-# What it never does (dispatch rules, REL-R37, FOC-R362):
+# What it never does (dispatch rules)
 #   - it never writes to the source library; the source is only read (ditto, and `sqlite3 -readonly ... .backup`
 #     for the database, SQLite's own consistent-copy path, which also works while the installed app runs);
 #   - it never launches, opens or builds the Production identity, and never touches ~/Applications;

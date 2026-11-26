@@ -127,7 +127,7 @@ import Testing
     }
 
     /// The selection fill is the system's (the user's accent), so selected rows use the system's
-    /// text colour for it, and no theme tint changes that fill (M7-R18, review of fix round 1).
+    /// text colour for it, and no theme tint changes that fill.
     @Test func selectedRowsUseTheSystemSelectionPair() throws {
         #expect(NoteRow.selectedText == Color(nsColor: .alternateSelectedControlTextColor))
         let row = try source("Library/NoteRow.swift")
@@ -136,7 +136,7 @@ import Testing
         #expect(!(try source("Library/SidebarView.swift")).contains(".tint("))
     }
 
-    /// M7-R26: "system selection, system text". A selected row that is not emphasized (the list is not
+    /// "system selection, system text". A selected row that is not emphasized (the list is not
     /// focused: the editor has focus, or another window is key) sits on the system's grey
     /// `unemphasizedSelectedContentBackgroundColor`, so it uses the system label colours, never the theme's
     /// text (15 of 18 themes' secondary text fell under 4.5:1 there).

@@ -87,7 +87,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     private(set) var app: AppModel?
     private(set) var startupError: (any Error)?
 
-    /// Per-Mac capture preferences; read by the App body before launch finishes (GC-R1, R2).
+    /// Per-Mac capture preferences; read by the App body before launch finishes.
     let captureSettings = CaptureSettings(defaults: .standard, identity: .current)
     /// Nil in unit-test runs and without a library.
     private(set) var captureFromAnywhere: CaptureFromAnywhere?
@@ -98,10 +98,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     /// The first delegate, the one SwiftUI made; lets tests reach the live settings.
     static private(set) weak var live: AppDelegate?
 
-    /// Crash and hang reports kept on this Mac (REL-R40); nil in unit-test runs.
+    /// Crash and hang reports kept on this Mac; nil in unit-test runs.
     private(set) var diagnostics: DiagnosticsController?
 
-    /// Theo Notes ▸ Check for Updates… (REL-R52). Creating it makes no request; only a click does.
+    /// Theo Notes ▸ Check for Updates…. Creating it makes no request; only a click does.
     let updates = UpdatesController.live()
 
     /// An unusable `--data-dir` / `BAERCHEN_DATA_DIR`: the app opens no library and quits.
@@ -113,7 +113,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     /// `baerchen://x-callback-url/…` URLs (M5 Task 14); they wait here until the app model exists.
     private let xCallbackInbox = XCallbackInbox()
 
-    /// Files opened from the Finder (FIX-R1); they wait here until the library is open and unlocked.
+    /// Files opened from the Finder; they wait here until the library is open and unlocked.
     let openFiles = OpenFilesHandler()
 
     override init() {
@@ -124,7 +124,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         DiagnosticsController.shared = diagnostics
         do {
             // The real library (following its recovery selection), or exactly the copy a launch
-            // override names, which is local-only (INT-R14). Never the real one instead.
+            // override names, which is local-only. Never the real one instead.
             // The real system source and the real app-wide appearance; tests default to a static source and no-op.
             let environment = try AppEnvironment.launching(
                 systemAppearance: LiveSystemAppearance(), applyAppAppearance: AppearanceController.setAppAppearance,
@@ -152,7 +152,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
 
     /// Takes the URL events before SwiftUI does: its default would open a new window for every URL.
     func applicationWillFinishLaunching(_ notification: Notification) {
-        // No window tabs anywhere in the app (MAC11-R13): drops View ▸ Show Tab Bar and Show All Tabs.
+        // No window tabs anywhere in the app: drops View ▸ Show Tab Bar and Show All Tabs.
         NSWindow.allowsAutomaticWindowTabbing = false
         guard !isRunningUnitTests else { return }
         // Before anything can be delivered: taps that launch the app arrive through this delegate.
@@ -286,7 +286,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     /// Flushes acknowledged host state only. The editor sends every transaction immediately, so only
     /// transactions in flight (sent but not yet acked) at quit time are not covered.
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        // A capture close still waiting for its editor keeps the note (FOC-R346).
+        // A capture close still waiting for its editor keeps the note.
         app?.isQuitting = true
         app?.saveSelection()
         app?.runPendingLinkRewrites()

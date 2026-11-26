@@ -4,12 +4,12 @@
 import Foundation
 import Security
 
-// Where the account master key ("seed") lives so a person's other devices can rebuild the account keys (CK-R6, CK-R14):
+// Where the account master key ("seed") lives so a person's other devices can rebuild the account keys
 // one iCloud-Keychain item (`kSecAttrSynchronizable`) per account id. Next to it, a local, non-synchronizable item holds
 // the first device's half-finished key creation so a crash at any step resumes with the same keys.
 // Nothing in this file logs, prints or puts secret bytes into an error: descriptions are redacted.
 
-/// What a Keychain probe (write, read back, remove a throw-away synchronizable item) observed (CK-R14).
+/// What a Keychain probe (write, read back, remove a throw-away synchronizable item) observed.
 public enum KeychainAvailability: Sendable, Equatable {
     public enum Reason: String, Sendable, Equatable {
         /// `errSecMissingEntitlement` (-34018): the build has no keychain access group. Unlocking does not help.
@@ -61,7 +61,7 @@ public enum CloudKeyConstantTime {
     }
 }
 
-/// The first device's key creation in progress (CK-R14 step 1). Local and non-synchronizable; it holds the master key
+/// The first device's key creation in progress. Local and non-synchronizable; it holds the master key
 /// until the creation finished or was abandoned, so its description never shows it.
 public struct PendingKeyCreation: Codable, Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {
     public var accountId: String
@@ -327,7 +327,7 @@ public final class InMemoryCloudKeySeedStore: CloudKeySeedStore, CloudKeychainPr
 ///   service `CloudKeyNames.pendingService`, account `pending.<namespace>`.
 /// Apple: "Updating or deleting items using the kSecAttrSynchronizable key affects all copies of the item, not just the one
 /// on your local device" (https://developer.apple.com/documentation/security/ksecattrsynchronizable), so `removeSeed` is
-/// only called for our own seed after a lost creation race or by the explicit "Remove the iCloud key" action (CK-R9).
+/// only called for our own seed after a lost creation race or by the explicit "Remove the iCloud key" action.
 /// Runs only in a team-signed host (Gate G0); an unsigned process gets -34018.
 public struct KeychainCloudKeySeedStore: CloudKeySeedStore, CloudKeychainProbe {
     public let accessGroup: String

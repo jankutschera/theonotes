@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# Shared helpers for the release scripts (sourced, not run). REL-R60 ... R69.
+# Shared helpers for the release scripts (sourced, not run) R69.
 #
 # config/release.env is read by key with sed, never sourced: Xcode reads the same file as an .xcconfig, and
 # values such as a profile name may contain spaces.
@@ -29,7 +29,7 @@ say() { echo "==> $*"; }
 die() { echo "error: $*" >&2; exit 1; }
 refuse() { echo "refusing: $*" >&2; exit 2; }
 
-# The identity a shipped bundle must have (FOC-R360): the production bundle id, never the dev one.
+# The identity a shipped bundle must have: the production bundle id, never the dev one.
 PRODUCTION_BUNDLE_ID="com.truebrewbirdie.theonotes"
 
 plist_value() { # FILE KEY

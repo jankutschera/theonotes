@@ -7,7 +7,7 @@ import UIKit
 @testable import TheoNotesCore
 @testable import BaerchenIOS
 
-// Task 16 fix round 1 (CK-R180 to CK-R182): the background lifecycle. A cycle that the system takes the time back from is suspended
+// Task 16 fix round 1: the background lifecycle. A cycle that the system takes the time back from is suspended
 // through the coordinator (fence closed, cancelled and drained, generation bumped, switch stays on); the next foreground resumes.
 // A push that launches the process fetches; registration does not wait for the launch; Stop does not requeue a refresh.
 

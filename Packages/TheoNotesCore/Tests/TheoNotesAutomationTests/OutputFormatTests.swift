@@ -26,7 +26,7 @@ import Testing
         #expect(RecordWriter.csv(header: ["a"], []) == "a\n")
     }
 
-    /// Controller ruling M5-R241: cells keep their fidelity like bearcli's, no formula neutralization.
+    /// Controller: cells keep their fidelity like bearcli's, no formula neutralization.
     @Test func csvEmitsFormulaCellsAsTheyAre() {
         let rows: [[FieldValue]] = [[.string("=HYPERLINK(\"http://x\",\"y\")")], [.string("+1")], [.string("@SUM(A1)")], [.string("-2")]]
         #expect(RecordWriter.csv(header: ["title"], rows) == "title\n\"=HYPERLINK(\"\"http://x\"\",\"\"y\"\")\"\n+1\n@SUM(A1)\n-2\n")

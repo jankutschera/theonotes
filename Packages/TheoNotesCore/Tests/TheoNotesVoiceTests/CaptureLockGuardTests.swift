@@ -40,7 +40,7 @@ import Testing
         #expect(left.isEmpty)
     }
 
-    // MARK: - A lock that fails its own checks leaves the capture alone (FOC-R300)
+    // MARK: - A lock that fails its own checks leaves the capture alone
 
     private func runningCapture(_ library: VoiceTestLibrary, noteId: String) throws -> (CaptureLockGuard, URL) {
         let folder = library.paths.recordings.appendingPathComponent(noteId)

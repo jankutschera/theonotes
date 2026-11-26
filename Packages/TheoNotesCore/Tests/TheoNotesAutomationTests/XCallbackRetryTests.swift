@@ -7,7 +7,7 @@ import Testing
 @testable import TheoNotesCore
 
 /// A creating link request that is sent again because its answer never arrived gets the first
-/// note back instead of a second one (REL-R90, REL-R92 … REL-R94).
+/// note back instead of a second one.
 @Suite struct XCallbackRetryTests {
     private func executor(_ library: AutomationLibrary, clipboard: String? = nil) -> XCallbackExecutor {
         XCallbackExecutor(
@@ -90,7 +90,7 @@ import Testing
         #expect(receipts.noteID(for: "f\(XCallbackReceipts.capacity + 7)", now: start.addingTimeInterval(-60)) == nil)
     }
 
-    /// REL-R95: a first note in the Trash does not count; an archived one does.
+    /// A first note in the Trash does not count; an archived one does.
     @Test func aTrashedFirstNoteCreatesAgainAndAnArchivedOneCounts() throws {
         let lib = try TestLibrary.make()
         let archived = try #require(identifier(try create(lib.library, "text=Archived")))
@@ -102,7 +102,7 @@ import Testing
         #expect(again != trashed)
     }
 
-    /// REL-R94: no hash outlives the hour, whether or not another request comes.
+    /// No hash outlives the hour, whether or not another request comes.
     @Test func expiredReceiptsAreRemovedAtOpenAndBeforeEveryLookupAndWrite() throws {
         let lib = try TestLibrary.make()
         let note = try lib.library.store.create(text: "Kept")

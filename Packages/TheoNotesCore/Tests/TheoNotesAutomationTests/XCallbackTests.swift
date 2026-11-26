@@ -54,7 +54,7 @@ import Testing
         #expect(throws: XCallbackFailure.self) { try XCallbackRequest.parse(URL(string: "bear://x-callback-url/create")!) }
     }
 
-    /// The renamed product (REN-R5): `theonotes://` is what the app emits, `baerchen://` links
+    /// The renamed product: `theonotes://` is what the app emits, `baerchen://` links
     /// copied before the rename keep working.
     @Test func parsesBothSchemes() throws {
         #expect(XCallbackRequest.scheme == "theonotes")
@@ -69,7 +69,7 @@ import Testing
         }
     }
 
-    /// FOC-R360: the dev build registers `theonotes-dev` / `baerchen-dev`; its links parse, and no
+    /// The dev build registers `theonotes-dev` / `baerchen-dev`; its links parse, and no
     /// callback may point back into either build.
     @Test func parsesTheDevIdentitysSchemesAndNeverCallsBackIntoAnyBuild() throws {
         for scheme in AppIdentity.dev.urlSchemes {
@@ -255,7 +255,7 @@ import Testing
         ])
         let token = try token(lib)
         let id = try lib.id(titled: "Title")
-        // append concatenates to the last line (M5-R22), before the bottom tag
+        // append concatenates to the last line, before the bottom tag
         var out = try run(lib, "add-text", "id=\(id)&text=%20more&mode=append&token=\(token)")
         #expect(out.failure == nil && value(out, "title") == "Title")
         #expect(try lib.text(id) == "# Title\nline one more\n\n#tag")

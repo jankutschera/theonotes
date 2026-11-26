@@ -82,7 +82,7 @@ public final class FileImporter: Sendable {
         self.init(store: store, paths: paths, now: now, temporaryDirectory: temporaryDirectory, limits: .standard)
     }
 
-    /// `limits` caps the files that links in Markdown notes copy as attachments (IMP-R61): one
+    /// `limits` caps the files that links in Markdown notes copy as attachments: one
     /// file, the files of one note, and everything one run copies.
     init(
         store: NoteStore, paths: AppPaths, now: @escaping @Sendable () -> Date, temporaryDirectory: URL,
@@ -95,7 +95,7 @@ public final class FileImporter: Sendable {
         self.limits = limits
     }
 
-    /// Formats read from a chosen file or package only, never found by a folder walk (M8-R16).
+    /// Formats read from a chosen file or package only, never found by a folder walk.
     private enum DocumentFormat { case html, rtf, rtfd }
 
     private enum Unit {
@@ -118,9 +118,9 @@ public final class FileImporter: Sendable {
     }
 
     private static let archiveExtensions: Set<String> = ["textpack", "bear2bk", "zip", "bear", "bearnote", "panda"]
-    /// Archives that are always one zipped TextBundle written by someone else's app (M8-R57).
+    /// Archives that are always one zipped TextBundle written by someone else's app.
     /// Every archive is extracted by `SafeZip`, which refuses it whole before writing anything
-    /// unsafe; these get the one-note limits, the others the bulk ones (M8-R100, R101).
+    /// unsafe; these get the one-note limits, the others the bulk ones.
     private static let singleNoteArchiveExtensions: Set<String> = ["bear", "bearnote", "panda"]
     private static let documentExtensions: [String: DocumentFormat] = ["html": .html, "htm": .html, "rtf": .rtf, "rtfd": .rtfd]
     /// An HTML or RTF file bigger than this is not read.
@@ -300,7 +300,7 @@ public final class FileImporter: Sendable {
     /// Looks at an RTFD package with `lstat` semantics before AppKit reads it: no symbolic link
     /// or special file anywhere, `TXT.rtf` within `maxDocumentBytes`, each other file within the
     /// image cap, everything together within the HTML total cap, and a sane file count and depth.
-    /// Nothing is read (M8-R56).
+    /// Nothing is read.
     private static func preflightPackage(_ package: URL) throws {
         let keys: Set<URLResourceKey> = [.isSymbolicLinkKey, .isRegularFileKey, .isDirectoryKey, .fileSizeKey]
         if (try? package.resourceValues(forKeys: keys))?.isSymbolicLink == true {
@@ -336,7 +336,7 @@ public final class FileImporter: Sendable {
     /// The bundle of a `.bear`, `.bearnote` or `.panda` archive: exactly one TextBundle, as the
     /// extracted root itself, as the only folder in it (any name), or as the only `*.textbundle`
     /// below it. Anything else (two bundles, a bundle beside loose notes, none) is refused before
-    /// a note is written (M8-R57).
+    /// a note is written.
     private func singleBundle(in work: URL, name: String, label: String) throws -> Unit {
         var found: [Unit] = []
         walk(work, root: work, relative: label, into: &found)
@@ -446,7 +446,7 @@ public final class FileImporter: Sendable {
         }
     }
 
-    /// A chosen HTML, RTF or RTFD document → Markdown (M8-R55, M8-R56). HTML links its images as
+    /// A chosen HTML, RTF or RTFD document → Markdown. HTML links its images as
     /// relative files that the rewriter resolves inside the file's folder; RTF has no file links, so
     /// its text skips the rewriter and keeps only the images it holds.
     private func processDocument(
@@ -530,7 +530,7 @@ public final class FileImporter: Sendable {
             limits: .init(each: limits.each, total: max(0, min(limits.perNote, limits.total - copiedBytes))))
         if rewritesLinks { text = rewriter.rewrite(text) }
         copiedBytes += rewriter.attachments.reduce(0) { $0 + $1.data.count }
-        // Front matter from a Bear-dialect app is literal text (M8-R15).
+        // Front matter from a Bear-dialect app is literal text.
         if options.keepHashNumbersAsText { text = Self.escapingNumberedTags(in: text) }
         if info?.fromDialectApp != true, readsFrontMatterTags { text = ObsidianTags.appending(to: text) }
         if options.titleFromFirstLine {
@@ -676,7 +676,7 @@ struct BundleInfo {
     var isReadOnly: Bool?
     /// Tag paths of per-tag pins (Theo Notes' key only).
     var tagPins: [String]?
-    /// `info.json` carries Bear's or Theo Notes' own key (M8-R15).
+    /// `info.json` carries Bear's or Theo Notes' own key.
     var fromDialectApp = false
 
     static func read(_ url: URL) -> BundleInfo {

@@ -4,7 +4,7 @@
 import Foundation
 
 /// Receives what a fetch delivers. The gateway calls `commit` per batch, then `saveEngineState` for the state that follows
-/// that batch: the persisted state is never ahead of the persisted data (CK-R5). During a full refetch the gateway holds the
+/// that batch: the persisted state is never ahead of the persisted data. During a full refetch the gateway holds the
 /// state back until `endFullRefetch` returned.
 public protocol CloudChangeSink: Sendable {
     /// Validates, quarantines and stores the batch; durable before returning. Throwing aborts the fetch and saves no state.

@@ -12,7 +12,7 @@ enum LockTestHooks {
     static let afterJournalCheck = Mutex<[String: @Sendable () -> Void]>([:])
     static func runAfterJournalCheck(_ noteId: String) { afterJournalCheck.withLock { $0[noteId] }?() }
 
-    /// The same window in the sync materializer's note commit (FOC-R303).
+    /// The same window in the sync materializer's note commit.
     static let afterRemoteJournalCheck = Mutex<[String: @Sendable () -> Void]>([:])
     static func runAfterRemoteJournalCheck(_ noteId: String) { afterRemoteJournalCheck.withLock { $0[noteId] }?() }
 }
@@ -132,7 +132,7 @@ public struct NotePrivacy: Sendable {
     /// How often `finishTransition` tries the cleanup lock, 10 ms apart (about half a second). A lock
     /// that looks held for a moment is usually not: a process spawned while the lock was open keeps
     /// a copy of its file descriptor until it execs, and a flock belongs to the open file
-    /// description, so the lock outlives its owner's `close` (FOC-R306).
+    /// description, so the lock outlives its owner's `close`.
     static let cleanupLockAttempts = 50
 
     /// The lock file is never removed: all processes must keep locking the same inode.
@@ -257,7 +257,7 @@ public final class LockedNoteAccess: NoteSessionStore, Sendable {
         }
     }
 
-    /// The snapshot key seam (FOC-R16): `body` runs under the key lock, so `revoke()` waits for it
+    /// The snapshot key seam: `body` runs under the key lock, so `revoke` waits for it
     /// and every later call throws `accessRevoked`. The key must not escape the closure. Not
     /// reentrant: `body` must not call another member of this access.
     func withVaultKey<T>(_ body: (SymmetricKey) throws -> T) throws -> T { try withKey(body) }
@@ -364,14 +364,14 @@ public final class LockedNoteAccess: NoteSessionStore, Sendable {
                     if note.isLocked { _ = try payload(note, key: key); return }
                     try NotePrivacy.requireNoPendingTransition(noteId, in: db)
                     // The checks that do not depend on a capture come first: a lock that fails them
-                    // leaves a running voice capture and its recording alone (FOC-R300).
+                    // leaves a running voice capture and its recording alone.
                     guard !store.retention.contains(noteId) else { throw NotePrivacyError.pendingEdits }
                     guard try !Bool.fetchOne(db, sql: "SELECT EXISTS(SELECT 1 FROM staging_batch WHERE noteId = ?)", arguments: [noteId])!,
                           !files.hasStagedFiles(for: noteId), !files.isCopySource(noteId) else {
                         throw NotePrivacyError.pendingAttachments
                     }
                     // A voice capture stops before the journal is checked, so it cannot journal
-                    // text after the check (FOC-R199 addendum 3).
+                    // text after the check.
                     try CaptureLockGuard.noteWillLock(noteId)
                     try requireNoPendingJournal(noteId)
                     LockTestHooks.runAfterJournalCheck(noteId)

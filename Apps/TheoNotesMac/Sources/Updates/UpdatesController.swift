@@ -5,7 +5,7 @@ import AppKit
 import Observation
 import SwiftUI
 
-/// What the small alert says (REL-R56). Plain words, no version-number jargon.
+/// What the small alert says. Plain words, no version-number jargon.
 struct UpdateAlertContent: Equatable {
     var title: String
     var message: String
@@ -40,7 +40,7 @@ struct UpdateAlertContent: Equatable {
     }
 }
 
-/// Theo Notes ▸ Check for Updates… (REL-R52). One check per click; nothing runs in the background.
+/// Theo Notes ▸ Check for Updates…. One check per click; nothing runs in the background.
 @MainActor
 @Observable
 final class UpdatesController {

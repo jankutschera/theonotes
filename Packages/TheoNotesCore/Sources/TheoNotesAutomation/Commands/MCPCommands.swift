@@ -4,7 +4,7 @@
 import Foundation
 
 /// `mcp-server`: serves MCP over stdin/stdout until stdin closes. It reads stdin before it opens any
-/// library (ruling M5-R45); its tool handler asks for the library on every call, so a library that
+/// library; its tool handler asks for the library on every call, so a library that
 /// appears later is picked up and one that cannot be opened is a tool error, never a crash.
 enum MCPCommands {
     static let handlers: [[String]: CommandHandler] = [["mcp-server"]: mcpServer]
@@ -13,7 +13,7 @@ enum MCPCommands {
         let io = env.io
         let lines: () -> Data? = io.readLine ?? LineReader(chunk: Chunks(io.readStdin).next).next
         // The scope comes from `--only-tags` / `--exclude-tags` and the `THEONOTES_MCP_*` variables (old `BAERCHEN_MCP_*` still read)
-        // (rulings M5-R18, M5-R141).
+        //.
         let scope = try NoteScope.fromMCPServer(flags: parsed, environment: env.context.environment)
         let tools = MCPTools(libraryProvider: env.libraryProvider, context: env.context, scope: scope)
         let server = MCPServer(handler: tools, read: lines, write: io.write)

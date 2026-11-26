@@ -4,7 +4,7 @@
 import TheoNotesCore
 import Foundation
 
-/// Fetches over https with hard limits (rulings M5-R6, M5-R73, M5-R96 to M5-R108): at most
+/// Fetches over https with hard limits: at most
 /// `maxRedirects` redirects, only to https; no local or private network address, for the URL and
 /// every redirect target (names are resolved and every answer checked) and for every address
 /// actually connected to (`NetworkGuard`); no proxy; no response over `maxBytes` (a longer body is
@@ -56,7 +56,7 @@ public struct HTTPSFetcher: URLFetcher {
         self.now = now
     }
 
-    /// No cookies, cache, credentials or proxy (ruling M5-R106: a proxy resolves names itself, past
+    /// No cookies, cache, credentials or proxy (a proxy resolves names itself, past
     /// the guard).
     static func makeConfiguration(
         requestTimeout: TimeInterval, totalTimeout: TimeInterval, protocolClasses: [AnyClass]
@@ -392,7 +392,7 @@ private final class Download: NSObject, URLSessionDataDelegate, @unchecked Senda
         body.append(data)
     }
 
-    /// Ruling M5-R107: every transaction (redirects included) must have connected to an address
+    ///: every transaction (redirects included) must have connected to an address
     /// that passes the guard. The request may already have reached the target by now; what is
     /// refused is the response entering a note.
     func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {

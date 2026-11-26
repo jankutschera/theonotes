@@ -7,7 +7,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Ordering and state safety of the receiver's sink (CK-R5): the latest valid version per record name, never a regression,
+/// Ordering and state safety of the receiver's sink: the latest valid version per record name, never a regression,
 /// echoes are no-ops, divergent content is quarantined, and the engine state is never ahead of the data.
 @Suite struct CloudReceiverTests {
     @Test(arguments: [[5, 3], [3, 5], [5, 3, 4]] as [[Int64]])

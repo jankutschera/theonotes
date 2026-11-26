@@ -5,15 +5,15 @@ import CryptoKit
 import Foundation
 import GRDB
 
-// The transport-free sealed payload (CK-R17, CK-R19). Defined in docs/superpowers/specs/2026-10-28-sync-payload-v1.md
+// The transport-free sealed payload. Defined in docs/superpowers/specs/2026-10-28-sync-payload-v1.md
 // and pinned by Fixtures/sync/cloudsync-payload-v1.json. This file knows nothing about where a sealed payload travels:
 // no record, no change tag, no state table. A second transport (our own server, the user's own storage) reuses it as is.
 //
 //   sealed    = BNC1(plaintext, vaultKey, context)
-//   context   = "baerchen-sync:1:<accountId>:<entityType>:<entityId>:1"      (frozen, REN2-R2)
+// context = "baerchen-sync:1:<accountId>:<entityType>:<entityId>:1" (frozen)
 //   plaintext = kind || body          kind 0x01 live (body = payload JSON), 0x02 deleted (body = {"at": <ms>})
 
-/// The first plaintext byte (CK-R17). Sealing the kind makes a deletion indistinguishable from an edit to anyone without the key.
+/// The first plaintext byte. Sealing the kind makes a deletion indistinguishable from an edit to anyone without the key.
 public enum SealedPayloadKind: UInt8, Sendable {
     case live = 0x01
     case deleted = 0x02

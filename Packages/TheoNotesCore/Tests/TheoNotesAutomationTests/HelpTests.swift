@@ -11,7 +11,7 @@ import Testing
         #expect(HelpText.all.contains("SEARCH SYNTAX:"))
     }
 
-    /// Ruling M5-R269: the help text is ours; no other product, link or install path appears in it.
+    ///: the help text is ours; no other product, link or install path appears in it.
     @Test func noForeignBrandingOrLinks() {
         #expect(!HelpText.all.contains("Bear"))
         #expect(!HelpText.all.contains("BEARCLI"))

@@ -131,7 +131,7 @@ import GRDB
         #expect(try store.revision(id: "missing") == nil)
     }
 
-    // MARK: - preservingModifiedDate (CLI/MCP `--no-update-modified`, M5-R20)
+    // MARK: - preservingModifiedDate (CLI/MCP `--no-update-modified`)
 
     @Test func testUpdateTextPreservingModifiedDateKeepsDateButBumpsRevisionAndIndex() throws {
         let store = NoteStore(db: try .inMemory(), notifier: nil, paths: tmp.paths)

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Clean-room guard (ruling M5-R269): no sentence of Bear's help or MCP prose may ship.
+"""Clean-room guard: no sentence of Bear's help or MCP prose may ship.
 
 Usage: python3 -I scripts/ip-guard.py              compare the research dumps with the shipping sources
        python3 -I scripts/ip-guard.py --self-test  check the matcher itself on synthetic text

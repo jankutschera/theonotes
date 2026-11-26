@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// The account decision (CK-R10), the person-visible states and words, and the zone lifecycle as the person sees it (CK-R15).
+/// The account decision, the person-visible states and words, and the zone lifecycle as the person sees it.
 @Suite struct CloudAccountPolicyTests {
     // MARK: the decision
 
@@ -129,7 +129,7 @@ import Testing
         #expect(try state(.noAccount) == .signedOutOfICloud, "an unusable account outranks a removed zone")
     }
 
-    // MARK: the zone as the person sees it (CK-R15)
+    // MARK: the zone as the person sees it
 
     @Test func zoneDeletedByUserIsReportedNotRecreated() async throws {
         let w = try await CloudPolicyWorld.make()

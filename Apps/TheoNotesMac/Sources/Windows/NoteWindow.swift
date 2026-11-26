@@ -185,7 +185,7 @@ final class NoteWindowState: FormatTarget {
 
     /// The window closed: commits the note, runs link updates still waiting, and lets go of its session.
     /// With an `onClose` the editor is let go of by it (it gets `finish` to call, now or later); a
-    /// capture window waits there until its editor has drained (FOC-R343).
+    /// capture window waits there until its editor has drained.
     func close() {
         guard !isClosed else { return }
         isClosed = true
@@ -314,7 +314,7 @@ struct NoteWindow: View {
             .navigationTitle(state.title)
             // The system draws a window title dim when the window is not frontmost, which on a dark
             // canvas was hard to read. The title text stays the window's title (Window menu,
-            // accessibility); the visible one is drawn in the theme's primary text colour (FOC-R367).
+            // accessibility); the visible one is drawn in the theme's primary text colour.
             .toolbar(removing: .title)
             .focusedSceneValue(\.noteWindow, state)
             .focusedSceneValue(\.editorMenuState, state.editorMenuState)
@@ -330,7 +330,7 @@ struct NoteWindow: View {
     }
 }
 
-/// The title of a note window, in the shell's primary text colour (FOC-R367).
+/// The title of a note window, in the shell's primary text colour.
 struct NoteWindowTitle: View {
     let title: String
     let palette: ShellPalette

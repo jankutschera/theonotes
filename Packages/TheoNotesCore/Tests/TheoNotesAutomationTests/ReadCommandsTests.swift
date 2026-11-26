@@ -122,7 +122,7 @@ import Testing
         #expect(try titles(lib, "list", "--sort", "modified:asc") == ["P", "B", "A", "C"])
         #expect(try titles(lib, "list", "--sort", "created") == ["B", "A", "C", "P"])
         #expect(try titles(lib, "list", "--sort", "created:asc") == ["P", "C", "A", "B"])
-        // A bare title is descending (ruling M5-R28).
+        // A bare title is descending.
         #expect(try titles(lib, "list", "--sort", "title") == ["P", "C", "B", "A"])
         #expect(try titles(lib, "list", "--sort", "title:desc") == ["P", "C", "B", "A"])
         #expect(try titles(lib, "list", "--sort", "title:asc") == ["A", "B", "C", "P"])
@@ -159,7 +159,7 @@ import Testing
         #expect(cli(lib, "search", "open").out.hasSuffix("\t1\n"))
     }
 
-    /// Observed against Bear (M5-R232): `tags` has the direct tags and every ancestor of a nested
+    /// Observed against Bear: `tags` has the direct tags and every ancestor of a nested
     /// one, in the library's spelling, in code point order.
     @Test func listedTagsCarryAncestorsInTheTableSpellingSorted() {
         let table = ["work": "Work", "work/sub": "Work/Sub"]
@@ -172,7 +172,7 @@ import Testing
         SearchMatchCounter.count(SearchMatchCounter.needles(SearchParser.parse(query)), in: text)
     }
 
-    /// Observed against Bear on 234 real notes (M5-R234): case ignored, diacritics not, `ß` = `ss`
+    /// Observed against Bear on 234 real notes: case ignored, diacritics not, `ß` = `ss`
     /// only for a needle with `ss` or `ß`, a quoted single word counts whole words, other phrases
     /// plain substrings.
     @Test func searchMatchCounterRules() {

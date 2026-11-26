@@ -50,11 +50,11 @@ struct ExportSettings: Equatable {
     var keepTags: Bool
     var htmlLinksBetweenNotes: Bool = false
     var htmlEmbedImages: Bool = false
-    /// Markdown, TextBundle and HTML: off leaves attachments out (A9, MAC11-R16).
+    /// Markdown, TextBundle and HTML: off leaves attachments out.
     var includeAttachments: Bool = true
     /// Markdown only: images go into the file as `data:` URIs instead of the folder next to it (A9).
     var markdownEmbedImages: Bool = false
-    /// PDF only: the theme to print with; nil is the light-slot theme (M8-R7).
+    /// PDF only: the theme to print with; nil is the light-slot theme.
     var pdfThemeId: String? = nil
 }
 
@@ -72,7 +72,7 @@ struct ExportJobReport: Equatable {
 /// Exports a plan in one format (M8 Task 12). One run is one staged destination: every note is
 /// built in a hidden `.baerchen-export-<uuid>.partial` folder inside `destination` and, once
 /// all are built, moved into place. A cancelled run places nothing; a note that fails is reported
-/// and the others still land (M8-R65).
+/// and the others still land.
 @MainActor
 struct ExportJob {
     private let environment: AppEnvironment
@@ -109,7 +109,7 @@ struct ExportJob {
         progress: (Int, Int) -> Void, isCancelled isCancelledByCaller: () -> Bool
     ) async -> ExportJobReport {
         var report = ExportJobReport(destination: destination)
-        // App Lock (M9M-R76): a run that was started before the lock engaged stops at its next check
+        // App Lock: a run that was started before the lock engaged stops at its next check
         // and places nothing; checked before every item is built and before every item is placed.
         let appLock = environment.appLock
         let generation = appLock.generation
@@ -164,7 +164,7 @@ struct ExportJob {
                 report.errors.append("\(item.stem): \(Self.message(error))")
             }
             progress(index + 1, total)
-            // Building runs on the main actor (M8-R68): give the progress sheet and its Cancel a turn.
+            // Building runs on the main actor: give the progress sheet and its Cancel a turn.
             await Task.yield()
         }
         if !cancelled, isCancelled() || Task.isCancelled { cancelled = true }
@@ -172,7 +172,7 @@ struct ExportJob {
         if !cancelled {
             var placements: [Placement] = []
             for entry in staged {
-                // Checked before every item: the run's output is all or nothing (M8-R65).
+                // Checked before every item: the run's output is all or nothing.
                 if isCancelled() || Task.isCancelled {
                     cancelled = true
                     break
@@ -206,7 +206,7 @@ struct ExportJob {
         mayWrite: @MainActor () -> Bool
     ) async throws -> Staged {
         /// Rendering is asynchronous and can finish after the lock engaged: every write into the
-        /// stage asks again right before it happens (M9M-R81). A stale run stops as cancelled.
+        /// stage asks again right before it happens. A stale run stops as cancelled.
         func checkpoint(_ url: URL) throws {
             guard mayWrite() else { throw CancellationError() }
             beforeStageWrite(url)
@@ -367,7 +367,7 @@ struct ExportJob {
     }
 
     /// Gives each folder this run created the oldest `createdAt` and the newest `modifiedAt` of
-    /// the exported notes below it (M8-R65). Folders that were already there are left alone.
+    /// the exported notes below it. Folders that were already there are left alone.
     private static func dateCreatedFolders(_ placements: [Placement], under destination: URL) {
         var dates: [String: (url: URL, created: Date, modified: Date)] = [:]
         for placement in placements {
@@ -470,7 +470,7 @@ struct ExportJob {
     /// For every planned note, the href from `item`'s page to its page: `..` up to the common
     /// folder, then down, then `<enc(stem)>.html`. A note planned in several folders (one per
     /// tag) is reached through the copy that shares the longest folder prefix with `item`, the
-    /// first in plan order on a tie (M8-R66).
+    /// first in plan order on a tie.
     private static func relativeHrefs(from item: ExportItem, targets: [String: [ExportItem]]) -> [String: String] {
         var result: [String: String] = [:]
         for (noteId, copies) in targets {

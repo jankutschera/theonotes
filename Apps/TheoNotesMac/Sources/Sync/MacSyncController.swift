@@ -40,7 +40,7 @@ struct MacSyncServices {
     }
 }
 
-/// Thrown by every credential or transport path of a local-only library (INT-R14).
+/// Thrown by every credential or transport path of a local-only library.
 struct SyncOffForLibraryCopy: Error {}
 
 @MainActor @Observable
@@ -80,9 +80,9 @@ final class MacSyncController {
     var errorMessage: String?
     var deviceName = Host.current().localizedName ?? "Mac"
     @ObservationIgnored private weak var library: AppEnvironment?
-    /// Fixed for the process at launch (INT-R14); a `localOnly` library never syncs.
+    /// Fixed for the process at launch; a `localOnly` library never syncs.
     let policy: SyncLaunchPolicy
-    /// False in a build made for the public (REL-R4): the controller then behaves like a local-only one,
+    /// False in a build made for the public: the controller then behaves like a local-only one,
     /// never reaching the Keychain, the network or the scheduler, and says so in `status`.
     let available: Bool
     var isUnavailable: Bool { !available }
@@ -101,7 +101,7 @@ final class MacSyncController {
     @ObservationIgnored private var shouldContinueSoon = false
     @ObservationIgnored private var sendingTransfer: (code: String, package: AccountKeys.Transfer, words: String)?
     @ObservationIgnored private var receivingTask: Task<Void, Never>?
-    /// Above 0, no run starts (M9M-R77): the Note Password reset holds the barrier while it works.
+    /// Above 0, no run starts: the Note Password reset holds the barrier while it works.
     @ObservationIgnored private var quiesceDepth = 0
 
     init(library: AppEnvironment, policy: SyncLaunchPolicy, available: Bool = true, services: MacSyncServices = .live) {
@@ -130,7 +130,7 @@ final class MacSyncController {
     }
 
     static let localOnlyStatus = "Sync is off for this library copy"
-    /// What any remaining sync entry point answers in a build without the sync setup (REL-R6).
+    /// What any remaining sync entry point answers in a build without the sync setup.
     static let unavailableStatus = "Sync is not available in this version"
 
     /// The credential store, made on first use.
@@ -156,7 +156,7 @@ final class MacSyncController {
         scheduler?.setActive(active)
     }
 
-    /// Blocks new runs, cancels the one that is going and waits until nothing is running (M9M-R77).
+    /// Blocks new runs, cancels the one that is going and waits until nothing is running.
     /// False when something still runs after `timeout`. Calls nest and every call, whatever it
     /// answers, is balanced by one `endQuiesce()`.
     func quiesce(timeout: Duration = .seconds(30)) async -> Bool {
@@ -394,11 +394,11 @@ final class MacSyncController {
 
     static let movedStatus = "This library moved to iCloud"
 
-    /// "Move This Library to iCloud" (MOVE-R1 to MOVE-R3): one final sync with the server, the check that nothing is left in either
+    /// "Move This Library to iCloud": one final sync with the server, the check that nothing is left in either
     /// direction, a verified backup and the detach, all in `PrivateServerMove.run`; then this Mac signs out of the private server for
     /// this library (the sign-in and the account keys go from the Keychain, the device identity stays, the server's copy stays), so
     /// nothing reconnects or binds it again. Throws the reason when it cannot move; nothing has changed then.
-    /// `withoutMissingFiles`: the owner chose "Move to iCloud Without These Files…" after the refusal offered it (MOVE-R10).
+    /// `withoutMissingFiles`: the owner chose "Move to iCloud Without These Files…" after the refusal offered it.
     func leaveForICloud(withoutMissingFiles: Bool = false) async throws {
         guard !isLocalOnly else { throw SyncOffForLibraryCopy() }
         guard !paused else { throw PrivateServerMoveRefusal.syncPaused }
@@ -729,7 +729,7 @@ final class MacSyncController {
     private func loadAccount() async throws {
         guard !isLocalOnly else { throw SyncOffForLibraryCopy() }
         guard !stopping else { throw CancellationError() }
-        // A move that stopped between the detach and the sign-out finishes here: the library never binds again (MOVE-R3).
+        // A move that stopped between the detach and the sign-out finishes here: the library never binds again.
         if let library, try PrivateServerMove.hasLeft(library.database) {
             try await keychain.clearAuthentication()
             services.defaults.set(false, forKey: namespace + ".connected")

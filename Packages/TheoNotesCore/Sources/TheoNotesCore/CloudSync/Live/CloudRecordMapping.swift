@@ -5,17 +5,17 @@ import CloudKit
 import CryptoKit
 import Foundation
 
-// `CloudRecord` <-> `CKRecord`. This file and its three neighbours are the only code that imports CloudKit (CK-R19, CK-R160).
+// `CloudRecord` <-> `CKRecord`. This file and its three neighbours are the only code that imports CloudKit.
 
 enum CloudRecordMappingError: Error, Equatable {
-    /// A field name outside the record spec: it would enter the Production schema for good (CK-R151), so it is never written.
+    /// A field name outside the record spec: it would enter the Production schema for good, so it is never written.
     case fieldNotAllowed(recordType: String, field: String)
     case systemFieldsUnreadable
     case systemFieldsMismatch(String)
     case assetFileMissing(field: String)
 }
 
-/// The two record zones of one library (CK-R152, CK-R160). `Entity` and `KeyBundle` live in `main`, `BlobPart` in `blob`.
+/// The two record zones of one library. `Entity` and `KeyBundle` live in `main`, `BlobPart` in `blob`.
 struct CloudZones: Sendable, Equatable {
     static let blobNamePrefix = "b."
 
@@ -50,7 +50,7 @@ enum CloudRecordMapping {
 
     // MARK: system fields
 
-    /// What the core sees as a record's "system fields": a small deterministic value naming the version (CK-R165). The core compares
+    /// What the core sees as a record's "system fields": a small deterministic value naming the version. The core compares
     /// these byte for byte to recognise "the same cloud version" (echo of our own save, base of an attempt). The live run measured that
     /// CloudKit's own archive (`encodeSystemFields`) is NOT stable for one version: the archive of a save result, of a fetch by name,
     /// of an engine fetch and of a partial fetch have different bytes (2395, 2381 and 1928 bytes for change tag "3").
@@ -164,7 +164,7 @@ enum CloudRecordMapping {
 
     // MARK: user hash
 
-    /// CK-R10: SHA-256 (hex) of the container's user record name.
+    /// SHA-256 (hex) of the container's user record name.
     static func userHash(recordName: String) -> String {
         SHA256.hash(data: Data(recordName.utf8)).map { String(format: "%02x", $0) }.joined()
     }

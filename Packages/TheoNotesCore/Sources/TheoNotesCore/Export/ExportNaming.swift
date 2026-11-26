@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// File and folder names for exported notes (M8-R2).
+/// File and folder names for exported notes.
 public enum ExportNaming {
     /// Longest stem in UTF-8 bytes; leaves room for ` 99`, `.textbundle` and the 255-byte name limit.
     static let maxStemBytes = 180

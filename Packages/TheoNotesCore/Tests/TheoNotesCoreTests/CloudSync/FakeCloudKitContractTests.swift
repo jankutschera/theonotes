@@ -427,7 +427,7 @@ func assetEntity(_ id: String, bytes: Data, systemFields: Data? = nil) throws ->
             hash: String(repeating: "a", count: 64), part: 0, parts: 1, partBytes: 33_554_432, totalBytes: 3,
             partSha256: String(repeating: "b", count: 64), asset: try tempFile(Data([1, 2, 3]))))
         try await a.save(part)
-        await b.device.setFetchesBlobZone(true)       // the zone is not fetched by default (CK-R152); here it is, to test the asset knob
+        await b.device.setFetchesBlobZone(true)       // the zone is not fetched by default; here it is, to test the asset knob
         await b.device.setDeliversBlobPartAssets(false)
         try await b.fetch()
         let delivered = try #require(b.sink.changed(named: part.name))

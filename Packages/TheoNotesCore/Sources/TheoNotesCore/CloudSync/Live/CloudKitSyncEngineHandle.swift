@@ -15,7 +15,7 @@ protocol SyncEngineHandle: AnyObject, Sendable {
     func removePendingSaves(_ ids: [CKRecord.ID])
     func addPendingZoneSaves(_ ids: [CKRecordZone.ID])
     func removePendingZoneSaves(_ ids: [CKRecordZone.ID])
-    /// Empties both pending lists (the engine's own list is a cache of ours, CK-R15).
+    /// Empties both pending lists (the engine's own list is a cache of ours).
     func clearPending()
 }
 

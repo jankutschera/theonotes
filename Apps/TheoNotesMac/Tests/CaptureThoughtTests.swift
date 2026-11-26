@@ -9,7 +9,7 @@ import Testing
 @testable import TheoNotes
 
 /// Focus layer C12: File ▸ Capture Thought, the captured mark in the note list, and `lastOpenedAt`
-/// recorded when an editor shows a note (FOC-R2, FOC-R3, FOC-R120 … FOC-R122, FOC-R250 … FOC-R253).
+/// recorded when an editor shows a note.
 @MainActor
 @Suite struct CaptureThoughtTests {
     @MainActor
@@ -495,9 +495,9 @@ import Testing
     }
 
     /// App Lock engaged when the window closes: nothing reaches the library behind it, so the note
-    /// stays as it is (FOC-R345, amends FOC-R252's "closing cancels").
+    /// stays as it is.
     /// Fix round 1: the lock-before-window path used to call the store directly. Every cancel of a
-    /// capture in the app goes through `AppEnvironment.cancelCapture(noteId:)` (FOC-R350).
+    /// capture in the app goes through `AppEnvironment.cancelCapture(noteId)`.
     @Test func everyCaptureCancelInTheAppGoesThroughOneEntryPoint() throws {
         let sources = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Sources")

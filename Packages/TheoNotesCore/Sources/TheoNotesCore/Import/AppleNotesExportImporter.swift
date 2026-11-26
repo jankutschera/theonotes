@@ -10,14 +10,14 @@ private let exportImportLogger = Logger(subsystem: "com.truebrewbirdie.baerchen"
 /// Share > Export as Markdown). This is the way to bring PDFs and other attachments over: the
 /// scripting import (`AppleNotesImporter`) only sees embedded images.
 ///
-/// The format is the one a real macOS 26 export showed (ANX-R30): a folder per note named after
+/// The format is the one a real macOS 26 export showed: a folder per note named after
 /// the title, holding `<Title>.md` and `Attachments/<UUID>.<ext>`, files linked with image
 /// syntax. Beyond that it assumes only standard Markdown: every `.md` / `.markdown` file in the
 /// chosen folder (or zip) is a note; a relative link or image in it that names a file inside the
 /// export is copied as an attachment (`AttachmentLinkRewriter`: images, PDFs and any other file
-/// type; a UUID file name becomes the link text, ANX-R32); the folders between the chosen folder
+/// type; a UUID file name becomes the link text); the folders between the chosen folder
 /// and the note become the tag `apple-notes/<chosen folder>/<folder>`, except a per-note folder,
-/// which adds no level (ANX-R31).
+/// which adds no level.
 /// Dates are the files' dates (Apple documents no other date). Files that no note links are
 /// counted in one warning, so a link spelling this reader does not know is visible instead of
 /// silently losing files. A failing note goes to the report and never stops the run; a zip is
@@ -32,7 +32,7 @@ public final class AppleNotesExportImporter: Sendable {
     private let temporaryDirectory: URL
     private let limits: Limits
 
-    /// What a run may copy as attachments (ANX-R21). A note's attachments are held in memory
+    /// What a run may copy as attachments. A note's attachments are held in memory
     /// until the note is written, so `perNote` bounds that; `total` bounds the whole run.
     struct Limits: Equatable, Sendable {
         var each: Int
@@ -179,7 +179,7 @@ public final class AppleNotesExportImporter: Sendable {
     }
 
     /// A chosen folder (or the folder a zip unpacked into). A folder that is itself one note's
-    /// folder adds no tag level (ANX-R30); any other is the first level of the tag.
+    /// folder adds no tag level; any other is the first level of the tag.
     private func directoryExport(
         _ root: URL, label: String, folderName: String, relative: String, report: inout FileImportReport
     ) -> Export {
@@ -193,7 +193,7 @@ public final class AppleNotesExportImporter: Sendable {
         return export
     }
 
-    /// The note of a per-note folder, as macOS 26 writes it (ANX-R30): the folder holds exactly one
+    /// The note of a per-note folder, as macOS 26 writes it: the folder holds exactly one
     /// `.md` / `.markdown` file whose base name is the folder's name, and nothing else but an
     /// `Attachments` folder.
     private static func perNoteFile(in dir: URL) -> URL? {

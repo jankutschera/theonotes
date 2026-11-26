@@ -11,7 +11,7 @@ One entry per leaf command (29 for bearcli 3.0.2), in document order:
   default, escapes}], flags[long], acceptsFormat, defaultFields, allFields, extraFields
 `allFields` is what `--fields all` selects and never contains `content` (the help says "Content is
 excluded from all"); `extraFields` holds `content`, which only an explicit `--fields all,content`
-adds (ruling M5-R32). Plus `groups` (group name -> default subcommand or null). `-h, --help` is left out.
+adds. Plus `groups` (group name -> default subcommand or null). `-h, --help` is left out.
 """
 import json
 import re

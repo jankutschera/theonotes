@@ -65,7 +65,7 @@ import Testing
         } catch {
             #expect(error.code == .ambiguous && error.message == "3 sections match that address; repeat the call with one of the candidates.")
             let candidates = error.details?["candidates"]?.array ?? []
-            #expect(candidates.count == 3)  // {address, offset, length, snippet} (M5-R35, observed)
+            #expect(candidates.count == 3)  // {address, offset, length, snippet}
             #expect(candidates.first?.keys == ["address", "offset", "length", "snippet"])
             #expect(candidates.compactMap { $0["offset"]?.intValue } == [16, 39, 60])
             #expect(candidates.compactMap { $0["length"]?.intValue } == [23, 13, 37])
@@ -122,7 +122,7 @@ import Testing
         #expect(s.sections.first?.range == 17..<t.utf8.count)
     }
 
-    /// Observed against Bear (M5-R233): a blank lead is a preamble too; only an empty one is not.
+    /// Observed against Bear: a blank lead is a preamble too; only an empty one is not.
     @Test func blankLeadIsAPreambleAndAnEmptyOneIsNot() throws {
         let s = NoteSections(text: "# A\n\n \t\n## B\nx\n")
         #expect(s.outline(within: nil).map(\.address) == ["# A", "# A\npreamble", "## B"])
@@ -136,7 +136,7 @@ import Testing
         #expect(NoteSections(text: "# A\n\nlead\n## B\n").outline(within: nil)[1] == OutlineEntry(address: "# A\npreamble", offset: 4, length: 6))
     }
 
-    /// Observed against Bear (M5-R233): `preamble` is the text above the first heading (a blank line
+    /// Observed against Bear: `preamble` is the text above the first heading (a blank line
     /// counts), only in a note that has a heading; empty headings are sections; no-break spaces
     /// in a heading are plain spaces in its address.
     @Test func leadEmptyHeadingsAndNoBreakSpacesFollowBear() throws {

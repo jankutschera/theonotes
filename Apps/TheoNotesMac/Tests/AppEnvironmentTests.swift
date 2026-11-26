@@ -43,7 +43,7 @@ import Testing
         #expect(try Data(contentsOf: aside) == Data("kept".utf8))
     }
 
-    /// REN-R12: the folder a launch resolved vanishes before it is opened (another launch moved it).
+    /// The folder a launch resolved vanishes before it is opened (another launch moved it).
     /// Nothing is created and the launch is refused; a fresh install still creates its library.
     @Test func aLibraryThatVanishesBetweenResolveAndOpenIsNeverRecreated() throws {
         let parent = URL(fileURLWithPath: "/tmp/theo-env-\(UUID().uuidString.prefix(8))", isDirectory: true)

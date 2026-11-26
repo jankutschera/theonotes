@@ -7,7 +7,7 @@ import Darwin
 import Foundation
 
 /// The wire format between `baerchen` / `mcp-server` and the running app: one JSON object per line
-/// over a Unix socket, one request and one reply per connection (ruling M5-R150). Only open and
+/// over a Unix socket, one request and one reply per connection. Only open and
 /// selection requests exist; the socket carries no note text except the selection the caller asks for.
 public struct AppSocketRequest: Codable, Equatable, Sendable {
     public var id: Int
@@ -102,14 +102,14 @@ public struct AppSocketResponse: Codable, Equatable, Sendable {
 public enum AppSocket {
     /// `sockaddr_un.sun_path` holds 104 bytes including the terminating NUL.
     public static let maxPathBytes = 103
-    /// The longest request line the app reads (ruling M5-R152).
+    /// The longest request line the app reads.
     public static let maxRequestBytes = 1 << 20
     /// The longest reply line the client reads: a selection can be a whole note.
     public static let maxReplyBytes = 64 << 20
 
     /// `<data dir>/app.sock`; when that exceeds 103 bytes,
     /// `~/Library/Caches/com.truebrewbirdie.baerchen/sockets/<first 16 hex of SHA-256(data dir path)>.sock`
-    /// (ruling M5-R16). Pure: the folder is made by whoever binds.
+    ///. Pure: the folder is made by whoever binds.
     public static func path(for paths: AppPaths, home: URL = AutomationContext.defaultHome) -> String {
         let direct = paths.root.appendingPathComponent("app.sock").path
         if direct.utf8.count <= maxPathBytes { return direct }
@@ -128,7 +128,7 @@ public enum AppSocket {
         path.hasPrefix(fallbackDirectory(home: home).path + "/")
     }
 
-    /// Only the user who runs the app may talk to it (ruling M5-R152). A peer that cannot be
+    /// Only the user who runs the app may talk to it. A peer that cannot be
     /// identified is refused.
     public static func allows(peer: uid_t?, own: uid_t) -> Bool {
         guard let peer else { return false }
@@ -161,10 +161,10 @@ public enum AppSocket {
         case notRunning
         /// The file is there and the connect was refused (`ECONNREFUSED`). Darwin also reports a
         /// listener whose backlog is full this way, so on its own it proves nothing: the app's start-up
-        /// lock tells a crashed app from a busy one (rulings M5-R192, M5-R205).
+        /// lock tells a crashed app from a busy one.
         case refused
         /// The connect did not finish within the timeout (a full backlog, a connect still pending):
-        /// something is there, so treat it as live (ruling M5-R192).
+        /// something is there, so treat it as live.
         case busy
         /// Any other failure; says nothing about whether an instance runs.
         case failed(Int32)
@@ -173,7 +173,7 @@ public enum AppSocket {
 
     /// A connected, blocking stream socket to `path`. A pending connect (`EINPROGRESS`, `EALREADY`)
     /// is waited for with `poll` and read back with `SO_ERROR`, never retried as a fresh connect and
-    /// never mistaken for "not running" (ruling M5-R192).
+    /// never mistaken for "not running".
     public static func connect(path: String, timeout: Duration) -> Result<Int32, ConnectFailure> {
         connect(path: path, timeout: timeout, using: systemConnect)
     }
@@ -249,7 +249,7 @@ public enum AppSocket {
 
     /// Whether a running app holds the start-up lock beside the socket (`<socket>.lock`). The lock is
     /// taken for the life of the app and dropped by the kernel when it dies, so a held lock means a live
-    /// instance even when its backlog is full and connects are refused (ruling M5-R205). A missing or
+    /// instance even when its backlog is full and connects are refused. A missing or
     /// unlocked file means nobody holds it.
     public static func lockIsHeld(socketPath: String) -> Bool {
         let fd = open(socketPath + ".lock", O_RDONLY | O_NOFOLLOW | O_CLOEXEC)
@@ -276,7 +276,7 @@ public enum AppSocket {
         let left = deadline - ContinuousClock.now
         guard left > .zero else { return 0 }
         let parts = left.components
-        // Clamp the seconds before multiplying, so a huge deadline cannot overflow (ruling M5-R211).
+        // Clamp the seconds before multiplying, so a huge deadline cannot overflow.
         guard parts.seconds < Int64(Int32.max) / 1000 else { return Int32.max }
         let milliseconds = parts.seconds * 1000 + (parts.attoseconds + 999_999_999_999_999) / 1_000_000_000_000_000
         return Int32(min(milliseconds, Int64(Int32.max)))
@@ -296,7 +296,7 @@ public enum AppSocket {
     /// Reads up to the first `\n` (or the end of the stream: a last line without a terminator counts).
     /// Bytes after the newline are dropped: a connection carries one request. `deadline` bounds the
     /// whole line on a monotonic clock, so a peer that trickles bytes cannot hold the connection
-    /// (ruling M5-R193).
+    ///.
     public static func readLine(
         from fd: Int32, maxBytes: Int, deadline: ContinuousClock.Instant? = nil
     ) -> LineResult {

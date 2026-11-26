@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Spec section 9 / FOC-R5: the focus state (reminders, hides, history, capture source, open
+/// Spec section 9 / the focus state (reminders, hides, history, capture source, open
 /// time) is device-local and never leaves in an export. HTML and PDF are covered in C18.
 @Suite struct FocusExportTests {
     /// Every file below `root` as relative path and bytes.

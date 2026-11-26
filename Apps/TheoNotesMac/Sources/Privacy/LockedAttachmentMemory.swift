@@ -7,9 +7,9 @@ import Foundation
 /// Decrypted attachments of locked notes, held in memory only. An unlocked session reads them
 /// through `LockedNoteAccess.attachmentData`; nothing is written to disk and no thumbnail is
 /// cached under `Thumbnails/`. The environment empties it on every relock, and nothing is served
-/// while the vault is locked (M9M-R27).
+/// while the vault is locked.
 ///
-/// Memory is bounded (M9M-R36): a file larger than `attachmentLimit` is refused from its size,
+/// Memory is bounded: a file larger than `attachmentLimit` is refused from its size,
 /// before anything is allocated, and the bytes held (cache plus decryptions in flight) never
 /// exceed `byteLimit`: older cache entries make room, a request that still does not fit is
 /// refused. Decryption runs off the main actor.

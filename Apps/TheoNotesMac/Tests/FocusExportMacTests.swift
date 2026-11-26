@@ -9,7 +9,7 @@ import PDFKit
 import Testing
 @testable import TheoNotes
 
-/// Spec section 9 / FOC-R5 (C18): a note with a reminder, a hide and a history entry exports as HTML
+/// Spec section 9 / (C18): a note with a reminder, a hide and a history entry exports as HTML
 /// and PDF with none of that state. The Core formats are covered in `FocusAcceptanceTests`. R34: the
 /// renderer uses a hidden `WKWebView`; check the screen lock before reading a failure
 /// (`ioreg -n Root -d1 -a | grep -A1 CGSSessionScreenIsLocked`).
@@ -163,7 +163,7 @@ import Testing
         #expect(NoteHistoryModel.replaceConfirmTitle == "Replace" && NoteHistoryModel.cancelTitle == "Cancel")
         // While App Lock is enabled
         #expect(PingPlanner.genericTitle == "Theo Notes" && PingPlanner.genericBody == "Reminder")
-        // Usage string: the microphone only, no speech-recognition string (FOC-R9).
+        // Usage string: the microphone only, no speech-recognition string.
         let info = Bundle.main.infoDictionary ?? [:]
         #expect(info["NSMicrophoneUsageDescription"] as? String
             == "Theo Notes records your voice note and keeps the recording with the note.")

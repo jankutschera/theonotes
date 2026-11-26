@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// One test per row of the CK-R4 unknown-outcome table, run against the fake cloud and the real store and publisher.
+/// One test per row of the unknown-outcome table, run against the fake cloud and the real store and publisher.
 @Suite struct CloudOutcomeResolverTests {
     /// Device A has published a note; device B has fetched and merged it, so both hold a base pair at version 1.
     static func synced(devices count: Int = 2, text: String = "# T\nbase\n") async throws -> (world: PublisherWorld, a: PublisherDevice, b: PublisherDevice, id: String) {

@@ -5,14 +5,14 @@ import TheoNotesCore
 import Foundation
 import MetricKit
 
-/// The MetricKit side of crash and hang diagnostics (REL-R44). MetricKit hands the app reports the system
+/// The MetricKit side of crash and hang diagnostics. MetricKit hands the app reports the system
 /// collected about earlier runs; this file turns them into `DiagnosticsRecord`s and nothing else happens here:
 /// no network, no file access. Only fields that are numbers, system identifiers or binary names are read, never
 /// an exception message (`composedMessage`, `formatString`, `arguments`), signpost data or reported state.
 ///
 /// macOS 27 and later use `MetricManager` and `DiagnosticReport`; macOS 26 uses `MXMetricManager` and
 /// `MXDiagnosticPayload`, which exist since macOS 12. The file only uses symbols that also exist on iOS, so the
-/// iOS target can compile it as it is (REL-R48); iOS-only report types (`appLaunch`, `memoryException`) fall under
+/// iOS target can compile it as it is; iOS-only report types (`appLaunch`, `memoryException`) fall under
 /// `.other` until the iOS agent maps them.
 struct MetricKitDiagnosticsSource: DiagnosticsSource {
     func reports() -> AsyncStream<[DiagnosticsRecord]> {

@@ -5,7 +5,7 @@ import CryptoKit
 import Foundation
 import GRDB
 
-// Missing-record recovery (CK-R5, CK-R21). A record the cloud stopped returning pauses its entity: nothing is republished, the
+// Missing-record recovery. A record the cloud stopped returning pauses its entity: nothing is republished, the
 // local content is untouched. The only way out is this explicit recovery, which is never a version bump:
 //
 //   1. a NEW incarnation: `inc' = random`, `incs' = [old inc] + old incs`, `ver = 1`;
@@ -73,7 +73,7 @@ public struct CloudIncarnation: Sendable {
             while inc == pair.inc || inc == missing.lastInc || pair.supersededIncs.contains(inc) { inc = newIncarnation() }
             let attemptId = UUIDv7.make()
             // A create: no change tag. The ancestor of the old history is kept, so that when another device's recovery wins,
-            // the merge of its record runs against the last version this device held (CK-R21).
+            // the merge of its record runs against the last version this device held.
             let attempt = CloudInflight(entity: entity, localId: localID, generation: dirty.generation, attemptId: attemptId,
                                         baseSystemFields: nil, baseAncestor: pair.ancestor, baseVer: 0, inc: inc,
                                         sealed: try sealer.seal(content, type: type, entityID: entityId, deletedAt: clock()),

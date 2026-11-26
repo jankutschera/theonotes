@@ -5,7 +5,7 @@ import AppKit
 import TheoNotesCore
 import UniformTypeIdentifiers
 
-/// The share sheet of Theo Notes (FOC-R12, FOC-R334, FOC-R342). It never opens the library: it puts the
+/// The share sheet of Theo Notes. It never opens the library: it puts the
 /// shared text and files into the App Group inbox (`CaptureInbox`) and the app files them the next time it
 /// runs. Buttons: Save, Append to Note… (only while the app offers notes) and Cancel. What the sheet knows
 /// lives in `ShareSheetModel`; this class draws it and reads the shared items.

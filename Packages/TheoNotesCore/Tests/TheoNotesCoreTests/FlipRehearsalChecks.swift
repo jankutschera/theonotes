@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Rehearsal 1 of the identity flip (stage-2 plan B6, REN2-R52): the one check that needs library code and cannot be
+/// Rehearsal 1 of the identity flip (stage-2 plan B6): the one check that needs library code and cannot be
 /// done with `sqlite3`. `scripts/rehearse-identity-flip.sh` runs it inside a throw-away build with the flipped
 /// bundle root, against an OLD `.baerchen-backup` from a COPY of the library, and restores it into a second temporary
 /// library. It prints no note text, titles or tag names: only counts go to the JSON file named by

@@ -5,7 +5,7 @@ import AppKit
 import TheoNotesCore
 import SwiftUI
 
-/// Crash and hang diagnostics on the Mac (REL-R40 … REL-R48): subscribes to the system's reports, keeps them in
+/// Crash and hang diagnostics on the Mac: subscribes to the system's reports, keeps them in
 /// a bounded local folder and lets the person look at or copy them. Nothing is sent anywhere by this code.
 @MainActor
 final class DiagnosticsController {
@@ -104,7 +104,7 @@ struct DiagnosticsCommands: Commands {
     }
 }
 
-/// Debug builds only: a deliberate main-thread stall so the system has a hang to report (REL-R47). The report
+/// Debug builds only: a deliberate main-thread stall so the system has a hang to report. The report
 /// arrives through MetricKit on a later launch, up to a day later; this does not make it faster.
 enum DiagnosticsDebugHooks {
     static let hangArgument = "--simulate-hang"

@@ -8,7 +8,7 @@ import OSLog
 import Testing
 @testable import TheoNotesCore
 
-/// Snapshots of locked notes (FOC-R11, FOC-R16): sealed with the vault key under the context
+/// Snapshots of locked notes: sealed with the vault key under the context
 /// `snapshot:<id>`, sealed by a local lock, opened by Remove Lock, deleted by a remote lock
 /// (plaintext) or a remote unlock (sealed), and never readable after the access is revoked.
 @Suite struct SnapshotPrivacyTests {
@@ -408,7 +408,7 @@ import Testing
         #expect(try Self.sealedOnUnlockedNotes(in: library.db) == 0)
     }
 
-    // MARK: repair at library open (FOC-R305)
+    // MARK: repair at library open
 
     /// A locked note with two sealed snapshots and an unlocked one with two plaintext snapshots.
     private static func consistentPair(_ library: PrivacyTestLibrary) throws -> (locked: Note, open: Note) {

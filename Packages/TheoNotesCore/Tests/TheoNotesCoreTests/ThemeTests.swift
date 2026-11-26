@@ -270,7 +270,7 @@ import Testing
         return (max(x, y) + 0.05) / (min(x, y) + 0.05)
     }
 
-    /// M7-R26: the asset `AccentColor` is the user's accent under "Multicolor", so the system paints the selected
+    /// The asset `AccentColor` is the user's accent under "Multicolor", so the system paints the selected
     /// rows of the note list and the sidebar with it and draws white text on it. It is a fill, decoupled from the
     /// themes' text accent: white on it must pass 4.5:1 in every appearance variant (dark was 2.53:1, #ff7a76).
     @Test(arguments: assetVariants)

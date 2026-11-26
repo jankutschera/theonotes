@@ -253,7 +253,7 @@ func runServerChunked(_ chunks: [Data], handler: any MCPToolHandler = RecordingT
             #expect(chunk.last == 0x0A && chunk.filter { $0 == 0x0A }.count == 1)
             let value = try JSONValue(parsing: chunk)
             #expect(value["jsonrpc"] == "2.0")
-            // Observed: keys are sorted at every level; `/` is not escaped (ruling M5-R30).
+            // Observed: keys are sorted at every level; `/` is not escaped.
             #expect(String(decoding: chunk, as: UTF8.self) == value.serialized(sortedKeys: true) + "\n")
         }
     }
@@ -332,7 +332,7 @@ func runServerChunked(_ chunks: [Data], handler: any MCPToolHandler = RecordingT
         #expect(reader.next() == nil)
     }
 
-    // MARK: Library handling (ruling M5-R45)
+    // MARK: Library handling
 
     @Test func serverAnswersWithoutAnyLibraryAndToolCallsReportItAsAToolError() throws {
         let empty = try TestLibrary.emptyFolder()

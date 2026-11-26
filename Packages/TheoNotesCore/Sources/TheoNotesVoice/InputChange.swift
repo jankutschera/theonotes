@@ -38,8 +38,8 @@ enum InputChangeDecision: Equatable, Sendable {
 enum InputChange {
     /// A recording is written by one device; another device, or none, cannot continue it. The same
     /// format does not make the same microphone, so two devices that are both known and differ end
-    /// the recording (FOC-R384). The same known device with another format continues in the new
-    /// format (FOC-R393): headsets change profile and rate when the microphone opens. When either
+    /// the recording. The same known device with another format continues in the new
+    /// format: headsets change profile and rate when the microphone opens. When either
     /// identity is unknown a changed format cannot be told from a changed device and ends it.
     static func decide(recording: InputFormatSummary, current: InputFormatSummary, engineIsRunning: Bool) -> InputChangeDecision {
         guard current.channels > 0, current.sampleRate > 0 else { return .inputChanged }

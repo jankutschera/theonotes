@@ -7,7 +7,7 @@ import Testing
 
 @testable import TheoNotes
 
-/// REN2-R38: the renamed app takes its window and layout preferences from the old defaults domain, once.
+/// The renamed app takes its window and layout preferences from the old defaults domain, once.
 /// Both domains are throw-away suites; the real `com.truebrewbirdie.*` domains are never read or written.
 @MainActor
 @Suite struct LegacyPreferencesMigrationTests {

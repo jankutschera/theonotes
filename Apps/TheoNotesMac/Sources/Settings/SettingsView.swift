@@ -95,12 +95,12 @@ enum SettingsTab: String, CaseIterable, Identifiable {
 
     static let storageKey = "Settings.tab"
 
-    /// Left to right. iCloud sits next to Sync, Privacy (M9, M9M-R65) between them and Advanced; Advanced stays last.
+    /// Left to right. iCloud sits next to Sync, Privacy (M9) between them and Advanced; Advanced stays last.
     static var order: [SettingsTab] {
         order(syncSetup: ReleaseFeatures.syncSetupAvailable(), icloud: ReleaseFeatures.cloudSyncAvailable())
     }
 
-    /// The tabs a build shows: the public build has no Sync tab (REL-R5), and no iCloud tab until it is switched on in the build
+    /// The tabs a build shows: the public build has no Sync tab, and no iCloud tab until it is switched on in the build
     /// (`ReleaseFeatures.cloudSyncAvailable`, CK-J2).
     static func order(syncSetup: Bool, icloud: Bool = false) -> [SettingsTab] {
         let all: [SettingsTab] = [.general, .capture, .appearance, .typography, .automation, .sync, .icloud, .privacy, .advanced]
@@ -156,7 +156,7 @@ struct SettingsView: View {
 
     var body: some View {
         // Settings show nothing from the library, but they hold the controls that turn App Lock off:
-        // they wait behind the lock screen like every window (M9M-R62).
+        // they wait behind the lock screen like every window.
         AppLockGate(lock: environment.appLock) {
             TabView(selection: Binding(
                 get: { tab.shown(syncSetup: environment.syncSetupAvailable, icloud: environment.cloudSyncAvailable) }, set: { tab = $0 })
@@ -189,10 +189,10 @@ struct SettingsPane: View {
         case .typography: TypographySettingsPane(settings: settings)
         case .automation: AutomationSettingsView(environment: environment, home: home)
         case .sync:
-            // Not reachable through the tab bar in a public build (REL-R5); nothing is built for it either.
+            // Not reachable through the tab bar in a public build; nothing is built for it either.
             if environment.syncSetupAvailable { MacSyncSettings(sync: environment.sync) }
         case .icloud:
-            // No entry point exists in a build without the flag (REL-R5/R6); nothing is built for it either.
+            // No entry point exists in a build without the flag; nothing is built for it either.
             if environment.cloudSyncAvailable { CloudSyncSettingsView(controller: environment.cloudSync) }
         case .privacy: PrivacySettingsPane(environment: environment)
         case .advanced: AdvancedSettings(settings: settings, environment: environment)

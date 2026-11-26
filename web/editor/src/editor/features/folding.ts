@@ -234,7 +234,7 @@ export function revealEffects(state: EditorState, from: number, to: number = fro
 const strictlyInside = (pos: number, f: FoldRange) => f.from < pos && pos < f.to;
 
 /**
- * Selections and folds (M6-R28). A selection endpoint (anchor or head) strictly inside a fold
+ * Selections and folds. A selection endpoint (anchor or head) strictly inside a fold
  * unfolds it, whatever moved it there. A pointer drag or a Shift-selection across a fold keeps it
  * closed. Find (`select.search`) unfolds every fold its match reaches; ⌘A, the ToC jump, the
  * bridge `selectRange` and the search highlight add `revealEffects` themselves. The folds are the
@@ -267,7 +267,7 @@ function foldStartEndingAt(state: EditorState, pos: number): number | null {
 }
 
 /**
- * A caret never rests at a fold's end (M6-R28): an empty cursor that would land exactly there (a
+ * A caret never rests at a fold's end: an empty cursor that would land exactly there (a
  * click right of the `⋯`, ⌘→, End, ⌃E, ArrowUp/Down, ArrowLeft from the next line, a host
  * selection) goes to the fold's start instead, before the `⋯`. So typing there, dead-key and IME
  * compositions included, always edits the visible line. Shift-extended (non-empty) ranges may
@@ -324,7 +324,7 @@ const overFold = (forward: boolean, extend: boolean) => (view: EditorView): bool
 /**
  * Typing, pasting or dropping with the caret right after a `⋯` (a fold's end, the end of the last
  * hidden line) would edit hidden text: the insert goes to the end of the visible folded line
- * instead, before the `⋯` (M6-R28). A backstop: `caretOffFoldEnd` keeps the caret off that
+ * instead, before the `⋯`. A backstop: `caretOffFoldEnd` keeps the caret off that
  * position, so this catches inserts positioned by other code (paste and drop). An IME
  * composition is left alone (its DOM must not move).
  */
@@ -361,7 +361,7 @@ const inputBeforePlaceholder = EditorState.transactionFilter.of((tr) => {
  * A deletion key at a fold's edge (Delete, ⌥⌦ or ⌃K before the `⋯`, Backspace or ⌥⌫ at the start
  * of the line after the fold, ⇧⌘K on a folded line) would change hidden text or merge the next
  * line into it: the key unfolds the folds it reaches instead and deletes nothing, so the next
- * press acts on visible text (M6-R76). ⌃K before the `⋯` would delete the whole hidden section
+ * press acts on visible text. ⌃K before the `⋯` would delete the whole hidden section
  * (the folded row is one visual line): it unfolds too. Deleting a selection that covers a whole
  * fold (a selection across the `⋯`) goes ahead. Cut is left alone.
  */
@@ -388,7 +388,7 @@ const deleteUnfoldsFold = EditorState.transactionFilter.of((tr) => {
  * Enter with the caret at either edge of a folded row (before the `⋯` or right after it): the new
  * line goes after the fold's end, so the hidden lines stay with their heading or item and the fold
  * stays on its line. A folded list item continues the list (a sibling, as Enter would); anything
- * else gets a plain new line (M6-R28).
+ * else gets a plain new line.
  */
 const enterOnFoldedRow = (view: EditorView): boolean => {
   if (view.composing || completionStatus(view.state) === "active") return false;

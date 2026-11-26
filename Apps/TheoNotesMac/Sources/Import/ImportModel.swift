@@ -508,7 +508,7 @@ final class ImportModel {
         appleNotesPreview = .idle
     }
 
-    /// App Lock engaged (M9M-R64): any sheet or alert closes and its result is forgotten. A run
+    /// App Lock engaged: any sheet or alert closes and its result is forgotten. A run
     /// that is still going stops between two notes (already imported notes stay) and ends quietly.
     func appLockEngaged() {
         previewTask?.cancel()

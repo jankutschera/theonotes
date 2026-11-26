@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// Hostile nesting must never overflow the stack (task H, ruling IMP-R41). Every conversion runs
+/// Hostile nesting must never overflow the stack (task H). Every conversion runs
 /// on a thread with the 512 KiB stack that secondary threads and background import tasks get, in
 /// the Debug build the tests use (the worst case for frame sizes).
 @Suite struct HTMLToMarkdownDepthTests {
@@ -109,7 +109,7 @@ import Testing
     }
 
     /// Content flattened into a table outside its cells moves to the nearest element that renders
-    /// it, after the table and in source order (IMP-R41). `prefix` opens the table structure whose
+    /// it, after the table and in source order. `prefix` opens the table structure whose
     /// last element sits exactly at the nesting limit.
     @Test(arguments: [
         (prefix: "<table>", open: 1, suffix: "</table>", table: ""),
@@ -129,7 +129,7 @@ import Testing
     }
 
     /// `<ol start>` is clamped to what a Markdown list marker can hold (at most nine digits,
-    /// never negative) and the count never overflows (IMP-R41).
+    /// never negative) and the count never overflows.
     @Test(arguments: [
         (start: "9223372036854775807", markers: ["999999999", "999999999"]),
         (start: "-9223372036854775808", markers: ["1", "2"]),
@@ -151,7 +151,7 @@ import Testing
     }
 
     /// Stack use does not grow with nesting: at the bound every kind stays far below a 512 KiB
-    /// stack (measured under 28 KiB in Debug, IMP-R41; before the walkers became iterative the
+    /// stack (measured under 28 KiB in Debug,; before the walkers became iterative the
     /// `a` kind needed 733 KB here).
     @Test(arguments: kinds)
     func stackUseAtTheBoundLeavesMargin(_ kind: Kind) {

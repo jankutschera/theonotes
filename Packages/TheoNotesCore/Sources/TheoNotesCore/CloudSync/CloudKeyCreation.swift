@@ -4,7 +4,7 @@
 import CryptoKit
 import Foundation
 
-// First-device key creation (CK-R14), the recovery-key choice (CK-J1) and replacing the recovery words later.
+// First-device key creation, the recovery-key choice (CK-J1) and replacing the recovery words later.
 // Creation is a sequence of durable steps, each resumable and idempotent:
 //   (1) generate keys, persist the local pending creation    (begin)
 //   (2) add the synchronizable seed (add-only, per account)   (advance)
@@ -219,7 +219,7 @@ public struct CloudKeyCreation: Sendable {
     }
 
     /// True once this library holds finished keys: no half-done creation, a pinned account and recovery state, and the
-    /// seed of that account durably in the keychain. Every data save is gated on it (CK-R14, CK-R84).
+    /// seed of that account durably in the keychain. Every data save is gated on it.
     public var isComplete: Bool {
         get throws {
             guard try seeds.pending() == nil else { return false }
@@ -356,7 +356,7 @@ public enum CloudRecoveryRotationOutcome: Sendable, Equatable {
     case lostRace
 }
 
-/// Replacing the recovery words later (Settings ▸ iCloud ▸ Recovery key, CK-R14). This is NOT revocation (CK-R89): the
+/// Replacing the recovery words later (Settings ▸ iCloud ▸ Recovery key). This is NOT revocation: the
 /// master and vault keys stay, so old words plus an old copy of the bundle still open the data. The person confirms three
 /// words first; then the bundle is re-wrapped and change-tag-updated. Every device that holds the seed keeps working.
 public struct CloudRecoveryRotation: Sendable {

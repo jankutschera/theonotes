@@ -88,7 +88,7 @@ const base = EditorView.theme({
   },
   "&.cm-focused": { outline: "none" },
   ".cm-content": { caretColor: "var(--bc-color-accent)" },
-  // The editor keeps the native selection (no drawSelection, M7-R3); only its colour is the theme's.
+  // The editor keeps the native selection (no drawSelection); only its colour is the theme's.
   ".cm-content ::selection, .cm-content::selection": { backgroundColor: "var(--bc-color-selection)" },
   ".cm-cursor, .cm-dropCursor": { borderLeftColor: "var(--bc-color-accent)" },
   "&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground": {

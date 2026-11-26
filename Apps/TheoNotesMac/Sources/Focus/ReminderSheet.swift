@@ -49,7 +49,7 @@ final class ReminderSheetModel {
     static let inOneHourTitle = "In 1 Hour"
 
     /// The 09:00 button: "Today 09:00" while 09:00 is still ahead, otherwise "Tomorrow 09:00", the time
-    /// in the person's locale format (FOC-R365). `PingTime.defaultFireDate` decides which 09:00 it sets.
+    /// in the person's locale format. `PingTime.defaultFireDate` decides which 09:00 it sets.
     static func nineTitle(now: Date, locale: Locale = .current, calendar: Calendar = .current) -> String {
         let day = nineDay(now: now, calendar: calendar)
         return (day == .today ? "Today" : "Tomorrow") + " " + MacNotificationCategory.nineOClock(locale: locale, calendar: calendar)
@@ -113,7 +113,7 @@ final class ReminderSheetModel {
 }
 
 /// The 09:00 button. A sheet can stay open across 09:00, so the label is re-read from the clock every
-/// second (FOC-R369): it never says "Today" for a click that now sets tomorrow.
+/// second: it never says "Today" for a click that now sets tomorrow.
 struct ReminderNineButton: View {
     static let refreshSeconds: TimeInterval = 1
     let model: ReminderSheetModel

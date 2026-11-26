@@ -5,12 +5,12 @@ import TheoNotesCore
 import Foundation
 
 /// The parts of the share extension that need no window: ids, file names, the request and the list of
-/// notes to append to. Compiled into the extension and, for its tests, into `TheoNotesMacTests` (FOC-R334).
+/// notes to append to. Compiled into the extension and, for its tests, into `TheoNotesMacTests`.
 enum ShareRequestBuilder {
     /// The App Group shared with the app: the team id, a dot and the group name (how macOS writes it).
-    /// The identity (production or dev) comes from the bundle id of the extension (FOC-R360).
+    /// The identity (production or dev) comes from the bundle id of the extension.
     static var groupIdentifier: String { AppIdentity.current.appGroupIdentifier }
-    /// How many notes the picker offers; the app never writes more (FOC-R12).
+    /// How many notes the picker offers; the app never writes more.
     static let pickerLimit = 20
     /// `recent-notes.json` is at most a few kilobytes; anything bigger was not written by the app.
     static let recentNotesMaxBytes = 256 * 1024

@@ -84,7 +84,7 @@ struct NoteCommandState: Equatable {
     /// Exactly one selected note outside the Trash (a locked one needs the vault open to show anything).
     var canShowHistory: Bool { selectedCount == 1 && !inTrash }
 
-    /// Some selected note is not locked yet, outside the Trash (M9M-R42). Offered before a password
+    /// Some selected note is not locked yet, outside the Trash. Offered before a password
     /// exists and while the vault is locked: the command asks for what it needs.
     var canLockNote: Bool { selectedCount > lockedCount && !inTrash }
     /// Exactly one selected note, locked, outside the Trash. A locked vault asks for the password first.
@@ -145,7 +145,7 @@ enum SectionMenu {
         .notes: "1", .untagged: "2", .todo: "3", .today: "4", .locked: "5", .pinned: "6", .archive: "9", .trash: "0",
     ]
 
-    /// The sidebar's sections in the sidebar's order and under its names (MAC11-R11).
+    /// The sidebar's sections in the sidebar's order and under its names.
     static let items: [Entry] = SidebarView.fixedScopes.map { Entry(scope: $0, key: keys[$0]) }
 
     static func title(_ scope: SidebarScope) -> String { "Show " + scope.displayName }
@@ -247,7 +247,7 @@ struct TheoNotesCommands: Commands {
                 .keyboardShortcut(.delete, modifiers: [.command, .shift])
                 .disabled(!state.canEmptyTrash)
         }
-        // M6-R4: no system Show/Hide Toolbar (⌥⌘T) or Customize Toolbar, so ⌥⌘T has one owner,
+        // No system Show/Hide Toolbar (⌥⌘T) or Customize Toolbar, so ⌥⌘T has one owner,
         // Format ▸ Table ▸ Create Table, as in Bear.
         CommandGroup(replacing: .toolbar) {}
 
@@ -395,7 +395,7 @@ struct TheoNotesCommands: Commands {
                 .keyboardShortcut("0")
                 .disabled(app == nil || EditorZoom.snap(app?.settings.snapshot.editorZoom ?? 1) == EditorZoom.actualSize)
             Divider()
-            // MACBAR-R3: one app-wide switch for the bar under the editor of every window.
+            // One app-wide switch for the bar under the editor of every window.
             Button(FormattingBar.viewMenuTitle(shown: showsFormattingBar)) { showsFormattingBar.toggle() }
                 .keyboardShortcut(FormattingBar.shortcut)
             Divider()

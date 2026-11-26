@@ -264,7 +264,7 @@ test("drag-selecting across a rendered table selects it whole and keeps it rende
   const after = (await page.locator(".cm-line", { hasText: "After line" }).boundingBox())!;
   await page.mouse.move(intro.x + 10, intro.y + intro.height / 2);
   await page.mouse.down();
-  // Over the grid the head stays at the table's first position, outside it (M6-R25: an end at
+  // Over the grid the head stays at the table's first position, outside it (an end at
   // `block.from` with the other end above counts as outside); the grid stays.
   await page.mouse.move(grid.x + 40, grid.y + grid.height / 2, { steps: 4 });
   await settle(page);
@@ -560,7 +560,7 @@ test("the cell ⋯ button shows on hover, is aria-hidden and posts tableMenu wit
   const button = cell(page, 2, 1).locator(".bc-cell-menu");
   await expect(button).toHaveAttribute("aria-hidden", "true");
   await expect(button).toBeHidden();
-  // Not focusable: widget DOM holds no focusable element (M6-R18).
+  // Not focusable: widget DOM holds no focusable element.
   expect(await page.locator(".cm-bc-block-rendered button, .cm-bc-block-rendered [tabindex]").count()).toBe(0);
   await cell(page, 2, 1).hover();
   await expect(button).toBeVisible();

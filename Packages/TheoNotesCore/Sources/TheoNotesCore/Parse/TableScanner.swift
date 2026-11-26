@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// Bear tables (ruling M6-R1): a header row, then a delimiter row with the same cell count, then
+/// Bear tables: a header row, then a delimiter row with the same cell count, then
 /// body rows. Every row's trimmed text starts with `|` and ends with a `|` that separates cells.
 /// The table ends at the first line that is not a row of it; a header row can interrupt a
 /// paragraph. Tables can sit in quotes and list items; `NoteParser.scan` only asks about prose

@@ -46,12 +46,12 @@ import Testing
         Settings(db: lib.library.database).tagPosition = .top
         let r = cli(lib, "create", "T", "--content", "Body", "--tags", "x", "--fields", "id,title", "--format", "json")
         let id = try #require(try r.json()["id"]?.string)
-        // The tag line goes below the title line, never above it (M5-R95): the title stays "T".
+        // The tag line goes below the title line, never above it: the title stays "T".
         #expect(try lib.text(id) == "# T\n#x\nBody")
         #expect(try r.json()["title"] == .string("T"))
         let again = cli(lib, "create", "T", "--if-not-exists", "--fields", "id")
         #expect(again.out.trimmingCharacters(in: .whitespacesAndNewlines) == id)
-        // A title and nothing else; front matter; a BOM; nothing at all (M5-R94).
+        // A title and nothing else; front matter; a BOM; nothing at all.
         let titleOnly = cli(lib, "create", "U", "--tags", "x", "--fields", "id")
         #expect(try lib.text(titleOnly.out.trimmingCharacters(in: .whitespacesAndNewlines)) == "# U\n#x")
         let front = cli(lib, "create", "F", "--content", #"---\nk: v\n---\nBody"#, "--tags", "x", "--fields", "id")
@@ -226,7 +226,7 @@ import Testing
     }
 
     @Test func theGateCountsALinkWithALiveRowEvenWithoutItsFile() throws {
-        // The bytes may still be arriving (M5-R80): the indexer made a row for the link.
+        // The bytes may still be arriving: the indexer made a row for the link.
         let lib = try TestLibrary.make([TestNote(text: "# T\n![](later.jpg)\nkeep")])
         let id = try lib.firstId()
         let live = cli(lib, "edit", id, "--find", "![](later.jpg)\n", "--delete")
@@ -333,7 +333,7 @@ import Testing
             #expect(r.exit == 1 && r.err == "Error: Note is locked: \(locked)\n", "\(args)")
         }
         #expect(cli(lib, "tags", "add", readOnly, "x").err == "Error: Note is read-only: \(readOnly)\n")
-        // A bad address on a locked note is note_locked, never not_found (M5-R59).
+        // A bad address on a locked note is note_locked, never not_found.
         #expect(cli(lib, "append", locked, "--section", "## Nope", "--content", "x").err.contains("locked"))
         // The note resolves before the address syntax is looked at.
         let missing = cli(lib, "append", "NOPE", "--section", "", "--content", "x")

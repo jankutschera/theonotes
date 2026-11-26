@@ -6,8 +6,8 @@ import Testing
 @testable import TheoNotesCore
 @testable import BaerchenIOS
 
-// Task 16 fix round 1, items 6 and 7: the private-server "Sync" page exists only where THEONOTES_SYNC_SETUP is YES (REL-R5/R6/R9),
-// and an export the person chooses is a .theonotes-backup while the internal copies keep the legacy name (REN2-R37, REN2-R50).
+// Task 16 fix round 1, items 6 and 7: the private-server "Sync" page exists only where THEONOTES_SYNC_SETUP is YES,
+// and an export the person chooses is a.theonotes-backup while the internal copies keep the legacy name.
 
 @MainActor @Suite(.serialized) struct MobileReleaseSurfaceTests {
     private let key = ReleaseFeatures.syncSetupInfoKey

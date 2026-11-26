@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// `v16-cloudkit-native` and `CloudSyncStore` (CK-R4, CK-R5, CK-R15, CK-R21). The store is where
+/// `v16-cloudkit-native` and `CloudSyncStore`. The store is where
 /// the invariants live: I1 (the base pair moves only through a successful save or an applied
 /// merge), I3 (a success clears only what it covered) and the fence on quarantined entities.
 @Suite struct CloudSyncStoreTests {
@@ -313,7 +313,7 @@ import Testing
         try store.setZoneState(.created); try store.setZoneState(.removed(.deleted))
         try store.bumpGeneration()
         try store.saveEngineState(Data("s".utf8), accountGeneration: store.generation()); try store.clearEngineState()
-        try store.setAccountFenced(true); try store.setAccountFenced(false)     // the flag itself writes no pair (while up it refuses writes, CK-R92)
+        try store.setAccountFenced(true); try store.setAccountFenced(false)     // the flag itself writes no pair (while up it refuses writes)
         try store.setWaiting(recordName: note.recordName, .unlock)
         #expect(try pairRows().map(\.description) == before)
 
@@ -462,7 +462,7 @@ import Testing
         #expect(row.ignoredByUser == false && row.attempts == 0 && row.v == 10)
     }
 
-    // MARK: absence (CK-R5)
+    // MARK: absence
 
     @Test func aMissingEntityIsPausedKeepsItsPairAndCanOnlyBePreparedAsANewIncarnation() throws {
         try seedPair(note, ver: 4, inc: "inc-a")
@@ -475,7 +475,7 @@ import Testing
         try store.insertInflight(attempt(baseVer: 0, inc: "inc-b", base: false))
     }
 
-    // MARK: zone and engine state (CK-R15)
+    // MARK: zone and engine state
 
     @Test func zoneStateChangesBumpTheGenerationOnceAndRecordTheReason() throws {
         #expect(try store.generation() == 0)

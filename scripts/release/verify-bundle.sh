@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# Static verification of a built Theo Notes bundle before it is notarized or shipped (REL-R63). Nothing in the
+# Static verification of a built Theo Notes bundle before it is notarized or shipped. Nothing in the
 # bundle is executed: codesign, plutil, file, security and the Python checkers only read.
 #
 #   scripts/release/verify-bundle.sh [--dry-run] [--skip-acknowledgements] [--personal-install] <Theo Notes.app>
@@ -11,11 +11,11 @@
 #
 # Real mode asserts, for every Mach-O in the bundle: a valid signature, the hardened-runtime flag, a secure
 # timestamp, a "Developer ID Application" authority and the configured team. It also asserts the production bundle id,
-# the sync switch off (REL-R4), the entitlement sets of scripts/release/check_entitlements.py (no get-task-allow),
+# the sync switch off, the entitlement sets of scripts/release/check_entitlements.py (no get-task-allow),
 # an embedded provisioning profile for every item that claims a restricted entitlement (the app) that authorises it, `codesign --verify --deep --strict` (a check; signing itself is done inside-out by the export), and
 # that the Acknowledgements list matches the bundle.
 #
-# --personal-install is for the Production build Jan installs on his own Mac (REN2-R66): it is signed like the shipped build
+# --personal-install is for the Production build Jan installs on his own Mac: it is signed like the shipped build
 # (Developer ID, hardened runtime, no get-task-allow, the same entitlement and profile rules) but it shows the sync setup, so the
 # switch must be ON instead of off. Nothing else is relaxed.
 #

@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-/// CK-R10: this Mac is signed in to a different iCloud account than the one the library syncs with. Nothing is sent to the new
+/// This Mac is signed in to a different iCloud account than the one the library syncs with. Nothing is sent to the new
 /// account unless the person says so; the default (Return) keeps the library offline.
 struct CloudAccountChangedSheet: View {
     let controller: CloudSyncController

@@ -22,7 +22,7 @@ extension CloudApplier {
         return try await coordinated(scope: .note(input.version.entityId)) { try commitNote(input, remote: remote, old: old, downloads: downloads, commit: commit) }
     }
 
-    /// First contact with a starter note: the shipped versions are `shipped`, oldest first (STARTER-R2). A side that equals one of them
+    /// First contact with a starter note: the shipped versions are `shipped`, oldest first. A side that equals one of them
     /// was never edited. The older of the two shipped versions is the base when both are untouched (the newer one wins, as an edit
     /// of the older would); the untouched side's version when only one is (it follows the other side, deletion included); and the
     /// oldest shipped version when neither is (an edit on both sides: the three-way rules as before, possibly one conflict copy).
@@ -67,7 +67,7 @@ extension CloudApplier {
                 let startBase = input.firstContact && !input.shipped.isEmpty ? Self.startingBase(shipped: input.shipped, local: local, remote: remote) : old
                 var merged: SyncNoteMergeResult
                 var noteKey: SymmetricKey?
-                // Before the first sync, existing local notes are still meaningful edits (empty base, CK-R13).
+                // Before the first sync, existing local notes are still meaningful edits (empty base).
                 if input.locallyDeleted, local == nil, let remote, let startBase, SyncNoteMerge.identical(remote, startBase) {
                     // Deleted here before the first binding and untouched in the cloud since the shipped text: the deletion stands (and is
                     // published as a tombstone below). A cloud version that someone edited is not this case: the edit wins.
@@ -141,7 +141,7 @@ extension CloudApplier {
                     if let note {
                         // A file of an independent incarnation that differs from the local one is not installed over it: the local
                         // bytes stay (marked dirty below) and the version stays pending, so the attachment's own apply keeps the
-                        // remote bytes in an attachment-conflict note (CK-R104).
+                        // remote bytes in an attachment-conflict note.
                         let selected = downloads.filter { download in
                             note.attachmentIds.contains(download.payload.id) && download.payload.isLocked == note.isLocked &&
                                 (note.attachmentNames == nil || note.attachmentNames?[download.payload.id] == download.payload.filename) &&
@@ -203,7 +203,7 @@ extension CloudApplier {
         } catch SyncQueueError.snapshotUnavailable {
             return .waitingForDependencies
         } catch SyncApplyError.waitingForCapture {
-            // A voice capture still holds text in this note's journal (FOC-R303): the note waits, the pass goes on.
+            // A voice capture still holds text in this note's journal: the note waits, the pass goes on.
             return .waitingForDependencies
         }
         scratch.committed = true
@@ -386,7 +386,7 @@ extension CloudApplier {
                     if let sameName = try String.fetchOne(db, sql: "SELECT id FROM attachment WHERE noteId=? AND filenameKey=?",
                                                           arguments: [note.id, AttachmentFiles.fileSystemKey(payload.filename)]), sameName != id { throw SyncApplyError.identityCollision }
                     let localURL = files.directory(for: note.id).appendingPathComponent(payload.filename)
-                    // Across independent incarnations the local bytes stay, whatever they are (CK-R104): the attachment is treated
+                    // Across independent incarnations the local bytes stay, whatever they are: the attachment is treated
                     // as having a local edit, so the existing path keeps the remote bytes in an attachment-conflict note and the
                     // local file is published again.
                     if input.independent, !dirty, localAttachmentDiffers(payload, noteId: note.id) {

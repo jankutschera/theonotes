@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-// Callouts (M6 Task 10, M6-R42): a blockquote whose first line starts, right after its quote mark,
+// Callouts (M6 Task 10): a blockquote whose first line starts, right after its quote mark,
 // with `[!TYPE]` (letters, any case) is a callout box: tinted lines per type (theme variables
 // `--bc-color-callout-<type>-*`), an icon that opens the native type menu, and a title (the text
 // after the marker, else the type's default). An unknown type renders as NOTE. A nested quote with

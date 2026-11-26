@@ -11,7 +11,7 @@ public enum AppSocketClient {
     public static let timeoutMessage = "Theo Notes did not answer in time"
 
     /// A failure that says nothing about whether an app runs (permission denied, a path that cannot be a
-    /// socket address): never "not running", so nothing is launched on its account (ruling M5-R204).
+    /// socket address): never "not running", so nothing is launched on its account.
     static func unreachable(_ reason: String) -> AutomationError {
         AutomationError(code: .appUnavailable, message: "Could not reach Theo Notes: \(reason)")
     }

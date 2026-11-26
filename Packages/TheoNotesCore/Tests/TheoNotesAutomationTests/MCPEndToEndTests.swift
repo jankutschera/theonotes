@@ -205,7 +205,7 @@ private func handshake(_ mcp: MCPClientHarness) async throws -> JSONValue {
     }
 
     /// HOME cannot move the library: Foundation's Application Support folder comes from the user
-    /// database, not from `$HOME` (M5-R222), so the temporary library is named by `BAERCHEN_DATA_DIR`.
+    /// database, not from `$HOME`, so the temporary library is named by `BAERCHEN_DATA_DIR`.
     @Test func mcpServerStartsViaSymlinkWithAMinimalEnvironment() async throws {
         let lib = try TestLibrary.make([TestNote(text: "# Only note")])
         let tmp = try TestLibrary.emptyFolder()
@@ -226,7 +226,7 @@ private func handshake(_ mcp: MCPClientHarness) async throws -> JSONValue {
     }
 
     /// With nothing in the environment at all, the handshake and the tool list still work (no library
-    /// is needed for them, M5-R45). The server is pointed at an empty folder, never at the default
+    /// is needed for them). The server is pointed at an empty folder, never at the default
     /// library: should the open stop being lazy, this fails with `library_unavailable` instead of
     /// reaching Jan's real library (final review M9).
     @Test func handshakeNeedsNeitherAnEnvironmentNorALibrary() async throws {

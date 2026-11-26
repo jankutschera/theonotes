@@ -4,7 +4,7 @@
 import Foundation
 
 /// `--sort`: comma-separated `field[:asc|:desc]`. A bare field takes its default direction:
-/// `pinned`, `modified`, `created` and `title` all descending (rulings M5-R10, M5-R28). Ties are
+/// `pinned`, `modified`, `created` and `title` all descending. Ties are
 /// ordered by id.
 struct SortSpec: Equatable {
     enum Field: String, CaseIterable {

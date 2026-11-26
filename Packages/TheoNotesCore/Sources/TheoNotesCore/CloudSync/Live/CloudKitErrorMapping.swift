@@ -4,11 +4,11 @@
 import CloudKit
 import Foundation
 
-/// CloudKit errors -> the gateway's vocabulary (CK-R15, CK-R46, CK-R161). Pure functions over `CKError` so they are tested with
+/// CloudKit errors -> the gateway's vocabulary. Pure functions over `CKError` so they are tested with
 /// hand-built errors and need no container.
 enum CloudKitErrorMapping {
     /// Codes after which the same request can simply be made again later. The engine retries some of them itself; the gateway
-    /// reports them to its caller as `offline` so the publisher's backoff owns the retry (CK-R161).
+    /// reports them to its caller as `offline` so the publisher's backoff owns the retry.
     static func isTransient(_ code: CKError.Code) -> Bool {
         switch code {
         case .networkUnavailable, .networkFailure, .serviceUnavailable, .zoneBusy, .accountTemporarilyUnavailable,

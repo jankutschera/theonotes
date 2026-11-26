@@ -18,7 +18,7 @@ extension CloudRecord {
     var cipherAsset: URL? { if case .asset(let u)? = fields["cipherAsset"] { return u }; return nil }
 }
 
-/// Journal, generations, record shape (CK-R4, CK-R17, CK-R3).
+/// Journal, generations, record shape.
 @Suite struct CloudPublisherTests {
     static func text(_ sealer: CloudPayloadSealer, _ record: CloudRecord, id: String) throws -> String? {
         let sealed = try record.cipher ?? Data(contentsOf: try #require(record.cipherAsset))

@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// Problems the receiver and the attachment code report that are not gateway errors (CK-R5). `unsupportedRecordVersion` is a
+/// Problems the receiver and the attachment code report that are not gateway errors. `unsupportedRecordVersion` is a
 /// record written by a newer build; `corruptAttachment` and `quarantined` are items that stay held back.
 public enum CloudPolicyError: Error, Equatable, Sendable {
     case unsupportedRecordVersion
@@ -19,7 +19,7 @@ public enum CloudErrorClass: Sendable, Equatable {
     case unauthenticated
     case signedOut
     case restricted
-    /// The synced copy vanished (CK-R15): reported, never retried, never re-created.
+    /// The synced copy vanished: reported, never retried, never re-created.
     case zoneRemoved(ZoneRemoval)
     case needsAppUpdate
     case itemsUnreadable(count: Int)

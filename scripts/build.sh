@@ -6,7 +6,7 @@
 # com.truebrewbirdie.baerchen.dev, "Theo Notes Dev", library "Theo Notes Dev"), the build for tests,
 # agents and GUI checks. `--production`: the identity Jan installs (configuration Production, bundle id
 # com.truebrewbirdie.baerchen), for scripts/install-dev.sh. `--release`: the public configuration (Release, same
-# identity as production, sync setup hidden; REL-R4), team from config/release.env (REL-R20). See docs/decisions.md FOC-R360 ... FOC-R364.
+# identity as production, sync setup hidden), team from config/release.env. See docs/decisions.md.
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"

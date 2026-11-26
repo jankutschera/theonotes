@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// First-device key creation (CK-R14): order, crash resumption, races, lost responses, the recovery choice and the
+/// First-device key creation: order, crash resumption, races, lost responses, the recovery choice and the
 /// data-save gate.
 @Suite struct CloudKeyCreationCrashTests {
     enum Outcome: Equatable { case running, completed(String), lost(String) }

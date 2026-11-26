@@ -18,16 +18,16 @@ public enum VoiceCaptureError: Error, Equatable, Sendable {
     case noteUnavailable(noteId: String)
     /// The session did not take the text (its journal could not be written).
     case textNotApplied(noteId: String)
-    /// The note was locked while the capture ran; nothing heard after that was kept (FOC-R199).
+    /// The note was locked while the capture ran; nothing heard after that was kept.
     case noteLocked(noteId: String)
     /// Insert mode is switched off (`VoiceCapture.isInsertModeEnabled`).
     case insertModeUnavailable
-    /// Stop gave up waiting for the engine's last results; what was heard so far is kept (FOC-R382).
+    /// Stop gave up waiting for the engine's last results; what was heard so far is kept.
     case stopTimedOut
     case recordingUnreadable
 }
 
-/// One spoken note (FOC-R9): the engine records and transcribes, this class puts the result into
+/// One spoken note: the engine records and transcribes, this class puts the result into
 /// the library.
 ///
 /// - **New note:** the note (`captureSource = voice`) is created at `start`. Every final result is
@@ -41,7 +41,7 @@ public enum VoiceCaptureError: Error, Equatable, Sendable {
 /// - **Engine failure** keeps everything received so far (and the recording, if there is one) and
 ///   ends in `.failed`; nothing is trashed.
 /// - **Cancel** trashes a new note only while its text is still exactly what the capture wrote
-///   (FOC-R2) and deletes the recording.
+/// and deletes the recording.
 ///
 /// - **Lock:** a local or remote lock of the note stops the capture before the lock commits
 ///   (`CaptureLockGuard`): the recording and, for a new note, its journal are deleted, everything
@@ -50,7 +50,7 @@ public enum VoiceCaptureError: Error, Equatable, Sendable {
 ///
 /// If the recording cannot be attached, it stays in `Recordings/<noteId>/` for
 /// `VoiceRecordingRecovery` at the next launch. One that cannot be played is marked when its words
-/// are in the note (FOC-R399); with no words either and no failure, nothing is kept (FOC-R398).
+/// are in the note; with no words either and no failure, nothing is kept.
 @MainActor
 public final class VoiceCapture {
     public enum Target: Equatable, Sendable {
@@ -69,7 +69,7 @@ public final class VoiceCapture {
     }
 
     /// The one switch for insert mode (Edit ▸ Insert Voice Note). Off, `start` refuses an insert
-    /// target with `insertModeUnavailable`; new-note capture is unaffected (FOC-R199 addendum 3).
+    /// target with `insertModeUnavailable`; new-note capture is unaffected.
     public static var isInsertModeEnabled = true
 
     public private(set) var phase: Phase = .idle
@@ -85,7 +85,7 @@ public final class VoiceCapture {
     private let engine: any VoiceEngine
     private let recordingsDirectory: URL
     private let now: () -> Date
-    /// How long Stop waits for the engine to deliver the last results before it gives up (FOC-R382).
+    /// How long Stop waits for the engine to deliver the last results before it gives up.
     private let finishTimeout: Duration
 
     private enum FinishOutcome: Sendable { case done, failed(any Error), timedOut }
@@ -108,7 +108,7 @@ public final class VoiceCapture {
         var separator: String { text.hasPrefix(" ") ? " " : "" }
     }
     /// The provisional words in a new note's session; the session holds them out of the store
-    /// (FOC-R395) and `draftListener` moves them with other editors' changes (FOC-R396).
+    /// and `draftListener` moves them with other editors' changes.
     private var provisionalDraft: ProvisionalDraft? {
         didSet { session?.heldRange = provisionalDraft.map { $0.offset..<($0.offset + $0.text.utf16.count) } }
     }
@@ -144,14 +144,14 @@ public final class VoiceCapture {
         self.now = now
     }
 
-    /// A capture dropped without Stop or Cancel stops recording (FOC-R302, FOC-R307): the engine is
+    /// A capture dropped without Stop or Cancel stops recording: the engine is
     /// cancelled once and then the recording removed, from a detached task. The guard stays
     /// registered until that is done, so a lock that arrives meanwhile still stops this capture
     /// and removes the recording (`CaptureLockGuard`). A removal that fails keeps the guard's
     /// cleanup obligation (marker, launch retry). One that is already finishing or ended has torn
     /// the engine down and keeps its recording for the next launch's recovery.
     isolated deinit {
-        // What it journaled stays the note's text (FOC-R307); it is committed with the next flush.
+        // What it journaled stays the note's text; it is committed with the next flush.
         if let draftListener { session?.removeListener(draftListener) }
         session?.heldRange = nil
         guard phase == .listening, engineStop == nil, let guardian = lockGuard else {
@@ -173,7 +173,7 @@ public final class VoiceCapture {
         }
     }
 
-    /// FOC-R9's file name: `Voice Note yyyy-MM-dd HH.mm.m4a`, local time.
+    /// 's file name: `Voice Note yyyy-MM-dd HH.mm.m4a`, local time.
     public static func recordingName(at date: Date, timeZone: TimeZone = .current) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -271,7 +271,7 @@ public final class VoiceCapture {
         await pump?.value
         switch phase {
         case .finished, .stoppedByInput: return heard
-        // Ended with nothing to keep (FOC-R398): an empty result, not an error.
+        // Ended with nothing to keep: an empty result, not an error.
         case .cancelled where !abandoned: return heard
         case .cancelled: throw VoiceCaptureError.cancelled
         default: throw failure ?? VoiceCaptureError.notListening
@@ -314,7 +314,7 @@ public final class VoiceCapture {
               let noteId else { return }
         let starting = phase == .idle
         ending = .locked
-        // A cleanup that failed is the capture's error (its obligation is kept, FOC-R199).
+        // A cleanup that failed is the capture's error (its obligation is kept).
         failure = lockGuard?.cleanupError ?? VoiceCaptureError.noteLocked(noteId: noteId)
         heard = ""
         volatile = ""
@@ -359,7 +359,7 @@ public final class VoiceCapture {
                     if self?.failure == nil { self?.failure = VoiceCaptureError.stopTimedOut }
                     work.cancel()
                     self?.keepProvisional()
-                    // Neither the engine's cancel nor its event stream may hold Stop (FOC-R385):
+                    // Neither the engine's cancel nor its event stream may hold Stop
                     // the pump is ended here, and the cancel gets the same limit again.
                     self?.pump?.cancel()
                     await Self.bounded(timeout) { await engine.cancel() }
@@ -388,7 +388,7 @@ public final class VoiceCapture {
         case .transcript(let update):
             let piece = update.text.trimmingCharacters(in: .whitespacesAndNewlines)
             if update.isFinal {
-                // A final replaces the provisional words; an empty one retracts them (FOC-R397).
+                // A final replaces the provisional words; an empty one retracts them.
                 volatile = ""
                 if piece.isEmpty { retractProvisional() } else { acceptFinal(piece) }
             } else if !piece.isEmpty {
@@ -423,7 +423,7 @@ public final class VoiceCapture {
         }
     }
 
-    /// The draft, while the session text still holds it where it was put (or moved, FOC-R396).
+    /// The draft, while the session text still holds it where it was put.
     private var currentDraft: ProvisionalDraft? {
         provisionalDraft.flatMap { $0.revision == session?.revision ? $0 : nil }
     }
@@ -468,7 +468,7 @@ public final class VoiceCapture {
     }
 
     /// Another editor's change (or an external one) moves the draft; one that touches it ends
-    /// the draft, and its words stay as that editor left them (FOC-R396).
+    /// the draft, and its words stay as that editor left them.
     private func follow(_ changeSet: ChangeSet) {
         guard let draft = provisionalDraft, let session else { return }
         provisionalDraft = changeSet.mapped(draft.offset..<(draft.offset + draft.text.utf16.count)).map {
@@ -476,7 +476,7 @@ public final class VoiceCapture {
         }
     }
 
-    /// A Stop that timed out keeps the last provisional words as heard (FOC-R385).
+    /// A Stop that timed out keeps the last provisional words as heard.
     private func keepProvisional() {
         guard !abandoned, !volatile.isEmpty else { return }
         let piece = volatile
@@ -559,11 +559,11 @@ public final class VoiceCapture {
                 // After a failure (a Stop that timed out) the file may not be closed yet: recovery
                 // decides about it later.
                 guard heard.isEmpty, failure == nil else {
-                    // The words are in the note: a later launch removes the file (FOC-R399).
+                    // The words are in the note: a later launch removes the file.
                     if let recording, !heard.isEmpty { VoiceRecordingRecovery.mark(recording, wordsInserted: true, at: now()) }
                     throw failure ?? VoiceCaptureError.recordingUnreadable
                 }
-                // Nothing recognised and nothing that plays: nothing is kept (FOC-R398).
+                // Nothing recognised and nothing that plays: nothing is kept.
                 if case .newNote = target { try store.cancelCapture(noteId: noteId, createdText: createdText) }
                 removeRecording()
                 endLockGuard()

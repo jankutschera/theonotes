@@ -6,7 +6,7 @@ import Foundation
 import Security
 #endif
 
-/// Which build this process is (FOC-R360). Two identities exist side by side on one Mac:
+/// Which build this process is. Two identities exist side by side on one Mac
 /// - `production`: the build Jan installs. Its values are pinned by `AppIdentityTests`; they are the
 ///   keys to his locked-note keychain items, notification permission, App Group and links.
 /// - `dev`: every build used by tests, agents and GUI checks. It shares nothing with production:
@@ -19,7 +19,7 @@ public enum AppIdentity: String, CaseIterable, Sendable {
     case production
     case dev
 
-    /// Info.plist key that carries the build setting `THEONOTES_TEAM_ID` (REL-R20, REL-R21).
+    /// Info.plist key that carries the build setting `THEONOTES_TEAM_ID`.
     public static let teamInfoKey = "THEONOTES_TeamID"
 
     /// The team used when the process shows neither a signed application identifier nor the Info.plist key
@@ -27,7 +27,7 @@ public enum AppIdentity: String, CaseIterable, Sendable {
     /// `scripts/check-identities.sh` fails when they differ, and it is the only literal of the team in the sources.
     public static let fallbackTeamPrefix = "Q446J364FH"
 
-    /// The team prefix every macOS App Group and keychain access group starts with (REL-R21): the team of the
+    /// The team prefix every macOS App Group and keychain access group starts with: the team of the
     /// signature this process runs with, else the Info.plist value written from the build setting, else
     /// `fallbackTeamPrefix`. Resolved once.
     public static let teamPrefix: String = teamPrefix(
@@ -120,7 +120,7 @@ public enum AppIdentity: String, CaseIterable, Sendable {
 
     public func keychainAccessGroup(team: String) -> String { team + "." + bundleIdentifier }
 
-    /// The Keychain services (REN2-R51, task B3). One name per kind of item for both identities: what separates the
+    /// The Keychain services. One name per kind of item for both identities: what separates the
     /// dev build from the installed app is the access group above, not the service. Both follow the production
     /// bundle root, so the cutover (B7) flips them with the bundle id and no store holds a literal of its own.
     /// Today's values are pinned by `IdentityPinsTests`: the installed app's items live under them.

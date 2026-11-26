@@ -28,7 +28,7 @@
     </array>
     <key>THEONOTES_AppGroupIdentifier</key>
     <string>$(THEONOTES_IOS_APP_GROUP)</string>
-    <!-- UIBackgroundModes is not listed here: scripts/set-ios-background-modes.sh writes it from THEONOTES_IOS_BACKGROUND_MODES (CK-R176). -->
+    <!-- UIBackgroundModes is not listed here: scripts/set-ios-background-modes.sh writes it from THEONOTES_IOS_BACKGROUND_MODES. -->
     <key>BGTaskSchedulerPermittedIdentifiers</key>
     <array><string>$(PRODUCT_BUNDLE_IDENTIFIER).sync-refresh</string></array>
     <key>THEONOTES_CloudKitContainer</key>

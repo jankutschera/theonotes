@@ -5,7 +5,7 @@ import CryptoKit
 import Foundation
 import GRDB
 
-// The receiving side's writer (CK-R5, CK-R19). It takes plain values, merges them with the three-way rules the library already
+// The receiving side's writer. It takes plain values, merges them with the three-way rules the library already
 // has (`SyncNoteMerge`, `SyncLockedNoteMerge`) and writes through the reused library writers (`SyncMaterializer.writeNote`,
 // `writeMetadata`, the attachment staging). It imports no transport type and names no state table: the transaction, the base pair
 // and the fetched-version bookkeeping are the caller's (`CloudReconciler`), handed in as `commit`.
@@ -49,7 +49,7 @@ struct CloudApplyInput: Sendable {
     var version: RemoteVersion
     var value: SyncRemoteValue
     var base: SyncRemoteValue?
-    /// An ancestor exists (a base pair, or the base of a snapshot in flight). `false` is first contact (CK-R13: empty base).
+    /// An ancestor exists (a base pair, or the base of a snapshot in flight). `false` is first contact (empty base).
     var hasBase: Bool
     /// `(mutation id, revision)` of a conflict copy: the fetched version's own `(sid, ver)`, or `(attempt id, ver)` while a
     /// snapshot of ours is in flight (`CloudOutcomeResolver.conflictIdentity`).
@@ -77,11 +77,11 @@ struct CloudApplyInput: Sendable {
     var noteAccess: LockedNoteAccess?
     var remoteNotePassword: String?
     /// This device holds no base pair for the entity: whatever the library has is a local version the cloud never saw, even when
-    /// `base` is a first-shipped seed (CK-R130). Such a note is always reconciled with the local one, never overwritten.
+    /// `base` is a first-shipped seed. Such a note is always reconciled with the local one, never overwritten.
     var firstContact: Bool = false
-    /// The shipped versions of a starter note, oldest first, when this is first contact with one (STARTER-R2). Empty otherwise.
+    /// The shipped versions of a starter note, oldest first, when this is first contact with one. Empty otherwise.
     var shipped: [SyncNotePayload] = []
-    /// The note is a starter note this device deleted before it ever met the cloud (no tombstone exists, CK-R132).
+    /// The note is a starter note this device deleted before it ever met the cloud (no tombstone exists).
     var locallyDeleted: Bool = false
     /// Authenticated *applied* parent history, never a pending remote note. The caller
     /// rechecks its exact base pair in the same transaction as attachment recovery.

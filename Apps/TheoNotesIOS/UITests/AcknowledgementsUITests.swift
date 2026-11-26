@@ -3,7 +3,7 @@
 
 import XCTest
 
-/// LIC-R16: Settings ▸ Acknowledgements lists the bundled components and shows the licence text.
+/// Settings ▸ Acknowledgements lists the bundled components and shows the licence text.
 /// Runs only against the disposable --ui-testing library.
 @MainActor final class AcknowledgementsUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }

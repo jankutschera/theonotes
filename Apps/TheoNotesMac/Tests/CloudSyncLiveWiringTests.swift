@@ -7,7 +7,7 @@ import Foundation
 import Testing
 @testable import TheoNotes
 
-// Task 15b (CK-R170 to CK-R174): the shipped services build the live gateway only behind the release flag and a valid container, and
+// Task 15b: the shipped services build the live gateway only behind the release flag and a valid container, and
 // a long upload can neither hold the Settings UI nor the switch-off and the app quit. Nothing here reaches the real iCloud: the live
 // gateway is only constructed (it touches CloudKit on its first call), and the upload is a scripted gateway in front of the fake.
 

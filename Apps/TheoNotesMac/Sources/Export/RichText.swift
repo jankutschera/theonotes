@@ -4,7 +4,7 @@
 import AppKit
 import Foundation
 
-/// Rich text for RTF export (M8-R6, M8-R65): the renderer's `richText` fragment (inline styles, no
+/// Rich text for RTF export: the renderer's `richText` fragment (inline styles, no
 /// classes, images as `[filename]`) becomes an attributed string and then RTF data.
 ///
 /// AppKit's HTML importer is WebKit-backed and documented as main thread only
@@ -51,7 +51,7 @@ enum RichText {
         }
     }
 
-    /// Word (DOCX) from the same attributed string, through our own writer (A8, MAC11-R15).
+    /// Word (DOCX) from the same attributed string, through our own writer.
     @MainActor
     static func docxData(fromFragment html: String) throws -> Data {
         DocxWriter.data(from: try attributed(fromFragment: html))

@@ -5,12 +5,12 @@ import CryptoKit
 import Foundation
 import GRDB
 
-// The `KeyBundle` record (record name `keybundle`, CK-R3) and the library's local key state (ck_state.recoveryState,
+// The `KeyBundle` record (record name `keybundle`) and the library's local key state (ck_state.recoveryState,
 // ck_state.bundleRevision). The record's `envelope` field carries the JSON of `CloudKeyBundle`: the public
 // `AccountKeyEnvelope` plus a canary sealed under a key derived from the vault key. Everything in it is public or
 // ciphertext; no recovery word, seed or key byte (pinned by the canary tests in `CloudKeyBundleTests`).
 
-/// `ck_state.recoveryState` (CK-R14):
+/// `ck_state.recoveryState`
 /// - `none`: this library holds no CloudKit keys yet;
 /// - `acknowledgedSkip`: skipped at setup with the risk acknowledged; offered again once after the first successful sync;
 /// - `pending`: not saved and that one-time offer was shown; the Settings reminder stays;
@@ -83,7 +83,7 @@ public struct FetchedKeyBundle: Sendable, Equatable {
 /// Authenticates the whole bundle under the vault key: an AES-GCM box under HKDF(vault key, salt account id, info label)
 /// whose authenticated data is every other field of the bundle (account, rev, and all six envelope fields, each
 /// length-prefixed) and whose sealed plaintext names the account and whether a recovery key was saved. Changing the
-/// recovery wrapper, the recovery public key, the revision or the account makes it fail (CK-R80, fix round 1).
+/// recovery wrapper, the recovery public key, the revision or the account makes it fail.
 /// The labels are neutral (no working title) and frozen.
 public enum CloudKeyCanary {
     static let purpose = "cloudsync-keybundle-canary"
@@ -261,7 +261,7 @@ public struct CloudKeyBundleStore: Sendable {
     public let accountGeneration: Int64
     public let outcomeTimeout: TimeInterval
     /// When set, the generation in force at the moment of the write replaces `accountGeneration`. A store that lives longer than one
-    /// generation needs it: the library store refuses a send result of any other generation (CK-R171).
+    /// generation needs it: the library store refuses a send result of any other generation.
     public let currentGeneration: (@Sendable () throws -> Int64)?
 
     public init(gateway: any CloudKitGateway, results: any CloudSendResultSource, accountGeneration: Int64 = 0,

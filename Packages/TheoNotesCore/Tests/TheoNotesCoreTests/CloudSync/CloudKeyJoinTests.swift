@@ -7,7 +7,7 @@ import Security
 import Testing
 @testable import TheoNotesCore
 
-/// A device joining an existing account (CK-R6, CK-R14): through the synchronizable seed, by waiting for it, or with the
+/// A device joining an existing account: through the synchronizable seed, by waiting for it, or with the
 /// recovery key; never by overwriting a seed or the bundle.
 @Suite struct CloudKeyJoinTests {
     @Test func vaultKeyEqualsOnBothDevices() async throws {
@@ -207,7 +207,7 @@ import Testing
         let words = try KeyTest.knownRecovery()
         guard case .created(let account) = try await a.creation.run(words.choice) else { Issue.record("not created"); return }
         _ = try await b.readyKeys()
-        // "Remove the iCloud key from all my devices" (CK-R9) on A.
+        // "Remove the iCloud key from all my devices" on A.
         try a.seeds.removeSeed(accountId: account)
         #expect(try await b.joiner().evaluate().state == .needsRecoveryKey)
         let joined = try await b.joiner().join(recoveryWords: words.words)
@@ -324,7 +324,7 @@ import Testing
         #expect(try b.seeds.highWaterMark(accountId: account) == nil)
         #expect(try KeyTest.hasSeed(b.seeds, account), "forgetting the mark keeps the seed")
         try await overwrite(a) { $0 = original }
-        // Documented limitation (CK-R87): without any mark, an older authentic bundle is first contact.
+        // Documented limitation: without any mark, an older authentic bundle is first contact.
         #expect(try await b.joiner().evaluate().state == .ready)
         #expect(try b.seeds.highWaterMark(accountId: account) == 1)
     }

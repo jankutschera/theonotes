@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Tests for scripts/oss/export.py and scripts/oss/scan.py (REN2-R20..R29).
+"""Tests for scripts/oss/export.py and scripts/oss/scan.py.
 Run: python3 -I scripts/tests/test_oss_export.py
 
 Every scan rule is proven twice on a temporary git repository: a planted file makes the export fail with

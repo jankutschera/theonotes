@@ -7,9 +7,9 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// The first-sync matrix (CK-R13 as amended, REL-R70 to R79, CK-R20): the REAL `GettingStartedNotes` on two or three libraries, the
+/// The first-sync matrix: the REAL `GettingStartedNotes` on two or three libraries, the
 /// real coordinator, `FakeCloudKit`. No case accepts a lost edit. The first shipped text set is the merge base of a starter note
-/// at first contact (CK-R130), so an untouched copy follows whatever the other side did and only real edits make conflict copies.
+/// at first contact, so an untouched copy follows whatever the other side did and only real edits make conflict copies.
 @Suite(.serialized) struct CloudFirstRunMatrixTests {
     // MARK: helpers
 
@@ -56,7 +56,7 @@ import Testing
         // The second device found everything in the cloud and published none of it (E0 review point 1).
         #expect(Self.uploadedNoteRecords(b).isEmpty, "the second device re-uploaded \(Self.uploadedNoteRecords(b).count) notes")
         await Self.expectNothingResaved(world)
-        // the device-local flag stays local (REL-R72)
+        // the device-local flag stays local
         #expect(try a.string("SELECT value FROM setting WHERE key='gettingStartedSeeded'") != nil)
         #expect(await world.cloud.recordNames.allSatisfy { $0 == "keybundle" || $0.hasPrefix("e.note.") || $0.hasPrefix("e.setting.") || $0.hasPrefix("e.tagPreference.") || $0.hasPrefix("e.m-") })
     }
@@ -199,7 +199,7 @@ import Testing
         #expect(await world.cloud.versionCount(of: "e.note.\(target)") == 2)
         try await b.enable()
         try await world.converge()
-        // per REL-R74 the untouched copy goes to Trash because it is the last copy of that text; nobody recreates it
+        // per the untouched copy goes to Trash because it is the last copy of that text; nobody recreates it
         #expect(try b.note(target)?.location == .trash)
         #expect(try a.note(target) == nil)
         #expect(await world.cloud.versionCount(of: "e.note.\(target)") == 2, "the preserved copy is not echoed back")
@@ -332,7 +332,7 @@ import Testing
         try await b.enable()
         try await world.converge()
         #expect(try b.count("note") == 0 && a.count("note") == 0)
-        // the device-local flag is not synced (REL-R72): it never arrived on B
+        // the device-local flag is not synced: it never arrived on B
         #expect(try b.string("SELECT value FROM setting WHERE key='gettingStartedSeeded'") == nil)
         // and nothing recreated them in the cloud
         for id in StarterFixtures.ids { #expect(await world.cloud.versionCount(of: "e.note.\(id)") == 2, "live, then deleted") }

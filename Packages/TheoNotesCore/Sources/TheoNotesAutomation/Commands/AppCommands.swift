@@ -50,10 +50,10 @@ struct AppOpenRequest: Equatable {
     }
 
     /// `theonotes://x-callback-url/open-note?…`, what starts the app when it is not running (ruling
-    /// M5-R17). The note is named by its resolved id, never by the caller's raw id or title, so the
-    /// caller's scope has already been applied (ruling M5-R190); the selection options ride along as
+    ///). The note is named by its resolved id, never by the caller's raw id or title, so the
+    /// caller's scope has already been applied; the selection options ride along as
     /// `selection_text`, `selection_offset` and `selection_length` (Theo Notes' extension to Bear's
-    /// `open-note`, ruling M5-R155). Every value is percent-encoded down to the unreserved characters.
+    /// `open-note`). Every value is percent-encoded down to the unreserved characters.
     func launchURL(noteId: String) -> URL? {
         var items: [(String, String)] = [("id", noteId)]
         if let header { items.append(("header", header)) }
@@ -79,9 +79,9 @@ struct AppOpenRequest: Equatable {
 enum AppBridge {
     /// Opens the note in the app. `resolveNote` applies the caller's scope and finds the note; it runs
     /// before anything is launched or sent, so a launch can only name a note the caller may see
-    /// (ruling M5-R190). With no app running, the default library starts it with an `open-note` URL
-    /// carrying the resolved id; a custom library is `app_unavailable` (ruling M5-R17) and is reported
-    /// before the library is touched (M5-R45).
+    ///. With no app running, the default library starts it with an `open-note` URL
+    /// carrying the resolved id; a custom library is `app_unavailable` and is reported
+    /// before the library is touched.
     static func open(
         _ request: AppOpenRequest, paths: AppPaths, context: AutomationContext,
         resolveNote: () throws(AutomationError) -> Note

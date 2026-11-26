@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotes
 
-/// REL-R52 … REL-R59: the update check decides from one static JSON file. A fake fetcher stands in for the
+/// The update check decides from one static JSON file. A fake fetcher stands in for the
 /// network, so no test here makes a request.
 @Suite struct UpdateCheckerTests {
     private struct FakeFetcher: UpdateFetching {
@@ -113,7 +113,7 @@ import Testing
     }
 }
 
-/// The request itself (REL-R54): a plain GET with nothing of ours added, in a session that keeps no cookies,
+/// The request itself: a plain GET with nothing of ours added, in a session that keeps no cookies,
 /// cache or credentials. A URLProtocol stub stands in for the network.
 @Suite(.serialized) struct UpdateRequestTests {
     final class Stub: URLProtocol, @unchecked Sendable {
@@ -216,7 +216,7 @@ import Testing
     }
 }
 
-/// What the person is told (REL-R56) and what the menu item does with the answer.
+/// What the person is told and what the menu item does with the answer.
 @MainActor
 @Suite struct UpdatesControllerTests {
     private final class Box: @unchecked Sendable {

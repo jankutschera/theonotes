@@ -99,7 +99,7 @@ describe("production bundle", () => {
     expect(exportIds.some((id) => id.endsWith("/src/export/render.ts"))).toBe(true);
   });
 
-  // REN2-R10 / OSS-R3: elkjs (EPL-2.0 without a GPL secondary licence) is not part of the app, so the
+  // Elkjs (EPL-2.0 without a GPL secondary licence) is not part of the app, so the
   // GPL-3.0-only claim holds for the whole bundle. vite.config.ts aliases it to stubs/elkjs-disabled.
   // The check looks at module ids and at the bytes: the library's licence header, its SPDX line, its
   // Java package names and the EMF namespace URIs it carries.
@@ -118,7 +118,7 @@ describe("production bundle", () => {
     expect(everything).toContain("ELK layout is not included");
   });
 
-  // LIC-R34: the maths font is STIX Two (SIL OFL 1.1). @mathjax/src names New Computer Modern as its
+  // The maths font is STIX Two (SIL OFL 1.1). @mathjax/src names New Computer Modern as its
   // default font through the `#default-font` import map; vite.config.ts points that at STIX Two,
   // so no New Computer Modern data is built into the app.
   test("the maths font is STIX Two and New Computer Modern is not bundled", { timeout: 120_000 }, async () => {

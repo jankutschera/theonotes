@@ -5,8 +5,8 @@ import TheoNotesCore
 import Foundation
 
 /// Every word the Settings ▸ iCloud tab and its two sheets show, in one place, so that a wording decision is one edit
-/// (CK-R140). The words are plain: no "CloudKit", "zone", "record", "token", "quarantine", and the 24 words are always
-/// "recovery words" (never "recovery key", never "revoke": replacing them locks nobody out, CK-R89).
+///. The words are plain: no "CloudKit", "zone", "record", "token", "quarantine", and the 24 words are always
+/// "recovery words" (never "recovery key", never "revoke": replacing them locks nobody out).
 /// `CloudSyncStringsTests` pins that nothing here uses a banned word.
 enum CloudSyncStrings {
     // MARK: tab and switch
@@ -27,7 +27,7 @@ enum CloudSyncStrings {
     /// A build that lacks iCloud sync or the private-server sync cannot move the library.
     static let privateServerDetail = "This version of Theo Notes cannot move it to iCloud."
 
-    // MARK: move this library to iCloud (MOVE-R1 to MOVE-R6)
+    // MARK: move this library to iCloud
 
     static let moveDetail = "You can move it to iCloud. The notes on this Mac stay as they are. Move each of your devices, one after the other, and do not change notes in between."
     static let moveButton = "Move This Library to iCloud…"
@@ -41,7 +41,7 @@ enum CloudSyncStrings {
         """
     static let moveConfirm = "Move to iCloud"
     static let moveProgress = "Syncing with your private server one last time and saving a backup"
-    /// Stays in the sync settings after a move until the owner dismisses it (MOVE-R6): a bold title, then the step in secondary text.
+    /// Stays in the sync settings after a move until the owner dismisses it: a bold title, then the step in secondary text.
     static let moveNoticeTitle = "Move Your Other Devices Now"
     static let moveOtherDevicesNotice = "On each device, open Settings ▸ iCloud and choose Move This Library to iCloud. Until all have moved, do not change, delete or trash notes on any of them, because such changes can come back or turn into a second copy."
     /// Next to the notice while iCloud sync is not running after a move (design r3): a bold title, then the rest in secondary text.
@@ -68,7 +68,7 @@ enum CloudSyncStrings {
         return "Some attachment files are missing on this Mac, so they can never reach your private server. Notes: " + list
             + ". Put the file back or remove the attachment from the note, then move again. Nothing was moved."
     }
-    /// The card when the missing files may be left behind (MOVE-R10, MOVE-R13), the same words on iOS: a bold title, then short
+    /// The card when the missing files may be left behind, the same words on iOS: a bold title, then short
     /// secondary lines, one note title per line.
     static let missingFilesTitle = "Some Attachments Are Missing"
     static func missingFilesCount(_ notes: Int) -> String {
@@ -79,7 +79,7 @@ enum CloudSyncStrings {
     static let missingFilesWithout = "You can move without these files. The notes move as they are and keep showing the missing file."
     static let nothingMovedYet = "Nothing has been moved yet."
     static let moveWithoutFilesButton = "Move to iCloud Without These Files…"
-    /// The normal confirmation plus one sentence (MOVE-R13).
+    /// The normal confirmation plus one sentence.
     static let moveWithoutFilesMessage = moveMessage + "\n\nThe missing attachment files stay missing."
     static func moveUnsent(_ count: Int) -> String {
         (count == 1 ? "1 change on this Mac has" : "\(count) changes on this Mac have") + " not reached your private server yet. Nothing was moved. Try again in a moment."
@@ -160,7 +160,7 @@ enum CloudSyncStrings {
     static let removeKey = "Remove the iCloud key from all my devices…"
     static let removeKeyTitle = "Ask iCloud Keychain to remove the key from all your devices?"
     static let removeKeyButton = "Remove the Key"
-    /// Honest about what this does: it asks iCloud Keychain, which removes the key where it is reachable (CK-R9, CK-R149).
+    /// Honest about what this does: it asks iCloud Keychain, which removes the key where it is reachable.
     static func removeKeyMessage(recoverySaved: Bool) -> String {
         let base = """
             This stops syncing on this Mac and asks iCloud Keychain to remove the key that opens your iCloud copy from all your devices. \
@@ -198,12 +198,12 @@ enum CloudSyncStrings {
     static let recoveryNotSavedLine = "Not saved yet. Without them, your notes in iCloud cannot be recovered if you lose all your devices and iCloud Keychain."
     static let createRecoveryWords = "Create recovery words…"
     static let replaceRecoveryWords = "Replace recovery words…"
-    /// One sentence that devices already set up keep working (CK-R89), and one that this does not lock anybody out.
+    /// One sentence that devices already set up keep working, and one that this does not lock anybody out.
     static let replaceRecoveryDetail = "Devices that are already set up keep working. Replacing the words does not lock out anyone who already has the old ones."
     static let recoveryReplaced = "Your new recovery words are saved. The old ones are no longer the ones to keep."
     static let recoveryChangedElsewhere = "Another device changed the recovery words first. Use the newest words from that device."
 
-    /// Shown when this Mac and another device set up iCloud sync at the same moment and this one lost (Task 8, CK-R14).
+    /// Shown when this Mac and another device set up iCloud sync at the same moment and this one lost.
     static let lostSetupRaceDismiss = "OK"
     static let lostSetupRaceTitle = "Another device set up first"
     static let lostSetupRace = """

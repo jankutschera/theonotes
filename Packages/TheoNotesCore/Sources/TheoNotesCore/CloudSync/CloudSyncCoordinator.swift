@@ -9,7 +9,7 @@ import GRDB
 // The CloudKit sync coordinator (Task 10): the one object a Mac or iOS app owns per library. It wires the parts the earlier
 // tasks built (store, publisher, receiver, blob transfer, key layer, account fence, gateway) and runs the first sync, the
 // ordinary cycles, the launch recovery and the account lifecycle. It is written once for both apps; the Cloudflare controllers
-// are not built on it. Rulings: CK-R130 to CK-R139.
+// are not built on it.
 
 /// What the coordinator needs from the app that owns the library. The Mac and iOS apps implement it; tests implement it over a
 /// temporary library.
@@ -18,7 +18,7 @@ public enum CloudJournalRecoveryState: Sendable, Equatable { case ready, waiting
 public protocol CloudSyncLibrary: Sendable {
     var database: AppDatabase { get }
     var paths: AppPaths { get }
-    /// `.localOnly` for a library copy (`--data-dir`): such a library never syncs (INT-R14), decided at launch.
+    /// `.localOnly` for a library copy (`--data-dir`): such a library never syncs, decided at launch.
     var syncPolicy: SyncLaunchPolicy { get }
     /// A verified backup of the whole library; returns its id. The first sync waits for it.
     func makeBackup() async throws -> String
@@ -49,11 +49,11 @@ extension CloudSyncLibrary {
 }
 
 public enum CloudCoordinatorError: Error, Equatable, Sendable {
-    /// A library copy or a `--data-dir` library never syncs (INT-R14).
+    /// A library copy or a `--data-dir` library never syncs.
     case libraryCopyNeverSyncs
-    /// The library syncs through the Cloudflare engine; changing the service goes through `SyncAccountDetach` (CK-R12).
+    /// The library syncs through the Cloudflare engine; changing the service goes through `SyncAccountDetach`.
     case boundToCloudflare
-    /// Another coordinator, in this process or another, already owns this library (CK-R133).
+    /// Another coordinator, in this process or another, already owns this library.
     case ownedElsewhere
     /// The first device needs the person's choice about the recovery key (CK-J1) before keys can be made.
     case recoveryChoiceRequired
@@ -61,7 +61,7 @@ public enum CloudCoordinatorError: Error, Equatable, Sendable {
     /// `syncNow` was called while the coordinator is not running (`enable` or `launch` first).
     case notRunning
     /// The iCloud account the device reports is not the one this library is bound to (or cannot be told right now): a destructive
-    /// or key-changing action does nothing (CK-R10, CK-R15).
+    /// or key-changing action does nothing.
     case accountNotCurrent
     /// "Upload again" needs the verified key bundle this library kept (`ck_state.keyBundleCache`); it is missing or does not
     /// authenticate against the account, revision and seed this library pins. Nothing was changed.
@@ -95,7 +95,7 @@ public actor CloudSyncCoordinator {
     public private(set) var handledEvents = 0
     /// When the last failure wants to be retried (the scheduler of the app reads it).
     public private(set) var retry: CloudErrorDecision.Retry = .none
-    /// True when this device set up the keys at the same moment as another device and lost (CK-R14): the recovery words it
+    /// True when this device set up the keys at the same moment as another device and lost: the recovery words it
     /// showed belong to a setup that was dropped and protect nothing. The app tells the person to use the other device's words.
     /// Cleared by `disable()` and by `dismissLostSetupRace()`.
     public private(set) var lostSetupRace = false
@@ -115,7 +115,7 @@ public actor CloudSyncCoordinator {
     private let store: CloudSyncStore
     private let fence: CloudGenerationFence
     private let join: CloudKeyJoin
-    /// How long an account change waits for running operations (CK-R97).
+    /// How long an account change waits for running operations.
     public nonisolated let drainTimeout: TimeInterval
     public static let defaultDrainTimeout: TimeInterval = 10
 
@@ -150,9 +150,9 @@ public actor CloudSyncCoordinator {
     ///   - checkpoint: called at every named step (after `crash`); tests hold a device there to interleave devices or to act
     ///     between steps. Production passes the default.
     ///   - appBuild: the app build; a changed build retries quarantined records that were unreadable when opened.
-    ///   - drainTimeout: how long an account change waits for running operations (CK-R97, default 10 s).
+    /// - drainTimeout: how long an account change waits for running operations.
     ///   - cancelOperations: the gateway's own cancellation, handed to the fence (`{ await gateway.cancelOperations() }` for the live
-    ///     gateway, CK-R170). An account change and `disable()` call it, so a long `submit` does not hold them up.
+    /// gateway). An account change and `disable` call it, so a long `submit` does not hold them up.
     public init(library: any CloudSyncLibrary, gateway: any CloudKitGateway, seeds: any CloudKeychain,
                 configuration: CloudKitConfiguration?, blobs: CloudBlobSettings = CloudBlobSettings(),
                 clock: @escaping @Sendable () -> Date = { Date() }, crash: CrashPoint = .never,
@@ -205,19 +205,19 @@ public actor CloudSyncCoordinator {
     }
 
     /// Switches this device's sync off. The engine stops, uploads are off, the owner lock is released. Nothing is deleted: not in
-    /// the library, not in iCloud, not in the keychain (CK-R9). Edits made afterwards keep being captured and go out on the next
+    /// the library, not in iCloud, not in the keychain. Edits made afterwards keep being captured and go out on the next
     /// `enable`.
     public func disable() async {
         transitionId += 1
         stopping = true
         suspended = false
-        cyclesRetired = true            // from here on a cycle that was running publishes nothing (CK-R171)
+        cyclesRetired = true            // from here on a cycle that was running publishes nothing
         eventTask?.cancel(); eventTask = nil
         cyclePending = false
         runnerTask?.cancel()
         // ONE deadline (the drain timeout) covers the cancellation, the drain and the wait for the cycle to stop. A cycle in the middle
         // of an upload would otherwise hold the switch-off and the app quit until the transfer ends (`submit` has no timeout of its
-        // own). The fence closes first, so whatever a call that outlives the deadline writes later is refused (CK-R99, CK-R171).
+        // own). The fence closes first, so whatever a call that outlives the deadline writes later is refused.
         let deadline = Date().addingTimeInterval(drainTimeout)
         await fence.cancelRunning()
         while busy, Date() < deadline { try? await Task.sleep(nanoseconds: 5_000_000) }
@@ -254,7 +254,7 @@ public actor CloudSyncCoordinator {
     /// its background time, or a background refresh expired), so whatever is running must stop and nothing may write afterwards.
     /// It is the first half of `disable()` and nothing else: the durable fence is closed BEFORE anything is cancelled, the gateway
     /// and the tracked operations are cancelled and drained under ONE deadline (`drainTimeout`, `CloudGenerationFence.cancelRunning`),
-    /// in-flight rows become `unknown` and the generation is bumped, so a late result of the suspended cycle is refused (CK-R99, CK-R171).
+    /// in-flight rows become `unknown` and the generation is bumped, so a late result of the suspended cycle is refused.
     /// The person's switch, the uploads, the session and the owner lock stay. The next `foreground()`, `syncNow()` or `launch()` lifts the
     /// fence the normal way (`resumeIfAllowed`, one refetch) and goes on; until then no event starts a cycle.
     /// It also covers a start that has no session yet (a cold launch or the first run is still on its way, owner lock taken or the switch
@@ -345,7 +345,7 @@ public actor CloudSyncCoordinator {
     /// The person has read the notice about a lost setup race.
     public func dismissLostSetupRace() { lostSetupRace = false }
 
-    /// "Upload again" after the synced copy was removed. The key bundle lived in the removed copy, so it comes back first (CK-R146c):
+    /// "Upload again" after the synced copy was removed. The key bundle lived in the removed copy, so it comes back first (c)
     /// the account is checked, the bundle this library kept after its last verification (`ck_state.keyBundleCache`) is authenticated
     /// against the pinned account, revision, seed and canary, the zone is made again and the bundle is written create-only under the
     /// fence; a bundle another device wrote first is verified instead of overwritten. Only then can uploads follow. If the cached
@@ -413,15 +413,15 @@ public actor CloudSyncCoordinator {
         try await step("uploadAgain.afterBundle")
     }
 
-    // MARK: what the settings screen offers besides the switch (Task 15, CK-R140)
+    // MARK: what the settings screen offers besides the switch
 
     /// Whether the person has saved recovery words (`none` and `acknowledgedSkip` and `pending` are "not saved").
     public func recoveryState() throws -> CloudRecoveryState { try store.keyState().recovery }
 
     /// "Create recovery words" / "Replace recovery words": the words the person confirmed replace the ones in the key bundle. This is
-    /// not revocation (CK-R89): devices that are set up keep working. Needs a running coordinator (the keys are open). It runs one
+    /// not revocation: devices that are set up keep working. Needs a running coordinator (the keys are open). It runs one
     /// at a time with the cycles, looks at the account first and does its fetch and conditional write inside the generation fence
-    /// (CK-R15): after an account change it sends nothing.
+    ///: after an account change it sends nothing.
     public func saveRecoveryWords(_ choice: RecoveryChoice) async throws -> CloudRecoveryRotationOutcome {
         guard let session, let bound = try store.cloudUserHash() else { throw CloudCoordinatorError.notRunning }
         return try await runExclusive {
@@ -437,7 +437,7 @@ public actor CloudSyncCoordinator {
     }
 
     /// The account the device reports is the one this library is bound to, and the fence is open. Otherwise a destructive or
-    /// key-changing action must not run (it throws `accountNotCurrent`); a different account also closes the fence (CK-R10).
+    /// key-changing action must not run (it throws `accountNotCurrent`); a different account also closes the fence.
     private func isRemoved(_ zone: CloudZoneState) -> Bool { if case .removed = zone { true } else { false } }
 
     private func requireCurrentAccount(_ bound: String) async throws {
@@ -448,7 +448,7 @@ public actor CloudSyncCoordinator {
     }
 
     /// "Upload them again" after notes went missing in iCloud: every paused note gets a new copy made from this library's
-    /// content (CK-R21), sent by the next cycle. Returns how many were prepared.
+    /// content, sent by the next cycle. Returns how many were prepared.
     @discardableResult
     public func uploadMissingAgain() async throws -> Int {
         guard let session else { throw CloudCoordinatorError.notRunning }
@@ -458,10 +458,10 @@ public actor CloudSyncCoordinator {
     }
 
     /// "Delete my iCloud copy": a verified backup of this library, then the synced copy in iCloud is deleted and this library is
-    /// let go of its binding. Notes, attachments and tags on this device stay; the keychain keeps its key (CK-R9). A later switch-on
+    /// let go of its binding. Notes, attachments and tags on this device stay; the keychain keeps its key. A later switch-on
     /// starts a new sync from this library. Sync is off afterwards.
     ///
-    /// The deletion is the one thing here that cannot be undone, so it is held to the account fence (CK-R15, CK-R10): this coordinator
+    /// The deletion is the one thing here that cannot be undone, so it is held to the account fence: this coordinator
     /// keeps the library's owner lock and runs nothing else meanwhile; the device must report the account the library is bound to; the
     /// gateway deletes only while that account is still the signed-in one (`deleteZone(expecting:)`) and inside a fenced operation;
     /// and the library is let go only after the deletion is confirmed and the generation did not change. Any failure leaves the
@@ -492,7 +492,7 @@ public actor CloudSyncCoordinator {
         await disable()
     }
 
-    /// "Remove the iCloud key from all my devices" (Advanced, CK-R9): sync is switched off here and the account's key is removed from
+    /// "Remove the iCloud key from all my devices" (Advanced): sync is switched off here and the account's key is removed from
     /// iCloud Keychain, which removes it on every device. The iCloud copy stays but needs the recovery words to be opened again.
     public func removeICloudKey() async throws {
         await disable()
@@ -572,7 +572,7 @@ public actor CloudSyncCoordinator {
             try await library.verifyNotePassword(notePassword)
         }
         // The backup is a local backup of the library and needs no keys, so it comes FIRST: before the person is asked about recovery
-        // words and before any key exists (CK-R143). It happens once per first sync: asked again after the recovery step, it is the same.
+        // words and before any key exists. It happens once per first sync: asked again after the recovery step, it is the same.
         // A library that is already bound had it before it was bound.
         if !wasEnabled, try store.backend() != .cloudkit {
             if firstSyncBackup == nil {
@@ -601,7 +601,7 @@ public actor CloudSyncCoordinator {
         defer { access?.revoke() }
 
         if !wasEnabled {
-            // Starter notes deleted before this library ever met the cloud have no tombstone: remember them for the merge (CK-R132).
+            // Starter notes deleted before this library ever met the cloud have no tombstone: remember them for the merge.
             try store.recordDeletedStarters()
             // Download first, uploads off: what the cloud already has is merged before this library publishes anything.
             var report = CloudCycleReport()
@@ -617,7 +617,7 @@ public actor CloudSyncCoordinator {
                 return report.waitingForUnlock > 0 ? .needsNotePassword : .syncing
             }
             // Through the editors' commit coordination, as an apply: open editors are drained first, and an editor whose note the
-            // first-bind guard removes is closed by the host. A journal with uncommitted text keeps the guard off (STARTER-R11).
+            // first-bind guard removes is closed by the host. A journal with uncommitted text keeps the guard off.
             let store = store, paths = library.paths
             let enableUploads: @Sendable () throws -> Void = { try store.enableUploads(keeping: CloudFirstRun.startersWithPendingJournal(in: paths)) }
             do {
@@ -636,8 +636,8 @@ public actor CloudSyncCoordinator {
         }
         try cleanUpEnableMarkers(keys)
         try await step("firstRun.afterCleanup")
-        // Not the cycle that switched uploads on: another device may be binding at the same moment, and the first-contact rules (STARTER-R2)
-        // decide a starter's first meeting. The next cycle upgrades (STARTER-R22).
+        // Not the cycle that switched uploads on: another device may be binding at the same moment, and the first-contact rules
+        // decide a starter's first meeting. The next cycle upgrades.
         let state = try await runCycle(session, uploads: true, access: access, notePassword: notePassword, upgradesStarters: false)
         try await step("firstRun.afterUpload")
         pendingRecovery = nil
@@ -656,12 +656,12 @@ public actor CloudSyncCoordinator {
 
     private func resume(notePassword: String?) async throws -> CloudSyncState {
         if let blocked = try await journalRecoveryGate(notePassword: notePassword) { return blocked }
-        // A crash may have left sends in the `sending` state: they may or may not have landed (CK-R4). This is the first thing
+        // A crash may have left sends in the `sending` state: they may or may not have landed. This is the first thing
         // that happens, before any network call.
         try store.interruptSending()
         try throwIfSuspended()
         // Offline at launch is not a reason to have no engine: the account is looked at again by every cycle, and the keys come
-        // from the verified bundle kept on this device (CK-R130).
+        // from the verified bundle kept on this device.
         var unreachable: Error?
         do { if let blocked = try await reconcileAccount(preparing: false) { return blocked } }
         catch where Self.isNetworkFailure(error) { unreachable = error }
@@ -716,7 +716,7 @@ public actor CloudSyncCoordinator {
         completedCycles += 1
         errorPolicy.succeeded()
         if uploads, upgradesStarters, !report.moreWork, !report.quotaHeld { await upgradeStartersAfterSync() }
-        // No room in iCloud: say so, and ask for no cycle of our own (a foreground or the slow timer looks again, CK-R15).
+        // No room in iCloud: say so, and ask for no cycle of our own (a foreground or the slow timer looks again).
         if report.quotaHeld {
             retry = .onForegroundOrEvery(CloudErrorPolicy.quotaRetryInterval)
             return .quotaFull
@@ -727,7 +727,7 @@ public actor CloudSyncCoordinator {
         return try steadyState()
     }
 
-    /// STARTER-R22: the one-time starter upgrade of a library bound to an account runs here, after a cycle that fetched everything with
+    /// The one-time starter upgrade of a library bound to an account runs here, after a cycle that fetched everything with
     /// uploads on, so a deletion or an edit made elsewhere has arrived (a starter that is gone or edited is left alone) and the first-bind
     /// guard has run. Through the editors' commit coordination, as an apply. A failure or an editor that cannot be drained leaves the
     /// marker unset: the next cycle tries again. One more cycle sends the new texts.
@@ -760,7 +760,7 @@ public actor CloudSyncCoordinator {
         return .upToDate(lastSync: clock())
     }
 
-    /// Looks at the account the device reports and brings the fence in line with it (CK-R10, CK-R15). Returns the state to show
+    /// Looks at the account the device reports and brings the fence in line with it. Returns the state to show
     /// when sync must not run now, nil when it may.
     private func reconcileAccount(preparing: Bool) async throws -> CloudSyncState? {
         let current = await gateway.accountState()
@@ -813,7 +813,7 @@ public actor CloudSyncCoordinator {
         }
     }
 
-    /// Any number of requests while a cycle runs make exactly one more cycle (CK-R136).
+    /// Any number of requests while a cycle runs make exactly one more cycle.
     private func requestCycle() {
         guard session != nil || ((try? store.isSwitchedOn()) ?? false), !stopping, !suspended else { return }
         cyclePending = true
@@ -835,23 +835,23 @@ public actor CloudSyncCoordinator {
 
     private func resolveKeys(recovery: RecoveryChoice?, allowCreation: Bool) async throws -> KeyResolution {
         // A key creation that was interrupted finishes first: its pending item holds its own keys and its own choice, which win
-        // over anything passed now. Until it is complete no data record may be saved (CK-R14, CK-R84).
+        // over anything passed now. Until it is complete no data record may be saved.
         if try seeds.pending() != nil {
             let resumed = try await makeCreation().run(try recovery ?? RecoveryChoice.skip(acknowledged: true))
             if case .anotherDeviceWon = resumed { lostSetupRace = true }
             try await step("firstRun.afterKeyCreation")
         }
         // Words the person confirmed for a setup that never happens: this library had no keys and no creation under way, and by the
-        // time they were confirmed another device had finished its own setup (CK-R14).
+        // time they were confirmed another device had finished its own setup.
         let hadNoKeys = try store.keyState().accountId == nil
         var evaluation: CloudKeyJoinEvaluation
         do { evaluation = try await join.evaluate() } catch {
-            // Offline at launch: the verified bundle kept from the last online run plus the keychain seed are enough (CK-R130).
+            // Offline at launch: the verified bundle kept from the last online run plus the keychain seed are enough.
             if Self.isNetworkFailure(error), let keys = try cachedKeys() { return .ready(keys) }
             throw error
         }
         // The person chose "Upload again" (the zone is not "removed" any more) but the key bundle is not in the cloud: an interrupted
-        // "Upload again". The verified bundle this library kept is written again before anything else is done (CK-R146c).
+        // "Upload again". The verified bundle this library kept is written again before anything else is done (c).
         if evaluation.state == .noBundle, !allowCreation, !isRemoved(try store.zoneState()), let cached = try? authenticatedCachedBundle() {
             try await recreateKeyBundle(cached)
             evaluation = try await join.evaluate()
@@ -1038,7 +1038,7 @@ public actor CloudSyncCoordinator {
     }
 }
 
-// MARK: the verified key bundle, kept for an offline launch (CK-R130)
+// MARK: the verified key bundle, kept for an offline launch
 
 extension CloudSyncStore {
     func cachedKeyBundle() throws -> CloudKeyBundle? {

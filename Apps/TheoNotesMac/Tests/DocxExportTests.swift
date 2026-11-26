@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotes
 
-/// A8 (MAC11-R15 replacement): the own Word writer. The fragment is the pre-check fixture
+/// A8: the own Word writer. The fragment is the pre-check fixture
 /// (`docs/release/evidence/2026-11-14-mac-export-1.1/docx-precheck/fragment.html`) plus a line of
 /// characters XML must escape.
 @MainActor

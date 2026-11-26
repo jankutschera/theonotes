@@ -4,7 +4,7 @@
 import Darwin
 import Foundation
 
-/// Makes the files of fetched `CKAsset` fields durable before the engine state may advance (CK-R5). CloudKit stages a fetched
+/// Makes the files of fetched `CKAsset` fields durable before the engine state may advance. CloudKit stages a fetched
 /// asset in a folder the system empties, so the sink copies it into the library's own folder first:
 ///
 ///   1. copy under a fresh path from `CloudSyncStore.newPinnedPath` (never a reused name),
@@ -16,7 +16,7 @@ import Foundation
 /// A failure removes whatever this call wrote and throws, so the batch fails and the token does not advance. The folder is a
 /// durable, no-backup folder under the library's Application Support folder (not `tmp`).
 extension AppPaths {
-    /// Where fetched assets of unreadable or not-yet-applied records are kept (CK-R5): inside the library folder, which lives in
+    /// Where fetched assets of unreadable or not-yet-applied records are kept: inside the library folder, which lives in
     /// Application Support, and excluded from backups.
     public var cloudPinned: URL { root.appendingPathComponent("CloudPinned", isDirectory: true) }
 }

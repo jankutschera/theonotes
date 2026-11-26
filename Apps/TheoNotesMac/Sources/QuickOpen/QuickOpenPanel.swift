@@ -268,7 +268,7 @@ struct QuickOpenView: View {
         .frame(width: QuickOpenPanel.size.width, height: QuickOpenPanel.size.height)
         // A standard material, which the system makes opaque under Reduce Transparency. Rows keep the system
         // text colours that match it; only the field's caret takes the theme accent. The selected row stays on
-        // the asset AccentColor/OnAccentColor pair (M7-R9), whatever the theme.
+        // the asset AccentColor/OnAccentColor pair, whatever the theme.
         .background(.regularMaterial)
         .tint(palette.accent)
         .onAppear { fieldFocused = true }
@@ -303,7 +303,7 @@ struct QuickOpenView: View {
 }
 
 /// The selected row's fill and text: the asset `AccentColor` and `OnAccentColor` (white in every variant), a
-/// fill-safe red decoupled from the themes' text accent (M7-R26; white on it is at least 4.5:1, pinned by
+/// fill-safe red decoupled from the themes' text accent (white on it is at least 4.5:1, pinned by
 /// `ThemeTests.testAccentColorCarriesWhiteTextOnItsFill`). Both come from the asset so the pair always matches.
 enum QuickOpenColors {
     static var selectedFill: NSColor { NSColor(named: "AccentColor") ?? .controlAccentColor }

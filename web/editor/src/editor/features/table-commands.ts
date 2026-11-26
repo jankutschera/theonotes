@@ -5,7 +5,7 @@
 // cell. Every command is one transaction and one undo step, writes minimal edits (cells it does
 // not target stay byte-identical, spacing included) and finds cells through the parser's model
 // (table-model.ts), so `\|`, pipes in code spans and wiki links are never mistaken for cell
-// borders (M6-R3). The target cell is the one a native menu was opened on (`menuId`, resolved by
+// borders. The target cell is the one a native menu was opened on (`menuId`, resolved by
 // `resolveMenuTarget`; a dead target does nothing) or else the main selection's head.
 
 import { EditorSelection, type ChangeSet, type ChangeSpec, type EditorState, type Transaction, type TransactionSpec } from "@codemirror/state";
@@ -96,7 +96,7 @@ const INLINE_PROTECTED = new Set(["InlineCode", "InlineMath", "Comment"]);
 
 /**
  * Inside inline code, inline math or a comment, the edges included: a caret just before `` `x` ``
- * or right after it counts as inside (`codeAt` is strict), so Create Table refuses there (M6-R35).
+ * or right after it counts as inside (`codeAt` is strict), so Create Table refuses there.
  */
 function inProtectedSpan(tree: ReturnType<typeof syntaxTree>, pos: number): boolean {
   if (codeAt(tree, pos)) return true;
@@ -277,7 +277,7 @@ export const tableAddColumn: EditorCommand = (target, args) => {
   const k = where === "after" ? column + 1 : column;
   const specs: ChangeSpec[] = [];
   // The header and the delimiter always get the column (a caret in a body row's extra cell
-  // pads them up to it, so the two keep the same count, M6-R1); a body row that ends before the
+  // pads them up to it, so the two keep the same count); a body row that ends before the
   // insertion point is left alone.
   const add = (cells: readonly CellRef[], text: string, pad: boolean) => {
     if (cells.length === 0 || (k > cells.length && !pad)) return;
@@ -429,7 +429,7 @@ export const tableTab = (forward: boolean) => (view: EditorView): boolean => {
 const blank = (state: EditorState, cells: readonly CellRef[]) => cells.every((c) => !/\S/.test(state.doc.sliceString(c.from, c.to)));
 
 /**
- * ↩ at a table's outer edge (M6-R77): after the closing pipe of its last row it opens a line
+ * ↩ at a table's outer edge: after the closing pipe of its last row it opens a line
  * below the table, before the header's first pipe a line above it. The new line keeps the rows'
  * quote markers and indentation. Null anywhere else.
  */

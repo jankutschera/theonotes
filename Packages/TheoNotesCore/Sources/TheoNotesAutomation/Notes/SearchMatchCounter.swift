@@ -4,7 +4,7 @@
 import TheoNotesCore
 import Foundation
 
-/// `matches` of a search hit (rulings M5-R11, M5-R234): how many places in the raw note text the
+/// `matches` of a search hit: how many places in the raw note text the
 /// positive terms, phrases and tags of the query mark, places that overlap counted once.
 /// Observed against Bear (234 notes, 121 queries):
 /// - case is ignored, diacritics are not (`fur` does not count `für`, although the note matches);

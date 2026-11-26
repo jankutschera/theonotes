@@ -13,7 +13,7 @@ public protocol URLFetcher: Sendable {
     func fetch(_ url: URL) async throws -> (data: Data, suggestedName: String?)
 }
 
-/// What a fetched URL may be (rulings M5-R6, M5-R96 and M5-R105).
+/// What a fetched URL may be.
 enum URLFetchPolicy {
     /// The URL a command line or tool argument names: `invalid_url` when it is no URL or names a
     /// local or private network address, `usage` for a scheme other than https (`http:`, `file:`,

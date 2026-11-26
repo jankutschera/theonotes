@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// The Theo Notes rename (REN-R1…): the macOS library folder is `Theo Notes`, and a library that
+/// The Theo Notes rename: the macOS library folder is `Theo Notes`, and a library that
 /// still lives in `Baerchen` is moved there once. Every test works in a temporary "Application
 /// Support" folder; none touches the real home folder.
 @Suite struct AppPathsLibraryMoveTests {
@@ -212,7 +212,7 @@ import Testing
         #expect(!fixture.exists(fixture.legacy), "the old path is not created again")
     }
 
-    /// REN-R12: a library that was there at the first check of the launch and is gone afterwards
+    /// A library that was there at the first check of the launch and is gone afterwards
     /// is never replaced by an empty one: the launch is refused, and nothing is created.
     @Test func aLibraryThatVanishedDuringTheLaunchFailsClosed() throws {
         let fixture = try Fixture()
@@ -231,7 +231,7 @@ import Testing
         #expect(!fixture.exists(fixture.current), "resolving creates nothing")
     }
 
-    /// REN-R12: a fresh install (neither folder at the first check) is not an error, and the
+    /// A fresh install (neither folder at the first check) is not an error, and the
     /// tools never hand out the old path when it does not exist.
     @Test func aFreshInstallOrAToolNeverGetsAVanishedOldPath() throws {
         let fixture = try Fixture()
@@ -245,10 +245,10 @@ import Testing
         #expect(!fixture.exists(fixture.current))
     }
 
-    /// REN-R11: the move happens only under the single-instance lock of the old folder
+    /// The move happens only under the single-instance lock of the old folder
     /// (`app.sock.lock`, the file the app's socket server holds). While another process holds it,
     /// this launch opens the old library and the move is left to a later launch.
-    /// REN-R12: only a launch that saw no library at all may create the folder.
+    /// Only a launch that saw no library at all may create the folder.
     @Test func onlyAFreshInstallMayCreateTheLibraryFolder() throws {
         let fixture = try Fixture()
         defer { fixture.remove() }

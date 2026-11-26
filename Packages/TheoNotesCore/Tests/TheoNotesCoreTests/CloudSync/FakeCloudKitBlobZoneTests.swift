@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import TheoNotesCore
 
-/// CK-R152 / CK-R160: `BlobPart` records live in a second zone the engine never fetches. The fake models what Gate G0 measured:
+/// `BlobPart` records live in a second zone the engine never fetches. The fake models what Gate G0 measured
 /// a fetch delivers Entity and KeyBundle records only; parts are read by name, with or without their asset.
 @Suite struct FakeCloudKitBlobZoneTests {
     private func part(_ tag: String = "a") throws -> CloudRecord {

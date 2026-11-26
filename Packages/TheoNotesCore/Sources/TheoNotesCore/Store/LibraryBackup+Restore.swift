@@ -40,7 +40,7 @@ extension LibraryBackup {
         var restored = 0, kept = 0, removedIDs: [String] = []
         try database.pool.write { db in
             // Replace All writes `isLocked` rows without the lock transaction, so it stops the voice
-            // captures of the notes it locks first, as a lock does (FOC-R274, C11 review). A merge
+            // captures of the notes it locks first, as a lock does. A merge
             // only adds notes that do not exist, and nothing captures into those.
             if mode == .replaceAll {
                 for record in records where record.note.isLocked { try CaptureLockGuard.noteWillLock(record.note.id) }

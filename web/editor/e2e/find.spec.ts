@@ -79,7 +79,7 @@ test("Find… opens the panel focused; typing highlights every match; Enter and 
   expect(await selection(page)).toEqual({ anchor: 4, head: 7 });
   await expect(count(page)).toHaveText("1 of 3");
   await expect(page.locator(".cm-content .cm-searchMatch-selected")).toHaveText("Two");
-  // M7-R10: the selected match has a non-colour cue (an inset ring in the accent), the others do not.
+  // The selected match has a non-colour cue (an inset ring in the accent), the others do not.
   await expectRing(page.locator(".cm-content .cm-searchMatch-selected"), true);
   await expectRing(page.locator(".cm-content .cm-searchMatch:not(.cm-searchMatch-selected)").first(), false);
   // Still typing in the field: ⌘G (mock mode: the editor keymap stands in for the native menu).

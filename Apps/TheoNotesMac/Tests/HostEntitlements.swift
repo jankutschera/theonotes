@@ -5,7 +5,7 @@ import Foundation
 import Security
 import Testing
 
-/// What the signed test host (the app) was really given. The dev build is signed ad hoc (FOC-R368), so
+/// What the signed test host (the app) was really given. The dev build is signed ad hoc, so
 /// it has no keychain access group; the tests that need the real data-protection keychain run only
 /// when the host has one (a team-signed build), and say so when they do not.
 enum HostEntitlements {

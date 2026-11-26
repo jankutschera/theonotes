@@ -15,7 +15,7 @@ final class LibraryProvider: @unchecked Sendable {
     private let open: () throws(AutomationError) -> AutomationLibrary
     /// Where the library is now, resolved again on every call (nil: unknown, then only a vanished
     /// database file triggers a reopen). The folder of a library that was found at the old
-    /// `Baerchen` path may be superseded by `Theo Notes` at any time (REN-R13).
+    /// `Baerchen` path may be superseded by `Theo Notes` at any time.
     private let currentRoot: (@Sendable () -> URL?)?
     private var opened: AutomationLibrary?
 
@@ -30,12 +30,12 @@ final class LibraryProvider: @unchecked Sendable {
         lock.lock()
         defer { lock.unlock() }
         if let opened {
-            // The app may have moved the library folder (`Baerchen` to `Theo Notes`, REN-R2) while
+            // The app may have moved the library folder (`Baerchen` to `Theo Notes`) while
             // this process kept running. A pool opens new connections by path, so a kept library
             // whose files are gone, or whose path is no longer where the library resolves to, is
             // dropped and the path is resolved again: the next call opens the moved library, or
             // fails, but never creates an empty one at the old path. The old library is only
-            // released, never closed: a request that still holds it finishes first (REN-R13).
+            // released, never closed: a request that still holds it finishes first.
             let moved = currentRoot?().map { $0.standardizedFileURL != opened.paths.root.standardizedFileURL } ?? false
             if !moved, FileManager.default.fileExists(atPath: opened.paths.database.path) {
                 try opened.requireCurrentSchema()
@@ -50,7 +50,7 @@ final class LibraryProvider: @unchecked Sendable {
 }
 
 /// What a handler may use besides its parsed arguments. The library is opened lazily (ruling
-/// M5-R45): a handler checks its arguments first, and `app open` / `mcp-server` may never need it.
+///): a handler checks its arguments first, and `app open` / `mcp-server` may never need it.
 struct CommandEnvironment {
     let context: AutomationContext
     let io: CLIIO
@@ -60,7 +60,7 @@ struct CommandEnvironment {
     func library() throws(AutomationError) -> AutomationLibrary { try libraryProvider.library() }
 
     /// The `--content` value, else stdin decoded as UTF-8; a terminal on stdin counts as empty
-    /// (ruling M5-R13).
+    ///.
     func content(_ parsed: ParsedCommand) -> String {
         if let value = parsed.value("--content") { return value }
         guard !io.stdinIsTTY else { return "" }

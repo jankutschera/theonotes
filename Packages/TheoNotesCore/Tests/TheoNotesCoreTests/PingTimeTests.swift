@@ -33,7 +33,7 @@ import Testing
         #expect(PingTime.inOneHour(now: now).timeIntervalSince(now) == 3600)
     }
 
-    /// FOC-R365: the Remind Me sheet's "In 5 Minutes".
+    /// The Remind Me sheet's "In 5 Minutes".
     @Test func inFiveMinutesIsExactlyThreeHundredSeconds() {
         let now = Date(timeIntervalSince1970: 1_800_000_000)
         #expect(PingTime.inFiveMinutes(now: now).timeIntervalSince(now) == 300)

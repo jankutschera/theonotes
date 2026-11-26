@@ -19,9 +19,9 @@ final class AppEnvironment: ObservableObject {
     let database: AppDatabase
     let store: NoteStore
     let notifier: ChangeNotifier
-    /// Decided before the environment exists and fixed for the process (INT-R14).
+    /// Decided before the environment exists and fixed for the process.
     let syncPolicy: SyncLaunchPolicy
-    /// Whether this build shows the sync setup (REL-R4); false means sync is never started, whatever the launch.
+    /// Whether this build shows the sync setup; false means sync is never started, whatever the launch.
     let syncSetupAvailable: Bool
     private let syncServices: MacSyncServices
     lazy var sync = MacSyncController(
@@ -34,7 +34,7 @@ final class AppEnvironment: ObservableObject {
     var cloudSync: CloudSyncController {
         if let existing = cloudSyncStorage { return existing }
         let made = CloudSyncController(library: MacCloudSyncLibrary(environment: self), services: cloudSyncServices, available: cloudSyncAvailable)
-        // "Move This Library to iCloud" needs the private-server sync of this build (MOVE-R1).
+        // "Move This Library to iCloud" needs the private-server sync of this build.
         if syncSetupAvailable, syncPolicy == .enabled {
             made.leavePrivateServer = { [weak self] withoutMissingFiles in
                 guard let self else { throw CancellationError() }
@@ -60,12 +60,12 @@ final class AppEnvironment: ObservableObject {
     private var dailyBackupTask: Task<Void, Never>?
     /// The last snapshot attempt failed; nil after a success. Shown in Settings.
     private(set) var dailyBackupFailure: String?
-    /// The protected notes' unlock state for this library (M9M-R1): password and Touch ID unlock,
+    /// The protected notes' unlock state for this library: password and Touch ID unlock,
     /// relock on resign, sleep and screen lock. Locked notes' sessions use `vault.access`.
     let vault: NoteVault
     /// The decrypted attachments of locked notes (memory only; emptied on every relock).
     let lockedAttachments: LockedAttachmentMemory
-    /// The app-wide lock (M9M-R61): at launch, after inactivity and on sleep or screen lock no window
+    /// The app-wide lock: at launch, after inactivity and on sleep or screen lock no window
     /// and no automation surface shows library content until the Mac has confirmed its owner.
     let appLock: AppLock
     /// The notification center reminders use; a no-op client unless the app passes the real one.
@@ -76,13 +76,13 @@ final class AppEnvironment: ObservableObject {
     private let reminderNow: () -> Date
     /// The App Group folder the share extension drops items into; nil when this process has none.
     private let shareContainer: URL?
-    /// The inbox in that folder, or nil when there is no container or it failed the probe (FOC-R330).
+    /// The inbox in that folder, or nil when there is no container or it failed the probe.
     private(set) var shareInbox: CaptureInbox?
     /// What `recent-notes.json` holds now (nil inside: the file is absent), so unchanged lists are not rewritten.
     private var publishedRecentNotes: RecentNotesFile??
 
     private var sessions: [String: NoteSession] = [:]
-    /// Each cached session's history recorder (FOC-R290): one per session made by `session(for:)`.
+    /// Each cached session's history recorder: one per session made by `session(for)`.
     private var recorders: [ObjectIdentifier: SnapshotRecorder] = [:]
     /// Test seams for the recorders made from now on: the idle timer's clock and the snapshots' wall clock.
     var snapshotClock: any Clock<Duration> = ContinuousClock()
@@ -110,13 +110,13 @@ final class AppEnvironment: ObservableObject {
     /// Follows in-editor title edits in every window and updates wiki links (spec §3.5, R15).
     private(set) var linkUpdater: LinkUpdater?
     private let editors = NSHashTable<EditorBridgeController>.weakObjects()
-    /// The launch recovery steps in the order they ran (FOC-R311): the voice recordings are adopted
+    /// The launch recovery steps in the order they ran: the voice recordings are adopted
     /// before the privacy cleanup, which would stop on a journal the voice recovery removes.
     enum LaunchStep: Equatable { case attachments, journals, voiceRecordings, privacyCleanup }
     private(set) var launchSteps: [LaunchStep] = []
     /// Told, on the main actor, whenever a note's lock state may just have changed: after this app locked
     /// or unlocked a note, and on every database change (sync, the CLI, another window). The voice note
-    /// panel uses it to drop a locked note's transcript at once (FOC-R320).
+    /// panel uses it to drop a locked note's transcript at once.
     private var noteLockStateHandlers: [@MainActor () -> Void] = []
     func addNoteLockStateHandler(_ handler: @escaping @MainActor () -> Void) { noteLockStateHandlers.append(handler) }
     private func noteLockStateMayHaveChanged() { for handler in noteLockStateHandlers { handler() } }
@@ -124,7 +124,7 @@ final class AppEnvironment: ObservableObject {
     /// Journals launch recovery could not replay in this launch (moved aside as `*.unreplayed`).
     private(set) var journalsMovedAsideAtLaunch: [URL] = []
     /// Launch recovery removed a voice recording that could not be played; the first window says
-    /// so once (FOC-R399).
+    /// so once.
     private var unplayableRecordingRemoved = false
     func takeUnplayableRecordingNotice() -> Bool {
         defer { unplayableRecordingRemoved = false }
@@ -179,7 +179,7 @@ final class AppEnvironment: ObservableObject {
         afterResolve: () -> Void = {}
     ) throws -> AppEnvironment {
         let launch = try AppPaths.resolveLaunch(arguments: arguments, environment: environment, production: production)
-        // REN2-R38: the renamed app takes its window and layout preferences from the old defaults domain, once.
+        // The renamed app takes its window and layout preferences from the old defaults domain, once.
         // A no-op while the bundle id is still the old one. Only the default library's launch does it.
         if launch.syncPolicy == .enabled { LegacyPreferencesMigration.runAtLaunch() }
         afterResolve()  // tests remove the resolved folder here, as a competing launch could
@@ -189,10 +189,10 @@ final class AppEnvironment: ObservableObject {
             notificationCenter: notificationCenter,
             shareContainer: Self.shareContainer(
                 syncPolicy: launch.syncPolicy, environment: environment, resolve: shareContainerURL))
-        // REL-R71: only a launch that created the library folder (a fresh install) makes the getting
+        // Only a launch that created the library folder (a fresh install) makes the getting
         // started notes; an existing library, a moved one and a `--data-dir` copy never do.
         opened.seedGettingStartedNotes(isNewLibrary: launch.createsLibraryFolder)
-        // STARTER-R18: an existing library gets the new texts for its untouched first-release starters, once.
+        // An existing library gets the new texts for its untouched first-release starters, once.
         opened.upgradeGettingStartedNotes()
         return opened
     }
@@ -228,7 +228,7 @@ final class AppEnvironment: ObservableObject {
         self.syncServices = syncServices
         self.cloudSyncAvailable = cloudSync
         self.cloudSyncServices = cloudSyncServices
-        // REN-R12: a launch that resolved an existing library never recreates it as an empty one
+        // A launch that resolved an existing library never recreates it as an empty one
         // when it vanished meanwhile (another launch moved it): it is refused instead.
         if !createsLibraryFolder {
             var isFolder: ObjCBool = false
@@ -274,7 +274,7 @@ final class AppEnvironment: ObservableObject {
         // pass left alone and lets the lock views open their note.
         vault.addWillRelockHandler { [weak self] in
             self?.flushLockedSessions()
-            // The history of every open locked note is sealed while the key still exists (FOC-R16).
+            // The history of every open locked note is sealed while the key still exists.
             self?.snapshotLockedSessions()
         }
         vault.addDidRelockHandler { [weak self] in
@@ -291,26 +291,26 @@ final class AppEnvironment: ObservableObject {
             self?.flushAll()
             self?.vault.relock()
             // A capture window that was still being opened is stale now: no window will cancel the
-            // empty note, so it is cancelled here (FOC-R251).
+            // empty note, so it is cancelled here.
             self?.cancelCapturesAwaitingAWindow()
             self?.scheduleReminderReconcile()
         }
-        // Turning App Lock on or off in Settings redacts or restores the reminders at once (FOC-R18).
+        // Turning App Lock on or off in Settings redacts or restores the reminders at once.
         appLock.addEnabledChangeHandler { [weak self] enabled in
             guard let self else { return }
             if enabled { reminders.coldLaunchScrub() }
             scheduleReminderReconcile()
-            // The picker's note titles leave the shared folder before this call returns (FOC-R333).
+            // The picker's note titles leave the shared folder before this call returns.
             publishRecentNotes()
         }
         // A lock a crash left half finished is completed before the library is shown.
         launchSteps.append(.privacyCleanup)
         vault.recoverAtLaunch()
         // Locked and deleted notes' reminders (and all of them under App Lock) leave the notification
-        // center by id, synchronously, before the first window (FOC-R17, FOC-R12).
+        // center by id, synchronously, before the first window.
         reminders.coldLaunchScrub()
         // The share extension's container is probed and, while App Lock is enabled, its titles file is
-        // removed before any window exists (FOC-R331).
+        // removed before any window exists.
         openShareContainer()
     }
 
@@ -330,7 +330,7 @@ final class AppEnvironment: ObservableObject {
     }
 
     /// Takes the closing snapshot of every open locked note's session, right before the vault revokes
-    /// the key (FOC-R16, FOC-R290). The text was committed by `flushLockedSessions()` just before.
+    /// the key. The text was committed by `flushLockedSessions` just before.
     private func snapshotLockedSessions() {
         for session in sessions.values where keyedSessions.contains(ObjectIdentifier(session)) {
             recorders[ObjectIdentifier(session)]?.sessionWillClose()
@@ -378,7 +378,7 @@ final class AppEnvironment: ObservableObject {
     }
 
     /// Logs a failure on a note's session. A keyed session's error can carry a protected file
-    /// name, so only its case code is logged (M9M-R20).
+    /// name, so only its case code is logged.
     func logSessionFailure(_ what: String, noteId: String, keyed: Bool, error: Error) {
         if keyed {
             appLogger.error("note \(noteId, privacy: .public): \(what, privacy: .public): \(PrivacyErrorCode.code(for: error), privacy: .public)")
@@ -464,8 +464,8 @@ final class AppEnvironment: ObservableObject {
     }
 
     /// Attaches the recordings a voice capture left in `Recordings/` to their notes, deletes the rest
-    /// and finishes the cleanups a capture could not finish after its note was locked (FOC-R195,
-    /// FOC-R199). A file that cannot be removed stays for the next launch; that is logged (a count,
+    /// and finishes the cleanups a capture could not finish after its note was locked
+    ///). A file that cannot be removed stays for the next launch; that is logged (a count,
     /// no note) and the launch goes on.
     private func recoverVoiceRecordings() {
         launchSteps.append(.voiceRecordings)
@@ -625,7 +625,7 @@ final class AppEnvironment: ObservableObject {
     }
 
     /// `NoteStore` takes the plaintext history of an unlocked note and refuses a locked one; a keyed
-    /// session writes through the vault's access, which seals (FOC-R182).
+    /// session writes through the vault's access, which seals.
     private func snapshotWriter(for session: NoteSession) -> any SnapshotWriting {
         if keyedSessions.contains(ObjectIdentifier(session)), let access = vault.access { return access }
         return store
@@ -827,7 +827,7 @@ final class AppEnvironment: ObservableObject {
     }
 
     /// Runs `change` (a lock or a lock removal) on each note with its open session closed around
-    /// it, in two phases (M9M-R54). Phase 1: the text is committed (an uncommitted one skips the
+    /// it, in two phases. Phase 1: the text is committed (an uncommitted one skips the
     /// note), every editor showing the note switches to the placeholder and its page confirms it
     /// dropped the text (or is replaced and the replacement committed). Phase 2: the session is
     /// dropped so the store no longer holds the note's files (`retention`), `change` runs, and
@@ -856,12 +856,12 @@ final class AppEnvironment: ObservableObject {
                 continue
             }
             // The history gets the text as it is, through the writer of the lock state it has now: a
-            // lock seals it in its own transaction, a removal opens it (FOC-R291).
+            // lock seals it in its own transaction, a removal opens it.
             closeRecorder(of: session)
             uncache(session, cleanUp: false)
             do { try change(id) } catch { failures[id] = error }
             noteLockStateMayHaveChanged()
-            // A locked note's title leaves the share list before this call returns; an unlocked one is offered again (FOC-R341).
+            // A locked note's title leaves the share list before this call returns; an unlocked one is offered again.
             publishRecentNotes()
             for editor in showing { editor.resumeAfterLockChange(noteId: id) }
             release(session)
@@ -968,7 +968,7 @@ final class AppEnvironment: ObservableObject {
 
     /// Commits the acknowledged text of `noteId`'s open session and nothing else: other sessions stay
     /// as they are and none is evicted, so no history snapshot is taken as a side effect. True when
-    /// the note has no open session or its session is clean afterwards (FOC-R297).
+    /// the note has no open session or its session is clean afterwards.
     @discardableResult
     func flushSession(noteId: String) -> Bool {
         guard let session = sessions[noteId] else { return true }
@@ -976,7 +976,7 @@ final class AppEnvironment: ObservableObject {
     }
 
     /// Asks every editor showing `noteId` whether its document is the session's text, so an editor
-    /// transaction still on its way (typed, not yet acknowledged) is not missed (FOC-R297). False
+    /// transaction still on its way (typed, not yet acknowledged) is not missed. False
     /// when an editor differs or cannot answer in time.
     func confirmEditorsInSync(noteId: String) async -> Bool {
         for editor in editors.allObjects where editor.session?.noteId == noteId {
@@ -1000,7 +1000,7 @@ final class AppEnvironment: ObservableObject {
         sessions[noteId]
     }
 
-    // MARK: - Opened and captured notes (focus layer, FOC-R3)
+    // MARK: - Opened and captured notes (focus layer)
 
     /// Notes whose next editor load is not an open: the load that directly follows a capture.
     private var unrecordedOpens: Set<String> = []
@@ -1009,7 +1009,7 @@ final class AppEnvironment: ObservableObject {
     /// Notes made by Capture Thought whose own window is open (it cancels the capture when it closes).
     private var captureWindows: Set<String> = []
 
-    /// The next editor load of `noteId` is not an open (FOC-R3, FOC-R251).
+    /// The next editor load of `noteId` is not an open.
     func suppressOpenRecord(noteId: String) {
         unrecordedOpens.insert(noteId)
     }
@@ -1019,7 +1019,7 @@ final class AppEnvironment: ObservableObject {
         unrecordedOpens.remove(noteId) != nil
     }
 
-    /// An editor loaded `noteId`: stores `lastOpenedAt` (FOC-R121). A failure is logged and ignored;
+    /// An editor loaded `noteId`: stores `lastOpenedAt`. A failure is logged and ignored;
     /// opening a note never fails because of it.
     func recordOpened(noteId: String) {
         do {
@@ -1029,7 +1029,7 @@ final class AppEnvironment: ObservableObject {
         }
     }
 
-    /// `noteId` was just made by Capture Thought and its window is on the way (FOC-R252).
+    /// `noteId` was just made by Capture Thought and its window is on the way.
     func registerCaptureWindow(noteId: String) {
         capturesAwaitingAWindow.insert(noteId)
     }
@@ -1065,7 +1065,7 @@ final class AppEnvironment: ObservableObject {
         for noteId in waiting { cancelCapture(noteId: noteId) }
     }
 
-    /// The one entry point for cancelling a capture in the app (FOC-R350): moves the captured note
+    /// The one entry point for cancelling a capture in the app: moves the captured note
     /// to the Trash if its stored text is still the empty text the capture was created with. The
     /// note's session is committed first and a note whose session cannot be committed stays, so
     /// text that only the session holds is never cancelled away. Callers decide *whether* a
@@ -1170,7 +1170,7 @@ final class AppEnvironment: ObservableObject {
         try await vault.unlock(password: password)
     }
 
-    /// Password check without unlocking anything (the first-sync safety step, M9M-R17): a
+    /// Password check without unlocking anything (the first-sync safety step): a
     /// temporary access is made and revoked at once; the vault and its Keychain cache are untouched.
     func verifyNotePassword(_ password: String) async throws {
         let privacy = NotePrivacy(store: store)
@@ -1226,7 +1226,7 @@ final class AppEnvironment: ObservableObject {
         return try change()
     }
 
-    /// A local-only library (INT-R14), or a build without the sync setup (REL-R4), starts nothing: no scheduler, observer, timer or retry loop.
+    /// A local-only library, or a build without the sync setup, starts nothing: no scheduler, observer, timer or retry loop.
     func startSync() {
         guard syncPolicy == .enabled else { return }
         if syncSetupAvailable { sync.setActive(true) }
@@ -1248,18 +1248,18 @@ final class AppEnvironment: ObservableObject {
         Task { [weak self] in await self?.reminders.reconcile(sweep: sweep) }
     }
 
-    // MARK: - Share inbox (focus layer C17, FOC-R12, FOC-R330 ... FOC-R338)
+    // MARK: - Share inbox (focus layer C17,...)
 
     /// The App Group of the macOS share extension: the team id, a dot and the group name, which is how
     /// a macOS group is written. Both entitlements files take it from the build setting
-    /// `THEONOTES_APP_GROUP`, which the build configuration sets for the identity (FOC-R360): the dev
+    /// `THEONOTES_APP_GROUP`, which the build configuration sets for the identity: the dev
     /// build never shares a container with the installed app.
     nonisolated static var shareGroupIdentifier: String { AppIdentity.current.appGroupIdentifier }
     /// Set to `1` to give a launch with its own `--data-dir` library the shared container (testing).
     static let shareContainerEnvironmentKey = "THEONOTES_SHARE_CONTAINER"
 
     /// The container this launch uses: the default library's, or any other library's only when asked
-    /// for, so a throw-away library never takes the items meant for the real one (FOC-R337).
+    /// for, so a throw-away library never takes the items meant for the real one.
     static func shareContainer(
         syncPolicy: SyncLaunchPolicy, environment: [String: String], resolve: @Sendable () -> URL?
     ) -> URL? {
@@ -1302,14 +1302,14 @@ final class AppEnvironment: ObservableObject {
         }
     }
 
-    /// Applies what the extension queued: at launch and whenever the app becomes active (FOC-R332). Open
+    /// Applies what the extension queued: at launch and whenever the app becomes active. Open
     /// sessions are committed first, so an append to an open note merges into a clean session instead of
     /// racing the typed text; every window then follows through `databaseDidChange`. Returns the ids of
     /// the notes the items ended in.
     @discardableResult
     func drainShareInbox() -> [String] {
         guard let shareInbox else { return [] }
-        // A note whose open session cannot be committed keeps its appends in the inbox (FOC-R340).
+        // A note whose open session cannot be committed keeps its appends in the inbox.
         var unsaved: Set<String> = []
         for session in sessions.values where !(flush(session) && TextNormalization.identical(session.text, session.committedText)) {
             unsaved.insert(session.noteId)

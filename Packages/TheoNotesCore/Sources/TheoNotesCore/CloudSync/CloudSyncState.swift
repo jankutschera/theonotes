@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// What the person sees about iCloud sync (CK-R10, CK-R15). One enum and one place for its words, shared by the Mac and iOS
+/// What the person sees about iCloud sync. One enum and one place for its words, shared by the Mac and iOS
 /// apps. Policy code (`CloudAccountPolicy`, `CloudErrorPolicy`) decides which state applies; this file only names the states
 /// and says what each means in plain language.
 public enum CloudSyncState: Sendable, Equatable {
@@ -18,7 +18,7 @@ public enum CloudSyncState: Sendable, Equatable {
     case recoveryNotSaved
     /// A library with protected notes needs the note password once, before its first sync (Task 10).
     case needsNotePassword
-    /// A different iCloud user is signed in than the one this library syncs with (CK-R10). `previousHash` is the stored user hash.
+    /// A different iCloud user is signed in than the one this library syncs with. `previousHash` is the stored user hash.
     case accountChanged(previousHash: String)
     /// The synced copy is gone (the person removed it, or encrypted iCloud data was reset). Never re-created automatically.
     case zoneRemoved(reason: ZoneRemoval)

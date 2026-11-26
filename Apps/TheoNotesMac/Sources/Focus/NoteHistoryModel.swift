@@ -5,13 +5,13 @@ import TheoNotesCore
 import Foundation
 import GRDB
 
-/// Note ▸ Note History… for one note (spec A5, FOC-R11, FOC-R290 … FOC-R299): the earlier versions
+/// Note ▸ Note History… for one note (spec A5): the earlier versions
 /// the app kept of it, a preview of each, Restore as Copy and Replace This Note.
 ///
 /// The list follows the `note_snapshot` table itself. Snapshot writes post no change notification
-/// (FOC-R150), so waiting for one would leave the window stale when a new version is taken while
+///, so waiting for one would leave the window stale when a new version is taken while
 /// it is open. A locked note's history is sealed: it is listed, previewed and restored only while
-/// the vault is unlocked, and nothing of it is shown while App Lock is engaged (FOC-R292).
+/// the vault is unlocked, and nothing of it is shown while App Lock is engaged.
 @MainActor
 final class NoteHistoryModel: ObservableObject {
     static let title = "Note History"

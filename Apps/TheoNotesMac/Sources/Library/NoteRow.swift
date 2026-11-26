@@ -10,7 +10,7 @@ import SwiftUI
 /// thumbnail of the note's first image (spec §4.3). Colours come from the theme's `ShellPalette`, except on a
 /// selected row: the selection fill is the system's (the user's accent when the list is focused, the system's
 /// grey when it is not), so selected rows use the system's text colours for that fill and matches are
-/// underlined instead of highlighted ("system selection, system text", M7-R26).
+/// underlined instead of highlighted ("system selection, system text").
 struct NoteRow: View {
     let item: NoteListItem
     /// The date the list is sorted by (created or modified).
@@ -52,7 +52,7 @@ struct NoteRow: View {
 
     static let lockedLabel = "Locked"
 
-    /// The quiet mark of a note a capture gesture made (FOC-R253); the weight of the pin and the lock.
+    /// The quiet mark of a note a capture gesture made; the weight of the pin and the lock.
     static let capturedSymbol = "tray.and.arrow.down"
     static let capturedLabel = "Captured"
 

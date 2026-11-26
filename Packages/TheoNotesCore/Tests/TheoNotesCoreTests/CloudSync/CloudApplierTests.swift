@@ -48,7 +48,7 @@ extension PublisherDevice {
 
     func attachmentFile(_ noteId: String, _ name: String) -> URL { paths.attachments.appendingPathComponent(noteId).appendingPathComponent(name) }
 
-    /// The next version of a cloud record as a deletion (CK-R17), sealed with this device's key.
+    /// The next version of a cloud record as a deletion, sealed with this device's key.
     func tombstone(after record: CloudRecord) throws -> CloudRecord {
         guard case .entity(let header) = try CloudRecordCodec.decode(record) else { throw CloudIntakeError.notAnEntity(record.name) }
         let sid = UUIDv7.make()
@@ -65,7 +65,7 @@ func recordName(_ world: PublisherWorld, prefix: String) async -> String? {
     await world.account.recordNames.first { $0.hasPrefix(prefix) }
 }
 
-/// The six entity types through the real publisher and the real receiver (CK-R5, E0 class c).
+/// The six entity types through the real publisher and the real receiver.
 @Suite struct CloudApplierTests {
     func two() async throws -> PublisherWorld { try await PublisherWorld.make(2) }
 

@@ -9,7 +9,7 @@ import SwiftUI
 ///
 /// The popover is system glass (HIG: no custom popover backgrounds), so it keeps system text colours and takes
 /// only the theme accent. The detached panel is an ordinary window: it draws the theme background with the
-/// theme's text colours, the pair the schema checks (M7-R18).
+/// theme's text colours, the pair the schema checks.
 struct InfoPanelView: View {
     @Bindable var info: InfoPanelModel
     /// In the floating panel: no Detach button, resizable.

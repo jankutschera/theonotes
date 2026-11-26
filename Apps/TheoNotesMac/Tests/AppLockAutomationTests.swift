@@ -9,7 +9,7 @@ import GRDB
 import Testing
 @testable import TheoNotes
 
-/// M9M-R63: while App Lock is engaged the x-callback handler and the app socket refuse, with a clear
+/// While App Lock is engaged the x-callback handler and the app socket refuse, with a clear
 /// "locked" answer and nothing from the library. Libraries are throw-away folders under /tmp, callbacks
 /// go to a spy and the identity check is a fake.
 @MainActor

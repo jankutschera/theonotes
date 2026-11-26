@@ -5,7 +5,7 @@ import TheoNotesCore
 import Foundation
 import Darwin
 
-/// One shared item, once loaded (FOC-R342).
+/// One shared item, once loaded.
 enum SharedPart: Sendable {
     case text(String)
     case file(URL)

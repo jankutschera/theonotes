@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-"""Tests for scripts/release/asc_dev_profile.py (REN2-R66). Run: python3 -I scripts/tests/test_asc_dev_profile.py
+"""Tests for scripts/release/asc_dev_profile.py. Run: python3 -I scripts/tests/test_asc_dev_profile.py
 
 Every API call is mocked: nothing here reaches Apple, reads the API key or touches the real provisioning-profile folder.
 """

@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotes
 
-/// REL-R71 / REL-R75 on the Mac: what a launch does, and Help ▸ Restore Getting Started Notes.
+/// on the Mac: what a launch does, and Help ▸ Restore Getting Started Notes.
 /// Every library here is a temporary one; none is Jan's.
 @MainActor
 @Suite struct GettingStartedLaunchTests {
@@ -64,7 +64,7 @@ import Testing
         #expect(environment.seedGettingStartedNotes(isNewLibrary: false).isEmpty)
     }
 
-    // MARK: STARTER-R18: the first launch of the new texts
+    // MARK: the first launch of the new texts
 
 
     /// What the first release left behind: the frozen first texts under the fixed ids and stamps, the seeded flag set.

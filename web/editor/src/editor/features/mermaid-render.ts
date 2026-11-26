@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-// Mermaid 12 (M6 Task 12, M6-R45): the only module that imports Mermaid, through dynamic import(),
+// Mermaid 12 (M6 Task 12): the only module that imports Mermaid, through dynamic import,
 // so the editor does not load it until a diagram is shown. `securityLevel: "strict"` (Mermaid
 // sanitizes labels and drops click callbacks), labels as SVG text (`htmlLabels: false`: no HTML
 // element from a label exists, even in Mermaid's scratch DOM), no configuration from the diagram
@@ -71,7 +71,7 @@ const ELK_KEYWORD = /^((?:[ \t]*(?:%%[^\n]*)?\r?\n)*[ \t]*)flowchart-elk(?![\w-]
 
 /**
  * The source with the ELK layout turned into Mermaid's default one: elkjs is not part of the app
- * (REN2-R10), so `flowchart-elk TD` is drawn as `flowchart TD`. Run after `withoutConfig`, which
+ *, so `flowchart-elk TD` is drawn as `flowchart TD`. Run after `withoutConfig`, which
  * already removes `layout: elk` from directives and front matter.
  */
 export function withDefaultLayout(source: string): string {

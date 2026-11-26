@@ -20,7 +20,7 @@ public struct CloudQuarantineRetryReport: Sendable, Equatable {
     public init() {}
 }
 
-/// The person-facing side of the quarantine (CK-R5): retry, the two status counts, and the explicit "Ignore this item".
+/// The person-facing side of the quarantine: retry, the two status counts, and the explicit "Ignore this item".
 /// Nothing is ever deleted in the cloud, and a quarantine row is removed only when its version is understood and stored, a newer
 /// valid version replaced it (the sink does that), or the person ignores it.
 public struct CloudQuarantine: Sendable {

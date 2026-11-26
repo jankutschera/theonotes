@@ -21,14 +21,14 @@ struct RecordingTapStats: Equatable, Sendable {
 /// The recording and the analyzer feed are both mono: whatever the microphone delivers is averaged
 /// to one channel at the buffer's sample rate first. The file keeps the rate it was opened with;
 /// should the same microphone change its rate mid-recording, later buffers are resampled to it. A USB audio interface reported four channels
-/// at 48 kHz, which the AAC encoder cannot write: every write failed (FOC-R380).
+/// at 48 kHz, which the AAC encoder cannot write: every write failed.
 final class RecordingTap: @unchecked Sendable {
     private struct State {
         var file: AVAudioFile?
         /// The mono format the file was opened with; later buffers of another rate are brought to it.
         let mono: AVAudioFormat
         let analyzerFormat: AVAudioFormat
-        /// One converter per input sample rate, made when that rate first arrives (FOC-R393).
+        /// One converter per input sample rate, made when that rate first arrives.
         var toAnalyzer: [Double: AVAudioConverter] = [:]
         var toFile: [Double: AVAudioConverter] = [:]
         let input: AsyncStream<AnalyzerInput>.Continuation

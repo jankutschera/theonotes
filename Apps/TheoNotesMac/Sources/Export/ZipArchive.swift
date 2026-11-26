@@ -5,7 +5,7 @@ import Foundation
 import zlib
 
 /// A minimal zip container with stored (uncompressed) entries, enough for an Office Open XML
-/// package (A8, MAC11-R15). Names must be ASCII; sizes stay below 4 GiB (no zip64).
+/// package. Names must be ASCII; sizes stay below 4 GiB (no zip64).
 enum ZipArchive {
     /// 1980-01-01 00:00, so the same parts always give the same bytes.
     private static let dosDate: UInt16 = 0x0021

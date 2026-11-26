@@ -11,7 +11,7 @@ public enum FileExportFormat: String, Sendable, CaseIterable {
 }
 
 public struct ExportOptions: Sendable, Equatable {
-    /// Off drops every tag from the exported text (M8-R4).
+    /// Off drops every tag from the exported text.
     public var keepTags: Bool
     /// Off leaves attachments out of a Markdown or TextBundle export: no file is copied and the
     /// links stay as the note wrote them (A9).
@@ -63,7 +63,7 @@ public enum ExportError: Error, Equatable, CustomStringConvertible {
     }
 }
 
-/// Writes one planned note (`ExportPlan`) as Markdown, TextBundle or plain text (M8-R1, M8-R14).
+/// Writes one planned note (`ExportPlan`) as Markdown, TextBundle or plain text.
 /// Never writes outside `destination`; never overwrites. Everything is built in a hidden
 /// `.partial` folder next to the result and renamed into place, so a failing note leaves nothing.
 public struct NoteExporter: Sendable {

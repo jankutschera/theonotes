@@ -5,7 +5,7 @@ import TheoNotesAutomation
 import TheoNotesCore
 import Foundation
 
-/// The selection the cold-start URL of `app open` carries (`selection_*`, ruling M5-R155). Offsets
+/// The selection the cold-start URL of `app open` carries (`selection_*`). Offsets
 /// are UTF-8 bytes.
 struct XCallbackSelection: Equatable {
     var text: String?

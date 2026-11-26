@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 True Brew Birdie Ltd. and Theo Notes contributors
 
-# Tests for scripts/release-mac.sh, scripts/release/verify-bundle.sh and scripts/release/make-dmg.sh (REL-R60 ... R69).
+# Tests for scripts/release-mac.sh, scripts/release/verify-bundle.sh and scripts/release/make-dmg.sh.
 # Every external tool is a stub on PATH that logs its arguments: no Apple service is contacted, no real signing
 # identity is used, nothing is built, mounted, installed or launched. Run: bash scripts/tests/test_release_scripts.sh
 set -euo pipefail

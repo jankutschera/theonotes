@@ -72,7 +72,7 @@ final class BlockMenus {
         pasteboard.setString(link, forType: .string)
     }
 
-    /// Format > Copy Link to Here (the badge menu's item for the keyboard, M7-R22): copies the link of the
+    /// Format > Copy Link to Here (the badge menu's item for the keyboard): copies the link of the
     /// heading on the caret's line. Returns whether a link was copied; when the caret is not in a heading, or no
     /// link can reach it (the badge menu's reasons), nothing is copied and the system beeps.
     @discardableResult
@@ -108,7 +108,7 @@ final class BlockMenus {
         return units[..<end].reduce(1) { $1 == 0x0A ? $0 + 1 : $0 }
     }
 
-    /// Whether `heading` has anything to fold (the editor's rule, M6-R27): a non-blank line after
+    /// Whether `heading` has anything to fold (the editor's rule): a non-blank line after
     /// it, before the next heading of the same or a higher level (or the end of the note).
     static func sectionHasText(_ text: String, heading: HeadingRef, headings: [HeadingRef]) -> Bool {
         let end = headings.first { $0.line > heading.line && $0.level <= heading.level }?.line ?? Int.max
@@ -239,7 +239,7 @@ final class BlockMenus {
     /// Copy Table As ▸ CSV / HTML / Markdown. Each item sends its command with the `menuId`. The
     /// editing items (and so the moves) are disabled in read-only notes; copying is not an edit and
     /// stays on. Moves that cannot happen are disabled as well: the header (row 0) never moves and
-    /// nothing moves into it, and a column at either edge cannot move outwards (M6-R33, R34).
+    /// nothing moves into it, and a column at either edge cannot move outwards.
     func tableMenu(for request: TableMenuRequest) -> NSMenu {
         let menu = NSMenu()
         menu.autoenablesItems = false

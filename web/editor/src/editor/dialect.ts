@@ -165,7 +165,7 @@ const lastCloser = new WeakMap<InlineContext, number>();
 /**
  * A `==` (exactly two, after a non-space) after `from` in this inline section. Not the pairing
  * itself: a stray `HighlightColor` it lets through sits outside any `Highlight`, which hiding.ts
- * leaves as text (M6-R43). Linear: the last candidate is found once per section.
+ * leaves as text. Linear: the last candidate is found once per section.
  */
 function closerAhead(cx: InlineContext, from: number): boolean {
   let last = lastCloser.get(cx);
@@ -230,7 +230,7 @@ export const BearInline: MarkdownConfig = {
         const color = open ? charAfter(cx, end) : -1;
         if (!highlightColors[color]) return end;
         const colorEnd = end + 2 + (cx.char(end + 2) === 0xfe0f ? 1 : 0);
-        // An opener nothing can close keeps its emoji as text (InlineStripper pairs first, M6-R43).
+        // An opener nothing can close keeps its emoji as text (InlineStripper pairs first).
         if (!closerAhead(cx, colorEnd)) return end;
         return cx.addElement(cx.elt("HighlightColor", end, colorEnd));
       },

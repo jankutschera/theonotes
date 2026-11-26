@@ -6,7 +6,7 @@ import TheoNotesCore
 import SwiftUI
 
 /// The recovery words: the 24 words, a copy button, the three-word check, and (during first setup only) the way to skip with the
-/// risk sentence ticked (CK-R7, CK-J1). The file keeps the name the plan gave it; the words on screen are "recovery words".
+/// risk sentence ticked. The file keeps the name the plan gave it; the words on screen are "recovery words".
 struct CloudRecoveryKeySheet: View {
     let controller: CloudSyncController
 

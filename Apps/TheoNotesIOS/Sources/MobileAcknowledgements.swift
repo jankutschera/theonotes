@@ -4,7 +4,7 @@
 import TheoNotesCore
 import SwiftUI
 
-/// LIC-R16: the third-party licences the app ships, pushed from Settings. The list is
+/// The third-party licences the app ships, pushed from Settings. The list is
 /// `Acknowledgements.json` in the app bundle; if it cannot be read the page says so.
 struct MobileAcknowledgements: View {
     private let result: Result<AcknowledgementsCatalog, Error> = Result { try AcknowledgementsCatalog(bundle: .main) }

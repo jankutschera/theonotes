@@ -5,23 +5,23 @@ options:
     macOS: "26.0"
     iOS: "26.0"
     watchOS: "26.0"
-# FOC-R360: two identities. `Debug` (what tests, agents and GUI checks build) is the DEV identity:
+# Two identities. `Debug` (what tests, agents and GUI checks build) is the DEV identity
 # bundle id com.truebrewbirdie.theonotes.dev, "Theo Notes Dev", its own App Group, URL schemes and
 # library. `Production` (what scripts/install-dev.sh installs) and `Release` are the PRODUCTION identity,
-# the identity of the installed app (new ids since the B7 cutover, REN2-R57). Production is a debug-type configuration, so the
+# the identity of the installed app (new ids since the B7 cutover). Production is a debug-type configuration, so the
 # installed build is the same kind of build as before. Pinned by scripts/check-identities.sh.
 configs:
   Debug: debug
   Production: debug
   Release: release
-# REL-R20: the Apple team is ONE setting, THEONOTES_TEAM_ID, defined in config/release.env and applied to every
+# The Apple team is ONE setting, THEONOTES_TEAM_ID, defined in config/release.env and applied to every
 # configuration here. DEVELOPMENT_TEAM, the App Groups, the keychain access group ($(AppIdentifierPrefix)) and
 # the Info.plist key THEONOTES_TeamID (read by AppIdentity.teamPrefix) all follow it. Do not write the team id
 # anywhere else; scripts/check-identities.sh fails if a place does not follow.
-# REN2-R46: config/build.xcconfig includes release.env (team, notary) and identity.env (THEONOTES_BUNDLE_ROOT, the
+# Config/build.xcconfig includes release.env (team, notary) and identity.env (THEONOTES_BUNDLE_ROOT, the
 # root of every bundle id, exported type id and URL type). The Swift copy is LegacyNames.bundleRoot; the check
 # scripts/check-identities.sh and IdentityPinsTests fail when they differ. The iOS app id is `$(THEONOTES_BUNDLE_ROOT).ios` too
-# (REN2-R64); the iOS Swift names are MobileIdentity, pinned by MobileIdentityTests.
+#; the iOS Swift names are MobileIdentity, pinned by MobileIdentityTests.
 configFiles:
   Debug: config/build.xcconfig
   Production: config/build.xcconfig
@@ -38,15 +38,15 @@ settings:
     THEONOTES_URL_SCHEME: theonotes
     THEONOTES_WATCH_URL_SCHEME: theonotes-watch
     THEONOTES_LEGACY_URL_SCHEME: baerchen
-    # REL-R4: whether the build shows the sync setup (Info.plist key THEONOTES_SyncSetupAvailable). The default is NO, which is
+    # Whether the build shows the sync setup (Info.plist key THEONOTES_SyncSetupAvailable). The default is NO, which is
     # what the public Release build ships; Jan's own builds (Debug for tests and agents, Production for his
     # install) set YES below. Pinned by scripts/check-identities.sh.
     THEONOTES_SYNC_SETUP: "NO"
     # CK-J2 (CloudKit plan Task 12): whether the build offers iCloud sync (Info.plist key THEONOTES_ICloudSyncAvailable). It
     # only takes effect together with THEONOTES_CLOUDKIT_CONTAINER in config/release.env. NO here as the default; YES in
-    # every configuration below (Release since REL-R91).
+    # every configuration below (Release since).
     THEONOTES_ICLOUD_SYNC: "NO"
-    # CK-R176 (CloudKit plan Task 16, REL-R13): the iOS background modes. `remote-notification` (the silent push of the iCloud sync,
+    # The iOS background modes. `remote-notification` (the silent push of the iCloud sync,
     # Gate G0 A4) is listed only where THEONOTES_ICLOUD_SYNC is YES, so a build without the flag declares what it always did.
     # Info.plist key UIBackgroundModes comes from this setting (scripts/set-ios-background-modes.sh, a post-build phase of the iOS target:
     # INFOPLIST_KEY_UIBackgroundModes is not honoured by Xcode, measured); MobileIdentityTests pins that the two agree. The target entitlements declare iCloud and Push for the identity cutover.
@@ -54,7 +54,7 @@ settings:
     THEONOTES_IOS_APS_ENVIRONMENT: production
     THEONOTES_IOS_ICLOUD_ENVIRONMENT: Production
   configs:
-    # REL-R91 (Jan, 2026-11-10): version 1 ships with iCloud sync, so Release offers it too. The private sync setup stays hidden.
+    # (Jan, 2026-11-10): version 1 ships with iCloud sync, so Release offers it too. The private sync setup stays hidden.
     Release:
       THEONOTES_ICLOUD_SYNC: "YES"
       THEONOTES_IOS_BACKGROUND_MODES: fetch remote-notification
@@ -75,7 +75,7 @@ settings:
       THEONOTES_URL_SCHEME: theonotes-dev
       THEONOTES_WATCH_URL_SCHEME: theonotes-watch-dev
       THEONOTES_LEGACY_URL_SCHEME: baerchen-dev
-# REN2-R57 / R58 (B7 cutover): the Debug (dev identity) macOS targets are team-signed (team THEONOTES_TEAM_ID) instead of ad
+# (B7 cutover): the Debug (dev identity) macOS targets are team-signed (team THEONOTES_TEAM_ID) instead of ad
 # hoc, because the dev entitlements now carry the iCloud keys (Development environment, CloudKit plan Task 15b recipe) and a
 # restricted entitlement needs a provisioning profile: an ad hoc signature cannot launch. The share extension, the CLI helper
 # and the test bundle claim no restricted entitlement and sign automatically without a profile. The APP signs MANUALLY with the
@@ -113,7 +113,7 @@ targets:
         basedOnDependencyAnalysis: false
     settings:
       base:
-        # REN2-R72: bundle, executable and CFBundleName follow the display name: "Theo Notes" (Production, Release) and
+        # Bundle, executable and CFBundleName follow the display name: "Theo Notes" (Production, Release) and
         # "Theo Notes Dev" (Debug). Bundle ids, App Groups and signing do not depend on it.
         PRODUCT_NAME: $(THEONOTES_DISPLAY_NAME)
         PRODUCT_MODULE_NAME: TheoNotes
@@ -140,9 +140,9 @@ targets:
             PROVISIONING_PROFILE_SPECIFIER: Theo Notes Mac Dev Development
         Production:
           base:
-            # REN2-R66: Jan's installed build is signed like the shipped one: Developer ID with the Developer ID profile
+            # Jan's installed build is signed like the shipped one: Developer ID with the Developer ID profile
             # (THEONOTES_PROFILE_APP, config/release.env), because the Production push environment and the iCloud container
-            # of the Production environment need it. No get-task-allow (REL-R32). A local, non-quarantined install needs no
+            # of the Production environment need it. No get-task-allow. A local, non-quarantined install needs no
             # notarization (docs/release/team-migration.md); `verify-bundle.sh --personal-install` checks this exact bundle.
             CODE_SIGN_STYLE: Manual
             CODE_SIGN_IDENTITY: Developer ID Application
@@ -154,7 +154,7 @@ targets:
             ENABLE_DEBUG_DYLIB: NO
         Release:
           base:
-            # REL-R32: no get-task-allow and no injected application-identifier in shipped signatures.
+            # No get-task-allow and no injected application-identifier in shipped signatures.
             CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
   TheoNotesMacShare:
     type: app-extension
@@ -188,7 +188,7 @@ targets:
             CODE_SIGN_ENTITLEMENTS: Apps/TheoNotesMacShare/TheoNotesMacShare.dev.entitlements
         Production:
           base:
-            # REN2-R66: Developer ID like the app; the extension claims no restricted entitlement, so it needs no profile.
+            # Developer ID like the app; the extension claims no restricted entitlement, so it needs no profile.
             CODE_SIGN_STYLE: Manual
             CODE_SIGN_IDENTITY: Developer ID Application
             CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
@@ -196,7 +196,7 @@ targets:
             ENABLE_DEBUG_DYLIB: NO
         Release:
           base:
-            # REL-R32: no get-task-allow and no injected application-identifier in shipped signatures.
+            # No get-task-allow and no injected application-identifier in shipped signatures.
             CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
   TheoNotesIOS:
     type: application
@@ -231,7 +231,7 @@ targets:
       - name: Build editor bundle
         script: '"$SRCROOT/scripts/build-editor.sh" "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/Editor"'
         basedOnDependencyAnalysis: false
-    # CK-R176: UIBackgroundModes from THEONOTES_IOS_BACKGROUND_MODES, written before signing.
+    # UIBackgroundModes from THEONOTES_IOS_BACKGROUND_MODES, written before signing.
     postBuildScripts:
       - name: Declare background modes
         script: '"$SRCROOT/scripts/set-ios-background-modes.sh"'
@@ -243,7 +243,7 @@ targets:
     settings:
       base:
         PRODUCT_NAME: TheoNotesIOS
-        PRODUCT_MODULE_NAME: BaerchenIOS # Preserves saved App Intents identities (REN2-R71).
+        PRODUCT_MODULE_NAME: BaerchenIOS # Preserves saved App Intents identities.
         THEONOTES_IOS_BUNDLE_ROOT: $(THEONOTES_BUNDLE_ROOT)$(THEONOTES_ID_SUFFIX)
         PRODUCT_BUNDLE_IDENTIFIER: $(THEONOTES_IOS_BUNDLE_ROOT).ios
         GENERATE_INFOPLIST_FILE: YES
@@ -391,7 +391,7 @@ targets:
       - path: Apps/TheoNotesIOSShare/ShareRequestBuilder.swift
       - path: Apps/TheoNotesIOSShare/Tests
       - path: Apps/TheoNotesIOSWidgets/Tests
-      # CK-R140/CK-R178: the in-memory iCloud used by the Core and Mac tests is compiled into the iOS tests from where it lives.
+      # The in-memory iCloud used by the Core and Mac tests is compiled into the iOS tests from where it lives.
       - path: Packages/TheoNotesCore/Tests/TheoNotesCoreTests/CloudSync/FakeCloudKit.swift
     dependencies:
       - target: TheoNotesIOS
@@ -430,7 +430,7 @@ targets:
       configs:
         Production:
           base:
-            # REN2-R66: signed exactly like the Release helper (Developer ID, no get-task-allow, an explicit empty
+            # Signed exactly like the Release helper (Developer ID, no get-task-allow, an explicit empty
             # entitlements file so Xcode adds no application-identifier), which is what the entitlement checker demands.
             CODE_SIGN_STYLE: Manual
             CODE_SIGN_IDENTITY: Developer ID Application
@@ -439,7 +439,7 @@ targets:
             OTHER_CODE_SIGN_FLAGS: --timestamp
         Release:
           base:
-            # REL-R32: no get-task-allow in shipped signatures. The bare helper must also not claim a restricted
+            # No get-task-allow in shipped signatures. The bare helper must also not claim a restricted
             # entitlement: with a team set Xcode adds com.apple.application-identifier unless an explicit (empty)
             # entitlements file is given (measured). Only the Release helper uses it.
             CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
@@ -451,7 +451,7 @@ targets:
       - path: Apps/TheoNotesMac/Tests
       - path: Apps/TheoNotesMacShare/ShareRequestBuilder.swift
       - path: Apps/TheoNotesMacShare/ShareSheetModel.swift
-      # CK-R140: the in-memory iCloud used by the Core tests is compiled into the Mac tests from where it lives. SwiftPM cannot
+      # The in-memory iCloud used by the Core tests is compiled into the Mac tests from where it lives. SwiftPM cannot
       # share a test target, and moving the fake into a shipping module would put test code in the app.
       - path: Packages/TheoNotesCore/Tests/TheoNotesCoreTests/CloudSync/FakeCloudKit.swift
     dependencies:

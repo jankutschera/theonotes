@@ -15,7 +15,7 @@ import Testing
 // Decision record: docs/superpowers/specs/2026-10-28-cloudkit-extraction.md. Task 6 replaces
 // this file with the real CloudApplier; nothing here is product code.
 
-/// One `Entity` record as CK-R3 describes it, minus the CloudKit system fields.
+/// One `Entity` record as describes it, minus the CloudKit system fields.
 struct SpikeRecord: Sendable, Equatable {
     var entityType: SyncEntityType
     var entityId: String
@@ -64,7 +64,7 @@ final class SpikeDevice: @unchecked Sendable {
     let key: SymmetricKey
     /// Stand-in for `ck_record`: the base pair per record name (version and sealed ancestor).
     var pairs: [String: (ver: Int64, sealed: Data)] = [:]
-    /// Only for the CK-R13 characterization: the payload shipped with this build for a fixed id.
+    /// Only for the characterization: the payload shipped with this build for a fixed id.
     var seedBase: [String: SyncNotePayload] = [:]
     /// true: the materializer's `note != remote` echo rule, for characterizing today's behaviour.
     var strictEcho = false
@@ -123,7 +123,7 @@ final class SpikeDevice: @unchecked Sendable {
         return id
     }
 
-    /// CK-R17 framing: kind byte, then the unchanged payload JSON or a deletion stamp.
+    /// framing: kind byte, then the unchanged payload JSON or a deletion stamp.
     func seal(_ payload: Data?, type: SyncEntityType, entityId: String) throws -> Data {
         let plaintext = payload.map { Data([0x01]) + $0 } ?? (Data([0x02]) + Data("{\"at\":1793188800000}".utf8))
         return try NoteCipher.seal(plaintext, vaultKey: key,
@@ -194,7 +194,7 @@ final class SpikeDevice: @unchecked Sendable {
     // MARK: open -> merge -> write (receiver side)
 
     /// Copy (c) of the decode-and-validate switch of `SyncPayloadReader.read`, fed from the
-    /// sealed record instead of a `SyncEntity`, with the CK-R17 kind byte.
+    /// sealed record instead of a `SyncEntity`, with the kind byte.
     func open(_ record: SpikeRecord) throws -> SyncRemoteValue { try open(record.sealed, record.entityType, record.entityId, record.blobRefs) }
     func open(_ sealed: Data, _ type: SyncEntityType, _ entityId: String, _ blobRefs: [String]) throws -> SyncRemoteValue {
         let context = try SyncWire.cipherContext(accountID: accountID, type: type, entityID: entityId)
@@ -279,7 +279,7 @@ final class SpikeDevice: @unchecked Sendable {
         var old: SyncNotePayload?
         switch base { case .note(let note): old = note; case nil, .deleted: old = nil; default: throw SyncProtocolError.invalidPayload }
         let hasPair = pairs[record.name] != nil
-        if !hasPair, let seeded = seedBase[record.entityId] { old = seeded }   // CK-R13 option, characterization only
+        if !hasPair, let seeded = seedBase[record.entityId] { old = seeded }   // option, characterization only
         let materializer = materializer(cloud)
         var downloads: [SyncMaterializer.DownloadedAttachment] = []
         var consumed: [SpikeRecord] = []
@@ -713,7 +713,7 @@ func spikeConverge(_ devices: [SpikeDevice], _ cloud: SpikeCloud, access: [Locke
     }
 }
 
-/// CK-R13 characterization: never-synced entities with the same id on two devices, with the
+/// characterization: never-synced entities with the same id on two devices, with the
 /// real `GettingStartedNotes`. "Today" tests pin what the existing rules do (the nil-base rule of
 /// `SyncNoteMerge`, the materializer's `!=` echo check, `SyncQueue.enable` marking every row);
 /// "proposed" tests show the CloudSync-side options the decision record names for Task 10.
@@ -897,7 +897,7 @@ func spikeConverge(_ devices: [SpikeDevice], _ cloud: SpikeCloud, access: [Locke
         #expect(try a.notes().count == 12 && b.notes().count == 12)
     }
 
-    /// A later app version: different text, same id and stamps (REL-R74).
+    /// A later app version: different text, same id and stamps.
     func laterVersion(_ b: SpikeDevice) throws {
         try b.execute("UPDATE note SET text = text || ? WHERE id=?", ["\nNew in version 2.\n", welcome])
     }

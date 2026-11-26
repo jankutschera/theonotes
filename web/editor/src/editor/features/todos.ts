@@ -102,7 +102,7 @@ function todoFromTask(doc: Text, task: SyntaxNode): TodoItem | null {
   let contentStart = marker.to;
   while (contentStart < line.to && isBlank(line.text[contentStart - line.from]!)) contentStart++;
   // The box's line and the indented continuation lines after it, including the item's own
-  // blocks after its text (an indented quote, M6-R43) up to a nested list (its items have their
+  // blocks after its text (an indented quote) up to a nested list (its items have their
   // own boxes) or a fence. An unindented (lazy) line is a paragraph of its own for Bear (⇧↩ ends
   // the list).
   // The first nested list or fence anywhere in the item's later blocks (also one inside its quote).

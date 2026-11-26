@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Model-based test, publisher part (CK-R4, CK-R5): 2 to 4 devices of one person on one fake cloud, a seeded random schedule of
+/// Model-based test, publisher part: 2 to 4 devices of one person on one fake cloud, a seeded random schedule of
 /// creates, edits, trashes, syncs, offline periods, crashes at the publisher's boundaries, lost responses (reported and silent),
 /// and duplicated, reordered or token-expired fetches. After quiescence every library is equal, and every edit that was ever
 /// acknowledged to the person (every token written into a note) is present in some note of every library (the note itself or a

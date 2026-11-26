@@ -425,7 +425,7 @@ import Testing
         }
     }
 
-    /// The header never moves and nothing moves into it (M6-R33); a column at either edge cannot
+    /// The header never moves and nothing moves into it; a column at either edge cannot
     /// move outwards. Those items are disabled instead of doing nothing.
     @Test func moveItemsAreDisabledAtTheEdges() throws {
         let (id, popped) = try show(Self.tableText)

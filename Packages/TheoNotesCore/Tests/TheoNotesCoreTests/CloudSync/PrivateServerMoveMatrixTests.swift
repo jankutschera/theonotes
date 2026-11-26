@@ -7,7 +7,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// The owner's sequence (MOVE-R5): a Mac and an iPhone in step through the private server (real Cloudflare engine, fake server),
+/// The owner's sequence: a Mac and an iPhone in step through the private server (real Cloudflare engine, fake server),
 /// each moves with `PrivateServerMove.run`, then each switches iCloud on (real coordinator, fake iCloud); optionally an iPad that
 /// was on iCloud first with notes of its own. Every note must arrive once, nothing identical is sent twice.
 final class MovePair: @unchecked Sendable {
@@ -210,8 +210,8 @@ struct MoveWorld {
         }
     }
 
-    /// The gap handed back to the coordinator (MOVE-R6): an edit made on the Mac after it moved and before the iPhone moved meets
-    /// the iPhone's older, untouched copy with no common base. CK-R13 keeps both: nothing is lost, one linked conflict copy appears.
+    /// The gap handed back to the coordinator: an edit made on the Mac after it moved and before the iPhone moved meets
+    /// the iPhone's older, untouched copy with no common base. keeps both: nothing is lost, one linked conflict copy appears.
     @Test func anEditOnTheMacBetweenTheTwoMovesIsKeptAsOneLinkedConflictCopy() async throws {
         let pair = try await MovePair(); defer { pair.cleanup() }
         let world = MoveWorld()
@@ -235,11 +235,11 @@ struct MoveWorld {
         #expect(texts.contains { $0.hasSuffix("edited on the Mac after it moved") }, "the newer edit survives")
         #expect(try phone.count("note") == notesBefore + 1, "exactly one extra note, no other note doubled")
         #expect(try phone.count("sync_conflict WHERE noteId<>originalNoteId AND originalNoteId='\(id)'") == 1, "the extra note is a linked copy")
-        // Today's rule keeps the iPhone's older text at the note and the Mac's newer edit in the copy: the gap MOVE-R6 names.
+        // Today's rule keeps the iPhone's older text at the note and the Mac's newer edit in the copy: the gap names.
         #expect(try phone.note(id)?.text.hasSuffix("added on the phone") == true)
     }
 
-    /// The other side of MOVE-R6: the iPhone edits after the Mac moved (the edit reaches the server, which the Mac no longer reads).
+    /// The other side of the iPhone edits after the Mac moved (the edit reaches the server, which the Mac no longer reads).
     /// The newer edit stays at the note; the Mac's older, untouched text becomes one linked copy. Nothing is lost.
     @Test func anEditOnTheIPhoneBetweenTheTwoMovesStaysAtTheNoteAndTheOlderTextBecomesOneCopy() async throws {
         let pair = try await MovePair(); defer { pair.cleanup() }
@@ -265,7 +265,7 @@ struct MoveWorld {
         #expect(try mac.count("sync_conflict WHERE noteId<>originalNoteId AND originalNoteId='\(id)'") == 1)
     }
 
-    // MARK: known limits (MOVE-R6): a deletion or a move to the Trash between the two moves does not stand
+    // MARK: known limits: a deletion or a move to the Trash between the two moves does not stand
 
     static func macMovedThenPhone(_ between: (CoordDevice, MovePair) async throws -> Void) async throws -> (MovePair, CoordDevice, CoordDevice) {
         let pair = try await MovePair()
@@ -282,8 +282,8 @@ struct MoveWorld {
         return (pair, mac, phone)
     }
 
-    /// KNOWN LIMIT, pinned on purpose: the iPhone's copy has no base (CK-R13), so the Mac's deletion is undone everywhere. The
-    /// confirmation and the lasting notice ask the owner not to delete until every device has moved. Change this test only with MOVE-R6.
+    /// KNOWN LIMIT, pinned on purpose: the iPhone's copy has no base, so the Mac's deletion is undone everywhere. The
+    /// confirmation and the lasting notice ask the owner not to delete until every device has moved. Change this test only with.
     @Test func knownLimitADeletionOnTheMacBetweenTheMovesComesBackOnEveryDevice() async throws {
         var id = ""
         let (pair, mac, phone) = try await Self.macMovedThenPhone { mac, pair in
@@ -317,7 +317,7 @@ struct MoveWorld {
         #expect(try Self.library(mac) == Self.library(phone))
     }
 
-    // MARK: Move Without These Files on the first device (MOVE-R10)
+    // MARK: Move Without These Files on the first device
 
     /// The owner's case: notes whose image files never reached the Mac (one in Notes, one in the Trash). The Mac moves without them,
     /// the iPhone (which holds the same notes with the same placeholder rows, sent through the server) moves normally, and an iPad
@@ -360,7 +360,7 @@ struct MoveWorld {
         #expect(try mac.count("sync_dirty WHERE entityType='attachment'") == 2, "the Mac keeps the two rows as unsent local rows")
     }
 
-    // MARK: the trial on a writable COPY of a real library (MOVE-R11)
+    // MARK: the trial on a writable COPY of a real library
 
     /// A private-server stand-in for the trial: it has nothing new, accepts what is sent and acknowledges any cursor.
     actor TrialServer: SyncTransport {

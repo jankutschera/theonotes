@@ -14,13 +14,13 @@ struct OutlineEntry: Equatable {
 enum SectionTarget: Equatable {
     case section(Int)
     case preamble(Int)
-    /// The text above the first heading, addressed as `preamble` (ruling M5-R233).
+    /// The text above the first heading, addressed as `preamble`.
     case lead
 }
 
 /// The sections of a note: one per ATX heading `NoteParser` recognizes, empty ones included (code
 /// blocks, math and front matter excluded), with UTF-8 byte ranges and canonical addresses. Text
-/// before the first heading is the note's lead, addressed `preamble` (rulings M5-R14, M5-R233).
+/// before the first heading is the note's lead, addressed `preamble`.
 struct NoteSections {
     struct Section: Equatable {
         var level: Int
@@ -33,7 +33,7 @@ struct NoteSections {
         var parent: Int?
         var children: [Int]
         /// The lead above the first subheading: only with a subheading and a lead of at least one
-        /// byte, a blank line included (rulings M5-R14, M5-R233).
+        /// byte, a blank line included.
         var preamble: Range<Int>?
         var address: String
         /// `headingLine` trimmed, inner space runs collapsed: what address lines are compared with.

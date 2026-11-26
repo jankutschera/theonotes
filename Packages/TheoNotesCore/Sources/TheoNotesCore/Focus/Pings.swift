@@ -5,7 +5,7 @@ import Foundation
 import GRDB
 
 /// A one-time reminder on a note: on the whole note (`anchor == nil`) or on one line of it
-/// (FOC-R10). Device-local: it is not part of the note, the sync payload or any export.
+///. Device-local: it is not part of the note, the sync payload or any export.
 public struct Ping: Equatable, Sendable {
     public let id: String
     public let noteId: String

@@ -6,7 +6,7 @@ import Foundation
 import Testing
 @testable import TheoNotes
 
-/// REL-R40 … REL-R47 on the Mac: the controller with a fake source and fake Finder/pasteboard. No MetricKit,
+/// on the Mac: the controller with a fake source and fake Finder/pasteboard. No MetricKit,
 /// no real Application Support folder.
 @MainActor
 @Suite struct DiagnosticsControllerTests {

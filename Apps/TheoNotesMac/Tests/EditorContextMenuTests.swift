@@ -7,7 +7,7 @@ import Testing
 import WebKit
 @testable import TheoNotes
 
-/// The editor's right-click menu (M8-R105): WebKit's Font submenu and page items are gone, "Format"
+/// The editor's right-click menu: WebKit's Font submenu and page items are gone, "Format"
 /// runs the Format menu bar's commands, the rest of WebKit's menu stays.
 @MainActor
 @Suite struct EditorContextMenuTests {

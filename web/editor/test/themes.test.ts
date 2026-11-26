@@ -377,7 +377,7 @@ function deltaE2000(hexA: string, hexB: string): number {
 }
 
 describe("public palette tints (M7-R13)", () => {
-  // The tint tokens M7-R13 covers, with the page each one is painted over.
+  // The tint tokens covers, with the page each one is painted over.
   const editorTints = [
     "highlight",
     "highlight-green",
@@ -397,7 +397,7 @@ describe("public palette tints (M7-R13)", () => {
     "color-callout-caution-bg",
   ];
   const shellTints = ["search-highlight", "selection"];
-  // All 18 themes, the app's own four included (M7-R23: the call-out note background of Theo Red and High
+  // All 18 themes, the app's own four included (the call-out note background of Theo Red and High
   // Contrast was ΔE 5.7 and is raised; no theme is exempt from the visibility floor).
   const covered = themes;
 

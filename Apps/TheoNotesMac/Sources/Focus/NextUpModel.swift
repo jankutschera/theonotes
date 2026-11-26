@@ -5,12 +5,12 @@ import AppKit
 import TheoNotesCore
 import Foundation
 
-/// The Next Up card of one main window (spec A3, FOC-R7, FOC-R280 … FOC-R289): one candidate at a
+/// The Next Up card of one main window (spec A3): one candidate at a
 /// time, its actions, and the two-minute timer. It reads `FocusCard` (TheoNotesCore) and writes
 /// only through it; Later and Not Today never touch a note (I4), and the timer touches no row of
 /// the library at all (its notification is tracked in the device-local ledger and nowhere else).
 ///
-/// While App Lock is engaged the model shows nothing, offers nothing and does nothing (FOC-R281).
+/// While App Lock is engaged the model shows nothing, offers nothing and does nothing.
 @MainActor
 final class NextUpModel: ObservableObject {
     enum TimerState: Equatable {
@@ -35,7 +35,7 @@ final class NextUpModel: ObservableObject {
     }
     /// What the toolbar button's symbol shows. It follows `timerState`, but never while the popover
     /// is up: changing the button under its own popover is the suspected cause of K5's stuck panel
-    /// (FOC-R392), so the symbol catches up when the popover closes.
+    ///, so the symbol catches up when the popover closes.
     @Published private(set) var toolbarTimerState: TimerState = .idle
     /// The popover is up.
     @Published var isPresented = false {
@@ -71,7 +71,7 @@ final class NextUpModel: ObservableObject {
         self.clock = clock
         self.now = now
         lockToken = environment.appLock.addDidLockHandler { [weak self] in self?.appLockEngaged() }
-        // A note locked in another window, by sync or by the CLI must leave the card at once (FOC-R286).
+        // A note locked in another window, by sync or by the CLI must leave the card at once.
         libraryObservation = environment.notifier.observe { [weak self] in
             Task { @MainActor in self?.libraryChanged() }
         }
@@ -333,7 +333,7 @@ final class NextUpModel: ObservableObject {
         timerAction = nil
         timerState = .finished
         // Only a panel that really opens may take the system's place: in front, unlocked and in the
-        // key window. Anywhere else the notification stays and banners (FOC-R282).
+        // key window. Anywhere else the notification stays and banners.
         guard panelWillShowTheEnd() else {
             appLogger.notice("next-up: the timer ended; the panel stays closed and the notification rings")
             return

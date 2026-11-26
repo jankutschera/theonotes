@@ -6,7 +6,7 @@ import Testing
 @testable import TheoNotesCore
 @testable import TheoNotesVoice
 
-/// Stop must end (FOC-R382): K4 saw an insert-mode capture stay at "Listening" through two Stops.
+/// Stop must end: K4 saw an insert-mode capture stay at "Listening" through two Stops.
 /// An engine that never delivers its last results is cancelled after `finishTimeout`; what was
 /// heard until then is kept and the failure is reported.
 @MainActor
@@ -100,7 +100,7 @@ import Testing
         }
     }
 
-    /// FOC-R398 (fix round): after a timeout the file may not be closed yet, so a Stop with no
+    /// After a timeout the file may not be closed yet, so a Stop with no
     /// words keeps the recording and the note for recovery instead of dropping them.
     @Test func aTimedOutStopWithNoWordsKeepsTheRecording() async throws {
         let library = try VoiceTestLibrary(); defer { library.cleanup() }

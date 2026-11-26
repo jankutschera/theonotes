@@ -35,7 +35,7 @@ struct SectionAddress: Equatable {
     }
 
     /// Trimmed, with each run of white space inside (spaces, tabs, no-break spaces) collapsed to one
-    /// space: bearcli addresses carry no no-break space (ruling M5-R233).
+    /// space: bearcli addresses carry no no-break space.
     static func normalize(_ line: Substring) -> String {
         var out = String.UnicodeScalarView()
         var pendingSpace = false

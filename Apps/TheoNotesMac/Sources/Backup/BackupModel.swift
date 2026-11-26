@@ -9,7 +9,7 @@ import Observation
 import Synchronization
 import UniformTypeIdentifiers
 
-/// The file type of a full backup (`.theonotes-backup`, declared in Info.plist; REN2-R37). Backups made before
+/// The file type of a full backup (`.theonotes-backup`, declared in Info.plist). Backups made before
 /// stage 2 (`.baerchen-backup`) are still opened: the old type is an imported declaration in Info.plist.
 enum BackupFileType {
     static let identifier = "com.truebrewbirdie.theonotes.backup"
@@ -38,7 +38,7 @@ final class LibraryOperationGate {
 }
 
 /// File ▸ Backup Notes… and File ▸ Restore Backup…, on the one backup format
-/// (`LibraryBackup`, INT-R11). One run at a time per library; the store work runs on a detached
+/// (`LibraryBackup`). One run at a time per library; the store work runs on a detached
 /// task, like `ImportModel`. Open editors are flushed first.
 @MainActor
 @Observable
@@ -311,7 +311,7 @@ final class BackupModel {
     func restore(_ opened: OpenedBackup, mode: BackupRestoreMode) {
         guard case .review = phase else { return }
         confirmation = nil
-        // Every window's editors stop writing first (M8-R120), then the sessions commit.
+        // Every window's editors stop writing first, then the sessions commit.
         guard environment.beginEditFreeze() else {
             environment.endEditFreeze()
             return setPhase(.failed(BackupError.pendingEdits.localizedDescription))

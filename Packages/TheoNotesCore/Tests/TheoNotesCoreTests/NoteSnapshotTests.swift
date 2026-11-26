@@ -6,7 +6,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// Per-note history (FOC-R11): snapshots of unlocked notes, their retention, Restore as Copy and
+/// Per-note history: snapshots of unlocked notes, their retention, Restore as Copy and
 /// Replace This Note. The locked-note side is `SnapshotPrivacyTests`.
 @Suite struct NoteSnapshotTests {
     static let day: TimeInterval = 86_400

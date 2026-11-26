@@ -7,7 +7,7 @@ import GRDB
 import Testing
 @testable import TheoNotesCore
 
-/// REL-R70 … REL-R79: the notes a brand-new library starts with.
+/// The notes a brand-new library starts with.
 @Suite struct GettingStartedNotesTests {
     struct Library {
         let paths: AppPaths, db: AppDatabase, store: NoteStore
@@ -316,8 +316,8 @@ import Testing
             }
         }
         #expect(live >= 10)
-        // The welcome note is the entry: every guide (notes 2 to 9) is one of its links (STARTER-R16). The first shipped
-        // welcome text is frozen apart (STARTER-R1), so linking the ninth note moves no merge base.
+        // The welcome note is the entry: every guide (notes 2 to 9) is one of its links. The first shipped
+        // welcome text is frozen apart, so linking the ninth note moves no merge base.
         let welcomeTargets = Set(NoteParser.metadata(for: notes[0].text).wikiLinks.map(\.target))
         #expect(welcomeTargets == Set(Self.expectedTitles[1..<9]))
     }
@@ -331,7 +331,7 @@ import Testing
             for line in note.text.split(separator: "\n", omittingEmptySubsequences: false) where line.localizedCaseInsensitiveContains("bear") {
                 #expect(note.title == "Import, export and back up" && line.contains("Import From ▸ Bear…"), "\(note.title): \(line)")
             }
-            // Sync is explained in one place, and the Claude note says that its writes reach iPhone and iPad (STARTER-R16).
+            // Sync is explained in one place, and the Claude note says that its writes reach iPhone and iPad.
             if !["Import, export and back up", "Use Theo Notes with Claude"].contains(note.title) {
                 #expect(!note.text.localizedCaseInsensitiveContains("sync"), "\(note.title) mentions sync")
                 #expect(!note.text.localizedCaseInsensitiveContains("icloud"), "\(note.title) mentions iCloud")
@@ -357,8 +357,8 @@ import Testing
         return url.appendingPathComponent("docs/release/getting-started-copy.md")
     }()
 
-    /// The approval document is the bundled files word for word (REL-R79): it cannot drift from what ships.
-    /// It lives with the private release papers (PUB-R1), so a public checkout skips this check.
+    /// The approval document is the bundled files word for word: it cannot drift from what ships.
+    /// It lives with the private release papers, so a public checkout skips this check.
     @Test(.enabled(if: FileManager.default.fileExists(atPath: copyDocumentURL.path), "needs the private release papers"))
     func theCopyDocumentHoldsEveryTextVerbatim() throws {
         let document = try String(contentsOf: Self.copyDocumentURL, encoding: .utf8)

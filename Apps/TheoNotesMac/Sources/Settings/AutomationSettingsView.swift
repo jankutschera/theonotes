@@ -10,7 +10,7 @@ import SwiftUI
 /// State of Settings → Automation: the command-line install, the Claude setup text and the
 /// x-callback-url token. Nothing here runs by itself. The only writes are the `baerchen` link in
 /// `~/.local/bin` (Install / Uninstall), the token in the library's settings (Show, Copy and
-/// Regenerate) and the pasteboard. No Claude configuration file is ever written (M5-R180).
+/// Regenerate) and the pasteboard. No Claude configuration file is ever written.
 @MainActor
 @Observable
 final class AutomationSettingsModel {
@@ -44,7 +44,7 @@ final class AutomationSettingsModel {
         self.init(installer: CLIInstaller(home: home, binary: Self.bundledBinary(bundleURL: Bundle.main.bundleURL)), database: database)
     }
 
-    /// `<app>/Contents/Helpers/theonotes` (M5-R181: not `url(forAuxiliaryExecutable:)`, which
+    /// `<app>/Contents/Helpers/theonotes` (not `url(forAuxiliaryExecutable)`, which
     /// looks in `Contents/MacOS`).
     nonisolated static func bundledBinary(bundleURL: URL) -> URL {
         bundleURL.appendingPathComponent("Contents/Helpers/theonotes")
@@ -85,7 +85,7 @@ final class AutomationSettingsModel {
 
     var sudoCommand: String { installer.sudoCommand() }
 
-    /// Why the `/usr/local/bin` command is not offered (M5-R200), or nil.
+    /// Why the `/usr/local/bin` command is not offered, or nil.
     var sudoBlocker: String? { installer.systemLinkBlocker() }
 
     func copySudoCommand() {
@@ -96,7 +96,7 @@ final class AutomationSettingsModel {
     // MARK: Claude
 
     /// The text under the Claude section. "Copy Claude config" copies a whole JSON object, so the
-    /// text says to merge it (M5-R201).
+    /// text says to merge it.
     nonisolated static let claudeGuidance = """
         Claude can read and write your notes through the Theo Notes MCP server. "Copy Claude config" copies a complete \
         claude_desktop_config.json: if your file already has "mcpServers", merge the "theonotes" entry into it \
@@ -107,7 +107,7 @@ final class AutomationSettingsModel {
         refused): review its requests before you approve them.
         """
 
-    /// The installed link when it points at this binary, else the binary inside the app (M5-R182).
+    /// The installed link when it points at this binary, else the binary inside the app.
     var binaryPath: String {
         if userStatus == .installed(pointsHere: true) { return installer.linkPath(.userLocalBin) }
         if systemStatus == .installed(pointsHere: true) { return installer.linkPath(.usrLocalBin) }
@@ -184,7 +184,7 @@ final class AutomationSettingsModel {
     }
 }
 
-/// The accessibility identifiers of the Automation pane (M5-R188, R202).
+/// The accessibility identifiers of the Automation pane.
 enum AutomationControl {
     static let install = "automation-install"
     static let uninstall = "automation-uninstall"

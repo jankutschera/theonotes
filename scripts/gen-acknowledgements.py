@@ -35,11 +35,11 @@ differ only in the copyright line share one body; the app puts the block back wh
 Anything with an unknown or denied (GPL, LGPL, AGPL, SSPL, ...) licence, a missing licence text
 or a licence file that contradicts the declared licence makes the script fail with a list.
 
-GPL gate (L1, LIC-R6 amended): the project is GPL-3.0-only, so every licence that ships also goes
+GPL gate (L1, amended): the project is GPL-3.0-only, so every licence that ships also goes
 through `gplCompatible(spdx)`. MIT, ISC, BSD, 0BSD, Zlib, Unlicense, CC0-1.0, BlueOak-1.0.0,
 Unicode-3.0 and Apache-2.0 pass. OFL-1.1 (font data) and MPL-2.0 pass only with a ruling id in the
 config; EPL-2.0 needs a ruling id and a filled-in Secondary-License notice (EPL-2.0 Exhibit A) that
-names the GPL version 3 or later in the package, or the package has to go (elkjs, REN2-R10).
+names the GPL version 3 or later in the package, or the package has to go (elkjs).
 Everything else (GPL-2.0-only, LGPL, AGPL, SSPL, CC-BY-SA, CC-BY-NC, unknown) fails.
 See docs/legal/licence-compatibility.md.
 """
@@ -71,7 +71,7 @@ DEFAULT_APP_REL = "build/DerivedData/Build/Products/Debug/Theo Notes Dev.app"
 PERMISSIVE = [
     "MIT", "ISC", "BSD-2-Clause", "BSD-3-Clause", "Apache-2.0", "0BSD", "Zlib",
     "Unlicense", "CC0-1.0", "BlueOak-1.0.0", "Unicode-3.0",
-    "OFL-1.1",  # fonts only (LIC-R34): the maths font data and the licence it passes on
+    "OFL-1.1",  # fonts only: the maths font data and the licence it passes on
 ]
 # File-level copyleft: allowed, recorded in docs/decisions.md, and shown with a source statement.
 WEAK_COPYLEFT = ["EPL-2.0", "MPL-2.0"]
@@ -731,7 +731,7 @@ def audit_bundle(resources, map_dir, entries, config, problems):
         if path.is_dir() and not path.is_symlink():
             continue
         rel = path.relative_to(resources).as_posix()
-        # Signing metadata that codesign adds to a nested bundle (an ad hoc signed dev build, FOC-R368).
+        # Signing metadata that codesign adds to a nested bundle (an ad hoc signed dev build).
         if "_CodeSignature" in path.relative_to(resources).parts:
             continue
         if rel.startswith("Editor/"):

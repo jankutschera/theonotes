@@ -154,7 +154,7 @@ class BacktickRuns {
 const URL_TRAILING = new Set([63, 33, 46, 44, 58, 42, 95, 126]);
 
 /**
- * Where a bare URL running from `bodyFrom` (after `://`) to `to` really ends (M6-R43, GFM's
+ * Where a bare URL running from `bodyFrom` (after `://`) to `to` really ends (GFM's
  * extended autolink rule): trailing `? ! . , : * _ ~` are dropped, and a trailing `)` only while
  * the URL has more `)` than `(`. Never before `bodyFrom`.
  */

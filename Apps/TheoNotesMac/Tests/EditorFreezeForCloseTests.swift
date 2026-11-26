@@ -8,7 +8,7 @@ import Testing
 @testable import TheoNotes
 
 /// W1: `EditorBridgeController.freezeForClose(noteId:)`, the host's side of the capture-close
-/// barrier (FOC-R343 … FOC-R349). The page is a recorder; its answers are played by the tests.
+/// barrier. The page is a recorder; its answers are played by the tests.
 @MainActor
 @Suite struct EditorFreezeForCloseTests {
     @MainActor

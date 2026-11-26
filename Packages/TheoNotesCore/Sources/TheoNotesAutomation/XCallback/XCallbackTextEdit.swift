@@ -48,7 +48,7 @@ enum XCallbackTextEdit {
     /// `content` added to `text` as `mode` says.
     ///
     /// - `append`: at the end of the note (or of the header's section, subsections included).
-    ///   Without `newLine` the text continues the last line (ruling M5-R22), except when that line
+    /// Without `newLine` the text continues the last line, except when that line
     ///   is the title or the section's heading, which are never extended: the text then goes on
     ///   its own line. With `newLine` it always goes on its own line.
     /// - `prepend`: after the title line and the tag lines below it (after the heading line).

@@ -19,7 +19,7 @@ import Foundation
 /// `image 2.png`, …). The first line becomes the title (`# `) unless it already is a heading.
 ///
 /// Generic HTML pages (a saved web page, an export) use the same walker with `makesTitle: false`
-/// and/or `keepsRelativeImages: true` (M8-R55): `p` is followed by an empty line, `pre` is a
+/// and/or `keepsRelativeImages: true`: `p` is followed by an empty line, `pre` is a
 /// fenced block whose `language-x` class becomes the info string, `mark` → `==`, and
 /// `<img src="rel/p.png">` stays a Markdown image for `AttachmentLinkRewriter` to resolve.
 public enum HTMLToMarkdown {
@@ -46,7 +46,7 @@ public enum HTMLToMarkdown {
     }
 
     /// Elements nested deeper than this are flattened into their ancestor at this depth. The
-    /// walkers do not recurse (IMP-R41), so this no longer guards the stack; it bounds the work
+    /// walkers do not recurse, so this no longer guards the stack; it bounds the work
     /// per level (link labels, strike checks, nested table cells) a hostile page can cause.
     public static let maxNesting = 128
 
@@ -192,7 +192,7 @@ final class HTMLElement {
     }
 
     /// Releases the subtree from a worklist: letting each element release its children would
-    /// use stack per nesting level (IMP-R41).
+    /// use stack per nesting level.
     deinit {
         var pending: [HTMLElement] = []
         for case .element(let child) in children { pending.append(child) }
@@ -529,7 +529,7 @@ final class Renderer {
     // MARK: Walkers
 
     /// The tree walkers keep their state in task objects on an explicit stack instead of
-    /// recursing, so nesting depth costs heap memory, not thread stack (IMP-R41): a 512 KiB
+    /// recursing, so nesting depth costs heap memory, not thread stack: a 512 KiB
     /// background thread converts any page. Each task stands for one call of the walker it is
     /// named after and does the same work in the same order: it runs until it needs the result of
     /// a nested call (`.call`) and is resumed with that result, or it finishes (`.done`).
@@ -708,7 +708,7 @@ final class Renderer {
         static let maxNumber = 999_999_999
 
         /// `start` as a list number: unparsable or negative → 1, larger than a marker holds →
-        /// `maxNumber` (IMP-R41).
+        /// `maxNumber`.
         static func start(_ value: String?) -> Int {
             guard let parsed = Int(value ?? ""), parsed >= 0 else { return 1 }
             return min(parsed, maxNumber)
@@ -1102,7 +1102,7 @@ final class Renderer {
         let plain = Self.collapse(Self.rawText(element.children, preserveWhitespace: false))
             .trimmingCharacters(in: .whitespacesAndNewlines)
         guard !href.isEmpty, !plain.isEmpty, !href.lowercased().hasPrefix("javascript:") else { return inner }
-        // A page of unknown origin links only the web and mail; any other target is just text (M8-R55).
+        // A page of unknown origin links only the web and mail; any other target is just text.
         if isGeneric, HTMLToMarkdown.allowedLinkTarget(href) == nil { return inner }
         let destination = href
             .replacingOccurrences(of: " ", with: "%20")

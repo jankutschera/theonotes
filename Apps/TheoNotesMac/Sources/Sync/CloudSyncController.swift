@@ -15,8 +15,8 @@ struct CloudSyncGatewayRequest: Sendable {
     let paths: AppPaths
 }
 
-/// A gateway with the two things the controller needs besides its protocol: the fence's cancellation (CK-R170) and the way a remote
-/// notification reaches it (CK-R172). Tests give just the gateway.
+/// A gateway with the two things the controller needs besides its protocol: the fence's cancellation and the way a remote
+/// notification reaches it. Tests give just the gateway.
 struct CloudSyncGatewayParts: Sendable {
     var gateway: any CloudKitGateway
     /// `{ await gateway.cancelOperations() }` for the live gateway; handed to the coordinator's fence.
@@ -26,7 +26,7 @@ struct CloudSyncGatewayParts: Sendable {
 }
 
 /// What the controller needs from the outside world. `live` is the real thing (built only when something is switched on); tests
-/// pass the in-memory fake. Nothing in here is called before the person flips the switch or a library that has it on starts (CK-R11).
+/// pass the in-memory fake. Nothing in here is called before the person flips the switch or a library that has it on starts.
 struct CloudSyncServices: Sendable {
     var configuration: CloudKitConfiguration?
     var gateway: @Sendable (CloudSyncGatewayRequest) -> CloudSyncGatewayParts
@@ -34,7 +34,7 @@ struct CloudSyncServices: Sendable {
     var clock: @Sendable () -> Date = { Date() }
     var drainTimeout: TimeInterval = CloudSyncCoordinator.defaultDrainTimeout
 
-    /// The shipped services (CK-R170). Only a build with a valid container AND the flag on (`ReleaseFeatures.cloudSyncAvailable`) gets
+    /// The shipped services. Only a build with a valid container AND the flag on (`ReleaseFeatures.cloudSyncAvailable`) gets
     /// a configuration and so a live gateway; any other build keeps `configuration == nil`, the coordinator answers "not available in
     /// this build" and nothing is constructed. Even then the gateway is only made when something asks for it (the person's switch is
     /// on), and `LiveCloudKitGateway` itself touches CloudKit on its first call, not when it is built.
@@ -59,7 +59,7 @@ struct CloudSyncServices: Sendable {
             keychain: { KeychainCloudKeySeedStore(namespace: $0, accessGroup: AppIdentity.current.keychainAccessGroup) })
     }
 
-    /// The gateway's folder for the files of a conflict record (CK-R60): durable (inside the library folder, which lives in Application
+    /// The gateway's folder for the files of a conflict record: durable (inside the library folder, which lives in Application
     /// Support, never `tmp`), next to the receiver's `CloudPinned`, and kept out of backups.
     static func livePinDirectory(for paths: AppPaths) -> URL {
         var directory = paths.root.appendingPathComponent("CloudGatewayPins", isDirectory: true)
@@ -86,7 +86,7 @@ struct UnavailableCloudKitGateway: CloudKitGateway {
 
 /// A secret kept as bytes only for as long as a flow needs it, and zeroed when it is let go. The coordinator API takes a Swift `String`,
 /// so `take()` has to make one for the single call that needs it; that `String` (and the one the password field produced) is outside
-/// what can be zeroed. This only keeps the copy the controller itself holds short-lived and wiped (CK-R149).
+/// what can be zeroed. This only keeps the copy the controller itself holds short-lived and wiped.
 final class HeldSecret {
     private var bytes: [UInt8]
     init(_ text: String) { bytes = Array(text.utf8) }
@@ -109,7 +109,7 @@ enum CloudRecoverySheetPurpose: Equatable {
 }
 
 /// Settings ▸ iCloud: owns one `CloudSyncCoordinator` for the library (lazily, flag-gated), turns its answers into what the tab
-/// shows, and runs the actions the tab offers. Words live in `CloudSyncStrings`. Rulings: CK-R140 to CK-R149.
+/// shows, and runs the actions the tab offers. Words live in `CloudSyncStrings`.
 @MainActor @Observable
 final class CloudSyncController {
     // MARK: what the tab shows
@@ -124,14 +124,14 @@ final class CloudSyncController {
     private(set) var recoveryState: CloudRecoveryState = .none
     private(set) var boundToPrivateServer = false
     /// The private-server side of the move, set by the app when this build has it (`AppEnvironment`); nil hides the button.
-    /// `true` asks to move without the missing files the refusal named (MOVE-R10).
+    /// `true` asks to move without the missing files the refusal named.
     @ObservationIgnored var leavePrivateServer: (@MainActor (_ withoutMissingFiles: Bool) async throws -> Void)?
     /// The last refusal named missing files that no device and no server ever had, and nothing else stops the move: the
-    /// "Move to iCloud Without These Files…" card lists these notes (up to five titles, then how many more; MOVE-R10, MOVE-R13).
+    /// "Move to iCloud Without These Files…" card lists these notes (up to five titles, then how many more).
     private(set) var missingFilesToLeave: (notes: [String], moreNotes: Int)?
     var canMoveWithoutMissingFiles: Bool { missingFilesToLeave != nil }
     var canMoveToICloud: Bool { isAvailable && boundToPrivateServer && leavePrivateServer != nil }
-    /// After a move: "move your other devices now", until the owner dismisses it (MOVE-R6).
+    /// After a move: "move your other devices now", until the owner dismisses it.
     private(set) var showsMoveNotice = false
 
     func dismissMoveNotice() {
@@ -181,9 +181,9 @@ final class CloudSyncController {
     @ObservationIgnored private var started = false
     /// True while `stopSyncing` runs, so a second tap does not start a second stop.
     @ObservationIgnored private var stoppingNow = false
-    /// How a remote notification reaches the gateway; nil until the gateway exists (a switched-off library has none, CK-R172).
+    /// How a remote notification reaches the gateway; nil until the gateway exists (a switched-off library has none).
     @ObservationIgnored private var remoteNotificationHandler: (@Sendable ([AnyHashable: Any]) -> Bool)?
-    /// The note password a protected library gave before the recovery step (the password comes first, CK-R143). Memory only; it is
+    /// The note password a protected library gave before the recovery step (the password comes first). Memory only; it is
     /// needed again by the enable that follows the sheet, and cleared as soon as that enable has run or the sheet is cancelled.
     @ObservationIgnored private var heldNotePassword: HeldSecret?
     @ObservationIgnored private var terminationObserver: NSObjectProtocol?
@@ -255,7 +255,7 @@ final class CloudSyncController {
 
     /// A remote notification, if one ever arrives (the Mac does not register for push: Gate G0 A4 found none on the Mac, so the timer,
     /// the foreground and the launch are its triggers). The gateway turns a private-database notification into a change event and the
-    /// coordinator runs a cycle. Returns whether it was one; false while sync is off (CK-R172).
+    /// coordinator runs a cycle. Returns whether it was one; false while sync is off.
     @discardableResult
     func handleRemoteNotification(_ userInfo: [AnyHashable: Any]) -> Bool {
         guard isOn, !closed, let handler = remoteNotificationHandler else { return false }
@@ -280,9 +280,9 @@ final class CloudSyncController {
         }
     }
 
-    /// "Stop syncing": the engine stops; nothing is deleted anywhere (CK-R9). It always works: a manual "Sync now" that hangs holds
+    /// "Stop syncing": the engine stops; nothing is deleted anywhere. It always works: a manual "Sync now" that hangs holds
     /// the tab's working state, but Stop does not wait for it. It cancels the running cycle through the coordinator (one deadline,
-    /// the fence refuses what a stuck call writes later, CK-R171) and returns to Off.
+    /// the fence refuses what a stuck call writes later) and returns to Off.
     func stopSyncing() async {
         guard isAvailable, !stoppingNow else { return }
         stoppingNow = true
@@ -350,7 +350,7 @@ final class CloudSyncController {
         return true
     }
 
-    /// "Skip for now", allowed only with the risk sentence ticked (CK-R7, CK-J1). First setup only.
+    /// "Skip for now", allowed only with the risk sentence ticked. First setup only.
     @discardableResult
     func skipRecoveryWords(acknowledged: Bool) async -> Bool {
         guard recoveryPurpose == .firstSetup, !isWorking else { return false }
@@ -427,7 +427,7 @@ final class CloudSyncController {
         }
     }
 
-    /// "Upload again" after the synced copy was removed: the only way to create it again (CK-R15).
+    /// "Upload again" after the synced copy was removed: the only way to create it again.
     func uploadAgain() async {
         guard let coordinator, !isWorking else { return }
         await work(progress: nil) {
@@ -443,7 +443,7 @@ final class CloudSyncController {
         }
     }
 
-    /// "Upload them again" after notes went missing in iCloud (CK-R21).
+    /// "Upload them again" after notes went missing in iCloud.
     func uploadThemAgain() async {
         guard let coordinator, !isWorking else { return }
         await work(progress: nil) {
@@ -453,12 +453,12 @@ final class CloudSyncController {
         }
     }
 
-    /// "Move This Library to iCloud…" (MOVE-R1 to MOVE-R6): the private-server sync makes its final sync, checks that nothing is left
+    /// "Move This Library to iCloud…": the private-server sync makes its final sync, checks that nothing is left
     /// in either direction, saves a verified backup and lets go (`MacSyncController.leaveForICloud`); then the switch goes on as
     /// usual (its own backup and first sync). A refusal changes nothing and says why.
     func moveToICloud() async { await move(withoutMissingFiles: false) }
 
-    /// "Move to iCloud Without These Files…", after the same confirmation (MOVE-R13): the same move; attachments whose file no device and no server ever had no longer stop it. Their
+    /// "Move to iCloud Without These Files…", after the same confirmation: the same move; attachments whose file no device and no server ever had no longer stop it. Their
     /// rows stay as local rows that are never sent; the notes keep their text and show the missing file as before.
     func moveWithoutMissingFiles() async { await move(withoutMissingFiles: true) }
 
@@ -501,7 +501,7 @@ final class CloudSyncController {
         }
     }
 
-    // MARK: account changed (CK-R10)
+    // MARK: account changed
 
     /// The default: nothing is sent to the new account.
     func keepOffline() async {
@@ -620,7 +620,7 @@ final class CloudSyncController {
             await afterRun(coordinator)
         } catch {
             if case CloudCoordinatorError.notRunning = error { return .stop }
-            // Switched off or shut down while this cycle ran (its upload was cancelled): that is not a problem to show (CK-R171).
+            // Switched off or shut down while this cycle ran (its upload was cancelled): that is not a problem to show.
             guard scheduler != nil, !closed else { return .stop }
             fail(error)
         }
@@ -648,7 +648,7 @@ final class CloudSyncController {
 
     func apply(_ next: CloudSyncState) {
         state = next
-        // A different account or switching off ends the flow that needed the held password (CK-R149).
+        // A different account or switching off ends the flow that needed the held password.
         switch next {
         case .accountChanged:
             clearHeldNotePassword()

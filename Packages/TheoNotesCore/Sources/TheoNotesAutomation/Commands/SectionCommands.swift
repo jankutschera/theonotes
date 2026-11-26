@@ -5,7 +5,7 @@ import TheoNotesCore
 import Foundation
 import GRDB
 
-/// `cat`, `outline` and `search-in`. Check order (ruling M5-R51): arguments, the library, the
+/// `cat`, `outline` and `search-in`. Check order: arguments, the library, the
 /// note, fields and the address's syntax, the content lock, then the address against the text
 /// (which a locked note never exposes).
 enum SectionCommands {
@@ -154,7 +154,7 @@ enum SectionCommands {
         let hits = try searchHits(
             needle, text: note.text, recognized: recognized, address: address, context: context)
         if counting { return ReadCommands.writeCount(hits.count, format: parsed.format, env: env) }
-        // `-n 0` prints nothing at all, as in `list` (M5-R33).
+        // `-n 0` prints nothing at all, as in `list`.
         if limit == 0 { return }
         let rows = hits.prefix(limit ?? Int.max).map { hit in
             fields.map { field -> FieldValue in
@@ -173,7 +173,7 @@ enum SectionCommands {
     /// files it links, in offset order (a body hit before an attachment hit at the same offset).
     /// `recognized` maps `attachment.filenameKey` to the OCR text; with `address`, only hits whose
     /// offset lies in that section count. Snippets: `context / 2` characters on each side of the
-    /// match, clamped to the text they come from (ruling M5-R15).
+    /// match, clamped to the text they come from.
     static func searchHits(
         _ needle: String, text: String, recognized: [String: String], address: SectionAddress?, context: Int
     ) throws(AutomationError) -> [Hit] {
@@ -189,7 +189,7 @@ enum SectionCommands {
                 section: section(at: $0.lowerBound), source: .body)
         }
         if !recognized.isEmpty, !needle.isEmpty {
-            // Each file once, at its first link inside the search range (ruling M5-R61).
+            // Each file once, at its first link inside the search range.
             var seen = Set<String>()
             for link in NoteParser.attachmentLinks(in: text) {
                 if let within, !within.contains(link.offset) { continue }
@@ -212,7 +212,7 @@ enum SectionCommands {
     }
 
     /// Recognized text of the note's live attachments (`done` rows with text), by the stored
-    /// `filenameKey` (`AttachmentFiles.fileSystemKey`, ruling M5-R66).
+    /// `filenameKey` (`AttachmentFiles.fileSystemKey`).
     static func recognizedText(noteId: String, db: Database) throws -> [String: String] {
         let rows = try Row.fetchAll(
             db,

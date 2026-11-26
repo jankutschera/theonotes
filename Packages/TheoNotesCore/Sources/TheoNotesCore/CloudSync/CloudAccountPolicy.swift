@@ -4,7 +4,7 @@
 import Foundation
 import GRDB
 
-/// What to do about the iCloud account the device reports (CK-R10). Pure: the stored user hash and the reported account in,
+/// What to do about the iCloud account the device reports. Pure: the stored user hash and the reported account in,
 /// a decision out. A different iCloud user never gets this library's notes silently (the decision is `.pause(.accountChanged)`).
 public enum CloudAccountDecision: Sendable, Equatable {
     public enum PauseReason: Sendable, Equatable { case accountChanged, signedOut, restricted }
@@ -41,7 +41,7 @@ public enum CloudAccountPolicy {
         }
     }
 
-    /// Re-derives the visible state from durable data at launch (CK-R15: the event stream is a notification only; a missed
+    /// Re-derives the visible state from durable data at launch (the event stream is a notification only; a missed
     /// event changes nothing because everything it announced is already in `ck_state`). First match wins: not bound, account
     /// not usable, zone removed, fenced, unreadable items, missing items, else `.syncing` (the coordinator is about to sync).
     public static func launchState(store: CloudSyncStore, account: CloudAccountState) throws -> CloudSyncState {
@@ -65,7 +65,7 @@ extension CloudSyncStore {
         try database.pool.read { try String.fetchOne($0, sql: "SELECT cloudUserHash FROM ck_state WHERE id=1") }
     }
 
-    /// "Upload again" (CK-R15): the only way out of `removed`. It sets the zone state to `unknown`, from which `prepare()`
+    /// "Upload again": the only way out of `removed`. It sets the zone state to `unknown`, from which `prepare`
     /// creates the zone again. Returns false (and changes nothing) in any other state.
     @discardableResult
     public func chooseUploadAgain() throws -> Bool {
