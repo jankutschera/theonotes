@@ -22,6 +22,7 @@ python3 -I scripts/tests/test_name_guard.py
 python3 -I scripts/tests/test_stage2_rename.py
 python3 -I scripts/name-guard.py --check
 python3 -I scripts/mcp-smoke.py --self-test
+python3 -I scripts/tests/test_mcpb.py
 bash scripts/test-install-dev.sh
 bash scripts/tests/test_cutover_safety.sh
 pnpm --dir web/editor typecheck

@@ -111,6 +111,18 @@ targets:
       - name: Build editor bundle
         script: '"$SRCROOT/scripts/build-editor.sh" "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/Editor"'
         basedOnDependencyAnalysis: false
+      # The Claude desktop extension that Settings > Automation > Connect to Claude hands to Claude. The dev
+      # identity gets its own extension that looks for this very app first.
+      - name: Build Claude extension
+        shell: /bin/bash
+        script: |
+          dev=()
+          if [ -n "$THEONOTES_ID_SUFFIX" ]; then
+            dev=(--dev --bundle-id "$PRODUCT_BUNDLE_IDENTIFIER" --app-hint "$TARGET_BUILD_DIR/$WRAPPER_NAME")
+          fi
+          python3 -I "$SRCROOT/scripts/build-mcpb.py" --version "$MARKETING_VERSION" \
+            --out "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/TheoNotes.mcpb" "${dev[@]}"
+        basedOnDependencyAnalysis: false
     settings:
       base:
         # Bundle, executable and CFBundleName follow the display name: "Theo Notes" (Production, Release) and

@@ -34,6 +34,7 @@ never with GPLv2. This is the reason the project is GPL-3.0-only and not "GPL-2.
 | robust-predicates (if bundled), 0BSD `tslib` (Worker) | Unlicense / 0BSD | OK | FSF list: Unlicense "compatible with the GNU GPL" |
 | Private sync server runtime deps, not in the public repository (@simplewebauthn/server, aws4fetch, @peculiar/*, asn1js, tsyringe) | MIT / BSD-3 | OK (also for AGPL-3.0 if J6) | `package-lock.json` |
 | Dev-only tools (vite, vitest, playwright, typescript, wrangler, miniflare; `sharp` with optional LGPL libvips inside miniflare, decisions.md:1183) | MIT / Apache-2.0 / LGPL optional | OK, not distributed; keep outside shipped bundles | not part of any artefact |
+| Build-only tool `@anthropic-ai/mcpb` 2.1.2 (`tools/mcpb`, packs the Claude desktop extension) and its tree: 48 MIT, 4 ISC, 1 BlueOak-1.0.0, 1 MIT OR CC0-1.0, node-forge (BSD-3-Clause OR GPL-2.0, elected BSD-3-Clause) | MIT and the above | OK, not distributed: the extension holds only our manifest, icon and launcher | `tools/mcpb/pnpm-lock.yaml`, `pnpm --dir tools/mcpb licenses list` |
 | SF Symbols (names in `Resources/tagcons.json`, rendered at runtime) | Apple SF Symbols licence | OK on Apple platforms; blocks a Windows/Android port and any export embedding the glyphs (audit F14) | system library, not in repo |
 | Apple system frameworks, Swift runtime | Apple SDK | OK (GPLv3 system-library exception) | not bundled |
 | Fonts, icon, images of the app | own / AI-generated icon | Not a licence conflict; ownership and trademark questions (F12) | `docs/brand/PROVENANCE.md` |

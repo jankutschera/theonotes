@@ -7,5 +7,6 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 pnpm --dir web/editor install --frozen-lockfile
+pnpm --dir tools/mcpb install --frozen-lockfile
 pnpm --dir web/editor exec playwright install webkit
 xcodegen generate

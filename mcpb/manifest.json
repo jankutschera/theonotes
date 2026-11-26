@@ -1,0 +1,54 @@
+{
+  "manifest_version": "0.3",
+  "name": "theonotes",
+  "display_name": "Theo Notes",
+  "version": "0.0.0",
+  "description": "Search, read and write your Theo Notes library from Claude.",
+  "long_description": "Runs the MCP server of the Theo Notes app on your Mac. It reads and writes your local library directly; nothing goes to a server of ours. Needs the Theo Notes app, opened once so it has made your library. Only tags and Exclude tags limit Claude to the notes with (or without) those tags and their nested tags; leave both empty for the whole library. The tool add_attachment_from_url fetches a web address Claude chooses: review its requests before you approve them.",
+  "author": {
+    "name": "True Brew Birdie Ltd. and Theo Notes contributors",
+    "url": "https://theonotes.app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jankutschera/theonotes"
+  },
+  "homepage": "https://theonotes.app",
+  "documentation": "https://github.com/jankutschera/theonotes#use-with-claude",
+  "support": "https://github.com/jankutschera/theonotes/discussions",
+  "icon": "icon.png",
+  "license": "GPL-3.0-only",
+  "keywords": ["notes", "markdown", "mac"],
+  "server": {
+    "type": "binary",
+    "entry_point": "server/theonotes-mcp",
+    "mcp_config": {
+      "command": "${__dirname}/server/theonotes-mcp",
+      "args": [],
+      "env": {
+        "THEONOTES_CONNECT_ONLY_TAGS": "${user_config.only_tags}",
+        "THEONOTES_CONNECT_EXCLUDE_TAGS": "${user_config.exclude_tags}"
+      }
+    }
+  },
+  "user_config": {
+    "only_tags": {
+      "type": "string",
+      "title": "Only tags",
+      "description": "Comma-separated, for example work, home/kids. Claude sees only notes with these tags or their nested tags. Leave empty for the whole library.",
+      "default": "",
+      "required": false
+    },
+    "exclude_tags": {
+      "type": "string",
+      "title": "Exclude tags",
+      "description": "Comma-separated, for example private. Claude never sees notes with these tags or their nested tags.",
+      "default": "",
+      "required": false
+    }
+  },
+  "tools_generated": false,
+  "compatibility": {
+    "platforms": ["darwin"]
+  }
+}

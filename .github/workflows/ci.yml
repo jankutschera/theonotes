@@ -69,6 +69,9 @@ jobs:
       - run: sudo xcode-select -s /Applications/Xcode_27.2.app && xcodebuild -version && swift --version
       - run: brew install xcodegen
       - run: pnpm --dir web/editor install --frozen-lockfile
+      - run: pnpm --dir tools/mcpb install --frozen-lockfile
+      - name: Claude extension and plugin (build, sign, launcher)
+        run: python3 -I scripts/tests/test_mcpb.py
       - name: Build the core package and its tests
         run: swift build --package-path Packages/TheoNotesCore --build-tests
         timeout-minutes: 15

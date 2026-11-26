@@ -1,0 +1,37 @@
+{
+  "name": "theonotes",
+  "displayName": "Theo Notes",
+  "version": "1.2.0",
+  "description": "Search, read and write your Theo Notes library from Claude Code. Runs the MCP server inside the Theo Notes Mac app; needs the app, opened once.",
+  "author": {
+    "name": "True Brew Birdie Ltd. and Theo Notes contributors",
+    "url": "https://theonotes.app"
+  },
+  "homepage": "https://theonotes.app",
+  "repository": "https://github.com/jankutschera/theonotes",
+  "license": "GPL-3.0-only",
+  "keywords": ["notes", "markdown", "mcp"],
+  "userConfig": {
+    "only_tags": {
+      "type": "string",
+      "title": "Only tags",
+      "description": "Comma-separated, for example work, home/kids. Claude sees only notes with these tags or their nested tags. Leave empty for the whole library.",
+      "default": ""
+    },
+    "exclude_tags": {
+      "type": "string",
+      "title": "Exclude tags",
+      "description": "Comma-separated, for example private. Claude never sees notes with these tags or their nested tags.",
+      "default": ""
+    }
+  },
+  "mcpServers": {
+    "theonotes": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/server/theonotes-mcp",
+      "env": {
+        "THEONOTES_CONNECT_ONLY_TAGS": "${user_config.only_tags}",
+        "THEONOTES_CONNECT_EXCLUDE_TAGS": "${user_config.exclude_tags}"
+      }
+    }
+  }
+}
