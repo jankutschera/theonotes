@@ -12,3 +12,10 @@ them to describe this project, not to brand another product.
 | `iphone-recipe.png` | `docs/release/store-screenshots/1.0/iphone/02-recipe-editor.png` scaled to 1200 px high with `sips -Z 1200` | iPhone 17 simulator, Theo Notes 1.0.0 (3) Release build, 2026-11 | App Store listing of Theo Notes 1.0 |
 
 Copied 2026-11-25 for the public README (OSS export).
+
+## Added 2026-11-26 (launch prep)
+
+| File | Source | Made |
+|---|---|---|
+| `claude-mcp.gif` | Replay of a real Claude Code session (`claude -p` with `theonotes mcp-server --data-dir` on a demo library of five made-up notes, built from this repository with `swift build`). The tool calls, their arguments and the answer are shortened from that session's log; the note panel on the right is an HTML rendering of the note's Markdown after the edit, not a screenshot of the app. Rendered with Playwright, converted with ffmpeg, 960 px wide, 21 s. | 2026-11-26 |
+| `social-preview.png` | GitHub social preview, 1280 x 640, rendered from the website repository's `website/og/social-preview.html` with the app icon and the site's fonts and colours. | 2026-11-26 |
