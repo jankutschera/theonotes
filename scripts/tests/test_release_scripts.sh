@@ -103,6 +103,8 @@ THEONOTES_PROFILE_APPEX=Theo Notes Share Developer ID
 EOF
 sed 's/^THEONOTES_PROFILE_APPEX=.*/THEONOTES_PROFILE_APPEX=/' "$work/release.env" > "$work/no-appex-profile.env"
 
+: > "$work/mcpb-cert.pem"; : > "$work/mcpb-key.pem"
+
 # run <script> args...: runs with the stubs; sets $rc, output in $work/out, calls in $work/calls.
 run() {
   : > "$work/calls"
@@ -110,6 +112,7 @@ run() {
   HOME="$work/home" PATH="$bin:$PATH" THEONOTES_RELEASE_ENV="${ENV_FILE:-$work/release.env}" \
     VERIFY_BUNDLE_CMD="$work/verify-stub" IDENTITY_LINE="${IDENTITY_LINE:-$good_identity}" \
     CHECK_ENTITLEMENTS_CMD="${CHECK_CMD:-true}" \
+    MCPB_SIGN_CERT="${MCPB_CERT-$work/mcpb-cert.pem}" MCPB_SIGN_KEY="${MCPB_KEY-$work/mcpb-key.pem}" \
     bash "$@" > "$work/out" 2>&1 || rc=$?
 }
 called() { grep -q -- "$1" "$work/calls"; }
@@ -162,6 +165,16 @@ sed 's/^THEONOTES_PROFILE_APPEX=.*/THEONOTES_PROFILE_APPEX=Missing Share Profile
 ENV_FILE="$work/bad-appex.env" release
 [ "$rc" -eq 2 ] || fail "a named extension profile that is not installed should exit 2, got $rc"
 ok "real mode refuses when a named provisioning profile is not installed"
+
+MCPB_KEY="" release
+[ "$rc" -eq 2 ] || fail "real mode without the extension signing key should exit 2, got $rc"
+grep -q "MCPB_SIGN_KEY" "$work/out" || fail "message should name MCPB_SIGN_KEY"
+called "xcodebuild" && fail "nothing may be built without the extension signing files"
+MCPB_CERT="$work/no-such.pem" release
+[ "$rc" -eq 2 ] && grep -q "MCPB_SIGN_CERT" "$work/out" || fail "an unreadable extension certificate should be refused"
+MCPB_CERT="" MCPB_KEY="" release --dry-run
+[ "$rc" -eq 0 ] && grep -q "self-signed in this dry run" "$work/out" || fail "a dry run without them should go on and say so"
+ok "real mode refuses without the Claude extension signing files; a dry run says it self-signs"
 
 NOTARY_PROFILE_BROKEN=1 release
 [ "$rc" -eq 2 ] || fail "an unusable notary profile should exit 2, got $rc"

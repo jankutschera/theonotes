@@ -228,6 +228,20 @@ import Testing
         #expect(manifest["version"] == .string(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""))
     }
 
+    /// A misspelt exclude-tag would hide nothing, so the pane names tags the library does not have.
+    @Test func anUnknownTagInTheFieldsIsNamed() throws {
+        _ = try environment.store.create(text: "Diary\n#private #work")
+        #expect(model.unknownTagWarning == nil)
+        model.excludeTags = "#private"
+        model.onlyTags = "work"
+        #expect(model.unknownTagWarning == nil)
+        model.excludeTags = "privte"
+        #expect(model.unknownTagWarning == "No tag #privte in this library: excluding it hides nothing. Check the spelling.")
+        model.excludeTags = ""
+        model.onlyTags = "work, later"
+        #expect(model.unknownTagWarning == "No tag #later in this library yet: Claude sees no notes through it.")
+    }
+
     @Test func accessibilityIdentifiersAreUniqueAndPrefixed() {
         let all = AutomationControl.all
         #expect(Set(all).count == all.count)

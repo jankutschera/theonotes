@@ -368,6 +368,27 @@ private let moved = "The change would move the note out of this server's scope"
         #expect(replaced.exit == 0 && replaced.out.contains(#""title":"W""#) && !replaced.out.contains(#""title":"H""#))
     }
 
+    /// A scope tag the library does not have is legal, but the server says so on stderr at start:
+    /// a misspelt exclude-tag hides nothing. The scope itself is unchanged.
+    @Test func anUnknownScopeTagIsReportedAtStart() throws {
+        let lib = try TestLibrary.make([TestNote(text: "# W\n#work"), TestNote(text: "# P\n#private")])
+        let initialize = MCPProtocolTests.initialize
+        let list = #"{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"list_notes","arguments":{}}}"#
+        let stdin = Data((initialize + "\n" + list + "\n").utf8)
+        let typo = runCLI(["theonotes", "mcp-server", "--data-dir", lib.paths.root.path, "--exclude-tags", "privte"], stdin: stdin)
+        #expect(typo.exit == 0)
+        #expect(typo.err == "theonotes mcp-server: warning: --exclude-tags names no tag in this library: #privte. It hides nothing; check the spelling.\n")
+        #expect(typo.out.contains(#""title":"P""#))
+
+        let only = runCLI(["theonotes", "mcp-server", "--data-dir", lib.paths.root.path, "--only-tags", "work,later"], stdin: stdin)
+        #expect(only.err.contains("--only-tags names no tag in this library: #later."))
+        #expect(only.out.contains(#""title":"W""#) && !only.out.contains(#""title":"P""#))
+
+        let known = runCLI(["theonotes", "mcp-server", "--data-dir", lib.paths.root.path, "--exclude-tags", "#private"], stdin: stdin)
+        #expect(known.err.isEmpty)
+        #expect(!known.out.contains(#""title":"P""#))
+    }
+
     @Test func theRunningServerAppliesFlagsAndEnvironment() throws {
         let lib = try TestLibrary.make([TestNote(text: "# W\n#work"), TestNote(text: "# H\n#home")])
         let initialize = MCPProtocolTests.initialize

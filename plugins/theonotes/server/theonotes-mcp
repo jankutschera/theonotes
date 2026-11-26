@@ -10,7 +10,7 @@
 # host's settings. Empty, or a placeholder the host left unexpanded, means no limit; anything else
 # is handed to the server as --only-tags / --exclude-tags, which rejects a value naming no tag.
 
-# scripts/build-mcpb.sh rewrites these three lines for the dev identity.
+# scripts/build-mcpb.py rewrites these three lines for the dev identity.
 APP_NAME="Theo Notes"
 BUNDLE_ID="com.truebrewbirdie.theonotes"
 APP_HINT=""
@@ -24,7 +24,7 @@ find_helper() {
     helper_in "$app" && return 0
   done
   # Moved elsewhere: ask Spotlight for the bundle id, skipping the Trash and mounted disk images.
-  mdfind "kMDItemCFBundleIdentifier == '$BUNDLE_ID'" 2>/dev/null | while IFS= read -r app; do
+  /usr/bin/mdfind "kMDItemCFBundleIdentifier == '$BUNDLE_ID'" 2>/dev/null | while IFS= read -r app; do
     case "$app" in */.Trash/* | /Volumes/*) continue ;; esac
     helper_in "$app" && break
   done
@@ -37,7 +37,7 @@ is_set() {
   return 1
 }
 
-helper=$(find_helper | head -n 1)
+helper=$(find_helper | /usr/bin/head -n 1)
 if [ -z "$helper" ]; then
   echo "theonotes-mcp: $APP_NAME is not installed. Get it at https://theonotes.app/download and open it once." >&2
   exit 69

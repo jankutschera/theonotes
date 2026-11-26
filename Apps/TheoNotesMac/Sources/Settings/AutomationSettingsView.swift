@@ -17,6 +17,7 @@ import SwiftUI
 final class AutomationSettingsModel {
     @ObservationIgnored let installer: CLIInstaller
     @ObservationIgnored private let settings: TheoNotesCore.Settings
+    @ObservationIgnored private let database: AppDatabase
     @ObservationIgnored private let pasteboard: NSPasteboard
     @ObservationIgnored private let claude: ClaudeDesktop
 
@@ -40,6 +41,7 @@ final class AutomationSettingsModel {
     init(installer: CLIInstaller, database: AppDatabase, pasteboard: NSPasteboard = .general, claude: ClaudeDesktop = .live) {
         self.installer = installer
         settings = TheoNotesCore.Settings(db: database)
+        self.database = database
         self.pasteboard = pasteboard
         self.claude = claude
         refresh()
@@ -153,6 +155,17 @@ final class AutomationSettingsModel {
         field.split(separator: ",").map(String.init)
     }
 
+    /// A warning when a tag in the fields does not exist in this library, else nil. An unknown
+    /// exclude-tag hides nothing, so a typo there would show notes meant to stay hidden.
+    var unknownTagWarning: String? {
+        let unknown = ClaudeConfig.unknownTags(onlyTags: onlyList, excludeTags: excludeList, in: database)
+        let list = { (names: [String]) in names.map { "#" + $0 }.joined(separator: ", ") }
+        var lines: [String] = []
+        if !unknown.exclude.isEmpty { lines.append("No tag \(list(unknown.exclude)) in this library: excluding it hides nothing. Check the spelling.") }
+        if !unknown.only.isEmpty { lines.append("No tag \(list(unknown.only)) in this library yet: Claude sees no notes through it.") }
+        return lines.isEmpty ? nil : lines.joined(separator: "\n")
+    }
+
     func copyDesktopConfig() {
         copy(ClaudeConfig.desktopSnippet(binary: binaryPath, onlyTags: onlyList, excludeTags: excludeList), what: "The Claude config")
     }
@@ -249,6 +262,7 @@ enum AutomationControl {
     static let connectClaude = "automation-connect-claude"
     static let downloadClaude = "automation-download-claude"
     static let otherWays = "automation-claude-other-ways"
+    static let unknownTags = "automation-unknown-tags"
     static let token = "automation-token"
     static let tokenShow = "automation-token-show"
     static let tokenHide = "automation-token-hide"
@@ -259,7 +273,7 @@ enum AutomationControl {
 
     static let all = [
         install, uninstall, copySudo, onlyTags, excludeTags, copyClaudeConfig, copyClaudeCode, connectClaude, downloadClaude,
-        otherWays, token, tokenShow, tokenHide, tokenCopy, tokenRegenerate, confirmRegenerate, cancelRegenerate,
+        otherWays, unknownTags, token, tokenShow, tokenHide, tokenCopy, tokenRegenerate, confirmRegenerate, cancelRegenerate,
     ]
 }
 
@@ -391,6 +405,11 @@ struct AutomationSettingsView: View {
             TextField("Exclude tags", text: $model.excludeTags, prompt: Text("private"))
                 .labelsHidden()
                 .accessibilityIdentifier(AutomationControl.excludeTags)
+        }
+        if let warning = model.unknownTagWarning {
+            Label(warning, systemImage: "exclamationmark.triangle")
+                .foregroundStyle(.orange)
+                .accessibilityIdentifier(AutomationControl.unknownTags)
         }
         HStack {
             Button("Copy Claude config") { model.copyDesktopConfig() }
